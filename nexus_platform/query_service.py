@@ -277,6 +277,9 @@ def _run_dashboard(ctx: AccessContext, question: str, session_id: str) -> dict:
             "dashboard": dashboard,
             "role": role,
             "company": ctx.company.name,
+            "route": "access_refusal" if refused else "dashboard",
+            "llm_skipped": True,
+            "model_used": None,
         },
     }
 

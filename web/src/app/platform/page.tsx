@@ -90,6 +90,13 @@ export default function PlatformLogin() {
             <div style={{ fontSize: 10.5, color: "var(--muted-soft)", marginTop: 8 }}>
               Click any account to sign in instantly.
             </div>
+            <div style={{ fontSize: 10.5, color: "var(--muted-soft)", marginTop: 6, lineHeight: 1.55, borderTop: "0.5px solid var(--hairline)", paddingTop: 8 }}>
+              Demo accounts shown here are curated for walkthroughs. The backend
+              also carries a generated population of 100–150 employees per company
+              with role-scoped access, plus months of historical question traces —
+              used for Admin/CEO health analysis and the ~100-concurrent-question
+              load tests.
+            </div>
           </div>
         </div>
 

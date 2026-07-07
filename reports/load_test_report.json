@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-07-07T19:30:21.314629+00:00",
+  "base_url": "http://localhost:8000",
+  "concurrent_questions": 100,
+  "distinct_employees": 100,
+  "login_phase_s": 0.06,
+  "wall_clock_s": 0.17,
+  "success": 100,
+  "failed": 0,
+  "success_rate": 1.0,
+  "route_correct": 96,
+  "llm_calls_used": 0,
+  "latency_p50_s": 0.088,
+  "latency_p95_s": 0.149,
+  "latency_max_s": 0.162,
+  "throughput_qps": 602.5,
+  "routes": {
+    "repeat_question_choice": 44,
+    "access_refusal": 36,
+    "clarification": 10,
+    "dashboard": 10
+  },
+  "failures": []
+}

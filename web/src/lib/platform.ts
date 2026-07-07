@@ -26,7 +26,7 @@ export type Profile = {
 };
 
 export type ChartSpec = {
-  type: "kpi" | "bar" | "line" | "table";
+  type: "kpi" | "bar" | "line" | "table" | "pie";
   title: string;
   x: string | null;
   y: string | null;
@@ -57,6 +57,13 @@ export type PlatformMeta = {
   llm_skipped?: boolean;
   model_used?: string | null;
   followups?: string[];
+  clarification?: { kind: string; question: string; choices: string[] } | null;
+  repeat?: {
+    options: string[];
+    previous: { trace_id: string; ts?: string; answer?: string; route?: string };
+  } | null;
+  degraded?: boolean;
+  previous_trace_id?: string | null;
 };
 
 export type PlatformAnswer = {
@@ -185,10 +192,44 @@ export type Workspace = {
 
 export const fetchWorkspace = () => req<Workspace>("/platform/workspace");
 
-export const platformQuery = (question: string) =>
+export const platformQuery = (question: string, repeatAction?: string) =>
   req<PlatformAnswer>("/platform/query", {
     method: "POST",
-    body: JSON.stringify({ question, session_id: getSessionId() }),
+    body: JSON.stringify({
+      question,
+      session_id: getSessionId(),
+      ...(repeatAction ? { repeat_action: repeatAction } : {}),
+    }),
+  });
+
+export type HealthFinding = {
+  kind: string;
+  classification: string;
+  severity: "high" | "medium" | "low" | "info";
+  summary: string;
+  recommendation: string;
+  evidence: string[];
+  suggested_eval?: { question: string; expect: string } | null;
+  self_fixable?: boolean;
+};
+
+export type HealthReport = {
+  report_id?: string;
+  company: string;
+  window_days: number;
+  generated_at: string;
+  summary: string;
+  stats: Record<string, unknown> & { routes?: Record<string, number> };
+  findings: HealthFinding[];
+  suggested_evals: { question: string; expect: string }[];
+  llm_summary?: string | null;
+  llm_summary_status?: string;
+};
+
+export const runHealthCheck = (windowDays = 30, llmSummary = false) =>
+  req<HealthReport>("/platform/admin/health-check", {
+    method: "POST",
+    body: JSON.stringify({ window_days: windowDays, llm_summary: llmSummary }),
   });
 
 export const submitFeedback = (payload: {

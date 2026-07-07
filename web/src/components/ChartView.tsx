@@ -102,6 +102,59 @@ export default function ChartView({ spec, exportMeta }: {
     );
   }
 
+  if (spec.type === "pie" && spec.x && spec.y) {
+    const xKey = spec.x;
+    const yKey = spec.y;
+    const slices = spec.data
+      .map((d) => ({ label: String(d[xKey]), value: Math.max(Number(d[yKey]) || 0, 0) }))
+      .filter((s) => s.value > 0)
+      .slice(0, 8);
+    const total = slices.reduce((a, s) => a + s.value, 0) || 1;
+    const palette = ["#2f5d3a", "#9a6a3c", "#5b7d9a", "#b0893a", "#6e5b8a",
+                     "#3a7d75", "#a35454", "#7a7a4a"];
+    const cx = 130, cy = 130, r = 96;
+    const starts = slices.reduce<number[]>((acc, s) => {
+      acc.push((acc[acc.length - 1] ?? -Math.PI / 2) + (s.value / total) * Math.PI * 2);
+      return acc;
+    }, [-Math.PI / 2]);
+    const paths = slices.map((s, i) => {
+      const frac = s.value / total;
+      const a0 = starts[i];
+      const a1 = starts[i + 1];
+      const large = a1 - a0 > Math.PI ? 1 : 0;
+      const x0 = cx + r * Math.cos(a0);
+      const y0 = cy + r * Math.sin(a0);
+      const x1 = cx + r * Math.cos(a1);
+      const y1 = cy + r * Math.sin(a1);
+      return { d: `M ${cx} ${cy} L ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1} Z`,
+               color: palette[i % palette.length], ...s, frac };
+    });
+    return (
+      <div style={{ marginTop: 10 }}>
+        <div className="label" style={{ marginBottom: 4 }}>{spec.title.toUpperCase()}</div>
+        <div style={{ border: "0.5px solid var(--hairline)", borderRadius: 10, background: "var(--surface-card)", padding: "10px 8px", display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
+          <svg ref={svgRef} viewBox="0 0 260 260" style={{ width: 200, height: 200 }} xmlns="http://www.w3.org/2000/svg">
+            {paths.map((p, i) => (
+              <path key={i} d={p.d} fill={p.color} stroke="#fffdf9" strokeWidth={1.5} />
+            ))}
+          </svg>
+          <div style={{ display: "flex", flexDirection: "column", gap: 5, minWidth: 180 }}>
+            {paths.map((p, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 11.5 }}>
+                <i style={{ width: 10, height: 10, borderRadius: 2, background: p.color, display: "inline-block" }} />
+                <span style={{ color: "var(--body)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 130 }}>{p.label}</span>
+                <span className="mono" style={{ marginLeft: "auto", fontSize: 10, color: "var(--muted)" }}>
+                  {fmt(p.value)} · {(p.frac * 100).toFixed(1)}%
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+        {controls(true)}
+      </div>
+    );
+  }
+
   if (spec.type === "table" || !spec.x || !spec.y) {
     const cols = spec.data.length ? Object.keys(spec.data[0]) : [];
     return (

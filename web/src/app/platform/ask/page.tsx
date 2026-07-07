@@ -120,7 +120,7 @@ const safeParseChats = (raw: string | null): SavedChat[] => {
   }
 };
 
-function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile; onAsk: (q: string) => void }) {
+function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile; onAsk: (q: string, repeatAction?: string) => void }) {
   const meta = p.platform;
   const [reported, setReported] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
@@ -154,15 +154,24 @@ function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile
         <span style={{ fontWeight: 500, fontSize: 13 }}>Nexus</span>
         {refused ? (
           <span className="pill" style={{ marginLeft: "auto", background: "#FCF3DC", color: "#8A5B10" }}>access boundary</span>
+        ) : meta.route === "clarification" ? (
+          <span className="pill" style={{ marginLeft: "auto", background: "#EDF2FA", color: "#3D5A80" }}>needs one detail</span>
+        ) : meta.route === "repeat_question_choice" ? (
+          <span className="pill" style={{ marginLeft: "auto", background: "#EDF2FA", color: "#3D5A80" }}>asked before</span>
+        ) : meta.degraded ? (
+          <span className="pill" style={{ marginLeft: "auto", background: "#F9E3E3", color: "#A32D2D" }}>degraded mode</span>
         ) : (
           <span style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
-            {meta.llm_skipped && (
+            {meta.route === "repeat_used_previous" && (
+              <span className="pill" style={{ background: "#EDF2FA", color: "#3D5A80" }}>reused previous</span>
+            )}
+            {meta.llm_skipped && meta.route !== "repeat_used_previous" && (
               <span className="pill" style={{ background: "var(--accent-tint)", color: "var(--accent)" }}>
                 deterministic · no LLM
               </span>
             )}
             <span className="pill">
-              {p.confidence && p.confidence !== "UNKNOWN" ? `${p.confidence} confidence` : (p.route || "answered").replace(/_/g, " ")}
+              {p.confidence && p.confidence !== "UNKNOWN" && p.confidence !== "N/A" ? `${p.confidence} confidence` : (meta.route || p.route || "answered").replace(/_/g, " ")}
             </span>
           </span>
         )}
@@ -189,6 +198,55 @@ function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile
               </button>
             ))}
           </div>
+        </div>
+      )}
+
+      {meta.route === "clarification" && meta.clarification && (
+        <div style={{ marginTop: 10 }}>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            {meta.clarification.choices.map((choice) => (
+              <button key={choice} onClick={() => onAsk(choice)}
+                style={{ fontFamily: "var(--font-sans), sans-serif", fontSize: 12, padding: "7px 13px", borderRadius: 16, border: "1px solid var(--hairline-mid)", background: "var(--surface-soft)", color: "var(--accent)", cursor: "pointer" }}>
+                {choice}
+              </button>
+            ))}
+          </div>
+          <div className="mono" style={{ fontSize: 9.5, color: "var(--muted-soft)", marginTop: 6 }}>
+            asking beats guessing — no data was read for this turn
+          </div>
+        </div>
+      )}
+
+      {meta.route === "repeat_question_choice" && meta.repeat && (
+        <div style={{ marginTop: 10 }}>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            <button onClick={() => onAsk(meta.resolved_question, "use_previous")}
+              style={{ fontFamily: "var(--font-sans), sans-serif", fontSize: 12, padding: "7px 13px", borderRadius: 16, border: "1px solid var(--hairline-mid)", background: "var(--surface-soft)", color: "var(--accent)", cursor: "pointer" }}>
+              Use previous answer
+            </button>
+            <button onClick={() => onAsk(meta.resolved_question, "rerun")}
+              style={{ fontFamily: "var(--font-sans), sans-serif", fontSize: 12, padding: "7px 13px", borderRadius: 16, border: "1px solid var(--hairline-mid)", background: "var(--surface-soft)", color: "var(--accent)", cursor: "pointer" }}>
+              Rerun on current data
+            </button>
+            <button onClick={() => onAsk(meta.resolved_question, "analyze_with_ai")}
+              style={{ fontFamily: "var(--font-sans), sans-serif", fontSize: 12, padding: "7px 13px", borderRadius: 16, border: "1px solid var(--hairline-mid)", background: "var(--surface-soft)", color: "var(--accent)", cursor: "pointer" }}>
+              Analyze with AI
+            </button>
+          </div>
+          {meta.repeat.previous?.answer && (
+            <div style={{ fontSize: 11.5, color: "var(--muted)", marginTop: 8, borderLeft: "2px solid var(--hairline-strong)", paddingLeft: 9 }}>
+              previous: “{meta.repeat.previous.answer.slice(0, 140)}”
+              <span className="mono" style={{ fontSize: 9.5, color: "var(--muted-soft)", marginLeft: 6 }}>
+                trace {meta.repeat.previous.trace_id}
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {meta.route === "repeat_used_previous" && meta.previous_trace_id && (
+        <div className="mono" style={{ fontSize: 10, color: "var(--muted-soft)", marginTop: 6 }}>
+          ↩ reused answer from trace {meta.previous_trace_id} — data was not recomputed
         </div>
       )}
 
@@ -361,16 +419,17 @@ export default function AskAnalystPage() {
     idc.current = 1;
   };
 
-  const ask = async (question?: string) => {
+  const ask = async (question?: string, repeatAction?: string) => {
     const q = (question ?? input).trim();
     if (!q || busy) return;
     setInput("");
     setBusy(true);
     const uid = idc.current++;
     const tid = idc.current++;
-    setMsgs((prev) => [...prev, { id: uid, type: "user", text: q }, { id: tid, type: "thinking" }]);
+    const label = repeatAction ? `${q} · ${repeatAction.replace(/_/g, " ")}` : q;
+    setMsgs((prev) => [...prev, { id: uid, type: "user", text: label }, { id: tid, type: "thinking" }]);
     try {
-      const payload = await platformQuery(q);
+      const payload = await platformQuery(q, repeatAction);
       setMsgs((prev) => prev.map((n) => (n.id === tid ? { id: tid, type: "answer", payload } : n)));
     } catch (e) {
       setMsgs((prev) => prev.map((n) => (n.id === tid ? { id: tid, type: "error", message: e instanceof Error ? e.message : "Query failed" } : n)));

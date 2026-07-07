@@ -3,11 +3,14 @@ import { useCallback, useEffect, useState } from "react";
 import PlatformShell from "@/components/PlatformShell";
 import {
   FeedbackItem,
+  HealthFinding,
+  HealthReport,
   TraceSummary,
   adminEmployees,
   adminFeedback,
   adminTraces,
   fetchTraceDetail,
+  runHealthCheck,
   setFeedbackStatus,
 } from "@/lib/platform";
 
@@ -65,6 +68,152 @@ function TraceCard({ detail, onClose }: { detail: TraceDetail; onClose: () => vo
           {citations.map((c, i) => (
             <span key={i} className="chip chip-neutral">{c.filename} · {c.department}</span>
           ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+const SEV_STYLE: Record<string, { bg: string; fg: string }> = {
+  high: { bg: "#F9E3E3", fg: "#A32D2D" },
+  medium: { bg: "#FCF3DC", fg: "#8A5B10" },
+  low: { bg: "var(--chip-neutral-bg)", fg: "var(--chip-neutral-text)" },
+  info: { bg: "var(--success-bg)", fg: "var(--success-text)" },
+};
+
+function FindingRow({ f, onOpenTrace }: { f: HealthFinding; onOpenTrace: (id: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const sev = SEV_STYLE[f.severity] || SEV_STYLE.low;
+  return (
+    <div className="card" style={{ background: "var(--surface-card)", padding: "9px 12px" }}>
+      <div onClick={() => setOpen((o) => !o)} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+        <span className="chip" style={{ background: sev.bg, color: sev.fg, flex: "none" }}>{f.severity}</span>
+        <span className="chip chip-neutral" style={{ flex: "none" }}>{f.classification.replace(/_/g, " ")}</span>
+        <span style={{ fontSize: 12, color: "var(--ink)", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: open ? "normal" : "nowrap" }}>
+          {f.summary}
+        </span>
+        <span style={{ color: "var(--muted-soft)", fontSize: 11, flex: "none" }}>{open ? "−" : "＋"}</span>
+      </div>
+      {open && (
+        <div style={{ marginTop: 8, fontSize: 12, color: "var(--body)", lineHeight: 1.6 }}>
+          <div><span className="label">RECOMMENDATION </span>{f.recommendation}</div>
+          {f.suggested_eval && (
+            <div style={{ marginTop: 4 }}>
+              <span className="label">SUGGESTED EVAL </span>
+              <span className="mono" style={{ fontSize: 10.5 }}>
+                “{f.suggested_eval.question}” → expect {f.suggested_eval.expect}
+              </span>
+            </div>
+          )}
+          {f.evidence.length > 0 && (
+            <div style={{ marginTop: 6, display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {f.evidence.slice(0, 6).map((id) => (
+                id.startsWith("tr_") || id.startsWith("gen_") ? (
+                  <button key={id} onClick={() => onOpenTrace(id)}
+                    style={{ background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "var(--font-mono), monospace", fontSize: 9.5, color: "var(--accent)" }}>
+                    {id}
+                  </button>
+                ) : (
+                  <span key={id} className="mono" style={{ fontSize: 9.5, color: "var(--muted-soft)" }}>{id}</span>
+                )
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function HealthCheckPanel({ onOpenTrace }: { onOpenTrace: (id: string) => void }) {
+  const [report, setReport] = useState<HealthReport | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [days, setDays] = useState(30);
+  const [aiSummary, setAiSummary] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
+
+  const run = async () => {
+    setBusy(true);
+    setErr(null);
+    try {
+      setReport(await runHealthCheck(days, aiSummary));
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Health check failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const actionable = (report?.findings || []).filter((f) => f.severity === "high" || f.severity === "medium");
+  const good = (report?.findings || []).filter((f) => f.severity === "info");
+  const shown = showAll ? (report?.findings || []) : actionable.slice(0, 12);
+
+  return (
+    <div className="card" style={{ background: "var(--surface-soft)", padding: "14px 16px", marginBottom: 22 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+        <div>
+          <div style={{ fontSize: 14.5, fontWeight: 500, color: "var(--ink)" }}>Analyst Health Check</div>
+          <div style={{ fontSize: 11.5, color: "var(--muted)" }}>
+            Analyzes your company&apos;s traces and feedback, then recommends what to fix — routing, SQL/RAG, charts, access policy, data gaps, or provider ops.
+          </div>
+        </div>
+        <span style={{ marginLeft: "auto", display: "flex", gap: 8, alignItems: "center" }}>
+          <select value={days} onChange={(e) => setDays(Number(e.target.value))}
+            style={{ padding: "6px 8px", borderRadius: 8, border: "1px solid var(--hairline-mid)", background: "var(--surface-card)", fontSize: 11.5, color: "var(--ink)", fontFamily: "var(--font-sans), sans-serif" }}>
+            <option value={7}>last 7 days</option>
+            <option value={30}>last 30 days</option>
+            <option value={90}>last 90 days</option>
+          </select>
+          <label style={{ fontSize: 11, color: "var(--muted)", display: "flex", gap: 4, alignItems: "center", cursor: "pointer" }}>
+            <input type="checkbox" checked={aiSummary} onChange={(e) => setAiSummary(e.target.checked)} />
+            AI summary
+          </label>
+          <button className="btn-primary" onClick={run} disabled={busy} style={{ fontSize: 12, padding: "7px 14px", opacity: busy ? 0.6 : 1 }}>
+            {busy ? "Analyzing…" : report ? "Run again" : "Run health check"}
+          </button>
+        </span>
+      </div>
+      {err && <div style={{ color: "#A32D2D", fontSize: 12, marginTop: 10 }}>{err}</div>}
+
+      {report && (
+        <div style={{ marginTop: 12 }}>
+          <div style={{ fontSize: 12.5, color: "var(--body)", lineHeight: 1.6 }}>{report.summary}</div>
+          {report.llm_summary && (
+            <div style={{ fontSize: 12.5, color: "var(--body)", lineHeight: 1.65, marginTop: 8, borderLeft: "2px solid var(--hairline-strong)", paddingLeft: 10 }}>
+              {report.llm_summary}
+              <div className="mono" style={{ fontSize: 9.5, color: "var(--muted-soft)", marginTop: 3 }}>
+                AI executive summary · {report.llm_summary_status}
+              </div>
+            </div>
+          )}
+          {report.llm_summary_status === "providers_unavailable" && (
+            <div className="mono" style={{ fontSize: 10, color: "var(--muted-soft)", marginTop: 6 }}>
+              AI summary unavailable (providers exhausted) — deterministic analysis above is complete.
+            </div>
+          )}
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", margin: "10px 0" }}>
+            {(["traces", "employees_active", "refusals", "clarifications", "degraded", "feedback"] as const).map((k) => (
+              <span key={k} className="chip chip-neutral">
+                {String(report.stats[k] ?? 0)} {k.replace(/_/g, " ")}
+              </span>
+            ))}
+            <span className="chip" style={{ background: "#F9E3E3", color: "#A32D2D" }}>
+              {actionable.length} to fix
+            </span>
+            <span className="chip" style={{ background: "var(--success-bg)", color: "var(--success-text)" }}>
+              {good.length} working as designed
+            </span>
+          </div>
+          <div style={{ display: "grid", gap: 6 }}>
+            {shown.map((f, i) => <FindingRow key={i} f={f} onOpenTrace={onOpenTrace} />)}
+          </div>
+          {report.findings.length > shown.length && (
+            <button onClick={() => setShowAll(true)}
+              style={{ background: "none", border: "none", cursor: "pointer", padding: 0, marginTop: 8, fontFamily: "var(--font-mono), monospace", fontSize: 10.5, color: "var(--accent)" }}>
+              show all {report.findings.length} findings (including correct-behavior signals)
+            </button>
+          )}
         </div>
       )}
     </div>
@@ -137,6 +286,8 @@ export default function AdminReviewPage() {
             Employee feedback and query traces for your company only. Other companies&apos; data is never visible here.
           </p>
           {err && <div style={{ color: "#A32D2D", fontSize: 12.5, marginBottom: 12 }}>{err}</div>}
+
+          <HealthCheckPanel onOpenTrace={openTraceById} />
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1.25fr", gap: 24, alignItems: "start" }}>
             {/* Feedback queue */}
