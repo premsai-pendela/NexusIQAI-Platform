@@ -191,10 +191,13 @@ def find_clarification(question: str, f: Features, policy: RolePolicy,
                                  f"from {a[0].split()[0]} through {b[0].split()[0]} 2024")],
             )
 
-    # 6. Pie chart over time — never silently render the wrong chart
-    if f.output == "pie" and (f.group_by in ("month", "quarter")
+    # 6. Pie chart needs a categorical breakdown — never silently render a
+    # KPI/line instead ("pie chart revenue over time", "pie of Q3 revenue").
+    _CATEGORICAL = ("region", "product", "category", "segment", "plan",
+                    "department", "priority", "status")
+    if f.output == "pie" and (f.group_by not in _CATEGORICAL
                               or f.is_selection or f.is_range
-                              or (f.explicit_periods and not f.group_by)):
+                              or re.search(r"\bover time\b", q)):
         choices = []
         if f.metric in (None, "revenue", "orders", "aov"):
             choices = [_titled(f.metric or "revenue", "as a pie chart by region"),
@@ -217,13 +220,23 @@ def find_clarification(question: str, f: Features, policy: RolePolicy,
             and not f.explicit_periods and f.group_by is None
             and f.output == "auto" and f.top_n is None
             and len(words) <= 5 and _VAGUE_RE.search(q)):
-        label = _metric_label(prev.metric)
+        # Only suggest the previous metric if this role can actually see it —
+        # a refused turn's metric must not become the suggestion.
+        from nexus_platform.deterministic import METRICS
+        prev_def = METRICS.get(prev.metric)
+        prev_allowed = (prev_def is not None
+                        and set(prev_def.tables) <= set(policy.allowed_tables))
+        if prev_allowed:
+            label = _metric_label(prev.metric)
+            choices = [_titled(prev.metric, "by region"),
+                       f"Compare {label} Q3 vs Q4",
+                       f"Monthly {label} trend"]
+        else:
+            choices = role_metric_choices(policy)
         return Clarification(
             kind="vague_followup",
             question=("Happy to go further — what would make it better?"),
-            choices=[_titled(prev.metric, "by region"),
-                     f"Compare {label} Q3 vs Q4",
-                     f"Monthly {label} trend"],
+            choices=choices,
         )
 
     return None

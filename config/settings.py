@@ -30,9 +30,10 @@ class Settings(BaseSettings):
     # Cerebras Inference (api.cerebras.ai) — OpenAI-compatible last fallback
     # tier. Two-tier setup: a small fast model for routing/rewrites and a
     # larger reasoning model for synthesis; both overridable via env.
+    # Catalog verified live 2026-07-07: zai-glm-4.7, gemma-4-31b, gpt-oss-120b
     cerebras_api_key: str = ""
-    cerebras_fast_model: str = "llama3.1-8b"
-    cerebras_reasoning_model: str = "llama-3.3-70b"
+    cerebras_fast_model: str = "gemma-4-31b"
+    cerebras_reasoning_model: str = "gpt-oss-120b"
     cerebras_timeout: int = 30
     
     # Model names

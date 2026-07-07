@@ -383,7 +383,6 @@ def _finish_clarification(ctx: AccessContext, question: str, session_id: str,
             "clarification": clar,
             "llm_skipped": True,
             "model_used": None,
-            "followups": clar["choices"],
         },
     }
 

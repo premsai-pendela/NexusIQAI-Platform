@@ -447,8 +447,26 @@ def run_health_check(company: str, requested_by: str = "admin",
     friction, stats = _check_volume_and_load(traces)
     findings += friction
 
+    # Coalesce duplicates (same kind + summary) so one recurring problem
+    # reads as one finding with all its evidence, not a wall of repeats.
+    merged: dict = {}
+    for f in findings:
+        key = (f["kind"], f["summary"])
+        if key in merged:
+            seen = merged[key]
+            seen["evidence"] = (seen["evidence"] + [e for e in f["evidence"]
+                                                   if e not in seen["evidence"]])[:6]
+            seen["occurrences"] = seen.get("occurrences", 1) + 1
+        else:
+            merged[key] = {**f, "occurrences": 1}
+    findings = list(merged.values())
+    for f in findings:
+        if f["occurrences"] > 1:
+            f["summary"] += f" (×{f['occurrences']} occurrences)"
+
     sev_rank = {"high": 0, "medium": 1, "low": 2, "info": 3}
-    findings.sort(key=lambda f: sev_rank.get(f["severity"], 9))
+    findings.sort(key=lambda f: (sev_rank.get(f["severity"], 9),
+                                 -f["occurrences"]))
 
     actionable = [f for f in findings if f["severity"] in ("high", "medium")]
     good = [f for f in findings if f["classification"] in

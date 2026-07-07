@@ -107,3 +107,22 @@ Deterministic templates first (no model), then Gemini Flash → Groq Llama 3.3
 open questions. Quota tracker cooldowns move traffic down the chain
 automatically; dashboards bypass LLMs entirely. LLM-path traces record
 `model_used` and any `provider_failures`.
+
+## Agentic analyst run (2026-07-07)
+
+The Ask Analyst pipeline gained an explicit orchestrator
+(`nexus_platform/orchestrator.py`): every question is routed to
+clarification / repeat-question choices / deterministic templates / SQL
+agent / RAG agent / SQL+RAG / LLM planner / refusal / degraded mode before
+anything answers, and the decision is recorded in the trace. The
+deterministic safety gate stops partial parses (malformed periods, ambiguous
+selections, unclear metrics, unsuitable pie charts, vague/overbroad asks)
+with 2–3 clickable full-question choices. The Admin Review page includes the
+Analyst Health Check agent (`nexus_platform/health_check.py`) which analyzes
+traces and feedback into classified, evidenced findings with
+recommendations and suggested eval cases. The company data layer runs on
+PostgreSQL (schema per company, 35 tables, 18 months) when
+`NEXUSIQ_PLATFORM_PG_URL` is set, with identical SQLite mirrors otherwise;
+`nexus_platform/scale/` holds the reproducible generators for data, document
+corpora, the employee population, and the historical trace/feedback corpus.
+See `docs/AGENTIC_ANALYST_FINAL_RUN_REPORT.md` for the full record.

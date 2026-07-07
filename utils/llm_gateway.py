@@ -631,8 +631,9 @@ def cerebras_tier(reasoning: bool = False) -> list:
     """The Cerebras fallback tier, or [] when no key is configured."""
     if not settings.cerebras_api_key:
         return []
-    name = (settings.cerebras_reasoning_model if reasoning
-            else settings.cerebras_fast_model)
+    # Empty env values (CEREBRAS_FAST_MODEL=) must not erase the defaults.
+    name = ((settings.cerebras_reasoning_model or "gpt-oss-120b") if reasoning
+            else (settings.cerebras_fast_model or "gemma-4-31b"))
     return [{
         "name": name,
         "type": "cerebras",

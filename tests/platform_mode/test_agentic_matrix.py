@@ -354,3 +354,28 @@ def test_sla_policy_question_not_answered_as_ticket_count(capture_llm):
                      "What are the SLA targets for urgent tickets?", session())
     assert r["platform"]["route"] == "sql_plus_rag"
     assert capture_llm.calls
+
+
+def test_pie_over_time_without_explicit_period_clarifies(no_llm):
+    """Self-attack find: 'pie chart revenue over time' must not silently
+    render a KPI/line."""
+    r = qs.run_query(ctx_for(ANALYST), "pie chart revenue over time", session())
+    assert r["platform"]["route"] == "clarification"
+    assert r["platform"]["clarification"]["kind"] == "pie_unsuitable"
+
+
+def test_pie_without_any_grouping_clarifies(no_llm):
+    r = qs.run_query(ctx_for(ANALYST), "pie chart of Q3 revenue", session())
+    assert r["platform"]["route"] == "clarification"
+
+
+def test_vague_followup_choices_are_role_safe(no_llm):
+    """Self-attack find: after a REFUSED HR turn, 'make it better' must not
+    suggest the denied metric back to an Analyst."""
+    s = session()
+    r1 = qs.run_query(ctx_for(ANALYST), "How many employees were terminated in Q3?", s)
+    assert r1["platform"]["refused"]
+    r2 = qs.run_query(ctx_for(ANALYST), "make it better", s)
+    assert r2["platform"]["route"] == "clarification"
+    joined = " ".join(r2["platform"]["clarification"]["choices"]).lower()
+    assert "termination" not in joined and "headcount" not in joined

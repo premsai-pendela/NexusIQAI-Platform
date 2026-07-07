@@ -1,5 +1,22 @@
 # ACTIVE HANDOFF — NexusIQAI Platform
 
+**2026-07-07 — Agentic Analyst Final Run complete.** Ask Analyst now routes
+every question explicitly (clarification gate, repeat-question choices,
+deterministic/SQL/RAG/mixed/planner, honest refusals and degraded mode, all
+traced); an Admin/CEO Analyst Health Check agent analyzes traces+feedback and
+recommends fixes (Review page → Health Check panel); the data layer is
+PostgreSQL-scale (35 tables, ~468k rows, 3 company schemas, 18 months) with
+SQLite mirrors for offline tests; 390 generated employees + 15k historical
+traces back the scale story; a 100-concurrent load test passes with zero LLM
+calls; Cerebras is wired as the last cloud fallback tier. Full evidence:
+`docs/AGENTIC_ANALYST_FINAL_RUN_REPORT.md`.
+
+Regenerate scale artifacts (reproducible): `python -m
+nexus_platform.scale.generator` (+ optional NEXUSIQ_PLATFORM_PG_URL),
+`python -m nexus_platform.brain_builder`, `python -m
+nexus_platform.scale.population`, `python -m nexus_platform.scale.history`.
+Load test: `python scripts/load_test.py --n 100` (needs the API running).
+
 This repo is the **NexusIQAI Platform** implementation: a prototype
 multi-company AI data analyst built on the NexusIQ recruiter-proof agent
 stack. The control workspace with the full plan and milestone history lives
