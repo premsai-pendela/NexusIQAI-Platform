@@ -518,22 +518,26 @@ def execute(ctx: AccessContext, intent: Intent) -> Optional[dict]:
         v1 = rows[0]["value"] if rows else None
         v2 = compare_rows[0]["value"] if compare_rows else None
         cmp_label = intent.compare[0]
-        if v1 is not None and v2 is not None and v2 != 0:
-            delta = v1 - v2
-            pct = 100.0 * delta / v2
+        # Direction is always stated chronologically: later period vs earlier
+        periods = [(intent.period, v1), (intent.compare, v2)]
+        periods.sort(key=lambda t: t[0][1])  # by start date
+        (early_p, early_v), (late_p, late_v) = periods
+        if early_v is not None and late_v not in (None,) and early_v != 0:
+            delta = late_v - early_v
+            pct = 100.0 * delta / early_v
             direction = "up" if delta > 0 else ("down" if delta < 0 else "flat")
-            answer = (f"{company} {label}: **{_fmt(v1, mdef.unit)}** in {period_label} vs "
-                      f"**{_fmt(v2, mdef.unit)}** in {cmp_label} — {direction} "
-                      f"{_fmt(abs(delta), mdef.unit)} ({pct:+.1f}%).")
+            answer = (f"{company} {label}: **{_fmt(early_v, mdef.unit)}** in {early_p[0]} vs "
+                      f"**{_fmt(late_v, mdef.unit)}** in {late_p[0]} — {late_p[0]} {direction} "
+                      f"{_fmt(abs(delta), mdef.unit)} ({pct:+.1f}%) vs {early_p[0]}.")
         else:
             answer = (f"{company} {label}: {_fmt(v1, mdef.unit)} in {period_label}, "
                       f"{_fmt(v2, mdef.unit)} in {cmp_label}.")
         chart = {
             "type": "bar",
-            "title": f"{label} — {period_label} vs {cmp_label}",
+            "title": f"{label} — {early_p[0]} vs {late_p[0]}",
             "x": "period", "y": "value",
-            "data": [{"period": period_label, "value": v1},
-                     {"period": cmp_label, "value": v2}],
+            "data": [{"period": early_p[0], "value": early_v},
+                     {"period": late_p[0], "value": late_v}],
             "download": {"csv": True},
         }
         sql = f"{sql};\n{compare_sql}"

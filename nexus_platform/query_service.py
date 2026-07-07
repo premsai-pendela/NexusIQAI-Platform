@@ -87,7 +87,19 @@ def _finish_deterministic(ctx: AccessContext, question: str, session_id: str,
         answer = det["answer"]
         decision = "allowed"
 
-    resolved = question if not intent.followup_kind else f"[{intent.followup_kind}] {question}"
+    if intent.followup_kind:
+        # Human-readable description of the merged intent
+        from nexus_platform.deterministic import _METRIC_LABELS
+        parts = [_METRIC_LABELS.get(intent.metric or "", intent.metric or "")]
+        if intent.group_by:
+            parts.append(f"by {intent.group_by}")
+        if intent.period:
+            parts.append(f"for {intent.period[0]}")
+        if intent.compare:
+            parts.append(f"vs {intent.compare[0]}")
+        resolved = " ".join(p for p in parts if p).capitalize()
+    else:
+        resolved = question
     trace_payload = {
         "employee": employee,
         "employee_name": ctx.employee.name,
