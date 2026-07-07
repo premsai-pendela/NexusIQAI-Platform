@@ -300,6 +300,46 @@ def get_trace(trace_id: str, ctx: AccessContext = Depends(get_access_context)):
     return trace
 
 
+# ── Analyst Health Check (Admin/CEO, same company only) ─────────────────
+
+class HealthCheckRequest(BaseModel):
+    window_days: int = Field(30, ge=1, le=730)
+    llm_summary: bool = False
+
+
+@router.post("/admin/health-check")
+async def run_health_check_route(req: HealthCheckRequest,
+                                 ctx: AccessContext = Depends(get_access_context)):
+    """Run the Analyst Health Check agent over this company's traces and
+    feedback. Analysis is deterministic; the optional LLM executive summary
+    degrades honestly when providers are exhausted."""
+    require_admin(ctx)
+    from nexus_platform.health_check import run_health_check
+    loop = asyncio.get_event_loop()
+    report = await loop.run_in_executor(
+        None, lambda: run_health_check(
+            ctx.company.slug, requested_by=ctx.employee.email,
+            window_days=req.window_days, llm_summary=req.llm_summary))
+    return report
+
+
+@router.get("/admin/health-reports")
+def list_health_reports_route(ctx: AccessContext = Depends(get_access_context)):
+    require_admin(ctx)
+    return {"reports": store.list_health_reports(ctx.company.slug)}
+
+
+@router.get("/admin/health-reports/{report_id}")
+def get_health_report_route(report_id: str,
+                            ctx: AccessContext = Depends(get_access_context)):
+    require_admin(ctx)
+    report = store.get_health_report(ctx.company.slug, report_id)
+    if report is None:
+        raise HTTPException(status_code=404,
+                            detail="Report not found in your company workspace")
+    return report
+
+
 @router.get("/admin/employees")
 def company_employees(ctx: AccessContext = Depends(get_access_context)):
     require_admin(ctx)

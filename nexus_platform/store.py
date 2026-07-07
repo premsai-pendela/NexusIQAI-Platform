@@ -71,6 +71,16 @@ CREATE TABLE IF NOT EXISTS traces (
 );
 CREATE INDEX IF NOT EXISTS idx_traces_company ON traces (company, ts);
 CREATE INDEX IF NOT EXISTS idx_traces_employee ON traces (company, employee, ts);
+
+CREATE TABLE IF NOT EXISTS health_reports (
+    id TEXT PRIMARY KEY,
+    company TEXT NOT NULL,
+    ts TEXT NOT NULL,
+    requested_by TEXT NOT NULL,
+    window_days INTEGER NOT NULL,
+    payload TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_health_company ON health_reports (company, ts);
 """
 
 
@@ -238,6 +248,68 @@ def get_trace(company: str, trace_id: str) -> Optional[dict]:
     with _lock:
         row = _get_conn().execute(
             "SELECT * FROM traces WHERE id=? AND company=?", (trace_id, company)
+        ).fetchone()
+    if row is None:
+        return None
+    out = dict(row)
+    out["payload"] = json.loads(out["payload"])
+    return out
+
+
+def list_traces_with_payload(company: str, date_from: Optional[str] = None,
+                             limit: int = 5000) -> list[dict]:
+    """Company-scoped traces WITH payloads — the Health Check input."""
+    sql = "SELECT * FROM traces WHERE company=?"
+    params: list = [company]
+    if date_from:
+        sql += " AND ts >= ?"
+        params.append(date_from)
+    sql += " ORDER BY ts DESC LIMIT ?"
+    params.append(limit)
+    with _lock:
+        rows = _get_conn().execute(sql, params).fetchall()
+    out = []
+    for r in rows:
+        d = dict(r)
+        try:
+            d["payload"] = json.loads(d["payload"])
+        except (ValueError, TypeError):
+            d["payload"] = {}
+        out.append(d)
+    return out
+
+
+# ── Health reports ──────────────────────────────────────────────────────
+
+def save_health_report(company: str, requested_by: str, window_days: int,
+                       payload: dict) -> str:
+    hid = f"hc_{uuid.uuid4().hex[:10]}"
+    with _lock:
+        conn = _get_conn()
+        conn.execute(
+            "INSERT INTO health_reports (id, company, ts, requested_by, "
+            "window_days, payload) VALUES (?,?,?,?,?,?)",
+            (hid, company, _now(), requested_by, window_days,
+             json.dumps(payload, default=str)),
+        )
+        conn.commit()
+    return hid
+
+
+def list_health_reports(company: str, limit: int = 20) -> list[dict]:
+    with _lock:
+        rows = _get_conn().execute(
+            "SELECT id, company, ts, requested_by, window_days FROM health_reports "
+            "WHERE company=? ORDER BY ts DESC LIMIT ?", (company, limit),
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def get_health_report(company: str, report_id: str) -> Optional[dict]:
+    with _lock:
+        row = _get_conn().execute(
+            "SELECT * FROM health_reports WHERE id=? AND company=?",
+            (report_id, company),
         ).fetchone()
     if row is None:
         return None

@@ -227,3 +227,38 @@ def test_memory_isolation():
     assert store.recent_turns("acmecloud", "a@x.test", "s2") == []
     # Same company, different employee: no bleed
     assert store.recent_turns("acmecloud", "other@x.test", "s1") == []
+
+
+# ── Analyst Health Check (Admin/CEO only) ───────────────────────────────
+
+def test_admin_can_run_health_check(client, acme_admin):
+    r = client.post("/api/v1/platform/admin/health-check",
+                    headers=_hdr(acme_admin), json={"window_days": 30})
+    assert r.status_code == 200
+    body = r.json()
+    assert body["company"] == "acmecloud"
+    assert "findings" in body and "summary" in body and "stats" in body
+    assert body["llm_summary_status"] == "not_requested"
+    rid = body["report_id"]
+
+    lst = client.get("/api/v1/platform/admin/health-reports",
+                     headers=_hdr(acme_admin)).json()["reports"]
+    assert any(rep["id"] == rid for rep in lst)
+
+    detail = client.get(f"/api/v1/platform/admin/health-reports/{rid}",
+                        headers=_hdr(acme_admin))
+    assert detail.status_code == 200
+
+
+def test_non_admin_cannot_run_health_check(client, acme_analyst):
+    r = client.post("/api/v1/platform/admin/health-check",
+                    headers=_hdr(acme_analyst), json={})
+    assert r.status_code == 403
+
+
+def test_health_report_is_company_scoped(client, acme_admin, medcore_ceo):
+    rid = client.post("/api/v1/platform/admin/health-check",
+                      headers=_hdr(acme_admin), json={}).json()["report_id"]
+    r = client.get(f"/api/v1/platform/admin/health-reports/{rid}",
+                   headers=_hdr(medcore_ceo))
+    assert r.status_code == 404
