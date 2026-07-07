@@ -19,6 +19,7 @@ from nexus_platform.access_policy import classify_restricted_intent, refusal_mes
 from nexus_platform.auth import AccessContext
 from nexus_platform.charts import build_chart_spec, wants_chart
 from nexus_platform.contexts import get_company_fusion_agent
+from nexus_platform.dashboard import build_dashboard, wants_dashboard
 
 # One lock per (company, role) agent — history seeding must not interleave.
 _agent_locks: dict[str, threading.Lock] = {}
@@ -68,6 +69,77 @@ def _update_prefs(ctx: AccessContext, question: str, chart_spec: Optional[dict])
                        "recent_topic", topic_words[0])
 
 
+def _run_dashboard(ctx: AccessContext, question: str, session_id: str) -> dict:
+    """Deterministic dashboard answer: KPIs + charts from role-allowed SQL."""
+    started = time.time()
+    company, employee, role = ctx.company.slug, ctx.employee.email, ctx.employee.role
+    dashboard = build_dashboard(ctx)
+
+    if dashboard is None:
+        answer = refusal_message(role, ctx.company.name,
+                                 detail="no dashboard data areas are inside your role")
+        refused, decision = True, "denied"
+    else:
+        n_k, n_c = len(dashboard["kpis"]), len(dashboard["charts"])
+        answer = (f"Here is your {ctx.company.name} dashboard — {n_k} KPIs and "
+                  f"{n_c} charts computed live from the workspace data your "
+                  f"{role} role can access. Every number comes from deterministic "
+                  f"SQL (shown under each block); nothing is model-generated.")
+        refused, decision = False, "allowed"
+
+    trace_payload = {
+        "employee": employee,
+        "employee_name": ctx.employee.name,
+        "company": company,
+        "company_name": ctx.company.name,
+        "role": role,
+        "session_id": session_id,
+        "question": question,
+        "resolved_question": question,
+        "followup_rewritten": False,
+        "memory_turns_used": 0,
+        "access_policy": {
+            "allowed_tables": list(ctx.policy.allowed_tables),
+            "allowed_departments": list(ctx.policy.allowed_departments),
+        },
+        "access_decision": decision,
+        "denied_reason": None if not refused else "no dashboard data areas in role",
+        "route": "dashboard",
+        "confidence": "HIGH",
+        "sql": "; ".join((dashboard or {}).get("sql_used", [])) or None,
+        "citations": [],
+        "chart_generated": dashboard is not None,
+        "chart_type": "dashboard",
+        "latency_s": round(time.time() - started, 2),
+    }
+    trace_id = store.save_trace(company, employee, role, question, decision, trace_payload)
+    store.save_turn(company, employee, session_id, question, question,
+                    answer[:500], "dashboard", "dashboard", refused)
+
+    return {
+        "answer": answer,
+        "confidence": "HIGH",
+        "confidence_reason": "Deterministic SQL over the company workspace — no LLM in the loop.",
+        "validation": {
+            "confidence": "HIGH",
+            "confidence_reason": "Deterministic SQL over the company workspace — no LLM in the loop.",
+        },
+        "source_type": "dashboard",
+        "sources": [],
+        "platform": {
+            "trace_id": trace_id,
+            "resolved_question": question,
+            "followup_rewritten": False,
+            "access_decision": decision,
+            "refused": refused,
+            "chart": None,
+            "dashboard": dashboard,
+            "role": role,
+            "company": ctx.company.name,
+        },
+    }
+
+
 def run_query(ctx: AccessContext, question: str, session_id: str) -> dict:
     """Execute one analyst query inside the caller's access boundary."""
     started = time.time()
@@ -75,6 +147,11 @@ def run_query(ctx: AccessContext, question: str, session_id: str) -> dict:
     employee = ctx.employee.email
     role = ctx.employee.role
     prefs = store.get_prefs(company, employee)
+
+    # Dashboard requests are deterministic role-filtered SQL — no LLM, no
+    # follow-up rewrite needed, instant.
+    if wants_dashboard(question):
+        return _run_dashboard(ctx, question, session_id)
 
     key = f"company:{company}:{role.lower()}"
     agent = get_company_fusion_agent(company, role)

@@ -50,6 +50,11 @@ class FeedbackStatusRequest(BaseModel):
     status: str = Field(..., pattern="^(new|reviewed|resolved)$")
 
 
+class XlsxExportRequest(BaseModel):
+    title: str = Field(..., min_length=1, max_length=80)
+    rows: list[dict] = Field(..., min_length=1, max_length=5000)
+
+
 def _profile(ctx: AccessContext) -> dict:
     return {
         "email": ctx.employee.email,
@@ -169,6 +174,47 @@ async def platform_query(req: PlatformQueryRequest,
         "latency_ms": (time.time() - start) * 1000,
         "request_id": request_id,
     }
+
+
+@router.post("/export/xlsx")
+def export_xlsx(req: XlsxExportRequest,
+                ctx: AccessContext = Depends(get_access_context)):
+    """Turn chart/table rows the caller already received into an .xlsx file.
+
+    Exports only data sent back by the client (already access-filtered when it
+    was answered); the session dependency keeps the endpoint company-scoped.
+    """
+    import io
+    import re as _re
+
+    from fastapi.responses import StreamingResponse
+    from openpyxl import Workbook
+    from openpyxl.styles import Font
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Data"
+    ws.append([f"{ctx.company.name} — {req.title}"])
+    ws["A1"].font = Font(bold=True, size=13)
+    cols = list(req.rows[0].keys())
+    ws.append(cols)
+    for cell in ws[2]:
+        cell.font = Font(bold=True)
+    for row in req.rows:
+        ws.append([row.get(c) for c in cols])
+    for idx, col in enumerate(cols, start=1):
+        width = max(len(str(col)), *(len(str(r.get(col, ""))) for r in req.rows[:200]))
+        ws.column_dimensions[ws.cell(row=2, column=idx).column_letter].width = min(width + 2, 40)
+
+    buf = io.BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    slug = _re.sub(r"[^a-z0-9]+", "-", req.title.lower()).strip("-")[:40] or "export"
+    return StreamingResponse(
+        buf,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{slug}.xlsx"'},
+    )
 
 
 @router.get("/history")

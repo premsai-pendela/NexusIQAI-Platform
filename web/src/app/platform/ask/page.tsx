@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import PlatformShell from "@/components/PlatformShell";
 import ChartView from "@/components/ChartView";
+import DashboardView from "@/components/DashboardView";
 import {
   PlatformAnswer,
   Profile,
@@ -47,45 +48,45 @@ function Dots() {
 
 const STARTERS: Record<string, string[]> = {
   Admin: [
+    "Give me a dashboard",
     "What was total revenue in Q3 2024?",
-    "Show monthly revenue as a line chart",
     "What is our attrition rate by department?",
     "What are the support SLA targets?",
   ],
   CEO: [
+    "Give me a dashboard",
     "Show monthly revenue as a line chart",
     "How many overdue invoices do we have?",
-    "What is our attrition rate by department?",
     "Average CSAT on resolved tickets?",
   ],
   Analyst: [
+    "Give me a dashboard",
     "What was total revenue in Q3 2024?",
     "Top 5 products by revenue as a bar chart",
-    "Revenue by region in Q4 2024",
     "What is the discount policy?",
   ],
   HR: [
-    "How many employees do we have by department?",
+    "Give me a dashboard",
     "What is our attrition rate?",
     "How many PTO days do employees get?",
     "Terminations in 2024 by department as a bar chart",
   ],
   Finance: [
+    "Give me a dashboard",
     "How many overdue invoices do we have?",
     "Total invoiced amount by month as a line chart",
     "What is the revenue recognition policy?",
-    "Average invoice amount by status",
   ],
   Support: [
+    "Give me a dashboard",
     "Average resolution hours by priority",
     "What are the SLA targets for urgent tickets?",
-    "CSAT distribution on resolved tickets",
     "Ticket volume by category as a bar chart",
   ],
   Ops: [
+    "Give me a dashboard",
     "Order volume by month as a line chart",
     "What are the incident severity definitions?",
-    "Pending orders older than 14 days",
     "Top products by order count",
   ],
 };
@@ -96,7 +97,7 @@ type Node =
   | { id: number; type: "answer"; payload: PlatformAnswer }
   | { id: number; type: "error"; message: string };
 
-function AnswerCard({ p, profile }: { p: PlatformAnswer; profile: Profile }) {
+function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile; onAsk: (q: string) => void }) {
   const meta = p.platform;
   const [reported, setReported] = useState(false);
   const refused = meta.refused;
@@ -139,6 +140,21 @@ function AnswerCard({ p, profile }: { p: PlatformAnswer; profile: Profile }) {
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{p.answer}</ReactMarkdown>
       </div>
 
+      {refused && (
+        <div style={{ marginTop: 10 }}>
+          <div className="label" style={{ marginBottom: 6 }}>WITHIN YOUR ACCESS INSTEAD</div>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            {(STARTERS[profile.role] || STARTERS.Analyst).slice(0, 3).map((s) => (
+              <button key={s} onClick={() => onAsk(s)}
+                style={{ fontFamily: "var(--font-sans), sans-serif", fontSize: 11.5, padding: "6px 12px", borderRadius: 16, border: "1px solid var(--hairline-mid)", background: "var(--surface-soft)", color: "var(--muted)", cursor: "pointer" }}>
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {meta.dashboard && !refused && <DashboardView spec={meta.dashboard} />}
       {meta.chart && !refused && <ChartView spec={meta.chart} />}
 
       {!refused && (sql?.query || docs.length > 0) && (
@@ -234,6 +250,12 @@ export default function AskAnalystPage() {
         `This is your analyst desk for ${p.company.name}. Ask in plain English — I remember the conversation, so follow-ups like "what about Q4?" just work.`}
       botOnClick={(p) =>
         `If a question is outside your ${p.role} access, I'll refuse politely and say why — and you can request access with one click. Nothing restricted ever reaches the answer, citations, or charts.`}
+      botTips={() => [
+        'Try "Give me a dashboard" — instant KPIs and charts from deterministic SQL, no model in the loop.',
+        'Every chart downloads as CSV, XLSX, or PNG — look under the chart.',
+        "Open Access & trace on any answer to see the exact access decision and the saved trace id.",
+        'Follow-ups work: after a revenue question, just ask "what about Q4?"',
+      ]}
     >
       {(profile) => {
         const starters = STARTERS[profile.role] || STARTERS.Analyst;
@@ -288,7 +310,7 @@ export default function AskAnalystPage() {
                       <div style={{ fontSize: 13, color: "var(--body)", lineHeight: 1.55, marginTop: 8 }}>{n.message}</div>
                     </div>
                   );
-                return <AnswerCard key={n.id} p={n.payload} profile={profile} />;
+                return <AnswerCard key={n.id} p={n.payload} profile={profile} onAsk={ask} />;
               })}
               <div ref={endRef} />
             </div>

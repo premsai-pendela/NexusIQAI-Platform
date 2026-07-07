@@ -34,6 +34,15 @@ export type ChartSpec = {
   download: { csv: boolean };
 };
 
+export type DashboardSpec = {
+  company: string;
+  role: string;
+  kpis: { title: string; value: number | string }[];
+  charts: ChartSpec[];
+  sql_used: string[];
+  note: string;
+};
+
 export type PlatformMeta = {
   trace_id: string;
   resolved_question: string;
@@ -41,6 +50,7 @@ export type PlatformMeta = {
   access_decision: "allowed" | "denied";
   refused: boolean;
   chart: ChartSpec | null;
+  dashboard?: DashboardSpec | null;
   role: string;
   company: string;
 };
@@ -219,6 +229,26 @@ export const adminEmployees = () =>
   req<{ employees: { email: string; name: string; role: string; title: string }[] }>(
     "/platform/admin/employees"
   );
+
+export async function exportXlsx(title: string, rows: Record<string, unknown>[]) {
+  const token = getToken();
+  const res = await fetch(`${API_BASE}/platform/export/xlsx`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { "X-NexusIQ-Session": token } : {}),
+    },
+    body: JSON.stringify({ title, rows }),
+  });
+  if (!res.ok) throw new Error(`XLSX export failed (${res.status})`);
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40)}.xlsx`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 export const rebuildBrain = () =>
   req<{ status: string; build_log: Record<string, unknown> }>("/platform/brain/rebuild", {

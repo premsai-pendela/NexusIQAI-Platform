@@ -1,6 +1,6 @@
 "use client";
-import { useRef } from "react";
-import { ChartSpec } from "@/lib/platform";
+import { useRef, useState } from "react";
+import { ChartSpec, exportXlsx } from "@/lib/platform";
 
 /* Deterministic chart renderer for platform chart specs. Hand-drawn SVG in
    the NexusIQ palette — no chart library. Downloads: CSV always, PNG for
@@ -39,10 +39,20 @@ function download(name: string, blob: Blob) {
 
 export default function ChartView({ spec }: { spec: ChartSpec }) {
   const svgRef = useRef<SVGSVGElement>(null);
+  const [xlsxBusy, setXlsxBusy] = useState(false);
   const slug = spec.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
 
   const downloadCsv = () =>
     download(`${slug}.csv`, new Blob([toCsv(spec.data)], { type: "text/csv" }));
+
+  const downloadXlsx = async () => {
+    setXlsxBusy(true);
+    try {
+      await exportXlsx(spec.title, spec.data);
+    } finally {
+      setXlsxBusy(false);
+    }
+  };
 
   const downloadPng = () => {
     const svg = svgRef.current;
@@ -63,17 +73,16 @@ export default function ChartView({ spec }: { spec: ChartSpec }) {
     img.src = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(xml)))}`;
   };
 
+  const linkStyle = { background: "none", border: "none", fontSize: 11, fontFamily: "var(--font-mono), monospace", cursor: "pointer", padding: 0 } as const;
   const controls = (withPng: boolean) => (
     <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
-      <button className="link-accent" onClick={downloadCsv}
-        style={{ background: "none", border: "none", fontSize: 11, fontFamily: "var(--font-mono), monospace", cursor: "pointer", padding: 0 }}>
-        ↓ CSV
+      <button className="link-accent" onClick={downloadCsv} style={linkStyle}>↓ CSV</button>
+      <button className="link-accent" onClick={downloadXlsx} disabled={xlsxBusy}
+        style={{ ...linkStyle, opacity: xlsxBusy ? 0.5 : 1 }}>
+        {xlsxBusy ? "…" : "↓ XLSX"}
       </button>
       {withPng && (
-        <button className="link-accent" onClick={downloadPng}
-          style={{ background: "none", border: "none", fontSize: 11, fontFamily: "var(--font-mono), monospace", cursor: "pointer", padding: 0 }}>
-          ↓ PNG
-        </button>
+        <button className="link-accent" onClick={downloadPng} style={linkStyle}>↓ PNG</button>
       )}
     </div>
   );

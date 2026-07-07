@@ -29,10 +29,12 @@ export default function PlatformShell({
   children,
   botGreeting,
   botOnClick,
+  botTips,
 }: {
   children: ReactNode | ((profile: Profile) => ReactNode);
   botGreeting: (p: Profile) => string;
   botOnClick?: (p: Profile) => string;
+  botTips?: (p: Profile) => string[];
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -44,7 +46,9 @@ export default function PlatformShell({
   );
 
   useEffect(() => {
-    if (!token) router.replace("/platform");
+    // Read localStorage directly: during hydration the store still returns
+    // the (empty) server snapshot, which must not trigger a redirect.
+    if (!localStorage.getItem("nexusiq_platform_token")) router.replace("/platform");
   }, [token, router]);
 
   if (!token || !profile) return null;
@@ -88,6 +92,7 @@ export default function PlatformShell({
       <Mascot
         greeting={botGreeting(profile)}
         onClickSay={botOnClick ? botOnClick(profile) : undefined}
+        tips={botTips ? botTips(profile) : undefined}
         size={70}
       />
     </main>

@@ -3,20 +3,25 @@ import { useEffect, useRef, useState } from "react";
 import MascotSvg from "./MascotSvg";
 
 // Floating Nexus guide. Flies in, greets once, then rests. Anti-Clippy:
-// dismissable, mutable, click to re-speak. See DESIGN.md.
+// dismissable, mutable, click to re-speak. Clicking cycles through page tips
+// so the bot stays useful without ever interrupting. See DESIGN.md.
 export default function Mascot({
   greeting,
   onClickSay,
+  tips,
   size = 78,
 }: {
   greeting: string;
   onClickSay?: string;
+  tips?: string[];
   size?: number;
 }) {
   const [flown, setFlown] = useState(false);
   const [bubble, setBubble] = useState(false);
   const [muted, setMuted] = useState(false);
   const [text, setText] = useState(greeting);
+  const tipIndex = useRef(0);
+  const sayings = [...(onClickSay ? [onClickSay] : []), ...(tips || [])];
   const t1 = useRef<ReturnType<typeof setTimeout> | null>(null);
   const t2 = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -85,7 +90,12 @@ export default function Mascot({
       <button
         onClick={() => {
           if (muted) setMuted(false);
-          setText(onClickSay || greeting);
+          if (sayings.length > 0) {
+            setText(sayings[tipIndex.current % sayings.length]);
+            tipIndex.current += 1;
+          } else {
+            setText(greeting);
+          }
           setBubble(true);
         }}
         aria-label="Nexus — click to speak"
