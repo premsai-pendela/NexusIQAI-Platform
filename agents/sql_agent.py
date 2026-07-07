@@ -99,6 +99,13 @@ class SQLAgent:
                 "priority_reason": "Good SQL capability, very fast"
             },
             {
+                "name": "deepseek-ai/deepseek-v4-flash",
+                "type": "nvidia",
+                "description": "NVIDIA NIM DeepSeek V4 Flash (Cloud Fallback)",
+                "quota": "NIM free tier",
+                "priority_reason": "Survives Groq+Gemini quota exhaustion; high-throughput NIM tier"
+            },
+            {
                 "name": "deepseek-r1:1.5b",
                 "type": "ollama",
                 "description": "Ollama DeepSeek-R1 (Local Backup)",
@@ -122,6 +129,13 @@ class SQLAgent:
                 "description": "Gemini 2.5 Flash (Reliable)",
                 "quota": "1,500/day",
                 "priority_reason": "Reliable fallback"
+            },
+            {
+                "name": "deepseek-ai/deepseek-v4-flash",
+                "type": "nvidia",
+                "description": "NVIDIA NIM DeepSeek V4 Flash (Cloud Fallback)",
+                "quota": "NIM free tier",
+                "priority_reason": "Fast cloud fallback when Groq+Gemini quotas exhausted"
             },
             {
                 "name": "deepseek-r1:1.5b",

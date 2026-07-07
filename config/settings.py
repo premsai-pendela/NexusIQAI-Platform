@@ -20,6 +20,12 @@ class Settings(BaseSettings):
     # API Keys — defaults to "" so the app loads even without secrets configured
     google_api_key: str = ""
     groq_api_key: str = ""
+    # NVIDIA NIM (integrate.api.nvidia.com) — OpenAI-compatible fallback tier
+    nvidia_api_key: str = ""
+    # v4-flash chosen as primary: high-throughput tier, responds when the
+    # popular llama-70b NIM endpoint is saturated
+    nvidia_model: str = "deepseek-ai/deepseek-v4-flash"
+    nvidia_fast_model: str = "deepseek-ai/deepseek-v4-flash"
     
     # Model names
     groq_model: str = "llama-3.3-70b-versatile"

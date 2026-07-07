@@ -311,6 +311,12 @@ Cross-validation rules:
                 "type": "groq",
                 "description": "Groq",
             })
+        if settings.nvidia_api_key:
+            models.append({
+                "name": settings.nvidia_model,
+                "type": "nvidia",
+                "description": "NVIDIA NIM (cloud fallback)",
+            })
         return models
 
     @staticmethod

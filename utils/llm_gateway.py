@@ -313,6 +313,61 @@ class LLMGateway:
                 temperature=temperature,
             )
 
+        if model_type == "nvidia":
+            if not settings.nvidia_api_key:
+                raise RuntimeError("NVIDIA API key not configured")
+
+            import requests
+
+            class NvidiaClient:
+                """OpenAI-compatible NVIDIA NIM chat client (no SDK dependency).
+
+                Uses streaming: NIM's free tier hangs non-stream requests when
+                saturated but streams an error event immediately, so streaming
+                gives fast fail-over to the next model instead of a 45s stall.
+                """
+
+                def invoke(self, prompt: str) -> str:
+                    import json as _json
+
+                    resp = requests.post(
+                        "https://integrate.api.nvidia.com/v1/chat/completions",
+                        headers={
+                            "Authorization": f"Bearer {settings.nvidia_api_key}",
+                            "Content-Type": "application/json",
+                        },
+                        json={
+                            "model": model_name,
+                            "messages": [{"role": "user", "content": prompt}],
+                            "temperature": temperature,
+                            "max_tokens": 2048,
+                            "stream": True,
+                        },
+                        timeout=(10, 30),
+                        stream=True,
+                    )
+                    resp.raise_for_status()
+                    parts: list[str] = []
+                    for raw in resp.iter_lines(decode_unicode=True):
+                        if not raw or not raw.startswith("data:"):
+                            continue
+                        data = raw[5:].strip()
+                        if data == "[DONE]":
+                            break
+                        event = _json.loads(data)
+                        if event.get("error"):
+                            raise RuntimeError(
+                                f"NVIDIA NIM error: {event['error'].get('message', 'unknown')}")
+                        for choice in event.get("choices", []):
+                            delta = (choice.get("delta") or {}).get("content")
+                            if delta:
+                                parts.append(delta)
+                    if not parts:
+                        raise RuntimeError("NVIDIA NIM returned no content")
+                    return "".join(parts)
+
+            return NvidiaClient()
+
         if model_type == "ollama":
             import ollama
 
