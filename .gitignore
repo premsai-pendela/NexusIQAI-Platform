@@ -56,3 +56,8 @@ traces/
 # OS
 .DS_Store
 Thumbs.db
+
+.venv/
+node_modules/
+.next/
+.DS_Store
