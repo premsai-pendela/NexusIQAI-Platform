@@ -34,6 +34,8 @@ nexus_platform/
   brain_builder.py                folder → SQLite catalog + Chroma index + artifacts
   query_service.py                memory → rewrite → agents → filter → trace → chart
   charts.py                       deterministic chart specs from SQL results
+  dashboard.py                    "give me a dashboard" → role-filtered KPI/chart
+                                  blocks from canned SQL (no LLM in the loop)
   store.py                        SQLite: session memory, feedback, traces
 data/demo_companies/<slug>/       company.db · docs/<dept>/*.md · brain/ artifacts
 ```
@@ -69,7 +71,24 @@ python scripts/inspect_platform_traces.py      # audit saved traces for leaks
   SQLite/Chroma stores — **not** full enterprise tenant isolation.
 - All employee access is read-only; only Admin/CEO can rebuild brains and
   review feedback/traces, scoped to their own company.
-- XLSX export not implemented (CSV and PNG downloads are).
 - The intent gate is keyword-based; it exists for UX (fast, well-worded
   refusals). Security does not depend on it — the AST and retrieval filters
   are the enforcement layers.
+- The NVIDIA NIM fallback tier rides the free API: when it saturates, the
+  gateway fails fast and the quota tracker applies a cooldown; answers then
+  come from the remaining tiers.
+- Deployment story is a local demo (two processes, commands above). The
+  legacy recruiter-proof surface has a Dockerfile/EC2 path; platform mode
+  has not been cloud-deployed — future work, not hidden breakage.
+
+## Exports
+
+Every chart and dashboard block downloads as **CSV** (client-side),
+**XLSX** (server-side via openpyxl, styled workbook), or **PNG** (SVG →
+canvas). Dashboards expose their exact SQL under "show the N queries".
+
+## Model routing
+
+Gemini Flash → Groq Llama 3.3 70B → NVIDIA NIM (deepseek-v4-flash,
+streaming client) → local Ollama. Quota tracker cooldowns move traffic down
+the chain automatically; dashboards bypass LLMs entirely.

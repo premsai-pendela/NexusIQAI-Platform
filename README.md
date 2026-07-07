@@ -39,7 +39,9 @@ data analyst platform built on the same agent stack:
 - **Try it**: `uvicorn api.main:app --port 8000` + `cd web && npx next start` → [http://localhost:3000/platform](http://localhost:3000/platform)
 - **Docs & architecture**: [docs/PLATFORM_MODE.md](docs/PLATFORM_MODE.md)
 - **Boundary enforcement**: SQL prompt subset → sqlglot AST table allowlist → ChromaDB department filters (vector/hybrid/BM25) → response-level citation filter
-- **Verified**: 46 pytest cases, 7 live LLM scenarios across 3 companies, and a trace-leakage auditor (`scripts/inspect_platform_traces.py`)
+- **Dashboards & exports**: "give me a dashboard" builds a role-filtered KPI/chart board from deterministic SQL (no LLM); every chart downloads as CSV/XLSX/PNG
+- **Model routing**: Gemini → Groq → NVIDIA NIM → local Ollama with quota-tracker cooldowns
+- **Verified**: 60+ platform pytest cases (318 total suite), 7 live LLM scenarios across 3 companies, and a trace-leakage auditor (`scripts/inspect_platform_traces.py`)
 - **Honest labels**: demo registry (not SSO), synthetic data, single-app isolation (not enterprise tenancy), read-only employees
 
 ---
