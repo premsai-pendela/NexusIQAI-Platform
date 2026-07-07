@@ -68,7 +68,33 @@ def main() -> int:
           f"trace={p['trace_id']}")
     failures += 0 if ok else 1
 
-    print(f"\n{4 - failures}/4 scenarios passed")
+    print("5) MedCore Finance — allowed invoice question")
+    med_fin = ctx_for("finance@medcore.test")
+    res = run_query(med_fin, "How many overdue invoices do we have?", "smoke-m")
+    p = res["platform"]
+    ok = (not p["refused"]
+          and (res.get("sql_result") or {}).get("success")
+          and "invoices" in str((res.get("sql_result") or {}).get("query", "")).lower())
+    print(f"   {'PASS' if ok else 'FAIL'} trace={p['trace_id']}")
+    failures += 0 if ok else 1
+
+    print("6) FinPilot Ops — restricted invoice question refused")
+    fin_ops = ctx_for("ops@finpilot.test")
+    res = run_query(fin_ops, "How many overdue invoices do we have?", "smoke-o")
+    p = res["platform"]
+    ok = p["refused"] and p["access_decision"] == "denied"
+    print(f"   {'PASS' if ok else 'FAIL'} trace={p['trace_id']}")
+    failures += 0 if ok else 1
+
+    print("7) Company isolation — MedCore data differs from AcmeCloud")
+    res = run_query(med_fin, "What was total revenue in Q3 2024?", "smoke-m")
+    p = res["platform"]
+    ok = (not p["refused"]
+          and "1,321,021" not in str(res.get("answer", "")).replace("$", ""))
+    print(f"   {'PASS' if ok else 'FAIL'} trace={p['trace_id']}")
+    failures += 0 if ok else 1
+
+    print(f"\n{7 - failures}/7 scenarios passed")
     return 1 if failures else 0
 
 

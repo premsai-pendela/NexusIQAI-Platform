@@ -25,6 +25,25 @@
 
 ---
 
+## 🏢 NEW: NexusIQAI Platform Mode
+
+This repo now also ships **Platform Mode** — a prototype multi-company AI
+data analyst platform built on the same agent stack:
+
+> Synthetic companies register demo employees. Employees log in, land in
+> their company's prebuilt data brain, and query only what their role
+> allows — SQL, citations, charts, session memory, per-query traces, and
+> polite refusals at the access boundary. Admin/CEO users rebuild the brain
+> when data changes and review their own company's feedback and traces.
+
+- **Try it**: `uvicorn api.main:app --port 8000` + `cd web && npx next start` → [http://localhost:3000/platform](http://localhost:3000/platform)
+- **Docs & architecture**: [docs/PLATFORM_MODE.md](docs/PLATFORM_MODE.md)
+- **Boundary enforcement**: SQL prompt subset → sqlglot AST table allowlist → ChromaDB department filters (vector/hybrid/BM25) → response-level citation filter
+- **Verified**: 46 pytest cases, 7 live LLM scenarios across 3 companies, and a trace-leakage auditor (`scripts/inspect_platform_traces.py`)
+- **Honest labels**: demo registry (not SSO), synthetic data, single-app isolation (not enterprise tenancy), read-only employees
+
+---
+
 ## What is NexusIQ AI?
 
 NexusIQ AI is a **production-deployed, multi-agent business intelligence system** that answers complex business questions by autonomously searching across three scattered data sources, cross-validating facts, and returning a single fused answer with a confidence score and citations.
