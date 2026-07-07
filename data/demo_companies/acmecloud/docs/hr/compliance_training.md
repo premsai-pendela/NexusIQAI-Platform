@@ -1,9 +1,3 @@
-# AcmeCloud Analytics — Compliance & Training Policy (Restricted: HR / Admin)
+# AcmeCloud Analytics — Compliance Training
 
-- Security-awareness training: required annually for all employees;
-  completion tracked by People Operations.
-- Anti-harassment training: required within 30 days of hire and every
-  two years after.
-- Data-access reviews: quarterly; department leads confirm role access.
-- Contractor onboarding: same compliance requirements as employees, tracked
-  separately.
+Annual security + privacy training mandatory for all employees; role-specific modules for Finance and Support.

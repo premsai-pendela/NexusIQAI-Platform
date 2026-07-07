@@ -1,0 +1,901 @@
+response_id,ticket_id,submitted_on,score,comment
+1,1,2024-08-31,4,slow but solved
+2,2,2024-12-15,4,had to chase twice
+3,6,2024-01-24,5,quick fix
+4,8,2023-09-15,4,great support
+5,9,2024-07-20,3,slow but solved
+6,10,2024-09-06,3,
+7,12,2024-03-28,4,slow but solved
+8,14,2024-10-26,5,had to chase twice
+9,15,2023-12-29,4,slow but solved
+10,16,2024-07-13,3,quick fix
+11,19,2024-06-26,5,
+12,21,2024-01-27,3,slow but solved
+13,23,2023-12-03,1,quick fix
+14,25,2024-07-22,5,had to chase twice
+15,26,2024-11-27,5,had to chase twice
+16,27,2023-09-17,5,
+17,28,2024-03-13,5,had to chase twice
+18,29,2024-12-19,2,slow but solved
+19,31,2024-04-29,4,quick fix
+20,32,2023-09-23,4,slow but solved
+21,33,2024-12-03,5,had to chase twice
+22,34,2024-08-11,5,quick fix
+23,35,2024-02-22,2,
+24,36,2023-07-17,1,quick fix
+25,37,2023-07-13,5,quick fix
+26,38,2024-12-18,4,quick fix
+27,40,2024-12-06,3,had to chase twice
+28,41,2023-10-04,3,slow but solved
+29,42,2024-12-30,4,had to chase twice
+30,43,2024-06-30,4,had to chase twice
+31,45,2023-09-27,5,great support
+32,46,2024-10-30,5,quick fix
+33,47,2024-07-01,4,slow but solved
+34,48,2024-04-23,2,slow but solved
+35,49,2024-03-06,5,
+36,50,2023-08-28,5,slow but solved
+37,51,2024-10-05,3,slow but solved
+38,53,2024-08-30,5,great support
+39,54,2023-09-04,3,slow but solved
+40,55,2023-08-19,5,quick fix
+41,56,2024-01-16,4,quick fix
+42,57,2024-04-14,5,great support
+43,58,2024-12-27,3,great support
+44,59,2024-08-22,5,had to chase twice
+45,61,2024-10-15,4,quick fix
+46,62,2024-03-11,4,
+47,65,2023-08-13,5,slow but solved
+48,67,2023-08-30,5,had to chase twice
+49,68,2023-08-04,3,slow but solved
+50,69,2024-02-02,5,quick fix
+51,73,2024-06-27,5,slow but solved
+52,77,2024-05-01,4,quick fix
+53,78,2024-11-25,3,quick fix
+54,79,2024-09-20,5,great support
+55,80,2024-06-08,3,quick fix
+56,81,2023-12-18,5,slow but solved
+57,82,2024-07-08,4,had to chase twice
+58,83,2024-12-09,4,had to chase twice
+59,84,2024-06-10,2,great support
+60,85,2024-11-02,4,quick fix
+61,86,2024-12-28,5,had to chase twice
+62,88,2024-10-22,5,had to chase twice
+63,89,2024-10-30,5,
+64,90,2024-11-26,3,slow but solved
+65,91,2024-11-18,4,slow but solved
+66,92,2024-05-16,4,had to chase twice
+67,93,2024-07-22,4,
+68,94,2024-10-20,2,slow but solved
+69,96,2024-11-15,5,had to chase twice
+70,97,2024-01-16,5,quick fix
+71,98,2024-07-07,5,great support
+72,99,2023-12-04,4,had to chase twice
+73,100,2024-04-20,4,had to chase twice
+74,101,2024-06-29,5,slow but solved
+75,102,2024-07-12,5,had to chase twice
+76,105,2024-02-25,5,great support
+77,107,2024-07-10,4,slow but solved
+78,108,2024-12-20,5,slow but solved
+79,109,2024-06-12,5,great support
+80,110,2024-10-30,3,slow but solved
+81,111,2023-08-12,5,great support
+82,113,2024-07-05,4,had to chase twice
+83,115,2024-12-16,5,had to chase twice
+84,116,2023-07-14,5,great support
+85,117,2024-11-12,4,slow but solved
+86,119,2023-12-30,5,
+87,120,2024-07-19,4,quick fix
+88,121,2024-12-14,4,great support
+89,122,2024-09-15,5,slow but solved
+90,123,2024-11-04,4,had to chase twice
+91,124,2024-02-11,4,quick fix
+92,126,2024-04-07,1,quick fix
+93,127,2024-05-27,5,
+94,128,2023-10-27,5,had to chase twice
+95,129,2024-08-03,4,great support
+96,130,2024-07-04,3,had to chase twice
+97,131,2024-02-16,4,great support
+98,132,2024-12-24,4,
+99,133,2023-11-03,3,slow but solved
+100,134,2023-08-15,3,quick fix
+101,137,2024-07-29,5,had to chase twice
+102,138,2024-11-04,5,great support
+103,139,2023-10-21,5,
+104,142,2024-04-18,5,great support
+105,143,2024-09-25,2,had to chase twice
+106,144,2024-07-19,3,quick fix
+107,146,2024-07-01,5,quick fix
+108,147,2023-08-27,3,great support
+109,149,2024-02-29,4,
+110,150,2024-08-20,5,had to chase twice
+111,152,2024-06-28,5,slow but solved
+112,153,2023-11-23,5,
+113,155,2023-07-23,4,slow but solved
+114,156,2024-10-22,5,quick fix
+115,157,2024-10-20,5,had to chase twice
+116,160,2024-12-31,5,quick fix
+117,161,2024-07-10,5,
+118,165,2023-12-09,4,
+119,166,2024-11-08,2,great support
+120,167,2023-09-26,5,had to chase twice
+121,168,2024-12-24,5,great support
+122,169,2024-09-06,4,
+123,171,2024-07-08,3,slow but solved
+124,172,2024-10-28,4,
+125,173,2023-07-25,2,quick fix
+126,175,2024-07-23,4,slow but solved
+127,176,2024-01-14,5,great support
+128,179,2023-08-09,5,quick fix
+129,180,2024-04-13,4,great support
+130,181,2023-11-15,5,quick fix
+131,182,2024-10-19,1,quick fix
+132,183,2024-06-24,1,slow but solved
+133,185,2024-09-06,5,great support
+134,186,2024-11-07,5,great support
+135,187,2024-02-04,1,had to chase twice
+136,188,2023-11-09,5,great support
+137,189,2024-06-02,3,
+138,190,2024-05-09,3,
+139,191,2024-07-18,5,had to chase twice
+140,192,2024-12-14,5,great support
+141,193,2024-05-06,4,
+142,194,2024-06-04,2,
+143,195,2023-10-21,5,had to chase twice
+144,196,2024-09-18,5,slow but solved
+145,197,2023-11-05,5,great support
+146,198,2023-10-14,5,slow but solved
+147,200,2023-11-19,3,quick fix
+148,201,2024-03-18,4,slow but solved
+149,202,2023-12-16,3,quick fix
+150,205,2023-11-25,3,slow but solved
+151,206,2024-01-05,5,slow but solved
+152,207,2023-10-18,5,had to chase twice
+153,208,2024-12-22,2,
+154,210,2024-06-18,1,great support
+155,211,2024-10-19,4,had to chase twice
+156,212,2024-09-28,5,great support
+157,213,2024-04-10,4,
+158,215,2024-02-03,5,quick fix
+159,216,2024-05-30,4,had to chase twice
+160,217,2024-12-18,4,slow but solved
+161,218,2024-10-29,1,had to chase twice
+162,220,2024-06-29,5,quick fix
+163,221,2024-08-22,5,quick fix
+164,223,2024-11-25,5,had to chase twice
+165,224,2024-12-12,4,had to chase twice
+166,226,2024-01-18,1,quick fix
+167,227,2024-08-14,3,quick fix
+168,228,2023-12-04,5,great support
+169,229,2024-04-07,2,had to chase twice
+170,230,2024-01-10,4,
+171,231,2024-09-29,4,
+172,232,2024-12-23,3,great support
+173,234,2024-06-08,5,quick fix
+174,235,2023-10-07,4,slow but solved
+175,236,2024-11-18,3,
+176,237,2024-09-27,5,
+177,238,2024-03-11,5,slow but solved
+178,239,2023-12-22,1,quick fix
+179,240,2024-04-03,4,great support
+180,241,2024-10-19,4,slow but solved
+181,242,2024-05-03,1,had to chase twice
+182,243,2024-10-17,2,slow but solved
+183,244,2023-10-29,5,had to chase twice
+184,245,2024-07-01,4,great support
+185,247,2024-04-12,4,
+186,249,2024-08-30,4,
+187,250,2023-08-14,4,had to chase twice
+188,251,2024-05-06,5,quick fix
+189,252,2024-09-22,5,slow but solved
+190,253,2024-01-09,4,slow but solved
+191,254,2024-10-15,1,
+192,258,2024-10-09,2,great support
+193,259,2024-03-28,4,slow but solved
+194,260,2024-12-29,3,quick fix
+195,261,2023-10-08,5,slow but solved
+196,262,2024-03-17,2,
+197,263,2024-09-28,3,slow but solved
+198,264,2024-03-11,4,slow but solved
+199,265,2024-07-29,5,
+200,267,2024-06-15,4,had to chase twice
+201,268,2023-11-29,5,quick fix
+202,269,2024-11-03,5,
+203,270,2024-04-08,4,quick fix
+204,271,2024-03-06,5,quick fix
+205,274,2024-10-12,5,quick fix
+206,276,2023-10-28,5,great support
+207,277,2024-11-30,2,slow but solved
+208,281,2023-08-17,5,slow but solved
+209,282,2024-12-29,4,had to chase twice
+210,283,2023-10-12,4,slow but solved
+211,284,2024-10-15,1,slow but solved
+212,287,2023-12-01,4,quick fix
+213,288,2023-10-14,5,had to chase twice
+214,289,2024-12-18,5,great support
+215,290,2024-11-06,5,slow but solved
+216,291,2024-04-10,5,great support
+217,292,2024-10-30,4,quick fix
+218,293,2023-08-03,5,quick fix
+219,294,2024-06-03,3,slow but solved
+220,297,2024-12-30,4,had to chase twice
+221,299,2024-12-14,5,
+222,300,2024-07-14,5,had to chase twice
+223,301,2024-06-08,4,quick fix
+224,302,2024-05-30,4,slow but solved
+225,303,2023-12-13,5,had to chase twice
+226,304,2024-01-15,5,had to chase twice
+227,306,2024-12-04,3,had to chase twice
+228,307,2023-11-09,5,
+229,308,2024-07-04,4,
+230,309,2024-08-31,4,
+231,310,2024-03-22,1,had to chase twice
+232,311,2024-10-11,5,slow but solved
+233,313,2024-11-13,5,had to chase twice
+234,314,2024-08-04,4,slow but solved
+235,315,2024-10-01,3,had to chase twice
+236,316,2024-05-29,5,slow but solved
+237,317,2023-12-20,5,slow but solved
+238,319,2024-12-29,4,great support
+239,321,2024-09-12,5,slow but solved
+240,322,2024-05-17,5,slow but solved
+241,323,2023-11-24,1,quick fix
+242,324,2023-08-31,4,
+243,326,2024-11-16,5,had to chase twice
+244,327,2024-02-29,4,had to chase twice
+245,328,2024-06-24,5,
+246,329,2024-05-01,5,quick fix
+247,331,2024-03-22,5,great support
+248,333,2024-10-21,4,quick fix
+249,334,2024-02-07,4,quick fix
+250,337,2023-11-13,4,slow but solved
+251,342,2024-10-26,5,great support
+252,343,2023-09-18,1,
+253,344,2023-10-24,4,great support
+254,345,2024-08-29,5,quick fix
+255,346,2024-10-20,5,quick fix
+256,347,2023-10-10,5,slow but solved
+257,348,2024-05-05,5,had to chase twice
+258,349,2024-01-08,5,had to chase twice
+259,350,2024-08-19,4,
+260,351,2023-11-18,5,had to chase twice
+261,352,2023-08-17,4,quick fix
+262,353,2024-02-07,4,slow but solved
+263,354,2024-02-25,3,quick fix
+264,357,2024-01-28,4,quick fix
+265,361,2024-12-07,4,quick fix
+266,362,2024-12-06,5,
+267,363,2024-10-29,4,great support
+268,364,2024-10-28,5,slow but solved
+269,365,2024-12-16,1,
+270,366,2024-07-13,4,had to chase twice
+271,367,2024-10-08,5,slow but solved
+272,368,2024-09-06,5,
+273,369,2024-10-12,4,quick fix
+274,370,2024-01-05,4,great support
+275,372,2023-09-10,5,slow but solved
+276,374,2024-08-10,4,great support
+277,375,2024-03-20,4,
+278,378,2024-06-28,5,slow but solved
+279,379,2024-11-29,5,quick fix
+280,380,2024-12-28,4,slow but solved
+281,385,2023-09-02,4,slow but solved
+282,386,2024-05-29,4,
+283,389,2024-07-09,5,quick fix
+284,390,2024-10-17,4,quick fix
+285,392,2023-12-01,3,great support
+286,393,2024-03-24,3,had to chase twice
+287,394,2024-05-26,5,slow but solved
+288,395,2024-11-18,5,
+289,396,2024-07-11,5,had to chase twice
+290,397,2023-11-23,4,quick fix
+291,399,2024-06-12,5,
+292,401,2023-10-10,4,quick fix
+293,405,2024-12-01,3,slow but solved
+294,407,2023-10-22,1,slow but solved
+295,408,2024-06-05,5,quick fix
+296,409,2024-02-02,3,had to chase twice
+297,410,2024-12-08,4,quick fix
+298,412,2024-08-04,4,slow but solved
+299,413,2024-10-21,3,had to chase twice
+300,414,2024-03-04,5,had to chase twice
+301,415,2024-07-08,4,slow but solved
+302,417,2024-04-29,4,great support
+303,420,2024-12-02,5,great support
+304,421,2023-12-14,1,slow but solved
+305,423,2024-06-21,4,quick fix
+306,427,2024-12-21,5,great support
+307,428,2024-10-10,4,
+308,429,2024-11-27,4,
+309,430,2024-03-05,1,great support
+310,431,2024-03-30,5,
+311,432,2024-12-23,2,
+312,433,2023-09-25,4,
+313,434,2024-04-25,4,great support
+314,435,2023-10-25,5,had to chase twice
+315,436,2024-10-29,3,slow but solved
+316,438,2024-08-25,4,quick fix
+317,439,2024-10-22,5,great support
+318,440,2024-11-11,5,slow but solved
+319,441,2024-12-14,4,great support
+320,442,2024-12-03,3,
+321,443,2023-10-11,4,
+322,444,2024-01-25,5,quick fix
+323,445,2024-07-28,4,slow but solved
+324,446,2024-01-05,5,great support
+325,447,2024-06-30,5,
+326,448,2024-11-20,5,quick fix
+327,450,2024-11-17,4,great support
+328,451,2023-11-05,5,quick fix
+329,452,2024-05-09,5,quick fix
+330,453,2024-08-04,5,great support
+331,459,2024-10-16,5,had to chase twice
+332,460,2024-10-13,4,had to chase twice
+333,462,2024-08-22,5,had to chase twice
+334,464,2024-09-05,4,had to chase twice
+335,466,2023-12-14,2,quick fix
+336,467,2024-11-12,5,quick fix
+337,468,2024-11-03,2,slow but solved
+338,469,2024-10-14,2,slow but solved
+339,470,2024-10-14,5,
+340,471,2024-11-02,5,had to chase twice
+341,472,2024-04-27,3,great support
+342,474,2024-03-18,5,slow but solved
+343,475,2024-11-28,5,quick fix
+344,476,2024-10-18,4,
+345,477,2024-12-14,5,great support
+346,479,2023-11-19,4,slow but solved
+347,480,2024-11-24,1,
+348,484,2023-12-03,1,slow but solved
+349,485,2024-04-27,4,great support
+350,489,2024-05-22,1,great support
+351,490,2024-04-22,5,
+352,492,2024-07-19,3,great support
+353,493,2023-10-22,3,quick fix
+354,494,2024-05-21,5,had to chase twice
+355,495,2024-07-09,1,slow but solved
+356,496,2023-12-01,4,had to chase twice
+357,497,2024-05-31,2,quick fix
+358,498,2024-06-08,4,had to chase twice
+359,499,2023-08-17,3,had to chase twice
+360,500,2023-09-23,3,had to chase twice
+361,501,2024-11-08,5,slow but solved
+362,502,2024-11-03,3,slow but solved
+363,504,2024-08-27,3,quick fix
+364,505,2023-10-26,4,
+365,506,2023-09-18,2,great support
+366,508,2024-12-09,5,had to chase twice
+367,509,2024-02-09,5,great support
+368,510,2023-12-03,3,
+369,512,2024-10-29,5,slow but solved
+370,513,2024-12-29,3,had to chase twice
+371,514,2023-11-04,5,had to chase twice
+372,515,2024-10-19,5,slow but solved
+373,516,2024-11-07,4,
+374,517,2024-08-05,5,had to chase twice
+375,518,2024-11-28,5,
+376,520,2024-11-07,4,
+377,521,2024-12-10,5,slow but solved
+378,523,2024-12-26,5,great support
+379,525,2024-02-28,4,great support
+380,527,2024-08-29,5,
+381,528,2024-07-18,4,quick fix
+382,529,2023-12-29,5,great support
+383,530,2024-05-06,4,great support
+384,531,2024-04-18,5,great support
+385,532,2023-11-26,5,
+386,538,2024-12-24,4,slow but solved
+387,539,2024-04-13,4,great support
+388,540,2024-03-25,3,
+389,542,2024-12-26,3,
+390,543,2023-12-26,4,quick fix
+391,547,2024-08-21,2,great support
+392,548,2024-03-26,5,quick fix
+393,551,2023-10-26,4,quick fix
+394,552,2023-12-10,4,
+395,553,2024-01-15,4,
+396,554,2023-12-29,4,slow but solved
+397,555,2024-05-23,5,quick fix
+398,556,2024-06-06,5,quick fix
+399,557,2024-02-08,5,great support
+400,558,2023-10-15,2,
+401,559,2024-10-27,4,
+402,560,2024-07-06,4,
+403,561,2024-03-07,4,slow but solved
+404,562,2024-11-04,4,great support
+405,563,2024-04-17,5,quick fix
+406,564,2023-11-15,5,slow but solved
+407,565,2024-08-07,3,quick fix
+408,566,2024-09-09,5,
+409,567,2024-02-12,2,slow but solved
+410,568,2024-08-12,1,slow but solved
+411,573,2024-12-14,5,slow but solved
+412,574,2024-07-22,4,had to chase twice
+413,575,2024-11-11,1,great support
+414,576,2023-11-08,5,had to chase twice
+415,577,2024-03-16,4,had to chase twice
+416,578,2024-10-16,5,great support
+417,580,2024-01-26,5,quick fix
+418,581,2024-03-22,4,
+419,582,2023-10-30,4,had to chase twice
+420,583,2024-01-31,5,slow but solved
+421,584,2024-07-17,4,quick fix
+422,586,2023-12-28,4,great support
+423,587,2024-01-19,4,great support
+424,588,2024-08-21,5,great support
+425,589,2024-12-24,5,had to chase twice
+426,590,2024-10-04,4,quick fix
+427,591,2024-11-26,5,had to chase twice
+428,592,2024-12-18,3,slow but solved
+429,595,2024-10-22,4,had to chase twice
+430,598,2024-06-20,4,great support
+431,599,2024-01-30,4,had to chase twice
+432,603,2024-11-06,1,great support
+433,604,2024-11-06,4,slow but solved
+434,606,2024-01-03,5,had to chase twice
+435,607,2024-08-11,4,
+436,610,2024-11-29,2,slow but solved
+437,611,2023-07-31,5,great support
+438,613,2024-02-13,5,
+439,614,2024-02-11,3,great support
+440,615,2023-11-18,5,
+441,619,2024-02-20,5,quick fix
+442,620,2023-09-28,4,great support
+443,621,2024-03-14,5,
+444,622,2024-01-10,3,had to chase twice
+445,623,2023-07-27,4,slow but solved
+446,624,2024-12-06,5,had to chase twice
+447,625,2024-12-09,5,had to chase twice
+448,626,2024-11-23,2,great support
+449,627,2024-12-07,5,had to chase twice
+450,629,2024-11-11,4,slow but solved
+451,630,2024-02-09,4,had to chase twice
+452,631,2024-08-26,3,had to chase twice
+453,632,2024-09-22,1,
+454,633,2024-12-04,4,had to chase twice
+455,634,2024-03-25,5,
+456,635,2023-09-19,4,great support
+457,637,2024-04-27,5,great support
+458,638,2024-12-09,5,slow but solved
+459,639,2023-11-24,5,
+460,643,2024-12-08,1,great support
+461,646,2024-08-05,4,slow but solved
+462,647,2023-11-22,4,had to chase twice
+463,649,2024-11-06,3,
+464,650,2024-03-10,5,
+465,651,2024-09-28,5,
+466,652,2024-07-11,5,slow but solved
+467,654,2023-09-07,4,slow but solved
+468,655,2023-09-21,5,
+469,656,2024-11-20,4,
+470,657,2023-09-03,5,quick fix
+471,658,2024-12-05,3,slow but solved
+472,660,2024-09-02,4,
+473,661,2023-12-29,1,great support
+474,663,2024-12-12,5,great support
+475,664,2024-12-15,5,quick fix
+476,666,2024-10-05,5,
+477,667,2023-07-14,3,
+478,668,2024-08-25,3,quick fix
+479,670,2024-01-20,2,
+480,672,2024-10-14,4,great support
+481,673,2023-10-16,4,had to chase twice
+482,674,2024-05-14,3,great support
+483,677,2024-07-09,4,
+484,678,2024-12-24,5,
+485,679,2023-11-28,5,
+486,680,2024-11-13,5,great support
+487,681,2023-12-12,3,
+488,682,2024-01-28,4,slow but solved
+489,683,2024-10-15,2,slow but solved
+490,684,2023-11-11,5,slow but solved
+491,685,2024-04-18,4,slow but solved
+492,687,2024-02-21,1,quick fix
+493,689,2023-12-31,1,quick fix
+494,690,2024-12-12,1,
+495,692,2023-12-23,5,great support
+496,693,2023-10-17,4,had to chase twice
+497,694,2023-08-07,5,
+498,695,2024-02-15,5,great support
+499,696,2024-04-28,2,quick fix
+500,697,2024-09-29,4,slow but solved
+501,698,2024-09-30,5,great support
+502,700,2024-09-07,2,slow but solved
+503,702,2024-05-24,5,
+504,703,2024-11-13,5,great support
+505,704,2024-08-04,5,slow but solved
+506,705,2023-12-03,5,great support
+507,706,2024-06-07,5,quick fix
+508,707,2024-06-27,5,slow but solved
+509,708,2024-10-20,5,quick fix
+510,709,2024-02-11,2,quick fix
+511,710,2024-11-19,3,great support
+512,711,2023-08-04,4,slow but solved
+513,713,2024-09-16,1,great support
+514,715,2024-05-12,5,
+515,716,2024-11-09,4,slow but solved
+516,717,2024-07-19,1,quick fix
+517,718,2024-12-10,4,
+518,719,2023-12-12,3,slow but solved
+519,720,2024-10-12,5,
+520,721,2024-12-10,5,had to chase twice
+521,723,2024-07-07,3,had to chase twice
+522,725,2024-04-21,4,had to chase twice
+523,726,2024-03-13,3,slow but solved
+524,727,2024-10-31,4,slow but solved
+525,729,2023-09-29,5,slow but solved
+526,730,2024-08-30,4,had to chase twice
+527,733,2024-04-26,4,had to chase twice
+528,734,2023-08-09,5,slow but solved
+529,735,2023-10-05,4,quick fix
+530,736,2024-05-10,3,great support
+531,737,2024-03-03,4,slow but solved
+532,739,2024-05-12,4,
+533,740,2024-07-29,5,had to chase twice
+534,741,2024-01-29,4,had to chase twice
+535,743,2023-12-11,5,quick fix
+536,744,2024-12-21,5,great support
+537,745,2024-10-29,5,
+538,746,2024-11-29,3,
+539,747,2024-12-27,5,
+540,749,2024-12-10,1,had to chase twice
+541,750,2024-03-29,5,had to chase twice
+542,751,2023-07-23,4,quick fix
+543,752,2024-05-08,5,great support
+544,753,2024-11-30,1,great support
+545,756,2024-10-28,5,had to chase twice
+546,758,2024-01-10,4,quick fix
+547,760,2024-06-10,5,had to chase twice
+548,761,2024-05-12,3,quick fix
+549,762,2024-11-07,3,slow but solved
+550,763,2024-12-29,4,had to chase twice
+551,765,2023-12-08,4,had to chase twice
+552,766,2024-03-15,1,great support
+553,767,2024-05-17,3,
+554,771,2024-01-31,2,
+555,772,2024-03-07,5,quick fix
+556,775,2024-08-30,4,had to chase twice
+557,776,2023-12-12,2,quick fix
+558,778,2024-12-05,1,slow but solved
+559,779,2024-12-28,4,
+560,780,2023-12-30,4,great support
+561,781,2024-03-01,4,slow but solved
+562,782,2023-10-05,5,great support
+563,785,2024-07-25,4,
+564,787,2024-01-25,3,great support
+565,788,2024-10-12,1,great support
+566,789,2024-01-26,4,had to chase twice
+567,791,2024-09-12,3,slow but solved
+568,792,2023-10-21,3,
+569,793,2023-10-21,5,
+570,794,2024-03-21,4,slow but solved
+571,795,2024-06-20,4,slow but solved
+572,796,2024-08-23,4,slow but solved
+573,799,2024-07-05,5,slow but solved
+574,800,2024-05-10,5,quick fix
+575,802,2024-07-05,4,slow but solved
+576,804,2023-07-24,5,great support
+577,805,2024-05-12,4,had to chase twice
+578,806,2023-12-06,4,
+579,807,2024-10-12,4,had to chase twice
+580,809,2024-03-03,5,slow but solved
+581,810,2024-10-31,4,had to chase twice
+582,811,2024-04-11,3,
+583,813,2024-01-20,4,
+584,815,2024-01-28,5,
+585,818,2024-09-27,5,quick fix
+586,819,2024-12-20,5,slow but solved
+587,820,2024-02-22,5,slow but solved
+588,821,2024-10-25,3,had to chase twice
+589,824,2023-10-28,2,had to chase twice
+590,825,2024-06-27,4,
+591,826,2024-11-08,5,slow but solved
+592,829,2024-09-13,2,
+593,830,2024-02-08,2,slow but solved
+594,832,2024-12-08,5,had to chase twice
+595,834,2024-09-26,5,great support
+596,835,2024-06-21,4,
+597,836,2024-08-03,3,quick fix
+598,837,2024-05-22,4,had to chase twice
+599,838,2023-08-15,3,had to chase twice
+600,839,2024-11-17,3,quick fix
+601,840,2024-01-21,1,
+602,842,2024-12-17,5,had to chase twice
+603,845,2024-12-25,5,great support
+604,848,2024-11-15,5,great support
+605,850,2024-02-29,5,great support
+606,851,2024-11-14,3,had to chase twice
+607,852,2024-08-11,4,slow but solved
+608,854,2024-11-23,1,
+609,856,2024-07-30,4,great support
+610,857,2024-11-23,5,quick fix
+611,858,2024-02-18,5,quick fix
+612,859,2024-08-29,5,had to chase twice
+613,860,2024-09-19,5,slow but solved
+614,862,2024-09-02,4,
+615,863,2023-10-22,4,quick fix
+616,865,2023-08-21,5,quick fix
+617,866,2024-05-13,3,slow but solved
+618,868,2024-06-08,5,great support
+619,869,2024-06-26,4,quick fix
+620,872,2023-12-27,4,quick fix
+621,873,2023-08-13,4,had to chase twice
+622,875,2024-03-04,4,
+623,876,2024-11-18,4,great support
+624,877,2024-12-29,5,
+625,878,2024-10-24,4,
+626,879,2024-12-14,5,had to chase twice
+627,880,2024-01-22,5,had to chase twice
+628,883,2024-09-28,4,quick fix
+629,885,2024-11-18,5,great support
+630,886,2024-12-13,4,
+631,887,2024-08-02,3,great support
+632,888,2024-11-13,4,quick fix
+633,889,2023-12-29,4,had to chase twice
+634,890,2024-11-13,4,great support
+635,891,2024-10-17,3,
+636,893,2023-12-30,3,had to chase twice
+637,897,2024-10-10,4,
+638,898,2024-10-26,3,slow but solved
+639,899,2023-11-12,2,had to chase twice
+640,900,2023-07-25,5,great support
+641,901,2024-10-20,4,quick fix
+642,902,2024-05-08,5,slow but solved
+643,903,2024-08-11,4,slow but solved
+644,906,2024-03-05,5,had to chase twice
+645,913,2024-11-13,4,
+646,914,2023-12-11,4,great support
+647,916,2024-12-28,4,
+648,920,2024-05-10,4,quick fix
+649,921,2023-08-08,4,
+650,922,2024-12-18,3,great support
+651,923,2024-10-17,2,had to chase twice
+652,924,2024-07-06,4,great support
+653,926,2024-06-02,4,
+654,927,2024-05-02,5,quick fix
+655,928,2024-10-07,5,quick fix
+656,929,2024-07-28,5,
+657,930,2024-10-11,5,slow but solved
+658,931,2024-11-24,5,great support
+659,932,2024-08-30,3,had to chase twice
+660,934,2024-10-20,4,had to chase twice
+661,935,2024-02-13,5,great support
+662,939,2023-07-22,5,
+663,942,2024-04-16,2,quick fix
+664,943,2024-11-03,5,slow but solved
+665,945,2024-12-07,3,
+666,947,2024-09-10,4,had to chase twice
+667,948,2024-05-05,5,
+668,949,2024-10-30,5,slow but solved
+669,951,2024-10-23,5,quick fix
+670,952,2023-11-22,5,quick fix
+671,953,2024-04-11,5,slow but solved
+672,954,2024-10-09,2,slow but solved
+673,955,2024-12-13,5,
+674,956,2024-08-01,5,
+675,957,2024-12-10,3,great support
+676,958,2023-09-09,5,
+677,960,2024-08-30,4,had to chase twice
+678,961,2024-08-28,5,quick fix
+679,962,2023-09-24,5,slow but solved
+680,964,2024-07-09,5,slow but solved
+681,965,2024-11-10,5,
+682,966,2023-10-24,1,quick fix
+683,967,2024-11-30,3,slow but solved
+684,968,2024-09-18,3,great support
+685,969,2024-11-25,1,slow but solved
+686,973,2024-06-07,4,quick fix
+687,975,2023-12-22,5,quick fix
+688,977,2024-06-29,5,
+689,978,2024-09-14,5,
+690,979,2024-10-30,4,quick fix
+691,980,2024-01-14,4,slow but solved
+692,983,2024-10-27,4,great support
+693,984,2024-11-30,5,had to chase twice
+694,985,2023-08-20,3,quick fix
+695,986,2024-04-25,5,quick fix
+696,988,2024-12-06,4,great support
+697,989,2024-06-24,5,quick fix
+698,990,2024-05-19,5,slow but solved
+699,991,2024-09-16,4,
+700,992,2024-06-21,5,quick fix
+701,993,2024-11-08,4,quick fix
+702,994,2024-08-07,3,great support
+703,995,2024-06-24,3,quick fix
+704,997,2023-12-13,4,had to chase twice
+705,1000,2023-12-14,5,had to chase twice
+706,1001,2023-08-27,4,
+707,1002,2024-11-28,4,
+708,1003,2023-12-18,1,
+709,1005,2024-11-03,5,quick fix
+710,1006,2024-04-17,4,quick fix
+711,1008,2024-11-29,1,had to chase twice
+712,1009,2024-11-10,4,quick fix
+713,1012,2024-02-27,4,
+714,1013,2024-12-20,4,great support
+715,1014,2024-06-05,5,slow but solved
+716,1015,2024-03-28,5,
+717,1016,2024-11-25,5,had to chase twice
+718,1018,2023-12-25,5,quick fix
+719,1019,2023-08-09,4,had to chase twice
+720,1020,2024-12-22,5,quick fix
+721,1022,2024-11-06,4,great support
+722,1023,2023-09-20,5,quick fix
+723,1025,2024-08-08,5,slow but solved
+724,1027,2024-12-28,5,
+725,1028,2024-12-10,4,slow but solved
+726,1030,2024-10-25,1,slow but solved
+727,1031,2024-09-18,5,great support
+728,1032,2024-12-23,4,quick fix
+729,1036,2024-06-23,4,had to chase twice
+730,1040,2024-11-18,3,
+731,1042,2024-12-18,3,great support
+732,1043,2024-11-25,4,had to chase twice
+733,1044,2024-04-22,4,had to chase twice
+734,1046,2024-09-20,4,quick fix
+735,1048,2023-10-11,4,slow but solved
+736,1052,2024-08-19,3,quick fix
+737,1054,2023-11-08,4,quick fix
+738,1056,2023-07-26,5,
+739,1057,2024-09-06,4,
+740,1060,2024-10-18,5,had to chase twice
+741,1066,2023-12-26,4,
+742,1067,2024-06-29,5,
+743,1069,2023-10-06,1,had to chase twice
+744,1070,2024-02-08,5,great support
+745,1071,2024-11-17,3,slow but solved
+746,1073,2024-07-29,1,had to chase twice
+747,1074,2024-11-13,5,great support
+748,1075,2023-10-03,4,great support
+749,1076,2023-08-05,5,
+750,1078,2024-04-30,3,
+751,1079,2024-11-07,4,great support
+752,1080,2024-09-04,4,
+753,1082,2024-11-15,3,slow but solved
+754,1083,2024-09-14,4,
+755,1085,2024-08-25,3,quick fix
+756,1086,2024-06-02,4,quick fix
+757,1087,2023-08-13,4,quick fix
+758,1088,2024-11-02,4,slow but solved
+759,1089,2024-11-25,4,had to chase twice
+760,1090,2024-05-25,5,had to chase twice
+761,1091,2024-09-06,4,had to chase twice
+762,1092,2024-10-12,5,quick fix
+763,1093,2024-07-05,4,had to chase twice
+764,1094,2024-01-19,1,slow but solved
+765,1096,2024-10-22,3,slow but solved
+766,1097,2024-01-09,4,
+767,1099,2023-09-30,5,great support
+768,1101,2023-09-26,5,quick fix
+769,1102,2023-08-17,4,
+770,1105,2024-11-09,2,had to chase twice
+771,1106,2024-12-13,5,quick fix
+772,1108,2023-12-17,2,slow but solved
+773,1109,2024-05-14,2,slow but solved
+774,1110,2024-09-08,4,slow but solved
+775,1111,2024-11-07,2,had to chase twice
+776,1112,2023-10-15,5,had to chase twice
+777,1113,2024-10-25,5,
+778,1114,2023-09-30,4,great support
+779,1116,2024-12-08,3,had to chase twice
+780,1117,2024-07-21,4,great support
+781,1118,2024-08-12,5,quick fix
+782,1120,2024-10-19,5,slow but solved
+783,1121,2024-08-30,5,great support
+784,1122,2024-11-06,2,great support
+785,1123,2024-12-04,3,great support
+786,1124,2024-12-13,4,great support
+787,1125,2023-09-10,3,great support
+788,1126,2024-12-19,5,quick fix
+789,1127,2023-11-15,4,slow but solved
+790,1128,2024-12-07,4,great support
+791,1129,2024-03-18,5,quick fix
+792,1130,2024-04-16,4,quick fix
+793,1131,2024-12-23,5,slow but solved
+794,1132,2024-09-16,5,great support
+795,1133,2024-10-15,4,great support
+796,1136,2024-11-09,5,quick fix
+797,1139,2024-04-09,5,slow but solved
+798,1141,2023-12-29,5,slow but solved
+799,1142,2024-05-15,5,
+800,1143,2024-08-09,3,
+801,1144,2024-09-24,3,quick fix
+802,1146,2024-12-29,5,had to chase twice
+803,1148,2024-06-09,1,slow but solved
+804,1150,2024-06-04,1,
+805,1154,2024-04-27,4,great support
+806,1155,2024-09-21,4,slow but solved
+807,1157,2024-10-08,4,
+808,1158,2024-05-05,3,great support
+809,1159,2024-06-25,5,had to chase twice
+810,1160,2024-01-21,1,great support
+811,1162,2024-10-28,5,quick fix
+812,1163,2024-04-16,5,slow but solved
+813,1164,2024-08-23,4,great support
+814,1166,2023-09-11,5,slow but solved
+815,1167,2024-04-27,2,quick fix
+816,1168,2024-05-06,1,great support
+817,1169,2023-12-08,4,quick fix
+818,1171,2024-03-06,5,slow but solved
+819,1173,2023-12-05,4,had to chase twice
+820,1175,2024-05-09,4,slow but solved
+821,1176,2024-12-16,4,great support
+822,1177,2024-07-12,4,quick fix
+823,1179,2024-02-19,3,
+824,1180,2023-10-31,4,quick fix
+825,1181,2023-10-12,5,slow but solved
+826,1183,2024-12-23,4,slow but solved
+827,1184,2023-07-16,2,great support
+828,1185,2024-05-27,5,slow but solved
+829,1186,2024-11-15,5,had to chase twice
+830,1187,2024-12-26,3,slow but solved
+831,1188,2024-09-30,5,slow but solved
+832,1189,2023-10-24,5,
+833,1190,2024-06-14,4,quick fix
+834,1191,2023-07-08,3,quick fix
+835,1193,2023-07-08,4,slow but solved
+836,1194,2024-08-17,5,
+837,1196,2024-01-29,5,slow but solved
+838,1198,2023-09-15,4,had to chase twice
+839,1199,2024-03-28,5,quick fix
+840,1200,2024-01-28,3,
+841,1202,2024-12-11,4,had to chase twice
+842,1203,2024-02-05,4,great support
+843,1204,2024-07-17,5,quick fix
+844,1205,2023-07-14,2,
+845,1206,2024-01-24,2,slow but solved
+846,1207,2024-03-21,5,great support
+847,1208,2024-01-20,5,quick fix
+848,1209,2024-03-24,5,great support
+849,1211,2024-11-09,4,great support
+850,1212,2023-08-07,3,great support
+851,1213,2024-10-23,5,slow but solved
+852,1214,2024-10-08,5,had to chase twice
+853,1215,2024-10-17,5,had to chase twice
+854,1219,2023-11-17,3,slow but solved
+855,1220,2024-06-28,2,had to chase twice
+856,1221,2024-10-12,5,had to chase twice
+857,1222,2023-11-23,4,quick fix
+858,1223,2024-12-28,5,
+859,1225,2024-09-13,4,had to chase twice
+860,1226,2024-06-25,2,quick fix
+861,1228,2024-10-24,1,had to chase twice
+862,1230,2023-08-17,3,
+863,1231,2023-08-29,4,great support
+864,1233,2024-02-15,5,had to chase twice
+865,1234,2024-12-31,4,
+866,1236,2023-11-14,4,great support
+867,1239,2024-05-11,5,had to chase twice
+868,1241,2024-12-14,5,quick fix
+869,1242,2023-08-24,4,slow but solved
+870,1243,2024-12-08,4,great support
+871,1244,2023-12-31,2,slow but solved
+872,1245,2024-09-30,4,slow but solved
+873,1247,2024-07-22,5,
+874,1248,2024-10-13,3,
+875,1250,2024-11-30,3,
+876,1251,2024-08-24,5,
+877,1252,2024-05-09,5,quick fix
+878,1254,2024-02-20,5,had to chase twice
+879,1255,2024-07-13,5,slow but solved
+880,1257,2024-12-06,4,slow but solved
+881,1258,2024-10-27,4,
+882,1259,2024-12-04,4,
+883,1261,2024-09-23,5,quick fix
+884,1262,2023-07-20,5,
+885,1263,2024-08-27,5,slow but solved
+886,1265,2024-04-07,5,
+887,1266,2024-12-06,4,slow but solved
+888,1267,2024-11-12,5,slow but solved
+889,1269,2024-08-30,5,quick fix
+890,1271,2024-06-16,3,quick fix
+891,1272,2024-01-29,5,slow but solved
+892,1273,2024-10-20,5,
+893,1274,2024-03-11,5,
+894,1275,2023-09-13,4,slow but solved
+895,1277,2023-11-14,4,
+896,1278,2024-09-12,1,quick fix
+897,1281,2024-10-09,1,
+898,1283,2024-12-21,3,
+899,1284,2024-12-08,3,had to chase twice
+900,1286,2024-03-11,1,quick fix

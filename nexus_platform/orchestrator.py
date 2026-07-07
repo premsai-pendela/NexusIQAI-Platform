@@ -37,7 +37,8 @@ _INSIGHT_RE = re.compile(
 
 _DOC_TERMS_RE = re.compile(
     r"\bpolicy\b|\bpolicies\b|\bplaybook\b|\bguidelines?\b|\bcontract\b"
-    r"|\bcompliance\b|\bhandbook\b|\bmemo\b|\brunbook\b"
+    r"|\bcompliance\b|\bhandbook\b|\bmemo\b|\brunbook\b|\bslas?\b"
+    r"|\bpostmortem\b|\broadmap\b"
 )
 
 _OVERBROAD_RE = re.compile(

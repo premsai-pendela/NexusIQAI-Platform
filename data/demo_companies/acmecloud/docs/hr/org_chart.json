@@ -1,0 +1,106 @@
+{
+ "departments": [
+  "Engineering",
+  "Sales",
+  "Marketing",
+  "Support",
+  "Finance",
+  "People",
+  "Operations",
+  "Product"
+ ],
+ "teams": [
+  {
+   "team": "Engineering Team 1",
+   "department_id": 1
+  },
+  {
+   "team": "Engineering Team 2",
+   "department_id": 1
+  },
+  {
+   "team": "Engineering Team 3",
+   "department_id": 1
+  },
+  {
+   "team": "Sales Team 1",
+   "department_id": 2
+  },
+  {
+   "team": "Sales Team 2",
+   "department_id": 2
+  },
+  {
+   "team": "Marketing Team 1",
+   "department_id": 3
+  },
+  {
+   "team": "Marketing Team 2",
+   "department_id": 3
+  },
+  {
+   "team": "Marketing Team 3",
+   "department_id": 3
+  },
+  {
+   "team": "Support Team 1",
+   "department_id": 4
+  },
+  {
+   "team": "Support Team 2",
+   "department_id": 4
+  },
+  {
+   "team": "Finance Team 1",
+   "department_id": 5
+  },
+  {
+   "team": "Finance Team 2",
+   "department_id": 5
+  },
+  {
+   "team": "Finance Team 3",
+   "department_id": 5
+  },
+  {
+   "team": "Finance Team 4",
+   "department_id": 5
+  },
+  {
+   "team": "People Team 1",
+   "department_id": 6
+  },
+  {
+   "team": "People Team 2",
+   "department_id": 6
+  },
+  {
+   "team": "People Team 3",
+   "department_id": 6
+  },
+  {
+   "team": "People Team 4",
+   "department_id": 6
+  },
+  {
+   "team": "Operations Team 1",
+   "department_id": 7
+  },
+  {
+   "team": "Operations Team 2",
+   "department_id": 7
+  },
+  {
+   "team": "Operations Team 3",
+   "department_id": 7
+  },
+  {
+   "team": "Product Team 1",
+   "department_id": 8
+  },
+  {
+   "team": "Product Team 2",
+   "department_id": 8
+  }
+ ]
+}

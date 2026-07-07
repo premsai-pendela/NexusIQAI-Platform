@@ -80,12 +80,25 @@ def test_unsupported_question_returns_none():
     assert parse_intent("Summarize the billing policy") is None
 
 
+
+def _ground_truth_revenue(start: str, end: str) -> str:
+    """Direct SQL over the workspace DB — the number the analyst must match."""
+    import sqlite3
+    conn = sqlite3.connect("data/demo_companies/acmecloud/company.db")
+    v = conn.execute(
+        "SELECT ROUND(SUM(total_amount), 2) FROM orders "
+        "WHERE status='completed' AND order_date >= ? AND order_date < ?",
+        (start, end)).fetchone()[0]
+    conn.close()
+    return f"${v:,.2f}"
+
+
 # ── Correctness against ground truth ─────────────────────────────────────
 
 def test_q3_revenue_matches_ground_truth():
     out = execute(ctx_for("analyst@acmecloud.test"),
                   parse_intent("What was total revenue in Q3 2024?"))
-    assert "$1,321,021.33" in out["answer"]
+    assert _ground_truth_revenue("2024-07-01", "2024-10-01") in out["answer"]
     assert out["template_id"] == "revenue_total"
 
 
@@ -110,8 +123,8 @@ def test_selected_quarters_line_chart_does_not_collapse_to_first_quarter():
     assert out["chart"]["type"] == "line"
     assert out["chart"]["x"] == "period"
     assert [r["period"] for r in out["rows"]] == ["Q2 2024", "Q4 2024"]
-    assert "$1,364,306.55" in out["answer"]
-    assert "$2,495,120.54" in out["answer"]
+    assert _ground_truth_revenue("2024-04-01", "2024-07-01") in out["answer"]
+    assert _ground_truth_revenue("2024-10-01", "2025-01-01") in out["answer"]
 
 
 def test_company_isolation_different_numbers():
@@ -143,11 +156,13 @@ def test_five_turn_followup_flow_without_llm(no_llm):
     ctx = ctx_for("analyst@acmecloud.test")
     s = session()
     r1 = qs.run_query(ctx, "What was total revenue in Q3 2024?", s)
-    assert r1["platform"]["llm_skipped"] and "$1,321,021.33" in r1["answer"]
+    assert r1["platform"]["llm_skipped"]
+    assert _ground_truth_revenue("2024-07-01", "2024-10-01") in r1["answer"]
 
     r2 = qs.run_query(ctx, "What about Q4?", s)
     assert r2["platform"]["followup_rewritten"]
-    assert "Q4 2024" in r2["answer"] and "$2,495,120.54" in r2["answer"]
+    assert "Q4 2024" in r2["answer"]
+    assert _ground_truth_revenue("2024-10-01", "2025-01-01") in r2["answer"]
 
     r3 = qs.run_query(ctx, "Compare that with Q3", s)
     assert "vs" in r3["answer"] and "Q3 2024" in r3["answer"]

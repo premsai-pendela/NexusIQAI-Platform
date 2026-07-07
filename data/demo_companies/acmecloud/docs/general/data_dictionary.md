@@ -1,25 +1,37 @@
 # AcmeCloud Analytics — Data Dictionary
 
-## orders
-order_id, order_date (2024), customer_id, product_id, region, quantity,
-unit_price, total_amount, status (completed / refunded / pending).
-
-## customers
-customer_id, name, segment (Startup / Mid-Market / Enterprise), region,
-signup_date, plan, mrr.
-
-## products
-product_id, name, category, list_price, launched.
-
-## invoices
-invoice_id, customer_id, issue_date, due_date, amount,
-status (paid / overdue / open), paid_date.
-
-## support_tickets
-ticket_id, created_at, customer_id, category (billing / bug / how-to /
-integration / outage), priority (low / medium / high / urgent),
-status (resolved / open / escalated), resolution_hours, csat (1-5).
-
-## employees_hr (restricted: HR and Admin/CEO roles only)
-emp_id, department, role_title, region, hire_date, termination_date,
-salary_band (B1-B5).
+- **products**: 6 rows
+- **customers**: 420 rows
+- **orders**: 12500 rows
+- **invoices**: 5465 rows
+- **support_tickets**: 4500 rows
+- **employees_hr**: 125 rows
+- **departments**: 8 rows
+- **teams**: 23 rows
+- **payroll_summary**: 108 rows
+- **contacts**: 1037 rows
+- **churn_events**: 55 rows
+- **plans**: 4 rows
+- **price_changes**: 6 rows
+- **order_items**: 18606 rows
+- **subscriptions**: 420 rows
+- **usage_events**: 60000 rows
+- **invoice_lines**: 10979 rows
+- **payments**: 4581 rows
+- **refunds**: 324 rows
+- **credit_notes**: 252 rows
+- **expenses**: 3000 rows
+- **bills**: 1800 rows
+- **saas_subscriptions**: 60 rows
+- **vendors**: 80 rows
+- **purchase_orders**: 900 rows
+- **contracts**: 250 rows
+- **finance_reports**: 18 rows
+- **board_updates**: 6 rows
+- **ticket_messages**: 22473 rows
+- **slas**: 4 rows
+- **csat_responses**: 3216 rows
+- **escalations**: 167 rows
+- **incidents**: 120 rows
+- **campaigns**: 24 rows
+- **leads**: 6000 rows

@@ -3,13 +3,13 @@
 Payments-operations company handling merchant onboarding, transaction monitoring, and settlement reporting.
 
 FinPilot Ops operates across five sales regions: East, West, North, South, and
-Central. All analytics data in this workspace covers fiscal year 2024
-(January 1 through December 31, 2024).
-
-## Business model
-Subscription products billed monthly per customer, plus one-time orders for
-add-ons and expansions. Customer segments: Startup, Mid-Market, Enterprise.
+Central. The analytics workspace covers July 2023 through December 2024;
+headline metrics default to fiscal year 2024.
 
 ## Fiscal calendar
-Q1 = Jan-Mar, Q2 = Apr-Jun, Q3 = Jul-Sep, Q4 = Oct-Dec. The fiscal year
-matches the calendar year.
+Q1 = Jan–Mar, Q2 = Apr–Jun, Q3 = Jul–Sep, Q4 = Oct–Dec.
+
+## Data platform
+Employees query company data through NexusIQAI with role-scoped access.
+Structured data lives in the workspace database (35
+tables); documents are indexed per department for retrieval.

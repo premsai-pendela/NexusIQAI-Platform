@@ -72,6 +72,20 @@ CREATE TABLE IF NOT EXISTS traces (
 CREATE INDEX IF NOT EXISTS idx_traces_company ON traces (company, ts);
 CREATE INDEX IF NOT EXISTS idx_traces_employee ON traces (company, employee, ts);
 
+CREATE TABLE IF NOT EXISTS generated_employees (
+    email TEXT PRIMARY KEY,
+    company TEXT NOT NULL,
+    name TEXT NOT NULL,
+    role TEXT NOT NULL,
+    title TEXT NOT NULL,
+    department TEXT NOT NULL,
+    team TEXT,
+    manager_email TEXT,
+    password_hash TEXT NOT NULL,
+    is_demo INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_genemp_company ON generated_employees (company);
+
 CREATE TABLE IF NOT EXISTS health_reports (
     id TEXT PRIMARY KEY,
     company TEXT NOT NULL,
@@ -277,6 +291,92 @@ def list_traces_with_payload(company: str, date_from: Optional[str] = None,
             d["payload"] = {}
         out.append(d)
     return out
+
+
+# ── Generated employee population ───────────────────────────────────────
+
+def replace_generated_employees(company: str, employees: list[dict]) -> int:
+    """Replace the generated (non-demo) population for one company."""
+    with _lock:
+        conn = _get_conn()
+        conn.execute("DELETE FROM generated_employees WHERE company=?", (company,))
+        conn.executemany(
+            "INSERT INTO generated_employees (email, company, name, role, title, "
+            "department, team, manager_email, password_hash, is_demo) "
+            "VALUES (:email, :company, :name, :role, :title, :department, "
+            ":team, :manager_email, :password_hash, 0)",
+            employees,
+        )
+        conn.commit()
+    return len(employees)
+
+
+def get_generated_employee(email: str) -> Optional[dict]:
+    with _lock:
+        row = _get_conn().execute(
+            "SELECT * FROM generated_employees WHERE email=?",
+            (email.strip().lower(),),
+        ).fetchone()
+    return dict(row) if row else None
+
+
+def count_generated_employees(company: str) -> int:
+    with _lock:
+        row = _get_conn().execute(
+            "SELECT COUNT(*) FROM generated_employees WHERE company=?", (company,)
+        ).fetchone()
+    return int(row[0])
+
+
+def list_generated_employees(company: str, limit: int = 500) -> list[dict]:
+    with _lock:
+        rows = _get_conn().execute(
+            "SELECT email, name, role, title, department, team FROM "
+            "generated_employees WHERE company=? ORDER BY email LIMIT ?",
+            (company, limit),
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+
+# ── Bulk history (generated trace/feedback corpus) ──────────────────────
+
+def bulk_save_traces(rows: list[dict]) -> int:
+    """Insert many traces in one transaction. Each row needs: id, company,
+    employee, role, ts, question, access_decision, payload(dict)."""
+    with _lock:
+        conn = _get_conn()
+        conn.executemany(
+            "INSERT OR REPLACE INTO traces (id, company, employee, role, ts, "
+            "question, access_decision, payload) "
+            "VALUES (:id, :company, :employee, :role, :ts, :question, "
+            ":access_decision, :payload)",
+            [{**r, "payload": json.dumps(r["payload"], default=str)} for r in rows],
+        )
+        conn.commit()
+    return len(rows)
+
+
+def bulk_save_feedback(rows: list[dict]) -> int:
+    with _lock:
+        conn = _get_conn()
+        conn.executemany(
+            "INSERT OR REPLACE INTO feedback (id, company, employee, role, ts, "
+            "category, message, page, trace_id, status) "
+            "VALUES (:id, :company, :employee, :role, :ts, :category, "
+            ":message, :page, :trace_id, :status)",
+            rows,
+        )
+        conn.commit()
+    return len(rows)
+
+
+def delete_generated_history(company: str) -> None:
+    """Remove previously generated corpus rows (ids are prefixed gen_)."""
+    with _lock:
+        conn = _get_conn()
+        conn.execute("DELETE FROM traces WHERE company=? AND id LIKE 'gen_%'", (company,))
+        conn.execute("DELETE FROM feedback WHERE company=? AND id LIKE 'genfb_%'", (company,))
+        conn.commit()
 
 
 # ── Health reports ──────────────────────────────────────────────────────

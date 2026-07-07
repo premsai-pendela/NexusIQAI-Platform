@@ -21,7 +21,11 @@ def test_analyst_cannot_see_hr():
 
 def test_hr_cannot_see_revenue():
     p = get_policy("HR")
-    assert p.allowed_tables == ("employees_hr",)
+    assert "employees_hr" in p.allowed_tables
+    # HR must have no revenue/finance/support visibility, however wide the schema grows
+    assert not set(p.allowed_tables) & {"orders", "invoices", "payments",
+                                        "customers", "support_tickets",
+                                        "subscriptions", "usage_events"}
     assert "finance" not in p.allowed_departments
 
 

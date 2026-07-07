@@ -87,6 +87,37 @@ def _catalog_schema(slug: str) -> dict:
     return tables
 
 
+def _extract_text(path: Path) -> str:
+    """Text for indexing from any supported corpus file type."""
+    suffix = path.suffix.lower()
+    if suffix in (".md", ".txt"):
+        return path.read_text(errors="ignore")
+    if suffix == ".html":
+        import re as _re
+        raw = path.read_text(errors="ignore")
+        return _re.sub(r"<[^>]+>", " ", raw)
+    if suffix == ".json":
+        try:
+            data = json.loads(path.read_text(errors="ignore"))
+            return json.dumps(data, indent=1)[:120_000]
+        except ValueError:
+            return path.read_text(errors="ignore")
+    if suffix == ".csv":
+        # Header + rows as readable lines; retrieval-friendly plain text.
+        lines = path.read_text(errors="ignore").splitlines()
+        return "\n".join(lines[:1500])
+    if suffix == ".pdf":
+        try:
+            import pypdfium2 as pdfium
+            pdf = pdfium.PdfDocument(str(path))
+            pages = [pdf[i].get_textpage().get_text_range()
+                     for i in range(len(pdf))]
+            return "\n".join(pages)
+        except Exception:
+            return ""
+    return ""
+
+
 def _chunk_text(text: str) -> list[str]:
     chunks = []
     start = 0
@@ -120,10 +151,15 @@ def _build_rag_index(slug: str) -> dict:
     docs_root = company_dir(slug) / "docs"
     inventory = []
     ids, documents, metadatas = [], [], []
-    for doc_path in sorted(docs_root.rglob("*.md")):
+    supported = (".md", ".txt", ".html", ".json", ".csv", ".pdf")
+    doc_paths = [p for p in sorted(docs_root.rglob("*"))
+                 if p.is_file() and p.suffix.lower() in supported]
+    for doc_path in doc_paths:
         department = doc_path.parent.name
         rel = str(doc_path.relative_to(company_dir(slug)))
-        text = doc_path.read_text()
+        text = _extract_text(doc_path)
+        if not text.strip():
+            continue
         chunks = _chunk_text(text)
         inventory.append({"file": rel, "department": department, "chunks": len(chunks)})
         for i, chunk in enumerate(chunks):

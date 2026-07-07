@@ -1,0 +1,61 @@
+id,tool,owner_department,monthly_cost,seats,renewal_date
+1,CRM Suite 1,Support,317.73,77,2024-07-23
+2,Design Studio 1,Finance,1609.65,252,2025-01-24
+3,CI Runner 1,Operations,1033.18,158,2024-07-25
+4,Chat Ops 1,Finance,1582.2,283,2024-08-07
+5,HRIS 1,People,1912.18,136,2024-10-03
+6,Data Warehouse 1,Support,2751.69,66,2024-06-19
+7,Observability 1,Operations,1996.41,151,2024-08-18
+8,Email Automation 1,People,2486.59,249,2024-10-26
+9,Doc Signing 1,Engineering,2787.28,145,2025-04-07
+10,Password Vault 1,Marketing,393.37,241,2025-01-20
+11,Video Conf 1,People,862.26,78,2024-11-05
+12,Board Portal 1,Sales,3744.83,92,2024-11-16
+13,CRM Suite 2,Finance,2460.21,214,2024-07-19
+14,Design Studio 2,Marketing,3039.44,246,2025-03-05
+15,CI Runner 2,Product,3039.77,244,2024-11-20
+16,Chat Ops 2,Support,1501.06,245,2025-01-23
+17,HRIS 2,Support,3954.13,151,2024-06-12
+18,Data Warehouse 2,People,2370.92,138,2024-07-03
+19,Observability 2,Operations,2178.95,188,2024-09-27
+20,Email Automation 2,Engineering,3756.22,83,2024-10-07
+21,Doc Signing 2,Engineering,3601.3,79,2024-10-05
+22,Password Vault 2,Support,3409.27,120,2024-08-17
+23,Video Conf 2,Product,1889.43,167,2024-07-02
+24,Board Portal 2,Finance,1955.71,266,2025-02-26
+25,CRM Suite 3,Product,2210.74,167,2024-12-04
+26,Design Studio 3,Operations,1430.68,258,2024-06-26
+27,CI Runner 3,People,1708.82,177,2024-12-25
+28,Chat Ops 3,People,206.32,175,2024-07-02
+29,HRIS 3,Product,3180.72,291,2024-12-16
+30,Data Warehouse 3,Finance,518.59,82,2025-05-27
+31,Observability 3,Support,1980.6,42,2024-07-15
+32,Email Automation 3,Marketing,1892.79,211,2025-01-17
+33,Doc Signing 3,Sales,1970.31,238,2025-04-06
+34,Password Vault 3,Sales,1288.78,161,2025-05-30
+35,Video Conf 3,Product,2113.96,39,2024-07-06
+36,Board Portal 3,Marketing,485.38,209,2024-08-14
+37,CRM Suite 4,Finance,2753.92,196,2024-12-10
+38,Design Studio 4,Operations,2574.59,193,2025-05-29
+39,CI Runner 4,People,350.68,12,2024-06-11
+40,Chat Ops 4,Marketing,2931.48,213,2024-11-06
+41,HRIS 4,People,1161.21,133,2024-12-09
+42,Data Warehouse 4,People,3571.95,88,2025-03-17
+43,Observability 4,Sales,3723.64,107,2024-07-10
+44,Email Automation 4,Finance,3592.09,52,2024-11-12
+45,Doc Signing 4,Sales,2329.43,163,2024-10-06
+46,Password Vault 4,Engineering,1971.02,161,2025-04-24
+47,Video Conf 4,Product,2791.11,241,2024-11-22
+48,Board Portal 4,Operations,2891.57,86,2025-03-20
+49,CRM Suite 5,Operations,3663.05,63,2025-03-23
+50,Design Studio 5,People,3863.2,188,2024-10-17
+51,CI Runner 5,Operations,1532.5,112,2025-01-16
+52,Chat Ops 5,Finance,2354.07,241,2024-09-13
+53,HRIS 5,Operations,3711.21,134,2024-10-09
+54,Data Warehouse 5,Operations,2938.51,239,2024-07-18
+55,Observability 5,People,2742.72,173,2024-10-12
+56,Email Automation 5,Marketing,2597.39,43,2024-06-29
+57,Doc Signing 5,Operations,2687.38,72,2025-01-19
+58,Password Vault 5,Marketing,2271.15,79,2024-10-27
+59,Video Conf 5,People,1000.02,242,2024-09-26
+60,Board Portal 5,Product,2113.85,255,2024-11-07

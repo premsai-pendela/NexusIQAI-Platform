@@ -39,6 +39,9 @@ def context_key(slug: str, role: str) -> str:
 
 
 def build_context(slug: str, role: str) -> DataContext:
+    # Deferred import: nexus_platform.db imports company_db_path from here.
+    from nexus_platform.db import company_database_url
+
     registry = get_registry()
     company = registry.get_company(slug)
     if company is None:
@@ -61,7 +64,9 @@ def build_context(slug: str, role: str) -> DataContext:
         chroma_directory=brain_dir(slug) / "chroma",
         chroma_collection=f"brain_{slug}",
         allow_web=False,  # company workspaces never mix in live web data
-        database_url=f"sqlite:///{company_db_path(slug)}",
+        # PostgreSQL (schema per company) when NEXUSIQ_PLATFORM_PG_URL is
+        # set; per-company SQLite otherwise.
+        database_url=company_database_url(slug),
         allowed_tables=policy.allowed_tables,
         rag_metadata_filter={"department": {"$in": list(policy.allowed_departments)}},
         company=slug,
@@ -85,5 +90,11 @@ def register_company_contexts() -> None:
 def get_company_fusion_agent(slug: str, role: str):
     """Fusion agent bound to one company+role evidence boundary."""
     register_company_contexts()
+    # Generated employees can carry roles no curated account has for this
+    # company — register the exact (company, role) context on demand.
+    key = context_key(slug, role)
+    if key not in _registered:
+        register_data_context(build_context(slug, role))
+        _registered.add(key)
     from agents.fusion_agent import get_fusion_agent
-    return get_fusion_agent(context_key(slug, role))
+    return get_fusion_agent(key)

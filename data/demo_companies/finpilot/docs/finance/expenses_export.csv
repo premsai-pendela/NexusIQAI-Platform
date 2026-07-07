@@ -1,0 +1,3001 @@
+expense_id,incurred_on,department,category,amount,description
+1,2024-02-20,Engineering,training,173.51,team offsite
+2,2024-12-12,Sales,training,1199.1,team offsite
+3,2024-12-03,Operations,software,1223.7,cloud overage
+4,2024-12-14,Operations,events,3502.13,laptop
+5,2024-12-05,Marketing,travel,1731.03,laptop
+6,2024-02-19,People,software,1466.4,team offsite
+7,2024-06-03,Sales,office,3831.04,team offsite
+8,2024-07-25,Marketing,travel,2535.8,team offsite
+9,2023-12-31,Product,recruiting,1356.54,job board
+10,2023-10-01,Finance,recruiting,3209.97,cloud overage
+11,2024-11-28,Sales,recruiting,3206.61,team offsite
+12,2024-11-25,Engineering,software,2768.82,conference travel
+13,2024-04-01,Engineering,recruiting,2933.4,team offsite
+14,2024-10-10,Finance,cloud,1246.3,job board
+15,2023-07-08,Operations,recruiting,492.18,client dinner
+16,2024-05-19,Support,office,874.97,training course
+17,2024-03-02,Engineering,events,2051.65,conference travel
+18,2024-07-04,People,recruiting,2609.99,laptop
+19,2023-07-30,Support,cloud,2173.25,team offsite
+20,2023-11-02,Sales,cloud,3460.73,job board
+21,2023-11-05,Support,travel,3768.6,team offsite
+22,2023-09-19,Operations,cloud,3129.56,training course
+23,2024-08-23,Sales,events,812.25,training course
+24,2023-08-04,Finance,travel,3107.83,client dinner
+25,2024-12-27,Finance,recruiting,638.69,team offsite
+26,2023-10-19,Operations,travel,2056.24,job board
+27,2024-05-21,Finance,travel,3541.97,laptop
+28,2024-10-20,Support,cloud,1962.53,client dinner
+29,2024-11-01,Product,cloud,3488.64,team offsite
+30,2024-03-18,Engineering,cloud,327.86,laptop
+31,2024-10-21,Product,cloud,2921.23,cloud overage
+32,2024-04-24,Finance,events,882.17,training course
+33,2024-07-24,Marketing,events,365.99,job board
+34,2024-07-30,Operations,office,363.44,team offsite
+35,2024-08-28,People,software,3355.48,cloud overage
+36,2023-11-12,Support,training,3344.69,team offsite
+37,2023-09-28,Engineering,recruiting,1793.77,conference travel
+38,2024-05-30,Product,travel,1962.26,training course
+39,2024-12-11,Engineering,recruiting,2771.06,training course
+40,2023-08-01,People,office,133.43,conference travel
+41,2024-05-31,Support,recruiting,3097.41,job board
+42,2024-06-11,Marketing,travel,875.06,training course
+43,2024-05-25,Finance,cloud,1764.35,training course
+44,2024-02-06,People,software,1715.29,training course
+45,2023-11-08,People,events,2178.15,conference travel
+46,2023-08-12,Product,software,1903.32,cloud overage
+47,2023-09-17,People,software,3379.45,conference travel
+48,2023-10-24,Product,office,2675.75,cloud overage
+49,2023-07-09,Engineering,cloud,2797.8,job board
+50,2024-03-23,Operations,training,3437.91,job board
+51,2023-09-20,Finance,events,2658.79,client dinner
+52,2023-08-15,Engineering,software,342.28,cloud overage
+53,2023-10-12,Engineering,office,1867.44,client dinner
+54,2024-03-25,Sales,recruiting,690.02,laptop
+55,2023-11-25,Sales,recruiting,1552.16,client dinner
+56,2024-12-24,Support,training,1253.05,conference travel
+57,2023-12-06,Support,training,1192.46,laptop
+58,2024-11-26,Marketing,software,3330.38,client dinner
+59,2024-08-06,Engineering,software,2886.92,job board
+60,2023-08-01,Marketing,events,2252.34,cloud overage
+61,2024-04-14,Engineering,recruiting,2493.06,laptop
+62,2024-01-04,People,cloud,830.17,training course
+63,2023-12-30,Operations,events,450.34,cloud overage
+64,2024-08-29,Finance,cloud,66.05,conference travel
+65,2024-05-28,Engineering,training,1243.22,job board
+66,2023-12-10,Product,training,140.93,laptop
+67,2023-08-02,Engineering,office,1242.47,job board
+68,2024-06-17,Support,events,3914.61,team offsite
+69,2023-08-30,Support,events,3959.22,client dinner
+70,2024-07-10,Product,office,3292.3,training course
+71,2024-08-03,Product,cloud,2243.14,job board
+72,2023-11-28,Product,training,3006.64,training course
+73,2024-09-24,Finance,cloud,469.45,job board
+74,2024-02-11,Sales,office,78.32,laptop
+75,2023-12-07,Marketing,cloud,745.47,cloud overage
+76,2023-12-07,Finance,software,1312.64,client dinner
+77,2024-04-20,People,recruiting,1476.63,training course
+78,2024-01-17,Product,travel,963.57,conference travel
+79,2023-09-29,Marketing,training,1054.1,conference travel
+80,2023-12-18,Support,training,3135.47,conference travel
+81,2024-08-25,Operations,recruiting,2155.62,training course
+82,2024-07-03,People,cloud,215.66,cloud overage
+83,2023-08-27,Engineering,software,950.47,conference travel
+84,2024-04-24,Finance,training,2191.78,laptop
+85,2024-05-17,Product,recruiting,1191.95,conference travel
+86,2024-01-11,Finance,events,139.82,cloud overage
+87,2024-08-27,People,events,2479.17,cloud overage
+88,2024-08-14,Marketing,travel,2299.85,training course
+89,2024-09-26,Finance,office,1199.42,job board
+90,2024-01-31,Sales,cloud,3375.99,training course
+91,2024-12-20,Engineering,office,2622.2,job board
+92,2024-07-05,Marketing,travel,256.99,client dinner
+93,2023-11-24,Finance,travel,2322.48,job board
+94,2023-09-12,Operations,recruiting,459.4,client dinner
+95,2024-07-11,Product,office,770.04,cloud overage
+96,2024-08-21,Finance,cloud,3487.91,team offsite
+97,2024-01-22,People,office,1916.65,team offsite
+98,2024-01-25,Sales,recruiting,2314.0,client dinner
+99,2024-03-06,Sales,events,3189.31,team offsite
+100,2024-07-15,Product,office,3475.88,laptop
+101,2024-01-03,Marketing,recruiting,1535.1,training course
+102,2023-12-30,Engineering,training,1341.37,job board
+103,2024-10-18,Product,recruiting,3609.06,cloud overage
+104,2024-04-27,Marketing,recruiting,3122.27,conference travel
+105,2023-08-29,Support,cloud,204.94,job board
+106,2024-04-07,Engineering,events,932.31,conference travel
+107,2023-11-04,Finance,events,1562.11,laptop
+108,2024-09-01,Marketing,office,1777.57,conference travel
+109,2024-06-10,Marketing,cloud,125.71,client dinner
+110,2024-03-15,Support,software,513.62,training course
+111,2024-09-11,Sales,cloud,2870.97,laptop
+112,2024-02-08,Finance,cloud,3160.26,cloud overage
+113,2024-12-20,Marketing,recruiting,3557.6,client dinner
+114,2023-09-13,People,events,2400.62,laptop
+115,2024-08-01,Operations,recruiting,2021.49,job board
+116,2024-10-08,Finance,training,211.73,cloud overage
+117,2024-02-07,Sales,training,2823.37,job board
+118,2023-08-02,Product,training,1435.37,job board
+119,2024-11-30,Marketing,travel,2680.45,cloud overage
+120,2023-07-27,Support,office,2837.61,job board
+121,2023-09-27,Operations,cloud,1557.27,laptop
+122,2024-08-25,Engineering,office,3266.62,job board
+123,2023-08-21,People,office,2042.94,conference travel
+124,2023-11-25,Operations,recruiting,1340.05,client dinner
+125,2024-12-24,Operations,training,2358.72,job board
+126,2024-11-23,Operations,software,2318.17,job board
+127,2023-08-18,Engineering,travel,1227.7,job board
+128,2024-03-29,Finance,training,794.6,job board
+129,2024-04-14,Support,events,2355.13,cloud overage
+130,2024-09-11,Sales,cloud,1008.85,job board
+131,2024-04-06,Operations,software,2908.8,laptop
+132,2024-11-04,Engineering,travel,2959.82,job board
+133,2024-09-28,Support,cloud,506.95,job board
+134,2024-04-20,People,training,2512.29,training course
+135,2024-08-15,Sales,recruiting,2983.11,conference travel
+136,2023-08-25,Engineering,office,3958.19,cloud overage
+137,2023-07-08,Operations,travel,2727.49,job board
+138,2023-07-12,Engineering,recruiting,2286.71,laptop
+139,2024-07-16,Support,office,3538.43,laptop
+140,2024-12-03,Engineering,travel,3952.97,cloud overage
+141,2023-09-19,Support,events,3965.54,training course
+142,2024-07-25,Engineering,training,1456.33,team offsite
+143,2023-10-26,Finance,software,3553.18,cloud overage
+144,2024-06-12,Sales,recruiting,3159.13,conference travel
+145,2024-03-26,Engineering,office,3138.08,laptop
+146,2023-09-06,Finance,events,1337.45,laptop
+147,2024-11-13,Engineering,events,1443.42,job board
+148,2023-11-19,Support,training,2661.44,conference travel
+149,2024-06-06,Operations,travel,2779.55,job board
+150,2024-07-24,Engineering,office,2668.94,training course
+151,2024-12-29,People,training,2932.74,conference travel
+152,2023-12-02,Operations,travel,1750.0,job board
+153,2024-07-09,Support,office,3510.32,conference travel
+154,2024-04-29,Engineering,training,2872.86,cloud overage
+155,2023-10-04,Finance,office,2541.5,laptop
+156,2024-08-28,Support,software,284.99,conference travel
+157,2023-11-19,Engineering,recruiting,1971.76,job board
+158,2024-07-20,Finance,office,1430.71,cloud overage
+159,2024-04-27,Marketing,travel,2840.85,client dinner
+160,2024-10-29,Finance,training,3623.05,cloud overage
+161,2024-02-27,Marketing,training,943.36,job board
+162,2024-09-04,Sales,events,1026.96,team offsite
+163,2024-04-13,People,training,1289.53,client dinner
+164,2023-08-12,People,training,2282.21,laptop
+165,2023-09-19,Support,software,2687.3,laptop
+166,2023-09-08,Marketing,travel,2947.22,laptop
+167,2024-04-16,Sales,training,2542.44,team offsite
+168,2024-11-25,Marketing,software,1975.39,client dinner
+169,2023-09-15,Engineering,travel,1669.36,job board
+170,2023-07-14,Finance,travel,917.94,training course
+171,2023-12-15,Operations,training,2268.62,client dinner
+172,2023-08-13,Operations,training,1786.25,training course
+173,2024-07-04,Finance,cloud,2762.61,job board
+174,2024-11-22,Product,software,1530.05,training course
+175,2023-12-06,Product,office,3089.35,conference travel
+176,2024-02-11,Operations,training,1661.39,client dinner
+177,2023-11-10,Marketing,cloud,643.69,team offsite
+178,2024-07-26,Product,software,1260.97,cloud overage
+179,2024-03-22,Support,events,1078.45,client dinner
+180,2023-07-11,Operations,training,862.85,team offsite
+181,2024-03-01,People,events,2080.6,training course
+182,2024-09-23,People,events,219.95,team offsite
+183,2024-09-15,Operations,software,289.47,laptop
+184,2024-04-07,Product,travel,1116.65,client dinner
+185,2023-07-11,Marketing,cloud,3569.85,client dinner
+186,2023-10-23,Sales,cloud,2465.96,team offsite
+187,2023-07-11,People,cloud,2374.55,training course
+188,2024-08-23,People,office,2853.8,job board
+189,2023-08-09,Engineering,cloud,3397.73,client dinner
+190,2024-06-03,People,office,2032.67,conference travel
+191,2023-12-13,People,office,641.04,training course
+192,2023-11-14,Engineering,cloud,973.08,training course
+193,2024-08-27,Support,travel,2192.76,client dinner
+194,2024-05-18,Support,events,2171.08,training course
+195,2024-01-12,Operations,office,1645.98,laptop
+196,2024-03-26,People,training,3457.96,team offsite
+197,2024-01-06,Finance,office,1431.01,client dinner
+198,2023-07-04,People,cloud,1848.07,laptop
+199,2024-01-30,Product,office,836.69,laptop
+200,2024-04-29,People,cloud,200.91,team offsite
+201,2023-07-22,Finance,travel,3204.53,job board
+202,2024-07-15,Finance,events,3668.22,training course
+203,2024-05-28,Product,recruiting,3128.1,conference travel
+204,2024-11-19,Support,events,33.85,team offsite
+205,2024-11-08,People,events,1390.42,conference travel
+206,2024-04-21,Operations,office,989.14,client dinner
+207,2023-08-10,People,office,59.41,job board
+208,2024-04-20,Marketing,training,75.05,client dinner
+209,2024-08-22,Operations,travel,2522.74,training course
+210,2024-03-17,Operations,office,296.65,team offsite
+211,2024-11-26,Product,events,831.13,job board
+212,2024-03-10,Support,events,2032.91,job board
+213,2024-10-05,Operations,travel,3888.52,team offsite
+214,2023-07-15,People,training,1458.22,job board
+215,2023-09-23,Sales,training,3401.5,job board
+216,2024-03-27,Product,cloud,3718.88,laptop
+217,2024-05-02,Product,training,1708.5,training course
+218,2023-07-21,Operations,events,2699.52,conference travel
+219,2023-12-02,Engineering,office,3533.3,cloud overage
+220,2024-10-11,Finance,training,3478.01,cloud overage
+221,2024-12-03,Product,travel,495.79,training course
+222,2024-04-15,Product,travel,619.1,laptop
+223,2024-05-30,Marketing,travel,2698.51,conference travel
+224,2024-11-28,Support,training,1649.51,training course
+225,2024-07-26,Sales,software,3556.62,cloud overage
+226,2023-12-19,Finance,training,671.44,job board
+227,2023-07-08,Sales,software,2860.38,laptop
+228,2023-08-25,People,cloud,3242.82,laptop
+229,2023-12-14,Operations,software,1682.01,training course
+230,2024-12-10,Engineering,travel,380.26,client dinner
+231,2024-01-04,Product,events,953.93,training course
+232,2023-10-03,Product,events,3571.35,client dinner
+233,2024-09-16,Engineering,cloud,2815.28,conference travel
+234,2023-11-06,Sales,recruiting,3058.1,training course
+235,2024-09-04,Sales,travel,2341.8,client dinner
+236,2023-11-02,Sales,events,2525.74,conference travel
+237,2023-07-24,Support,recruiting,2556.82,training course
+238,2024-03-11,Engineering,recruiting,3848.77,cloud overage
+239,2023-07-11,People,recruiting,3077.82,client dinner
+240,2024-05-28,Operations,cloud,3081.06,team offsite
+241,2024-05-29,Marketing,office,2063.85,conference travel
+242,2023-07-23,Product,cloud,2751.19,client dinner
+243,2024-04-14,Engineering,recruiting,1464.35,training course
+244,2024-03-27,Engineering,recruiting,3747.33,cloud overage
+245,2024-03-03,Marketing,events,1832.68,laptop
+246,2024-03-24,People,training,1122.35,client dinner
+247,2024-02-20,Support,training,3383.74,client dinner
+248,2024-09-04,People,events,3545.4,conference travel
+249,2024-11-06,Marketing,training,2517.33,team offsite
+250,2023-08-28,Product,training,2090.11,client dinner
+251,2024-12-25,People,software,3635.36,training course
+252,2023-08-22,Operations,travel,2755.89,training course
+253,2024-10-22,Finance,training,2277.19,training course
+254,2023-09-11,Product,software,1807.57,training course
+255,2024-05-09,Marketing,travel,2568.92,training course
+256,2023-09-04,Product,cloud,1493.58,conference travel
+257,2023-08-08,Product,office,3463.5,conference travel
+258,2023-09-08,Product,travel,2375.49,client dinner
+259,2023-08-28,Finance,training,1133.54,team offsite
+260,2024-12-17,Operations,office,227.97,conference travel
+261,2024-01-04,Sales,events,1884.27,cloud overage
+262,2023-12-04,People,software,1663.31,client dinner
+263,2024-02-02,Marketing,events,1184.82,laptop
+264,2024-11-11,Marketing,recruiting,3796.22,laptop
+265,2023-07-31,Finance,recruiting,1700.19,laptop
+266,2024-11-20,Engineering,travel,1961.58,client dinner
+267,2024-05-11,Support,office,2170.08,client dinner
+268,2024-08-23,People,software,3387.89,training course
+269,2024-09-07,Marketing,office,378.61,training course
+270,2024-12-03,Finance,travel,3554.42,cloud overage
+271,2024-09-21,Sales,office,153.58,training course
+272,2024-08-16,Marketing,travel,3526.64,conference travel
+273,2024-05-06,Support,office,378.48,client dinner
+274,2024-03-31,Support,travel,830.39,job board
+275,2023-08-30,Finance,software,620.49,job board
+276,2023-07-09,Sales,software,3726.32,client dinner
+277,2023-07-30,People,software,2261.0,laptop
+278,2023-10-02,Sales,office,1624.9,cloud overage
+279,2024-05-31,Sales,software,1401.23,job board
+280,2024-01-01,Operations,training,332.98,training course
+281,2023-07-28,Operations,office,2136.84,training course
+282,2024-08-31,Sales,recruiting,3682.53,team offsite
+283,2024-03-25,Finance,recruiting,881.33,team offsite
+284,2024-11-12,Product,office,3856.78,cloud overage
+285,2024-05-19,Sales,recruiting,3420.24,laptop
+286,2024-05-12,Support,cloud,2376.49,conference travel
+287,2023-09-07,People,software,1410.99,team offsite
+288,2023-12-13,Product,events,1195.95,client dinner
+289,2024-07-09,Product,cloud,1147.81,cloud overage
+290,2023-08-21,Sales,cloud,1090.95,cloud overage
+291,2024-01-09,Marketing,events,1410.89,client dinner
+292,2023-11-07,Engineering,software,462.33,conference travel
+293,2024-02-12,People,software,576.56,training course
+294,2023-07-12,Engineering,training,112.85,job board
+295,2024-09-16,People,travel,3581.79,training course
+296,2024-10-13,Finance,office,2469.92,conference travel
+297,2023-12-23,Finance,training,2321.85,team offsite
+298,2024-12-07,Support,recruiting,41.85,job board
+299,2024-02-22,Operations,office,523.61,client dinner
+300,2023-11-05,Engineering,office,1506.01,training course
+301,2023-12-18,Engineering,recruiting,2303.37,laptop
+302,2024-06-04,Sales,travel,1998.29,team offsite
+303,2023-12-23,People,training,2022.69,cloud overage
+304,2024-12-28,People,office,1877.99,training course
+305,2023-10-31,Support,software,2302.02,cloud overage
+306,2023-07-16,Engineering,travel,122.74,job board
+307,2024-11-18,Operations,events,2190.82,client dinner
+308,2024-10-01,Finance,office,1232.67,conference travel
+309,2024-03-06,People,training,841.22,training course
+310,2024-10-18,Sales,travel,2220.1,laptop
+311,2023-10-17,Operations,events,3278.43,conference travel
+312,2024-03-11,People,travel,3833.44,client dinner
+313,2024-12-08,People,events,2349.95,conference travel
+314,2023-07-01,Finance,cloud,3036.8,training course
+315,2024-02-13,Sales,recruiting,3049.54,laptop
+316,2024-02-26,Sales,cloud,3121.87,training course
+317,2024-06-28,Operations,office,1113.17,training course
+318,2024-04-15,Product,cloud,220.69,training course
+319,2023-08-26,Finance,events,2482.23,client dinner
+320,2024-10-29,People,cloud,2342.55,cloud overage
+321,2024-12-26,Engineering,software,935.87,cloud overage
+322,2023-07-26,Engineering,office,2243.48,training course
+323,2024-03-28,Support,events,467.61,job board
+324,2024-12-20,Operations,training,3285.76,team offsite
+325,2023-12-10,Marketing,events,930.11,cloud overage
+326,2024-12-28,Engineering,cloud,1180.1,laptop
+327,2024-02-21,People,events,101.86,team offsite
+328,2023-09-09,Sales,events,3465.53,team offsite
+329,2024-08-26,Finance,training,3478.66,job board
+330,2024-08-09,Marketing,recruiting,2347.94,team offsite
+331,2023-12-11,Marketing,travel,3450.72,team offsite
+332,2024-02-26,Finance,events,448.09,team offsite
+333,2024-02-10,Product,training,759.6,cloud overage
+334,2024-01-05,Operations,software,503.14,conference travel
+335,2024-01-23,Support,software,3193.69,client dinner
+336,2024-01-09,Marketing,events,2654.62,training course
+337,2024-08-20,Marketing,recruiting,1516.09,team offsite
+338,2024-03-05,Sales,events,2809.38,client dinner
+339,2024-12-10,Operations,office,1779.59,laptop
+340,2024-02-23,Finance,office,2967.44,job board
+341,2024-09-23,Engineering,office,1403.25,training course
+342,2024-05-05,Product,training,182.12,laptop
+343,2023-07-14,Finance,events,2409.35,laptop
+344,2023-07-29,Engineering,training,3921.37,job board
+345,2024-07-13,Operations,events,2887.82,laptop
+346,2024-09-06,People,events,1511.23,job board
+347,2024-09-14,Engineering,office,1092.19,training course
+348,2023-11-21,Marketing,cloud,3522.71,job board
+349,2023-08-23,Support,cloud,2161.03,conference travel
+350,2024-02-24,Engineering,cloud,577.4,client dinner
+351,2024-07-14,Operations,software,199.83,client dinner
+352,2024-03-25,Operations,recruiting,2029.4,team offsite
+353,2024-01-07,Product,cloud,1256.55,client dinner
+354,2024-06-09,Sales,training,3070.85,laptop
+355,2024-11-02,Marketing,cloud,2315.84,cloud overage
+356,2023-07-18,Finance,recruiting,888.49,laptop
+357,2024-03-23,Product,office,3145.29,training course
+358,2024-01-25,Marketing,training,567.85,conference travel
+359,2023-10-21,Sales,software,1083.73,training course
+360,2023-08-12,People,training,2644.55,laptop
+361,2024-08-10,Engineering,cloud,2324.84,conference travel
+362,2024-02-10,Sales,training,33.81,conference travel
+363,2023-10-08,People,software,3389.15,laptop
+364,2024-12-12,Product,cloud,2605.87,team offsite
+365,2023-12-18,Sales,travel,1981.59,client dinner
+366,2023-07-28,Support,events,1299.93,job board
+367,2023-10-19,Finance,office,1830.76,job board
+368,2023-12-15,Sales,travel,1211.47,job board
+369,2023-12-22,Engineering,software,364.04,client dinner
+370,2023-07-20,Marketing,office,1459.5,job board
+371,2024-01-06,Engineering,training,3759.25,conference travel
+372,2023-12-17,Product,cloud,514.45,cloud overage
+373,2023-07-25,Sales,software,3051.95,job board
+374,2023-08-01,Engineering,recruiting,585.28,client dinner
+375,2024-07-04,Support,office,1665.7,client dinner
+376,2023-11-18,People,travel,1094.1,client dinner
+377,2023-08-01,Product,cloud,1732.04,training course
+378,2024-09-30,Engineering,travel,3836.66,conference travel
+379,2024-06-30,Operations,events,2562.18,team offsite
+380,2024-02-26,Sales,software,3580.18,conference travel
+381,2023-07-16,Product,training,2765.52,laptop
+382,2024-12-29,Operations,cloud,3824.26,team offsite
+383,2023-07-17,Operations,recruiting,785.87,job board
+384,2024-02-27,Product,events,908.06,conference travel
+385,2024-03-08,Sales,travel,2027.64,job board
+386,2024-05-10,Operations,cloud,1119.08,training course
+387,2024-04-18,Marketing,training,3190.85,cloud overage
+388,2024-06-27,Marketing,office,1674.61,training course
+389,2024-03-12,Product,training,1814.18,training course
+390,2024-08-30,Product,events,2299.49,team offsite
+391,2023-08-08,People,training,382.58,client dinner
+392,2024-02-27,Finance,software,1427.73,training course
+393,2024-09-25,Product,software,2851.75,job board
+394,2024-12-03,People,software,2427.28,cloud overage
+395,2023-09-07,Finance,training,2736.18,team offsite
+396,2023-08-11,Operations,office,2628.21,client dinner
+397,2023-08-10,People,recruiting,152.22,cloud overage
+398,2024-02-02,Sales,recruiting,1975.09,conference travel
+399,2023-10-10,Support,travel,1792.74,training course
+400,2024-10-10,Operations,travel,3719.02,client dinner
+401,2024-10-31,Marketing,recruiting,1559.61,cloud overage
+402,2024-11-23,Product,recruiting,3432.86,client dinner
+403,2023-07-17,Finance,training,423.23,job board
+404,2024-03-29,Marketing,cloud,3703.91,laptop
+405,2024-09-21,Product,training,3373.77,training course
+406,2024-09-28,Product,events,31.56,training course
+407,2024-10-28,Engineering,events,3977.69,laptop
+408,2023-08-23,Marketing,office,507.81,job board
+409,2023-12-22,People,training,3848.21,cloud overage
+410,2024-06-20,Finance,software,146.29,team offsite
+411,2023-12-02,Engineering,software,673.67,job board
+412,2024-07-26,Support,office,2878.67,team offsite
+413,2024-06-30,Product,software,1725.56,client dinner
+414,2023-12-20,Finance,office,2967.15,team offsite
+415,2024-10-14,Sales,travel,2104.18,conference travel
+416,2023-07-01,Support,travel,1213.36,training course
+417,2024-09-20,Support,cloud,1143.69,cloud overage
+418,2024-09-18,Operations,travel,3589.26,laptop
+419,2024-12-21,Product,travel,800.34,job board
+420,2024-04-07,Finance,travel,3586.78,conference travel
+421,2024-10-24,Engineering,travel,1759.89,training course
+422,2024-07-07,People,cloud,2283.23,conference travel
+423,2023-12-10,People,training,3875.2,conference travel
+424,2024-11-27,Operations,recruiting,2264.6,client dinner
+425,2023-08-30,Marketing,travel,2026.27,cloud overage
+426,2024-06-30,Sales,recruiting,2707.22,laptop
+427,2024-08-29,Operations,training,3285.99,conference travel
+428,2023-12-08,Sales,events,3562.57,job board
+429,2024-07-23,Support,training,2641.98,team offsite
+430,2024-10-11,Engineering,events,2081.41,client dinner
+431,2024-11-10,Operations,recruiting,2366.26,client dinner
+432,2024-09-19,Finance,events,2338.42,client dinner
+433,2024-01-17,People,recruiting,1826.05,laptop
+434,2024-10-05,Product,cloud,1073.1,client dinner
+435,2024-06-27,Product,office,1427.7,training course
+436,2023-09-07,Engineering,events,1647.84,client dinner
+437,2024-10-31,Support,software,3593.39,job board
+438,2023-07-21,Support,training,66.95,job board
+439,2024-12-05,Operations,travel,175.47,conference travel
+440,2024-10-14,Engineering,events,3984.62,team offsite
+441,2023-09-05,Support,software,1547.08,cloud overage
+442,2024-12-15,Engineering,training,2473.58,client dinner
+443,2024-03-25,Marketing,cloud,2235.8,cloud overage
+444,2023-12-22,Product,training,1604.14,laptop
+445,2023-11-28,Engineering,cloud,683.65,job board
+446,2024-10-27,People,cloud,2453.46,training course
+447,2024-12-05,Finance,recruiting,2656.75,job board
+448,2023-12-12,People,recruiting,133.94,conference travel
+449,2024-12-07,Support,office,3638.86,laptop
+450,2024-04-18,Marketing,cloud,1443.9,conference travel
+451,2023-10-19,Marketing,cloud,527.99,laptop
+452,2024-06-06,Marketing,training,1573.78,laptop
+453,2023-09-22,Support,office,730.44,cloud overage
+454,2024-08-11,People,office,2166.04,job board
+455,2024-03-31,Support,travel,1464.19,laptop
+456,2024-07-31,Finance,recruiting,3323.06,team offsite
+457,2024-01-01,People,software,3703.86,training course
+458,2023-07-28,People,training,1997.61,conference travel
+459,2024-12-28,Sales,recruiting,1392.29,client dinner
+460,2024-02-07,Product,travel,191.13,laptop
+461,2024-12-01,Support,cloud,3885.88,conference travel
+462,2024-11-19,Support,training,2784.75,laptop
+463,2023-08-21,Support,training,1829.68,client dinner
+464,2023-09-25,Support,cloud,1220.62,training course
+465,2024-08-02,Sales,cloud,2626.86,client dinner
+466,2024-11-27,Product,software,581.51,job board
+467,2023-10-24,Marketing,training,269.81,job board
+468,2024-01-31,Engineering,recruiting,2944.28,client dinner
+469,2024-07-09,Support,office,160.86,job board
+470,2023-11-02,Marketing,recruiting,2954.51,cloud overage
+471,2023-10-23,People,software,3401.48,team offsite
+472,2024-03-31,People,cloud,3868.88,conference travel
+473,2023-08-12,Finance,travel,2014.83,training course
+474,2023-07-16,Support,events,1990.58,client dinner
+475,2023-11-12,Operations,travel,569.21,laptop
+476,2024-04-25,Product,recruiting,3248.85,team offsite
+477,2024-07-05,People,recruiting,2115.15,conference travel
+478,2023-08-13,People,software,1292.49,laptop
+479,2024-05-03,Support,office,147.31,training course
+480,2024-02-29,Support,travel,3001.02,job board
+481,2024-02-01,Product,cloud,2302.51,team offsite
+482,2024-03-05,Product,events,1247.77,client dinner
+483,2024-06-09,Finance,travel,3489.69,conference travel
+484,2023-11-16,Marketing,cloud,3231.47,conference travel
+485,2024-05-22,Finance,travel,833.26,laptop
+486,2024-02-20,Sales,events,683.61,client dinner
+487,2024-03-19,Finance,events,84.61,job board
+488,2024-10-16,Product,recruiting,2659.37,cloud overage
+489,2023-08-25,Sales,office,1896.93,client dinner
+490,2024-07-27,Product,training,3228.31,cloud overage
+491,2024-06-08,Marketing,software,126.37,team offsite
+492,2024-06-14,Finance,events,3619.0,training course
+493,2024-04-17,Finance,software,288.87,team offsite
+494,2023-09-02,Support,office,3179.43,laptop
+495,2023-08-05,People,travel,3077.66,cloud overage
+496,2023-11-25,Support,travel,1933.9,cloud overage
+497,2024-12-06,People,recruiting,3628.13,job board
+498,2023-10-13,Engineering,travel,2437.62,conference travel
+499,2024-06-30,Support,travel,1080.49,conference travel
+500,2023-12-28,Marketing,travel,174.57,laptop
+501,2024-02-23,Finance,recruiting,1442.25,job board
+502,2023-07-21,Product,travel,3182.71,job board
+503,2023-08-06,Engineering,cloud,1181.9,laptop
+504,2024-10-31,Marketing,travel,134.19,laptop
+505,2023-11-16,People,software,3745.18,training course
+506,2023-10-23,Sales,office,767.08,conference travel
+507,2024-06-14,Support,training,3415.51,job board
+508,2024-12-22,Product,travel,3359.91,conference travel
+509,2023-12-10,Operations,software,88.64,conference travel
+510,2023-12-28,Marketing,training,803.21,laptop
+511,2023-07-30,Finance,software,243.01,team offsite
+512,2023-10-31,Support,cloud,244.49,training course
+513,2023-12-17,Support,office,789.15,conference travel
+514,2024-06-01,Engineering,office,2977.91,conference travel
+515,2024-10-18,Finance,training,3930.72,team offsite
+516,2023-12-02,Support,travel,2512.36,conference travel
+517,2023-08-06,Sales,recruiting,1010.85,laptop
+518,2023-12-27,Support,recruiting,3712.03,conference travel
+519,2023-12-01,Engineering,software,838.47,job board
+520,2024-07-04,Sales,cloud,1747.21,team offsite
+521,2024-01-31,Marketing,recruiting,1216.82,team offsite
+522,2024-07-01,Product,office,1004.46,client dinner
+523,2023-08-27,Finance,office,3435.07,conference travel
+524,2024-01-01,Support,software,1680.38,laptop
+525,2023-08-11,Support,office,2239.11,conference travel
+526,2023-09-28,Finance,recruiting,657.46,laptop
+527,2024-08-17,Marketing,cloud,833.38,training course
+528,2024-12-13,Marketing,office,583.81,team offsite
+529,2024-04-02,Sales,events,1016.24,conference travel
+530,2024-09-19,Product,office,3594.36,cloud overage
+531,2023-12-26,People,travel,2564.6,laptop
+532,2024-05-20,Product,cloud,164.89,conference travel
+533,2023-12-09,Support,training,3410.69,training course
+534,2024-04-13,People,recruiting,1043.18,client dinner
+535,2024-10-30,Engineering,cloud,203.01,laptop
+536,2024-06-11,Support,recruiting,3861.8,cloud overage
+537,2024-08-20,People,cloud,2941.86,conference travel
+538,2024-06-10,Marketing,cloud,135.78,job board
+539,2023-12-27,Engineering,software,1713.01,conference travel
+540,2024-03-04,Marketing,recruiting,302.85,conference travel
+541,2023-07-31,Finance,training,419.56,training course
+542,2023-10-28,Finance,events,2234.12,training course
+543,2023-09-06,Operations,recruiting,2177.86,cloud overage
+544,2024-10-28,Engineering,events,551.48,job board
+545,2023-10-22,Product,training,1393.34,laptop
+546,2023-08-13,Support,cloud,560.37,client dinner
+547,2024-08-03,Product,recruiting,2763.87,training course
+548,2023-08-09,Operations,recruiting,3647.54,cloud overage
+549,2024-01-28,Sales,events,1898.98,cloud overage
+550,2023-11-23,Engineering,recruiting,60.84,cloud overage
+551,2023-08-06,Engineering,office,1253.37,client dinner
+552,2024-11-23,People,events,2768.68,cloud overage
+553,2024-06-14,Support,office,1448.56,cloud overage
+554,2024-08-29,Finance,events,1724.24,cloud overage
+555,2023-11-07,Marketing,software,1401.29,cloud overage
+556,2024-06-12,Engineering,software,2918.78,client dinner
+557,2024-09-26,Operations,events,1908.6,cloud overage
+558,2024-08-06,Operations,office,2368.48,team offsite
+559,2024-09-29,Finance,events,2478.23,laptop
+560,2024-03-03,Operations,recruiting,1020.23,job board
+561,2024-05-06,Sales,cloud,3803.38,client dinner
+562,2023-12-11,Sales,training,2980.16,cloud overage
+563,2024-07-02,Marketing,software,1694.25,training course
+564,2024-05-17,Sales,recruiting,3446.37,team offsite
+565,2023-11-06,People,recruiting,3890.18,client dinner
+566,2024-05-12,Sales,recruiting,2841.69,cloud overage
+567,2024-12-04,Product,events,1270.85,job board
+568,2023-12-14,Product,travel,2014.09,team offsite
+569,2024-10-26,Finance,cloud,1247.58,laptop
+570,2024-06-17,Sales,events,96.23,training course
+571,2023-07-12,Product,software,2936.7,client dinner
+572,2023-07-27,Engineering,cloud,3402.92,client dinner
+573,2024-01-20,Engineering,cloud,1468.11,conference travel
+574,2023-12-27,Support,office,3689.9,laptop
+575,2024-10-16,Sales,events,3575.19,job board
+576,2024-10-09,Marketing,training,3515.93,job board
+577,2024-03-27,Operations,software,1103.33,training course
+578,2024-11-04,Operations,training,1212.7,client dinner
+579,2024-05-31,Operations,recruiting,1418.26,job board
+580,2024-08-31,Engineering,training,3709.45,conference travel
+581,2024-12-21,Engineering,events,3008.82,conference travel
+582,2023-09-11,Finance,software,2952.21,job board
+583,2023-10-28,Finance,software,77.47,job board
+584,2024-07-14,Product,training,2761.22,training course
+585,2024-08-16,Finance,cloud,642.47,client dinner
+586,2024-10-06,Product,cloud,3265.43,laptop
+587,2023-08-03,Support,events,2420.09,conference travel
+588,2023-08-11,Operations,travel,355.75,cloud overage
+589,2023-07-04,Support,software,1922.95,laptop
+590,2024-10-25,Engineering,training,2138.61,training course
+591,2024-08-18,Support,travel,1008.28,job board
+592,2024-05-24,Support,recruiting,662.82,job board
+593,2024-12-04,Product,cloud,1658.2,job board
+594,2023-08-26,Marketing,recruiting,3056.85,training course
+595,2024-06-05,Marketing,office,3510.49,client dinner
+596,2023-10-02,Marketing,recruiting,3031.25,cloud overage
+597,2023-10-10,People,cloud,717.59,job board
+598,2023-08-26,Marketing,software,2236.19,training course
+599,2024-05-10,Support,software,3395.42,client dinner
+600,2024-10-25,Product,cloud,3759.44,laptop
+601,2023-10-23,Engineering,travel,207.07,team offsite
+602,2024-10-26,Support,recruiting,2386.09,job board
+603,2023-08-31,Product,software,1973.28,conference travel
+604,2024-12-14,Engineering,travel,3233.23,client dinner
+605,2023-07-10,Finance,office,3312.16,cloud overage
+606,2024-06-29,People,office,3185.01,cloud overage
+607,2024-10-30,Support,office,1500.38,cloud overage
+608,2024-05-11,Support,training,2259.63,team offsite
+609,2024-08-15,Support,events,2766.11,cloud overage
+610,2024-03-22,Finance,recruiting,1385.78,conference travel
+611,2024-08-09,Engineering,cloud,573.05,team offsite
+612,2024-07-27,Operations,cloud,2611.27,conference travel
+613,2024-11-27,People,cloud,679.19,laptop
+614,2023-10-24,Finance,training,2884.94,cloud overage
+615,2023-07-03,Engineering,cloud,1043.26,cloud overage
+616,2024-10-24,Support,recruiting,1722.39,client dinner
+617,2024-01-31,Support,cloud,1987.6,cloud overage
+618,2024-03-16,Sales,recruiting,1723.04,laptop
+619,2024-12-31,Support,travel,2223.96,laptop
+620,2023-09-12,Operations,software,1238.28,laptop
+621,2023-09-02,Product,office,37.73,team offsite
+622,2024-02-15,Finance,office,1543.27,training course
+623,2024-10-27,Marketing,recruiting,3620.08,training course
+624,2024-01-04,Product,travel,668.17,conference travel
+625,2024-01-08,Product,recruiting,575.9,job board
+626,2023-08-05,Operations,software,1516.58,cloud overage
+627,2024-02-22,Support,recruiting,3389.56,team offsite
+628,2024-11-30,Support,training,2288.48,job board
+629,2024-10-20,Operations,training,2632.25,training course
+630,2024-09-24,Product,training,823.25,training course
+631,2023-12-01,Operations,software,3696.67,training course
+632,2023-11-22,People,training,1508.35,conference travel
+633,2023-12-18,Product,training,1954.04,job board
+634,2024-03-31,Marketing,travel,2111.69,training course
+635,2024-05-13,Support,software,1144.23,job board
+636,2023-07-06,Engineering,events,3333.24,job board
+637,2024-11-04,Product,software,600.04,client dinner
+638,2024-05-31,Operations,recruiting,2405.7,training course
+639,2024-01-10,Finance,office,2776.39,job board
+640,2023-11-04,Sales,cloud,3600.37,cloud overage
+641,2023-10-21,Product,training,668.88,cloud overage
+642,2024-02-09,Sales,recruiting,1619.87,job board
+643,2024-03-22,Support,travel,1849.35,laptop
+644,2024-10-05,Marketing,travel,845.36,cloud overage
+645,2023-07-24,Sales,training,1633.76,conference travel
+646,2024-07-04,Sales,office,2282.69,client dinner
+647,2024-12-29,Operations,recruiting,552.51,laptop
+648,2024-09-11,Product,recruiting,1761.83,client dinner
+649,2024-09-04,Support,events,144.39,conference travel
+650,2024-09-11,People,office,1865.34,cloud overage
+651,2023-12-02,Engineering,travel,3512.43,team offsite
+652,2024-01-03,Engineering,cloud,2463.89,client dinner
+653,2024-06-28,Sales,training,3687.37,training course
+654,2024-11-18,People,office,2416.31,training course
+655,2024-09-18,Finance,events,3796.93,training course
+656,2024-08-17,Finance,events,2166.56,laptop
+657,2024-03-19,Finance,recruiting,813.09,laptop
+658,2024-11-18,Support,software,1512.54,cloud overage
+659,2023-10-09,Operations,software,2431.44,cloud overage
+660,2023-08-30,Sales,travel,2854.44,cloud overage
+661,2023-09-08,People,recruiting,3128.56,client dinner
+662,2023-09-10,People,events,519.78,training course
+663,2023-09-01,Sales,recruiting,2757.09,team offsite
+664,2023-08-20,Support,events,553.06,training course
+665,2023-09-02,Product,training,730.53,training course
+666,2024-11-18,People,software,2303.63,client dinner
+667,2024-01-20,Marketing,recruiting,133.34,job board
+668,2024-01-28,Sales,events,3212.66,client dinner
+669,2023-08-30,Marketing,training,3936.66,job board
+670,2024-02-22,Support,training,1340.77,training course
+671,2023-08-29,Engineering,events,3699.61,team offsite
+672,2024-08-24,Product,events,789.58,cloud overage
+673,2024-06-27,Sales,recruiting,2436.35,conference travel
+674,2023-08-12,Sales,office,2590.3,laptop
+675,2024-04-14,Support,cloud,749.63,team offsite
+676,2023-08-16,Operations,training,1546.62,training course
+677,2023-09-15,Marketing,training,3309.53,job board
+678,2024-07-15,Operations,recruiting,3329.38,client dinner
+679,2024-01-05,Support,recruiting,256.76,job board
+680,2024-09-11,People,training,3494.92,laptop
+681,2023-11-21,Marketing,cloud,682.74,job board
+682,2024-09-24,People,travel,334.16,conference travel
+683,2024-01-22,Finance,recruiting,2245.62,conference travel
+684,2024-05-17,Engineering,events,1785.04,cloud overage
+685,2023-12-14,People,cloud,2633.85,client dinner
+686,2024-11-16,Finance,training,2005.3,job board
+687,2024-02-02,Sales,cloud,3877.82,conference travel
+688,2024-05-16,People,travel,2154.2,team offsite
+689,2024-11-28,Finance,software,3757.2,team offsite
+690,2023-07-19,Engineering,cloud,1822.61,team offsite
+691,2023-11-02,Support,events,382.41,team offsite
+692,2023-08-30,Marketing,events,2574.57,client dinner
+693,2024-01-05,Engineering,training,401.03,client dinner
+694,2024-02-17,Sales,cloud,3203.68,team offsite
+695,2023-07-04,Operations,cloud,400.66,training course
+696,2024-04-16,Marketing,travel,271.2,client dinner
+697,2024-05-23,Product,cloud,1945.27,job board
+698,2023-11-17,Engineering,recruiting,3527.16,client dinner
+699,2024-09-21,Engineering,recruiting,288.96,conference travel
+700,2024-11-12,Marketing,events,134.43,cloud overage
+701,2024-04-12,Engineering,travel,3814.09,client dinner
+702,2024-08-10,Sales,training,309.96,cloud overage
+703,2024-09-11,Sales,recruiting,3247.6,team offsite
+704,2023-12-18,Finance,office,607.23,training course
+705,2024-05-11,People,cloud,1923.1,cloud overage
+706,2024-02-26,Engineering,office,2536.51,training course
+707,2024-01-13,Operations,office,301.97,client dinner
+708,2023-10-10,Marketing,software,3769.41,team offsite
+709,2024-09-19,Operations,office,1143.52,conference travel
+710,2023-10-09,People,software,2433.56,conference travel
+711,2024-03-30,Engineering,training,1551.75,cloud overage
+712,2024-02-14,Product,recruiting,2251.29,job board
+713,2024-07-09,Marketing,software,229.23,conference travel
+714,2023-07-24,Sales,events,709.5,job board
+715,2024-07-31,Marketing,cloud,1721.82,job board
+716,2024-07-06,Sales,training,1720.58,client dinner
+717,2024-08-14,Marketing,events,484.38,job board
+718,2023-08-11,Operations,software,131.06,conference travel
+719,2023-07-16,Support,training,197.58,cloud overage
+720,2024-10-11,Engineering,travel,772.63,laptop
+721,2024-11-08,Support,travel,3568.19,training course
+722,2024-08-05,Finance,software,2014.56,job board
+723,2023-08-03,Sales,software,3563.8,cloud overage
+724,2024-07-22,Sales,cloud,3869.99,cloud overage
+725,2024-05-29,Engineering,office,2959.98,training course
+726,2024-04-26,Product,office,1955.08,job board
+727,2023-07-16,Marketing,software,3430.09,training course
+728,2023-11-08,Finance,office,689.94,laptop
+729,2024-12-24,Support,training,3540.8,client dinner
+730,2024-08-02,Marketing,recruiting,1790.36,client dinner
+731,2023-10-27,Product,software,2558.05,job board
+732,2024-05-10,Marketing,cloud,3101.23,job board
+733,2024-05-06,Sales,recruiting,1780.19,job board
+734,2024-07-20,Product,events,2830.5,training course
+735,2023-08-22,Sales,travel,2793.72,client dinner
+736,2024-05-16,Sales,events,1028.76,client dinner
+737,2024-04-22,Sales,cloud,2013.44,team offsite
+738,2024-03-16,Sales,cloud,1220.59,team offsite
+739,2024-07-30,Engineering,cloud,2724.23,laptop
+740,2023-12-14,Operations,recruiting,2492.49,cloud overage
+741,2023-11-05,People,software,3938.31,training course
+742,2024-12-31,People,office,3693.01,cloud overage
+743,2023-11-16,People,training,1297.81,team offsite
+744,2024-10-24,Support,events,3971.93,cloud overage
+745,2024-09-02,Sales,events,3587.13,team offsite
+746,2024-02-10,Finance,events,2630.7,job board
+747,2024-11-11,People,travel,3511.05,training course
+748,2024-08-29,Finance,recruiting,3691.72,client dinner
+749,2023-11-05,Operations,cloud,1570.17,cloud overage
+750,2023-08-29,People,events,3459.79,laptop
+751,2023-09-22,Engineering,cloud,1464.27,laptop
+752,2024-09-05,Support,training,3614.46,job board
+753,2024-05-26,Sales,software,1992.2,team offsite
+754,2023-09-07,People,training,2202.52,laptop
+755,2024-06-14,Engineering,travel,3935.36,laptop
+756,2024-10-24,Finance,events,3700.42,job board
+757,2024-03-21,People,recruiting,106.75,job board
+758,2024-03-24,Engineering,recruiting,1060.15,conference travel
+759,2024-05-09,Product,office,2934.71,job board
+760,2024-09-20,Operations,office,3923.4,conference travel
+761,2024-06-10,Product,cloud,1233.72,laptop
+762,2024-12-18,Finance,cloud,1601.98,conference travel
+763,2024-07-31,People,events,1235.18,laptop
+764,2024-10-28,Engineering,cloud,2099.58,job board
+765,2024-09-03,Engineering,training,252.03,team offsite
+766,2024-06-28,Support,software,79.93,training course
+767,2023-11-13,People,office,2134.01,team offsite
+768,2024-06-28,Operations,events,1378.23,training course
+769,2024-03-11,Engineering,recruiting,2900.29,training course
+770,2024-01-01,Product,software,1065.46,job board
+771,2024-01-23,Finance,recruiting,1782.92,conference travel
+772,2024-01-13,Finance,events,1821.45,client dinner
+773,2024-08-03,Engineering,events,3371.34,job board
+774,2023-12-02,Engineering,travel,1327.83,training course
+775,2024-06-01,Engineering,recruiting,1976.87,laptop
+776,2024-03-17,Engineering,training,1975.37,client dinner
+777,2024-01-19,People,training,1493.68,job board
+778,2023-11-01,Product,training,2379.93,laptop
+779,2024-08-17,Product,events,66.92,job board
+780,2024-01-04,Engineering,travel,894.5,job board
+781,2024-12-14,Sales,cloud,1770.07,conference travel
+782,2023-11-11,Finance,travel,2536.93,team offsite
+783,2024-04-27,Sales,travel,3253.5,client dinner
+784,2024-12-12,Finance,recruiting,3994.83,conference travel
+785,2023-08-05,Product,events,1241.06,conference travel
+786,2023-10-29,Sales,training,3394.85,laptop
+787,2023-12-06,Engineering,events,2004.34,conference travel
+788,2023-07-25,People,travel,3162.14,laptop
+789,2023-10-11,Sales,events,3240.55,client dinner
+790,2024-06-22,Marketing,events,1119.19,cloud overage
+791,2024-02-15,People,training,3810.41,cloud overage
+792,2024-03-07,Finance,events,1235.45,conference travel
+793,2023-09-02,Support,recruiting,3515.35,conference travel
+794,2023-09-16,Operations,travel,1151.42,laptop
+795,2024-07-28,Finance,training,2962.37,client dinner
+796,2024-10-26,Support,training,1807.62,client dinner
+797,2024-08-18,Product,recruiting,1701.86,team offsite
+798,2023-11-10,Product,software,752.42,team offsite
+799,2024-05-26,Sales,training,1851.36,training course
+800,2024-07-23,Product,office,924.56,client dinner
+801,2023-09-20,Support,recruiting,393.53,team offsite
+802,2024-05-02,Product,events,596.12,cloud overage
+803,2024-04-06,Product,travel,3765.82,training course
+804,2023-11-14,Sales,travel,2843.9,training course
+805,2024-02-29,Engineering,cloud,527.19,training course
+806,2023-07-17,Support,events,392.44,client dinner
+807,2024-09-25,Finance,recruiting,1643.27,conference travel
+808,2023-09-05,Sales,travel,2328.91,team offsite
+809,2024-02-14,Product,events,286.78,laptop
+810,2023-09-25,Product,training,3808.61,laptop
+811,2024-10-13,Operations,events,1574.93,conference travel
+812,2023-10-13,Sales,software,899.34,team offsite
+813,2023-12-14,Product,recruiting,750.42,client dinner
+814,2023-08-17,Finance,cloud,3309.12,laptop
+815,2024-06-15,People,cloud,253.06,job board
+816,2024-10-06,People,office,1051.46,job board
+817,2024-09-26,Operations,events,80.59,laptop
+818,2024-03-26,Finance,cloud,1802.3,training course
+819,2023-07-21,Support,recruiting,1257.2,cloud overage
+820,2024-08-22,Product,recruiting,336.87,cloud overage
+821,2024-01-28,Engineering,events,434.03,laptop
+822,2024-12-01,Marketing,recruiting,3576.54,job board
+823,2024-12-20,Product,events,2755.89,conference travel
+824,2023-07-06,Finance,travel,3875.57,job board
+825,2023-11-08,Support,travel,1048.18,cloud overage
+826,2024-05-17,Marketing,software,3136.72,laptop
+827,2024-12-10,Sales,recruiting,701.52,conference travel
+828,2024-07-23,Marketing,events,1963.82,laptop
+829,2024-08-03,Engineering,cloud,88.26,conference travel
+830,2023-08-31,Sales,recruiting,3551.99,laptop
+831,2023-08-04,Product,cloud,310.67,cloud overage
+832,2023-08-04,Engineering,office,856.25,job board
+833,2024-06-09,Engineering,software,2634.67,training course
+834,2024-11-05,Finance,events,676.53,laptop
+835,2023-07-09,Marketing,software,3444.62,job board
+836,2024-10-23,Marketing,office,1135.33,client dinner
+837,2024-02-17,Operations,travel,301.53,team offsite
+838,2024-01-29,Finance,recruiting,2993.01,team offsite
+839,2024-08-01,Operations,office,3014.15,job board
+840,2023-07-14,People,office,1166.11,job board
+841,2024-08-27,Engineering,training,1243.58,client dinner
+842,2024-01-14,Finance,travel,1487.89,training course
+843,2024-05-18,People,software,1210.98,job board
+844,2024-06-06,Support,travel,3400.99,conference travel
+845,2023-10-19,Engineering,recruiting,2947.84,training course
+846,2024-09-12,People,training,3444.63,conference travel
+847,2024-10-10,Engineering,cloud,1590.72,job board
+848,2024-04-18,Sales,travel,397.8,training course
+849,2023-09-22,People,cloud,1634.83,client dinner
+850,2024-12-05,Finance,training,3756.25,training course
+851,2023-10-03,Support,travel,67.17,cloud overage
+852,2024-09-07,Product,events,2541.51,cloud overage
+853,2024-01-31,People,software,445.3,training course
+854,2024-08-02,Sales,travel,1901.82,job board
+855,2024-09-12,Product,recruiting,2817.52,cloud overage
+856,2024-05-31,People,cloud,1778.73,cloud overage
+857,2024-11-16,Sales,travel,3985.85,cloud overage
+858,2024-07-03,Support,events,2130.87,training course
+859,2024-06-16,Sales,training,404.67,team offsite
+860,2024-05-26,Engineering,software,1009.42,cloud overage
+861,2024-02-25,Support,recruiting,2539.67,conference travel
+862,2024-10-22,Marketing,events,320.72,training course
+863,2024-12-10,People,recruiting,2042.55,client dinner
+864,2023-09-19,Operations,cloud,968.18,team offsite
+865,2024-01-25,Engineering,training,3189.79,client dinner
+866,2023-11-25,People,cloud,3239.9,team offsite
+867,2024-10-08,Engineering,events,338.27,conference travel
+868,2024-08-05,Support,software,343.21,cloud overage
+869,2024-01-26,Support,cloud,2708.32,laptop
+870,2024-09-28,People,events,237.65,laptop
+871,2024-12-02,Marketing,recruiting,3453.1,cloud overage
+872,2024-06-26,Finance,training,476.81,cloud overage
+873,2024-07-13,Finance,office,1546.52,conference travel
+874,2024-09-19,Support,recruiting,290.2,training course
+875,2023-07-01,People,recruiting,1136.7,training course
+876,2024-04-04,Sales,office,1922.58,job board
+877,2023-09-12,Marketing,travel,1088.73,cloud overage
+878,2024-06-17,People,events,2448.07,conference travel
+879,2024-01-04,Engineering,software,1857.28,training course
+880,2023-10-11,Marketing,software,3525.7,job board
+881,2024-02-08,Finance,cloud,1874.53,job board
+882,2024-04-13,Finance,software,2637.14,training course
+883,2023-10-26,People,cloud,2743.1,training course
+884,2024-01-22,Operations,software,3909.01,job board
+885,2024-05-24,Engineering,events,1620.81,job board
+886,2023-12-04,Finance,recruiting,1474.39,team offsite
+887,2024-07-05,Finance,training,813.5,client dinner
+888,2024-11-01,Marketing,training,3946.98,cloud overage
+889,2024-10-15,Product,travel,2401.65,training course
+890,2023-08-28,Marketing,recruiting,3021.81,job board
+891,2023-11-10,Marketing,software,181.89,team offsite
+892,2024-11-07,Support,cloud,3949.58,training course
+893,2024-03-18,People,cloud,2757.13,team offsite
+894,2023-12-20,Marketing,travel,2936.22,team offsite
+895,2024-06-10,Sales,software,1724.17,job board
+896,2024-12-03,Sales,recruiting,1453.39,job board
+897,2024-10-11,Engineering,travel,524.45,cloud overage
+898,2024-01-24,Product,recruiting,3488.42,job board
+899,2024-09-20,Operations,training,1855.93,cloud overage
+900,2024-02-02,Engineering,travel,3956.51,team offsite
+901,2023-11-23,People,events,2179.47,laptop
+902,2024-11-27,Support,cloud,493.29,training course
+903,2023-08-07,Marketing,travel,2577.7,client dinner
+904,2024-03-27,Support,software,2336.81,training course
+905,2024-10-18,Support,events,2075.95,job board
+906,2024-09-24,Sales,events,1141.7,client dinner
+907,2024-12-09,People,travel,3946.92,job board
+908,2023-08-19,Sales,recruiting,445.12,team offsite
+909,2024-08-29,People,training,1036.19,training course
+910,2023-10-06,Engineering,software,928.3,conference travel
+911,2024-02-22,Marketing,travel,1693.87,client dinner
+912,2024-03-17,Engineering,recruiting,640.35,laptop
+913,2024-03-21,Support,training,1082.18,training course
+914,2024-03-02,Marketing,training,932.48,job board
+915,2023-11-17,Sales,software,3008.55,team offsite
+916,2023-12-25,Operations,travel,2409.27,team offsite
+917,2024-01-29,Product,events,1673.11,conference travel
+918,2024-10-20,Product,software,2013.58,laptop
+919,2024-01-06,People,office,2857.31,team offsite
+920,2024-03-02,Sales,software,1655.61,team offsite
+921,2024-04-05,Finance,training,599.15,conference travel
+922,2024-06-09,Engineering,recruiting,3737.48,cloud overage
+923,2024-10-11,Finance,training,1309.65,training course
+924,2023-12-23,Finance,software,3601.89,laptop
+925,2024-09-02,Sales,software,31.83,job board
+926,2024-08-21,Product,cloud,3768.84,laptop
+927,2023-08-15,Sales,training,830.19,client dinner
+928,2023-12-25,Product,recruiting,704.43,cloud overage
+929,2024-05-24,Product,office,1096.53,job board
+930,2024-01-13,Product,software,446.41,team offsite
+931,2024-09-03,Sales,cloud,3016.17,client dinner
+932,2024-02-12,Sales,recruiting,90.78,client dinner
+933,2023-10-04,Engineering,travel,1906.8,cloud overage
+934,2023-12-10,Engineering,events,2214.24,client dinner
+935,2024-04-10,Support,cloud,3099.56,team offsite
+936,2024-04-14,Support,events,3132.59,client dinner
+937,2024-10-16,Sales,recruiting,2251.57,training course
+938,2023-08-06,Engineering,recruiting,3904.7,cloud overage
+939,2023-12-03,Support,software,1882.68,training course
+940,2024-07-15,Support,travel,2360.64,client dinner
+941,2024-10-05,Finance,events,2781.43,client dinner
+942,2024-09-20,Product,travel,2163.11,cloud overage
+943,2023-07-22,Support,training,2177.64,client dinner
+944,2023-07-08,People,events,3374.24,team offsite
+945,2024-04-20,Operations,cloud,588.39,conference travel
+946,2023-08-13,Marketing,travel,2740.27,client dinner
+947,2024-01-25,Sales,cloud,1022.91,team offsite
+948,2023-12-30,Sales,training,1402.72,conference travel
+949,2024-03-31,Marketing,travel,923.33,job board
+950,2024-11-21,Support,cloud,55.22,conference travel
+951,2024-01-15,Product,cloud,1500.86,training course
+952,2023-12-12,Support,cloud,956.15,conference travel
+953,2024-12-04,Finance,training,3682.99,team offsite
+954,2024-06-26,Sales,training,790.8,team offsite
+955,2024-12-16,Marketing,training,3663.15,laptop
+956,2024-12-14,Marketing,cloud,3541.97,client dinner
+957,2023-09-11,Marketing,training,172.89,job board
+958,2023-08-21,Engineering,recruiting,708.5,job board
+959,2023-09-29,Support,cloud,3130.33,laptop
+960,2023-09-16,Sales,events,3939.02,client dinner
+961,2023-10-03,Product,office,925.84,client dinner
+962,2024-06-30,Sales,software,3325.18,client dinner
+963,2023-08-06,Engineering,cloud,2805.08,team offsite
+964,2024-08-22,Engineering,office,2029.72,job board
+965,2024-05-16,Sales,software,1611.63,laptop
+966,2024-08-22,Support,cloud,1153.21,client dinner
+967,2024-11-11,Operations,recruiting,863.54,job board
+968,2023-11-18,Finance,training,2486.06,team offsite
+969,2024-11-19,Engineering,recruiting,3815.02,conference travel
+970,2024-10-17,Engineering,cloud,74.62,client dinner
+971,2024-06-26,Engineering,training,3621.18,conference travel
+972,2024-02-06,Engineering,office,3043.43,training course
+973,2023-08-12,Marketing,cloud,838.76,laptop
+974,2024-09-30,Support,cloud,1313.9,cloud overage
+975,2024-05-13,Operations,cloud,1744.52,job board
+976,2023-11-20,Product,training,3642.37,cloud overage
+977,2024-01-09,Finance,cloud,2366.19,job board
+978,2023-11-16,Sales,events,3001.4,laptop
+979,2023-10-15,Sales,software,1612.0,team offsite
+980,2024-01-17,Operations,events,1763.39,conference travel
+981,2023-10-31,Sales,recruiting,3229.18,job board
+982,2023-11-08,Finance,office,2189.06,training course
+983,2024-09-18,People,cloud,3091.5,client dinner
+984,2023-11-02,Finance,travel,500.25,laptop
+985,2024-10-05,Support,office,191.52,job board
+986,2023-07-05,Product,cloud,2321.97,team offsite
+987,2024-07-05,Finance,software,418.09,team offsite
+988,2024-12-17,People,travel,2460.28,training course
+989,2024-01-24,Operations,cloud,410.88,laptop
+990,2024-04-17,Sales,software,1731.72,job board
+991,2024-02-07,Marketing,travel,1807.6,job board
+992,2024-11-24,Support,training,2175.28,team offsite
+993,2024-02-11,People,training,353.28,job board
+994,2023-07-14,Product,office,373.2,conference travel
+995,2024-06-23,Operations,cloud,112.82,job board
+996,2023-09-21,Marketing,recruiting,1418.41,team offsite
+997,2024-05-10,Support,cloud,3148.96,team offsite
+998,2024-09-23,Engineering,training,3222.91,job board
+999,2023-10-01,Marketing,events,138.71,job board
+1000,2023-12-19,Marketing,recruiting,2394.3,laptop
+1001,2024-04-11,Engineering,software,3551.27,cloud overage
+1002,2023-08-07,Support,recruiting,2154.2,conference travel
+1003,2024-12-10,Sales,cloud,3539.81,job board
+1004,2024-03-30,Product,events,3504.3,training course
+1005,2024-10-09,Operations,office,1743.08,job board
+1006,2023-12-14,Finance,travel,1608.83,conference travel
+1007,2024-04-10,Engineering,events,2337.66,laptop
+1008,2024-01-04,Sales,recruiting,842.41,client dinner
+1009,2024-10-09,Product,office,1666.61,team offsite
+1010,2024-09-11,Engineering,office,642.55,client dinner
+1011,2024-08-07,Support,software,1460.61,conference travel
+1012,2024-06-24,Product,cloud,3883.99,team offsite
+1013,2023-12-31,People,office,2213.91,conference travel
+1014,2023-12-23,Marketing,office,1393.47,job board
+1015,2023-11-25,Operations,cloud,2456.79,cloud overage
+1016,2024-09-26,Operations,events,2062.17,team offsite
+1017,2023-11-18,Marketing,office,604.12,conference travel
+1018,2024-10-12,Support,software,346.79,laptop
+1019,2024-11-23,Product,events,840.08,cloud overage
+1020,2023-11-27,Finance,office,3373.76,job board
+1021,2023-07-02,Sales,software,3116.55,client dinner
+1022,2024-04-25,Product,travel,253.14,cloud overage
+1023,2023-07-26,People,office,2515.28,job board
+1024,2023-12-29,Finance,travel,480.8,laptop
+1025,2024-10-24,Marketing,events,3311.95,client dinner
+1026,2024-02-16,Marketing,office,345.59,laptop
+1027,2023-11-17,Marketing,software,2389.96,client dinner
+1028,2024-04-29,Marketing,recruiting,2697.22,client dinner
+1029,2024-11-05,Marketing,software,2617.39,job board
+1030,2024-11-15,Product,travel,640.08,cloud overage
+1031,2023-07-24,Operations,cloud,3786.24,laptop
+1032,2024-10-08,Sales,recruiting,3687.06,cloud overage
+1033,2024-10-30,Operations,events,2862.23,job board
+1034,2024-04-12,Support,cloud,2637.62,client dinner
+1035,2024-09-13,People,software,2830.05,conference travel
+1036,2023-12-13,People,software,1617.93,team offsite
+1037,2023-10-15,Engineering,recruiting,236.0,laptop
+1038,2023-08-10,Support,events,3103.53,conference travel
+1039,2024-10-28,Product,recruiting,1494.42,cloud overage
+1040,2024-05-21,Engineering,events,72.87,conference travel
+1041,2024-01-21,Engineering,office,2517.43,laptop
+1042,2024-08-22,People,events,3363.44,cloud overage
+1043,2024-11-26,Engineering,recruiting,1376.26,client dinner
+1044,2023-07-16,Operations,software,3699.38,client dinner
+1045,2024-11-30,People,cloud,1210.3,conference travel
+1046,2024-07-19,People,events,1329.52,team offsite
+1047,2024-06-25,Finance,recruiting,3632.61,client dinner
+1048,2023-07-19,Marketing,recruiting,3234.62,job board
+1049,2024-07-05,Product,cloud,85.5,client dinner
+1050,2024-12-18,Product,cloud,3688.35,laptop
+1051,2023-07-18,Marketing,travel,1279.11,cloud overage
+1052,2024-08-01,Engineering,software,2113.54,conference travel
+1053,2024-06-17,People,training,2882.72,cloud overage
+1054,2023-12-26,Sales,cloud,2679.18,cloud overage
+1055,2023-11-01,Engineering,events,2506.2,job board
+1056,2023-07-30,Product,software,2928.64,client dinner
+1057,2024-02-15,Marketing,office,1714.35,laptop
+1058,2024-05-01,Support,events,3170.97,client dinner
+1059,2023-08-16,Marketing,software,3105.47,conference travel
+1060,2023-08-26,Engineering,events,3427.69,conference travel
+1061,2024-12-23,Sales,training,878.67,team offsite
+1062,2024-05-06,People,software,1842.54,cloud overage
+1063,2024-03-09,Finance,office,239.34,conference travel
+1064,2024-12-05,Finance,cloud,2301.26,laptop
+1065,2023-10-06,Finance,events,1389.62,client dinner
+1066,2024-07-17,Sales,office,238.2,team offsite
+1067,2024-03-22,Engineering,travel,2819.23,conference travel
+1068,2024-02-17,Operations,travel,3364.11,training course
+1069,2023-11-21,People,software,2180.82,training course
+1070,2024-11-17,Operations,cloud,1950.89,client dinner
+1071,2023-09-09,Operations,recruiting,3693.05,cloud overage
+1072,2024-05-22,People,events,2342.61,team offsite
+1073,2023-07-02,Finance,training,138.91,team offsite
+1074,2024-01-25,Marketing,software,1766.14,team offsite
+1075,2024-03-25,Operations,travel,1182.3,training course
+1076,2024-04-26,People,office,411.02,team offsite
+1077,2023-10-26,Finance,events,2985.11,team offsite
+1078,2024-02-12,Support,cloud,3467.7,training course
+1079,2024-11-27,Engineering,travel,3243.12,client dinner
+1080,2024-09-20,Marketing,cloud,3271.51,client dinner
+1081,2024-04-05,Sales,cloud,855.49,job board
+1082,2023-11-14,Marketing,travel,2181.44,team offsite
+1083,2024-02-06,People,recruiting,3865.54,team offsite
+1084,2024-06-24,Sales,travel,980.04,training course
+1085,2024-08-01,Engineering,cloud,1432.72,training course
+1086,2023-07-31,Marketing,recruiting,2948.63,team offsite
+1087,2024-04-11,Product,training,914.76,job board
+1088,2023-12-04,Sales,training,1950.65,team offsite
+1089,2024-08-03,Support,recruiting,1734.88,cloud overage
+1090,2024-08-17,Marketing,travel,3045.97,client dinner
+1091,2024-09-01,Sales,events,1700.68,client dinner
+1092,2024-04-21,Sales,recruiting,3079.4,job board
+1093,2024-10-29,Operations,recruiting,1361.3,training course
+1094,2023-09-27,Product,travel,1579.77,conference travel
+1095,2024-12-06,Product,events,2992.42,client dinner
+1096,2023-10-10,Marketing,software,3075.74,cloud overage
+1097,2023-10-06,Finance,software,2364.65,team offsite
+1098,2024-06-03,Sales,recruiting,3420.75,job board
+1099,2023-08-08,Engineering,recruiting,1520.73,training course
+1100,2024-11-04,Support,software,2037.06,cloud overage
+1101,2024-06-05,Operations,office,2257.91,team offsite
+1102,2024-09-06,Operations,travel,1692.75,training course
+1103,2023-11-18,People,events,3530.48,conference travel
+1104,2023-08-16,Product,travel,3496.02,conference travel
+1105,2024-05-24,Sales,recruiting,601.97,cloud overage
+1106,2024-10-13,Product,recruiting,2736.38,client dinner
+1107,2023-11-04,Marketing,travel,3816.7,conference travel
+1108,2024-06-06,Marketing,recruiting,2393.52,cloud overage
+1109,2023-12-28,Marketing,events,516.81,team offsite
+1110,2024-07-24,Product,training,1482.04,training course
+1111,2024-06-15,Finance,software,600.19,conference travel
+1112,2024-06-21,Marketing,training,65.92,cloud overage
+1113,2024-01-19,Support,training,3825.66,training course
+1114,2023-10-31,People,cloud,1780.27,job board
+1115,2023-08-31,Sales,events,2455.42,job board
+1116,2024-04-28,Engineering,cloud,2821.68,cloud overage
+1117,2023-12-29,People,software,74.9,client dinner
+1118,2023-08-18,Finance,cloud,2859.28,client dinner
+1119,2024-03-21,Support,events,1876.38,client dinner
+1120,2024-08-25,People,office,1539.56,client dinner
+1121,2024-04-21,Product,cloud,2052.32,cloud overage
+1122,2023-09-28,Product,office,1499.84,conference travel
+1123,2024-07-21,Engineering,software,1413.11,conference travel
+1124,2024-08-08,Sales,events,2955.2,client dinner
+1125,2024-04-24,Sales,training,2825.45,job board
+1126,2024-05-23,Engineering,software,2288.05,conference travel
+1127,2024-09-28,Engineering,office,105.62,job board
+1128,2023-12-20,Support,recruiting,1638.21,conference travel
+1129,2023-10-19,Marketing,events,2754.53,conference travel
+1130,2024-12-05,Product,events,3931.12,laptop
+1131,2024-06-19,Engineering,software,3992.52,job board
+1132,2024-02-01,People,office,3027.64,conference travel
+1133,2023-08-17,Marketing,software,2226.54,conference travel
+1134,2024-07-28,Marketing,training,3319.25,training course
+1135,2024-02-12,Sales,software,2264.01,laptop
+1136,2024-03-23,Finance,software,1528.75,training course
+1137,2023-09-04,Operations,recruiting,1104.02,training course
+1138,2023-09-19,Marketing,cloud,303.73,laptop
+1139,2024-02-04,People,office,1749.48,training course
+1140,2024-12-04,Sales,events,491.98,cloud overage
+1141,2024-06-18,Finance,travel,1722.92,job board
+1142,2024-03-11,Marketing,training,856.5,conference travel
+1143,2024-02-03,People,office,157.97,training course
+1144,2023-12-16,Finance,office,593.1,laptop
+1145,2023-10-07,People,events,3540.21,conference travel
+1146,2024-09-28,People,training,3919.86,job board
+1147,2023-12-24,Operations,travel,2282.32,cloud overage
+1148,2023-11-10,Engineering,training,813.85,laptop
+1149,2024-07-22,Engineering,travel,1669.31,training course
+1150,2023-07-06,Engineering,recruiting,166.07,cloud overage
+1151,2024-01-14,Finance,recruiting,2898.39,job board
+1152,2024-04-12,Engineering,office,465.6,training course
+1153,2024-07-09,Support,travel,406.94,job board
+1154,2023-11-16,Engineering,recruiting,85.73,cloud overage
+1155,2024-12-16,Support,recruiting,977.51,job board
+1156,2024-07-29,Sales,software,893.3,training course
+1157,2024-04-04,Sales,office,3799.98,team offsite
+1158,2024-11-04,Engineering,cloud,2874.6,cloud overage
+1159,2024-03-16,Marketing,training,2339.84,cloud overage
+1160,2023-07-30,Sales,travel,3786.9,conference travel
+1161,2023-07-26,People,cloud,1030.79,training course
+1162,2023-07-29,Marketing,travel,459.94,job board
+1163,2023-12-24,Support,cloud,1197.61,laptop
+1164,2023-10-20,Engineering,training,1642.01,team offsite
+1165,2024-08-23,Operations,training,2378.7,conference travel
+1166,2023-10-03,Engineering,events,2351.56,team offsite
+1167,2024-04-20,Operations,software,2034.43,cloud overage
+1168,2023-09-02,Sales,recruiting,1612.45,team offsite
+1169,2024-09-03,Sales,recruiting,3531.19,client dinner
+1170,2023-10-07,Product,training,2363.2,team offsite
+1171,2024-05-30,Support,events,2444.34,cloud overage
+1172,2023-10-05,Finance,training,2876.39,client dinner
+1173,2024-02-06,Operations,events,2722.45,client dinner
+1174,2024-07-29,Marketing,travel,3025.09,client dinner
+1175,2023-08-04,Product,travel,3954.79,training course
+1176,2024-12-09,Operations,events,2488.59,conference travel
+1177,2024-11-01,Engineering,training,1609.33,client dinner
+1178,2024-06-22,Operations,cloud,2355.31,team offsite
+1179,2024-03-17,Operations,software,671.09,team offsite
+1180,2024-10-19,People,travel,3347.77,conference travel
+1181,2024-04-29,People,software,1921.19,training course
+1182,2023-08-28,Engineering,recruiting,2618.76,training course
+1183,2024-06-09,People,travel,420.73,team offsite
+1184,2024-07-22,Engineering,office,860.62,team offsite
+1185,2024-01-19,Engineering,travel,1659.83,client dinner
+1186,2024-12-25,Marketing,software,2149.15,team offsite
+1187,2024-01-31,Operations,software,2890.48,client dinner
+1188,2024-09-21,People,travel,3459.43,client dinner
+1189,2024-06-25,People,training,2167.41,conference travel
+1190,2024-09-13,People,recruiting,3592.07,client dinner
+1191,2024-03-26,People,recruiting,2392.15,laptop
+1192,2023-10-27,Sales,office,145.76,cloud overage
+1193,2024-08-20,Support,events,2430.12,conference travel
+1194,2024-04-20,Engineering,training,2103.83,client dinner
+1195,2023-11-09,Operations,recruiting,2965.6,training course
+1196,2024-02-21,Support,software,749.91,team offsite
+1197,2024-01-21,Support,events,784.05,training course
+1198,2024-07-06,Marketing,recruiting,1264.67,team offsite
+1199,2024-09-25,Sales,travel,2037.74,laptop
+1200,2023-09-07,Marketing,software,839.75,laptop
+1201,2023-09-16,People,travel,2159.64,client dinner
+1202,2023-12-05,Support,training,2146.24,cloud overage
+1203,2024-04-10,Sales,software,2257.33,conference travel
+1204,2024-11-19,Engineering,software,3267.7,client dinner
+1205,2024-01-29,Sales,software,1528.15,cloud overage
+1206,2023-08-24,Marketing,cloud,656.36,conference travel
+1207,2023-10-22,Finance,cloud,3831.4,conference travel
+1208,2024-05-10,Sales,recruiting,2436.48,cloud overage
+1209,2024-07-22,People,software,3996.08,cloud overage
+1210,2024-12-30,Product,office,3062.88,job board
+1211,2024-05-08,Sales,travel,3671.22,job board
+1212,2024-08-24,Marketing,training,2942.98,client dinner
+1213,2023-11-28,Engineering,software,2151.32,client dinner
+1214,2024-07-28,People,travel,777.39,job board
+1215,2024-02-21,Finance,cloud,54.16,conference travel
+1216,2024-09-04,Finance,software,1350.45,team offsite
+1217,2024-12-01,Engineering,recruiting,1016.68,conference travel
+1218,2024-03-05,People,travel,153.39,team offsite
+1219,2023-07-12,Engineering,events,3239.72,cloud overage
+1220,2024-10-18,Product,events,1607.44,conference travel
+1221,2023-08-23,Operations,events,1580.2,client dinner
+1222,2024-08-17,Finance,cloud,287.69,team offsite
+1223,2024-01-20,Sales,training,2483.95,cloud overage
+1224,2023-12-09,Sales,cloud,2613.32,cloud overage
+1225,2023-09-08,Support,recruiting,3792.13,client dinner
+1226,2024-02-26,Marketing,training,1128.57,job board
+1227,2024-11-21,Support,office,1256.98,job board
+1228,2024-12-27,Engineering,travel,124.64,training course
+1229,2024-10-13,Operations,office,3377.18,team offsite
+1230,2024-09-07,Marketing,software,3661.99,client dinner
+1231,2024-06-04,Engineering,cloud,620.57,training course
+1232,2023-10-09,Marketing,events,3508.32,team offsite
+1233,2024-11-11,Sales,software,138.81,laptop
+1234,2024-10-06,People,recruiting,2534.34,client dinner
+1235,2024-06-10,Marketing,events,580.38,job board
+1236,2024-06-03,Support,travel,1567.53,client dinner
+1237,2023-10-04,Support,travel,3265.28,client dinner
+1238,2024-11-19,People,training,3992.73,team offsite
+1239,2024-08-06,Marketing,cloud,1389.64,cloud overage
+1240,2024-11-24,People,recruiting,2367.76,conference travel
+1241,2023-07-28,Operations,office,3233.91,conference travel
+1242,2024-01-28,Support,events,1681.17,team offsite
+1243,2024-06-26,Product,recruiting,593.27,client dinner
+1244,2023-11-13,Operations,recruiting,1643.33,laptop
+1245,2024-08-17,People,training,3839.79,job board
+1246,2024-11-29,Engineering,recruiting,918.19,client dinner
+1247,2023-10-26,Operations,cloud,499.07,team offsite
+1248,2024-11-02,Finance,events,1028.55,job board
+1249,2024-04-01,Marketing,events,973.22,laptop
+1250,2024-07-22,Engineering,software,2509.91,conference travel
+1251,2024-12-23,Sales,travel,3610.3,client dinner
+1252,2023-12-26,Product,travel,2674.77,team offsite
+1253,2024-12-05,Marketing,travel,3916.85,training course
+1254,2024-07-15,Product,software,705.37,conference travel
+1255,2023-07-14,Product,office,2266.46,laptop
+1256,2024-06-03,Product,events,3053.31,training course
+1257,2024-08-03,Operations,cloud,1080.75,client dinner
+1258,2024-06-14,Product,training,334.35,conference travel
+1259,2024-12-22,Support,recruiting,3597.09,training course
+1260,2024-01-04,Sales,events,555.01,conference travel
+1261,2024-06-05,People,cloud,3452.26,cloud overage
+1262,2024-05-20,Sales,software,2139.5,client dinner
+1263,2024-12-26,Finance,recruiting,231.02,client dinner
+1264,2023-12-02,Marketing,recruiting,202.67,conference travel
+1265,2024-06-24,Finance,software,1966.87,team offsite
+1266,2024-12-21,Support,office,108.08,laptop
+1267,2024-09-25,Sales,cloud,1692.39,training course
+1268,2024-02-26,Sales,travel,621.28,team offsite
+1269,2023-11-26,Marketing,office,938.31,client dinner
+1270,2024-06-11,Operations,events,382.58,team offsite
+1271,2024-06-07,Finance,events,830.82,conference travel
+1272,2023-07-24,Support,office,590.81,client dinner
+1273,2024-11-20,Operations,events,1307.32,conference travel
+1274,2024-07-06,Operations,software,3581.32,cloud overage
+1275,2023-11-16,Product,travel,2554.68,client dinner
+1276,2024-03-27,People,software,1802.54,job board
+1277,2024-07-16,Sales,travel,2816.84,conference travel
+1278,2024-11-26,Operations,recruiting,942.94,cloud overage
+1279,2024-02-07,Product,cloud,919.77,training course
+1280,2023-10-03,Support,software,1678.53,conference travel
+1281,2024-10-22,People,office,731.32,job board
+1282,2023-10-04,Operations,travel,2056.75,training course
+1283,2023-08-09,Operations,cloud,302.14,training course
+1284,2024-08-02,Operations,recruiting,2618.95,cloud overage
+1285,2023-09-03,Marketing,office,1158.03,team offsite
+1286,2024-08-14,Sales,office,104.78,conference travel
+1287,2023-11-19,Product,events,2571.14,cloud overage
+1288,2023-08-24,Marketing,software,1427.99,training course
+1289,2024-01-22,Finance,recruiting,540.01,training course
+1290,2023-07-21,Product,travel,1988.81,laptop
+1291,2024-09-06,Engineering,events,3763.86,job board
+1292,2024-09-06,Engineering,events,3857.69,laptop
+1293,2023-07-03,People,software,1808.3,job board
+1294,2023-08-10,Sales,travel,2521.14,job board
+1295,2024-08-12,People,recruiting,3590.66,client dinner
+1296,2023-11-19,Engineering,events,3910.13,team offsite
+1297,2024-05-15,Product,office,426.79,training course
+1298,2024-01-18,Product,cloud,3697.08,laptop
+1299,2023-09-01,People,cloud,3610.52,cloud overage
+1300,2024-03-23,Marketing,recruiting,248.37,laptop
+1301,2024-03-07,Operations,travel,2423.56,client dinner
+1302,2023-11-14,Engineering,travel,685.38,team offsite
+1303,2024-09-03,Sales,office,3143.19,job board
+1304,2024-03-16,Support,travel,1253.36,conference travel
+1305,2024-02-03,Marketing,cloud,1289.96,cloud overage
+1306,2024-02-23,Product,travel,2436.9,job board
+1307,2024-11-29,Finance,office,3032.16,laptop
+1308,2024-09-16,Finance,training,1855.55,laptop
+1309,2024-02-22,Marketing,cloud,2110.78,laptop
+1310,2024-11-17,Sales,software,2959.16,job board
+1311,2024-10-13,Marketing,travel,3461.76,laptop
+1312,2023-11-09,Product,travel,1304.01,job board
+1313,2023-09-19,Engineering,events,486.15,client dinner
+1314,2024-12-26,Finance,training,329.67,client dinner
+1315,2023-12-19,Product,cloud,2278.79,training course
+1316,2023-11-17,Marketing,recruiting,3403.75,conference travel
+1317,2024-11-16,Finance,recruiting,1975.71,client dinner
+1318,2024-12-08,Marketing,recruiting,3247.46,laptop
+1319,2024-06-02,Product,cloud,1076.8,team offsite
+1320,2024-01-28,People,training,2288.45,job board
+1321,2023-09-22,Product,office,1304.91,laptop
+1322,2023-07-03,Support,cloud,2510.79,team offsite
+1323,2024-06-25,People,software,298.81,laptop
+1324,2024-07-21,Finance,events,1470.77,job board
+1325,2024-12-10,Finance,office,368.35,cloud overage
+1326,2024-03-12,Marketing,recruiting,1958.83,training course
+1327,2024-10-12,Product,travel,1492.99,team offsite
+1328,2023-10-16,Operations,software,626.52,team offsite
+1329,2024-04-11,People,recruiting,41.23,training course
+1330,2023-11-02,Marketing,training,2103.3,team offsite
+1331,2023-12-27,Sales,travel,2823.15,client dinner
+1332,2024-05-10,Engineering,events,200.18,laptop
+1333,2024-05-21,Engineering,training,606.76,laptop
+1334,2024-12-28,Operations,office,496.58,cloud overage
+1335,2024-02-02,Product,cloud,2783.01,client dinner
+1336,2024-08-22,Engineering,recruiting,1989.48,training course
+1337,2024-05-20,People,software,1709.55,job board
+1338,2023-12-05,Sales,office,1250.07,laptop
+1339,2024-02-12,Product,training,3775.16,conference travel
+1340,2023-09-10,Product,events,3826.16,laptop
+1341,2024-09-02,Operations,travel,3204.3,team offsite
+1342,2024-10-11,Finance,office,2282.21,laptop
+1343,2024-01-19,People,office,2570.63,team offsite
+1344,2024-06-28,People,recruiting,2189.24,job board
+1345,2024-01-26,Product,travel,1766.57,team offsite
+1346,2023-07-06,Marketing,training,444.37,client dinner
+1347,2023-12-27,People,travel,882.98,training course
+1348,2024-08-15,Engineering,travel,3422.0,cloud overage
+1349,2024-08-03,Engineering,office,2278.07,laptop
+1350,2024-02-07,Engineering,software,1050.36,client dinner
+1351,2024-04-23,Support,cloud,778.95,cloud overage
+1352,2024-07-07,Support,software,3699.52,training course
+1353,2024-01-31,Finance,events,3878.57,team offsite
+1354,2023-07-07,Engineering,events,1097.16,client dinner
+1355,2024-01-02,Marketing,travel,3102.4,conference travel
+1356,2023-08-30,Support,recruiting,1113.15,conference travel
+1357,2024-05-29,Support,recruiting,2934.15,conference travel
+1358,2024-08-17,Finance,training,2567.42,training course
+1359,2024-02-27,Sales,training,3000.78,laptop
+1360,2023-10-14,Finance,training,409.15,cloud overage
+1361,2024-07-28,Support,recruiting,1246.29,client dinner
+1362,2024-01-22,Sales,software,756.42,client dinner
+1363,2024-02-03,Product,travel,3273.01,cloud overage
+1364,2024-11-07,Product,office,3500.48,cloud overage
+1365,2024-04-18,Product,cloud,540.11,cloud overage
+1366,2024-12-18,Support,recruiting,3551.11,job board
+1367,2023-10-31,Marketing,training,1950.7,conference travel
+1368,2024-09-22,Product,events,3260.6,training course
+1369,2024-02-10,Support,office,261.8,job board
+1370,2023-07-06,Support,recruiting,2733.28,job board
+1371,2024-12-29,Product,recruiting,1326.57,cloud overage
+1372,2024-10-16,Product,travel,1606.76,client dinner
+1373,2023-07-27,Finance,cloud,3885.91,conference travel
+1374,2023-10-04,Product,training,3564.62,cloud overage
+1375,2024-02-25,Product,recruiting,430.28,training course
+1376,2024-08-22,Product,software,202.22,cloud overage
+1377,2024-09-25,Sales,office,1017.24,team offsite
+1378,2023-07-02,Product,cloud,411.33,training course
+1379,2024-01-08,Product,travel,2291.73,conference travel
+1380,2024-06-07,Sales,office,679.37,client dinner
+1381,2024-05-11,Finance,travel,796.88,cloud overage
+1382,2024-09-09,Support,training,3779.83,client dinner
+1383,2024-08-25,Support,cloud,469.03,training course
+1384,2023-08-26,Sales,software,1813.58,team offsite
+1385,2023-08-23,Engineering,software,1148.78,cloud overage
+1386,2024-10-17,People,travel,3561.47,laptop
+1387,2023-07-18,Operations,office,289.57,conference travel
+1388,2024-11-07,Finance,cloud,1125.73,cloud overage
+1389,2023-07-09,Operations,software,2928.82,training course
+1390,2024-10-27,People,training,2430.8,training course
+1391,2024-04-25,Engineering,training,3771.67,conference travel
+1392,2024-11-01,Operations,office,3425.67,job board
+1393,2024-06-26,People,training,2381.49,laptop
+1394,2023-08-10,Sales,cloud,3522.26,conference travel
+1395,2024-07-15,People,office,1146.31,team offsite
+1396,2023-12-07,Operations,training,3972.43,client dinner
+1397,2023-08-26,Product,office,2140.27,team offsite
+1398,2024-11-20,Support,software,98.59,conference travel
+1399,2024-09-17,Marketing,recruiting,3089.46,cloud overage
+1400,2024-04-08,Marketing,cloud,1694.68,cloud overage
+1401,2024-04-17,Sales,software,1673.87,job board
+1402,2024-01-10,Engineering,office,2050.6,job board
+1403,2024-01-17,Operations,training,1443.22,job board
+1404,2024-11-28,Product,recruiting,1018.16,job board
+1405,2023-10-17,People,cloud,3472.25,laptop
+1406,2024-08-30,Engineering,cloud,3891.05,job board
+1407,2024-03-28,Finance,recruiting,1504.69,cloud overage
+1408,2023-12-26,Sales,cloud,3003.06,training course
+1409,2024-09-21,Engineering,recruiting,2708.7,cloud overage
+1410,2024-09-25,Engineering,events,1324.06,client dinner
+1411,2024-06-17,People,training,926.31,cloud overage
+1412,2024-02-20,Marketing,training,3149.61,laptop
+1413,2024-09-04,Operations,office,314.64,laptop
+1414,2024-10-26,Support,recruiting,557.46,conference travel
+1415,2023-10-08,Finance,software,2544.33,cloud overage
+1416,2023-10-22,Support,office,2069.25,training course
+1417,2023-08-04,Sales,events,1885.02,job board
+1418,2024-11-16,Product,office,3616.93,laptop
+1419,2023-07-24,Engineering,cloud,237.97,training course
+1420,2024-08-08,People,recruiting,1776.18,laptop
+1421,2023-12-07,Support,cloud,2002.35,laptop
+1422,2023-12-07,Marketing,training,2041.93,job board
+1423,2024-11-21,Finance,travel,1257.61,training course
+1424,2024-11-11,People,training,3091.07,team offsite
+1425,2023-11-25,Sales,training,953.52,job board
+1426,2023-12-15,Finance,travel,3126.19,team offsite
+1427,2024-01-13,Sales,recruiting,3910.3,job board
+1428,2024-07-12,Engineering,software,3107.32,conference travel
+1429,2024-02-19,Finance,training,3625.81,client dinner
+1430,2023-08-27,Marketing,recruiting,3169.84,training course
+1431,2024-09-16,Support,software,1060.17,team offsite
+1432,2023-12-21,Engineering,cloud,992.05,job board
+1433,2023-10-01,Sales,recruiting,3287.31,job board
+1434,2024-02-09,Marketing,office,2949.89,training course
+1435,2023-11-05,People,recruiting,37.47,team offsite
+1436,2024-02-22,Engineering,office,982.91,laptop
+1437,2024-05-20,Marketing,training,1355.21,cloud overage
+1438,2024-04-11,Finance,travel,3212.87,laptop
+1439,2024-07-05,Sales,events,543.39,conference travel
+1440,2023-09-17,Sales,training,3929.45,training course
+1441,2024-03-03,Support,travel,1007.14,laptop
+1442,2024-12-14,Product,cloud,1218.38,cloud overage
+1443,2024-12-04,Support,software,3429.8,laptop
+1444,2023-07-08,Operations,software,2353.86,job board
+1445,2024-02-06,People,cloud,2733.82,cloud overage
+1446,2024-11-12,Sales,cloud,3108.03,job board
+1447,2024-02-14,Sales,events,193.11,team offsite
+1448,2024-01-13,Marketing,cloud,759.47,conference travel
+1449,2024-01-29,Product,training,1313.81,laptop
+1450,2023-07-21,Operations,events,734.14,training course
+1451,2023-11-15,Product,events,1203.52,team offsite
+1452,2024-12-15,Finance,events,3919.73,laptop
+1453,2024-11-24,Engineering,travel,2439.8,team offsite
+1454,2024-07-30,Operations,training,3515.93,cloud overage
+1455,2023-10-26,Finance,office,2985.74,client dinner
+1456,2024-04-07,Sales,software,1185.65,training course
+1457,2024-11-28,People,events,3921.31,training course
+1458,2024-03-09,Engineering,recruiting,1370.04,cloud overage
+1459,2024-12-15,Support,software,98.02,cloud overage
+1460,2024-12-26,Finance,cloud,2946.74,client dinner
+1461,2024-01-15,People,travel,1159.42,conference travel
+1462,2024-05-01,Finance,cloud,3782.33,team offsite
+1463,2024-01-04,Support,events,2354.81,cloud overage
+1464,2023-08-31,People,events,891.81,laptop
+1465,2024-08-17,Finance,office,380.73,laptop
+1466,2024-01-05,Marketing,software,3904.9,laptop
+1467,2023-08-12,Support,cloud,2986.72,job board
+1468,2023-08-09,Sales,travel,3048.98,laptop
+1469,2024-11-03,Operations,recruiting,1889.27,cloud overage
+1470,2024-02-01,Operations,cloud,649.11,cloud overage
+1471,2024-04-24,Engineering,cloud,3826.99,laptop
+1472,2024-03-10,Marketing,recruiting,826.38,job board
+1473,2023-09-24,Finance,office,1448.22,cloud overage
+1474,2024-07-15,Sales,cloud,3669.54,training course
+1475,2024-09-26,Operations,events,200.06,laptop
+1476,2024-02-17,Marketing,recruiting,3238.55,team offsite
+1477,2024-01-23,Support,cloud,2504.32,cloud overage
+1478,2023-08-16,Product,travel,3349.85,conference travel
+1479,2024-12-05,Finance,events,1573.43,cloud overage
+1480,2024-04-07,Engineering,cloud,676.06,laptop
+1481,2023-10-23,Engineering,office,2093.11,laptop
+1482,2023-10-01,Finance,recruiting,1655.65,client dinner
+1483,2023-10-17,Support,recruiting,3493.5,job board
+1484,2024-06-23,Finance,events,3440.83,team offsite
+1485,2024-04-28,Sales,software,2294.47,conference travel
+1486,2023-07-15,Product,travel,1128.93,conference travel
+1487,2024-07-31,Engineering,travel,3061.85,conference travel
+1488,2023-10-19,Product,events,65.04,client dinner
+1489,2023-10-01,Engineering,recruiting,254.39,client dinner
+1490,2024-04-08,Sales,training,2181.96,job board
+1491,2024-08-18,Sales,recruiting,925.82,conference travel
+1492,2023-09-02,Finance,cloud,1565.4,cloud overage
+1493,2023-08-29,Operations,training,1137.87,team offsite
+1494,2024-11-16,People,recruiting,1890.87,cloud overage
+1495,2023-08-13,Support,recruiting,1786.66,team offsite
+1496,2024-01-06,People,training,3322.83,laptop
+1497,2024-08-18,Finance,travel,1105.61,laptop
+1498,2023-09-30,Support,recruiting,2307.83,training course
+1499,2024-01-18,Product,cloud,2757.15,laptop
+1500,2024-01-05,Sales,travel,62.42,conference travel
+1501,2023-12-10,Engineering,office,1197.16,job board
+1502,2024-08-08,Marketing,recruiting,647.9,conference travel
+1503,2023-08-19,Finance,events,2604.94,training course
+1504,2023-09-28,Finance,training,1234.58,client dinner
+1505,2024-08-20,Engineering,recruiting,1887.1,laptop
+1506,2024-07-04,Sales,cloud,1450.69,conference travel
+1507,2023-09-29,Finance,office,2565.72,client dinner
+1508,2023-09-12,Finance,events,3960.4,conference travel
+1509,2023-10-26,Product,software,1516.27,cloud overage
+1510,2023-11-25,Finance,software,1404.41,cloud overage
+1511,2024-07-10,Operations,cloud,3365.32,training course
+1512,2024-04-21,Marketing,travel,995.52,team offsite
+1513,2024-09-30,Engineering,software,3533.08,cloud overage
+1514,2024-09-12,Sales,travel,58.45,client dinner
+1515,2024-05-27,Engineering,office,3097.74,client dinner
+1516,2024-05-13,Product,travel,2293.5,conference travel
+1517,2024-07-23,Finance,cloud,351.02,job board
+1518,2024-07-30,Operations,travel,1599.29,cloud overage
+1519,2024-03-20,Marketing,travel,2412.0,conference travel
+1520,2024-08-13,Support,office,179.87,conference travel
+1521,2023-11-16,Engineering,travel,1202.61,conference travel
+1522,2024-08-04,Support,training,3770.1,cloud overage
+1523,2024-07-11,Sales,software,3624.27,team offsite
+1524,2024-02-09,People,travel,3766.65,laptop
+1525,2023-07-21,Engineering,travel,2856.6,training course
+1526,2024-08-09,Finance,cloud,2347.02,client dinner
+1527,2023-12-31,Support,training,1562.38,conference travel
+1528,2024-04-23,Marketing,recruiting,3636.45,team offsite
+1529,2023-12-31,People,cloud,3415.88,job board
+1530,2024-11-30,Finance,travel,3768.15,training course
+1531,2024-07-04,Sales,office,1996.82,job board
+1532,2024-08-11,Product,events,3708.05,client dinner
+1533,2024-09-25,Product,recruiting,1967.23,conference travel
+1534,2024-10-27,People,training,639.4,cloud overage
+1535,2024-02-02,Sales,office,1748.22,client dinner
+1536,2024-12-03,Engineering,cloud,2249.3,client dinner
+1537,2024-07-23,Support,cloud,2048.52,training course
+1538,2024-05-08,Support,training,81.66,client dinner
+1539,2024-10-05,Marketing,travel,348.7,client dinner
+1540,2024-12-19,People,events,1753.41,conference travel
+1541,2023-09-11,Marketing,office,1546.41,training course
+1542,2024-05-24,Engineering,training,1259.62,cloud overage
+1543,2024-11-16,Engineering,software,1180.34,job board
+1544,2024-11-10,Engineering,events,136.91,laptop
+1545,2024-11-15,Sales,software,3777.22,job board
+1546,2023-09-19,People,events,2192.96,job board
+1547,2024-02-25,Engineering,events,313.23,laptop
+1548,2023-11-08,Product,recruiting,2692.44,laptop
+1549,2024-12-31,Operations,office,3896.98,conference travel
+1550,2024-03-28,Marketing,travel,2822.96,team offsite
+1551,2023-07-30,People,events,888.31,training course
+1552,2023-09-13,Support,travel,999.84,client dinner
+1553,2024-07-01,Finance,training,1103.91,client dinner
+1554,2023-11-28,Product,events,441.23,training course
+1555,2023-09-19,Sales,travel,1297.0,client dinner
+1556,2024-12-16,Sales,events,865.82,job board
+1557,2024-09-04,Sales,events,3756.98,job board
+1558,2024-01-09,People,software,2184.54,cloud overage
+1559,2023-12-30,Product,training,3051.64,job board
+1560,2024-09-20,Product,cloud,1869.92,conference travel
+1561,2023-08-08,Operations,cloud,2119.21,laptop
+1562,2024-12-09,Engineering,cloud,3638.01,cloud overage
+1563,2024-12-20,Marketing,recruiting,2741.12,team offsite
+1564,2024-08-25,Product,recruiting,3512.19,cloud overage
+1565,2024-05-23,People,recruiting,2660.42,laptop
+1566,2024-12-29,Operations,recruiting,881.96,laptop
+1567,2023-12-18,Support,events,2904.44,team offsite
+1568,2023-12-26,Finance,training,2983.16,laptop
+1569,2024-09-26,People,office,3537.19,team offsite
+1570,2024-02-28,Support,office,851.29,team offsite
+1571,2023-10-10,Marketing,events,602.98,team offsite
+1572,2024-02-28,Operations,travel,1633.42,team offsite
+1573,2024-07-12,Marketing,recruiting,1518.69,team offsite
+1574,2024-06-21,Engineering,events,3407.85,job board
+1575,2023-12-18,Finance,software,2621.8,client dinner
+1576,2024-02-17,Operations,office,2025.38,laptop
+1577,2023-11-04,Operations,cloud,3360.02,training course
+1578,2023-11-06,Sales,software,3061.99,laptop
+1579,2024-10-28,Operations,office,2864.9,client dinner
+1580,2024-11-12,Marketing,software,293.78,client dinner
+1581,2024-07-23,Operations,office,1191.1,training course
+1582,2024-09-15,Engineering,training,3298.73,conference travel
+1583,2024-07-15,People,travel,1293.15,team offsite
+1584,2023-10-15,Engineering,recruiting,3971.87,cloud overage
+1585,2023-10-03,Support,office,302.56,laptop
+1586,2023-12-16,Finance,office,1422.51,client dinner
+1587,2024-10-26,Support,recruiting,40.73,team offsite
+1588,2024-09-17,Engineering,software,3020.25,laptop
+1589,2024-07-06,Finance,software,3779.86,conference travel
+1590,2023-08-05,Sales,cloud,455.31,conference travel
+1591,2024-03-09,Operations,recruiting,2097.5,job board
+1592,2024-01-24,Marketing,cloud,3280.25,laptop
+1593,2024-07-13,Operations,cloud,3538.18,cloud overage
+1594,2024-10-01,Sales,events,1779.73,client dinner
+1595,2024-05-21,Operations,events,785.3,conference travel
+1596,2024-11-06,Marketing,travel,286.44,client dinner
+1597,2024-03-14,Support,travel,3409.58,cloud overage
+1598,2023-11-02,Product,travel,1395.1,client dinner
+1599,2024-03-15,Operations,events,236.71,client dinner
+1600,2023-12-10,People,events,1129.84,job board
+1601,2023-10-21,Sales,events,2744.7,client dinner
+1602,2024-12-01,Sales,travel,3255.93,laptop
+1603,2024-05-14,Marketing,cloud,3500.05,client dinner
+1604,2024-06-21,Product,recruiting,3758.53,training course
+1605,2024-03-05,Operations,events,391.71,training course
+1606,2024-03-05,Product,training,2838.52,client dinner
+1607,2024-01-06,Sales,cloud,53.62,training course
+1608,2024-07-08,Support,recruiting,1429.49,client dinner
+1609,2023-08-02,Operations,events,1543.14,team offsite
+1610,2024-09-05,Product,cloud,157.73,cloud overage
+1611,2024-03-20,Sales,travel,2784.15,team offsite
+1612,2023-11-18,Operations,training,3793.92,team offsite
+1613,2024-01-12,Marketing,recruiting,779.26,laptop
+1614,2024-12-25,Sales,recruiting,976.93,team offsite
+1615,2024-10-10,People,software,2074.9,training course
+1616,2024-09-03,Operations,recruiting,1754.17,training course
+1617,2024-09-03,People,training,83.7,client dinner
+1618,2024-10-03,People,travel,2294.78,client dinner
+1619,2024-04-07,Marketing,cloud,3901.27,cloud overage
+1620,2023-08-06,Finance,recruiting,1408.19,conference travel
+1621,2024-08-21,Sales,recruiting,2652.4,conference travel
+1622,2024-05-13,Marketing,events,2446.33,client dinner
+1623,2024-03-21,Product,recruiting,1084.86,conference travel
+1624,2024-06-17,Support,software,1708.54,laptop
+1625,2023-10-31,Operations,travel,107.53,job board
+1626,2023-07-16,Sales,cloud,494.2,training course
+1627,2023-08-27,Marketing,recruiting,2480.61,team offsite
+1628,2023-10-14,Product,training,1574.44,laptop
+1629,2024-01-12,Product,events,2442.96,conference travel
+1630,2023-12-04,Engineering,office,3488.56,laptop
+1631,2024-10-01,Support,events,888.08,laptop
+1632,2023-10-29,Finance,training,1338.15,conference travel
+1633,2023-11-04,Engineering,travel,1719.41,cloud overage
+1634,2023-10-04,People,software,2216.14,training course
+1635,2023-08-09,Sales,recruiting,871.29,client dinner
+1636,2024-08-01,People,software,1781.99,team offsite
+1637,2024-12-22,Finance,recruiting,1576.15,laptop
+1638,2024-02-21,Sales,training,3749.17,team offsite
+1639,2023-12-05,Support,recruiting,1042.8,team offsite
+1640,2023-09-20,Finance,cloud,310.18,client dinner
+1641,2023-10-07,Engineering,cloud,1471.8,job board
+1642,2024-09-23,Finance,training,2389.79,client dinner
+1643,2024-11-24,Finance,cloud,816.31,team offsite
+1644,2024-10-03,Sales,travel,283.33,conference travel
+1645,2024-03-28,Product,office,2567.66,team offsite
+1646,2024-10-14,Marketing,travel,503.21,client dinner
+1647,2023-08-09,Finance,recruiting,2982.42,client dinner
+1648,2023-11-17,Product,travel,1913.39,team offsite
+1649,2024-09-14,People,cloud,1917.82,team offsite
+1650,2024-05-03,Product,recruiting,44.34,team offsite
+1651,2024-01-10,Marketing,office,2993.79,job board
+1652,2024-09-08,Operations,recruiting,1465.88,conference travel
+1653,2024-08-15,Engineering,events,1650.52,conference travel
+1654,2024-11-20,Sales,travel,661.46,training course
+1655,2024-06-25,Marketing,cloud,1426.47,conference travel
+1656,2023-12-20,Operations,training,1153.72,client dinner
+1657,2023-12-27,Support,events,3095.75,job board
+1658,2024-12-11,People,software,1774.79,team offsite
+1659,2023-12-29,Product,events,2079.46,client dinner
+1660,2024-03-22,Operations,recruiting,3671.71,cloud overage
+1661,2024-01-03,Marketing,office,2284.05,laptop
+1662,2023-12-14,Marketing,events,1748.28,job board
+1663,2024-06-18,Support,office,1126.72,job board
+1664,2024-12-24,People,events,1576.36,laptop
+1665,2024-08-05,Operations,training,2015.63,cloud overage
+1666,2024-12-25,Finance,recruiting,2718.05,training course
+1667,2024-02-03,Marketing,cloud,3796.73,cloud overage
+1668,2024-10-01,Support,software,3484.57,client dinner
+1669,2023-09-28,Engineering,software,724.8,training course
+1670,2024-10-12,Support,recruiting,1181.05,conference travel
+1671,2024-02-13,Marketing,office,893.84,cloud overage
+1672,2024-10-27,People,training,664.6,team offsite
+1673,2023-07-31,Engineering,office,709.63,team offsite
+1674,2024-01-06,Support,training,2122.45,client dinner
+1675,2024-10-15,Engineering,events,651.92,team offsite
+1676,2023-12-20,Product,travel,2695.33,training course
+1677,2023-07-14,Operations,travel,1814.49,client dinner
+1678,2024-04-07,People,events,2632.66,training course
+1679,2023-12-02,Engineering,recruiting,3219.58,training course
+1680,2024-06-27,Engineering,software,1544.86,training course
+1681,2024-02-25,Sales,travel,2492.22,job board
+1682,2024-11-27,Sales,events,1472.01,client dinner
+1683,2023-08-06,Product,recruiting,205.14,team offsite
+1684,2024-01-25,Operations,software,3576.49,laptop
+1685,2024-02-04,Marketing,recruiting,2533.52,team offsite
+1686,2024-09-21,Engineering,software,2152.39,team offsite
+1687,2023-07-25,Sales,recruiting,1601.63,training course
+1688,2023-09-08,People,events,2007.88,cloud overage
+1689,2023-08-04,People,software,2990.7,client dinner
+1690,2024-11-04,Marketing,office,1304.03,conference travel
+1691,2023-07-18,People,office,695.79,training course
+1692,2024-07-30,Support,cloud,2799.51,team offsite
+1693,2024-07-09,Engineering,training,2998.5,laptop
+1694,2024-09-04,Marketing,office,1334.06,conference travel
+1695,2023-09-27,Sales,travel,826.23,client dinner
+1696,2024-05-14,Engineering,office,1392.39,laptop
+1697,2023-07-20,Support,office,518.59,conference travel
+1698,2024-04-16,Engineering,travel,3572.04,laptop
+1699,2024-05-15,People,office,2628.61,client dinner
+1700,2023-11-19,Engineering,recruiting,1435.73,team offsite
+1701,2023-10-22,Support,events,2678.39,team offsite
+1702,2024-07-08,Support,training,3749.52,conference travel
+1703,2023-09-09,People,cloud,3541.75,laptop
+1704,2023-10-19,Finance,recruiting,757.28,cloud overage
+1705,2023-12-08,People,cloud,1961.05,client dinner
+1706,2023-08-26,Support,office,1527.88,conference travel
+1707,2023-11-29,Marketing,recruiting,2048.04,training course
+1708,2024-01-17,Sales,cloud,3323.68,client dinner
+1709,2024-12-12,Operations,events,276.93,cloud overage
+1710,2024-04-02,Product,office,2493.17,training course
+1711,2024-10-13,People,events,3451.06,client dinner
+1712,2023-09-05,People,software,3108.06,team offsite
+1713,2023-11-08,Marketing,travel,162.92,job board
+1714,2024-02-21,People,software,1916.73,laptop
+1715,2024-10-31,Finance,training,846.79,client dinner
+1716,2024-10-13,Operations,office,766.07,laptop
+1717,2024-09-07,Operations,cloud,1468.0,laptop
+1718,2024-06-16,Product,events,3655.31,job board
+1719,2023-09-03,Sales,training,1358.92,laptop
+1720,2024-11-02,Marketing,travel,3361.23,team offsite
+1721,2024-05-13,Support,events,940.69,job board
+1722,2024-01-27,Marketing,events,781.62,training course
+1723,2024-01-26,Engineering,office,3731.23,training course
+1724,2024-05-08,Marketing,cloud,2061.27,client dinner
+1725,2023-07-18,Marketing,cloud,2649.71,training course
+1726,2024-02-17,Sales,software,3021.38,team offsite
+1727,2023-09-25,Engineering,events,3222.84,laptop
+1728,2024-05-23,People,office,1538.25,cloud overage
+1729,2024-04-15,Product,office,435.51,training course
+1730,2024-02-01,Engineering,software,2223.61,cloud overage
+1731,2024-10-01,People,travel,76.66,laptop
+1732,2023-10-19,People,training,2165.54,laptop
+1733,2024-03-30,Sales,cloud,992.37,job board
+1734,2024-11-23,Finance,training,2472.09,job board
+1735,2023-08-04,Product,office,3957.34,job board
+1736,2023-12-28,Marketing,travel,527.16,team offsite
+1737,2024-07-10,Marketing,cloud,3819.37,laptop
+1738,2024-03-06,People,cloud,3894.46,laptop
+1739,2023-07-02,Support,recruiting,347.19,team offsite
+1740,2023-10-09,Support,recruiting,311.72,job board
+1741,2024-07-13,People,office,3330.0,laptop
+1742,2024-09-10,Finance,travel,3753.76,client dinner
+1743,2023-08-25,Sales,software,354.93,training course
+1744,2024-05-18,Sales,software,2351.0,job board
+1745,2023-11-08,Operations,software,3312.9,training course
+1746,2024-08-10,Marketing,events,1831.24,client dinner
+1747,2024-05-27,Finance,events,3097.29,cloud overage
+1748,2023-10-25,Finance,office,1849.23,laptop
+1749,2024-06-27,Finance,software,2404.45,client dinner
+1750,2024-03-09,Product,training,2962.4,client dinner
+1751,2024-04-08,Operations,events,2399.36,cloud overage
+1752,2024-04-26,People,events,3384.48,job board
+1753,2023-07-19,Finance,software,2110.37,job board
+1754,2023-12-04,Engineering,software,2141.72,client dinner
+1755,2023-12-08,Sales,software,589.72,conference travel
+1756,2024-01-25,Operations,training,3851.35,team offsite
+1757,2024-01-26,Operations,events,886.3,training course
+1758,2024-05-29,People,recruiting,159.17,client dinner
+1759,2024-05-04,Marketing,training,2890.81,cloud overage
+1760,2023-11-08,Sales,travel,809.75,laptop
+1761,2024-02-15,Support,office,1574.74,job board
+1762,2024-09-15,Engineering,software,2185.58,job board
+1763,2024-02-23,Engineering,training,659.82,job board
+1764,2024-03-06,Engineering,office,2538.52,cloud overage
+1765,2024-02-03,Product,office,1071.79,conference travel
+1766,2023-10-20,Sales,cloud,2337.03,client dinner
+1767,2024-06-07,Finance,training,2166.87,job board
+1768,2024-10-08,Engineering,events,2895.58,laptop
+1769,2024-12-31,Support,office,258.47,job board
+1770,2024-08-19,Sales,cloud,421.71,laptop
+1771,2024-12-10,Marketing,office,1394.49,training course
+1772,2024-11-05,Operations,recruiting,1807.3,job board
+1773,2024-04-19,Finance,training,3412.49,job board
+1774,2024-09-19,Sales,events,953.49,laptop
+1775,2023-12-05,Product,office,1927.63,laptop
+1776,2024-07-02,People,training,1311.86,job board
+1777,2024-02-20,Sales,travel,3639.27,job board
+1778,2024-08-23,Marketing,events,2924.68,conference travel
+1779,2024-01-10,Support,recruiting,1019.68,conference travel
+1780,2024-11-16,Operations,cloud,3540.32,job board
+1781,2024-08-08,Finance,travel,2469.45,cloud overage
+1782,2024-09-27,Engineering,office,3214.31,conference travel
+1783,2024-07-01,Engineering,training,924.79,cloud overage
+1784,2024-04-09,Support,office,1438.35,job board
+1785,2023-09-30,Support,office,1898.27,cloud overage
+1786,2024-07-28,People,cloud,3051.26,client dinner
+1787,2024-08-23,Engineering,travel,2258.65,job board
+1788,2024-01-07,Support,recruiting,984.56,cloud overage
+1789,2023-12-08,Finance,office,2734.77,conference travel
+1790,2023-07-05,Product,recruiting,2887.65,conference travel
+1791,2023-08-29,Product,cloud,3870.06,client dinner
+1792,2023-07-18,Marketing,office,753.04,training course
+1793,2024-08-26,Support,travel,2335.47,laptop
+1794,2024-02-05,Product,office,2544.67,cloud overage
+1795,2023-12-03,Product,recruiting,3885.74,team offsite
+1796,2024-07-16,Marketing,travel,431.49,cloud overage
+1797,2024-02-22,Finance,recruiting,116.32,team offsite
+1798,2024-11-11,Marketing,travel,944.04,team offsite
+1799,2024-03-02,People,training,3917.26,team offsite
+1800,2023-08-29,People,training,1074.87,cloud overage
+1801,2024-10-21,Support,recruiting,3445.87,cloud overage
+1802,2023-07-02,Engineering,travel,3854.96,client dinner
+1803,2024-06-30,Operations,events,2058.5,conference travel
+1804,2024-03-06,Marketing,office,1317.12,conference travel
+1805,2024-08-14,Sales,events,3028.06,team offsite
+1806,2023-10-03,People,travel,3615.47,conference travel
+1807,2024-03-20,Finance,recruiting,3204.81,cloud overage
+1808,2024-01-03,Marketing,software,1549.35,client dinner
+1809,2024-07-20,Operations,office,3499.51,team offsite
+1810,2023-09-09,Product,events,1324.05,client dinner
+1811,2023-08-15,Sales,travel,473.03,cloud overage
+1812,2024-04-25,Engineering,travel,138.33,job board
+1813,2023-09-28,Operations,recruiting,1914.66,team offsite
+1814,2024-09-30,People,cloud,1810.68,job board
+1815,2023-07-16,Engineering,software,47.16,team offsite
+1816,2024-09-23,Marketing,cloud,3085.44,job board
+1817,2024-05-14,Engineering,software,3155.63,team offsite
+1818,2024-06-17,Finance,events,3555.76,conference travel
+1819,2023-09-13,Marketing,recruiting,3546.09,training course
+1820,2024-05-26,Finance,training,174.61,cloud overage
+1821,2023-09-04,Support,office,1544.93,cloud overage
+1822,2024-11-17,Sales,travel,845.97,client dinner
+1823,2023-08-12,People,cloud,2746.32,cloud overage
+1824,2024-04-03,Marketing,recruiting,1563.73,job board
+1825,2023-12-20,Marketing,events,3389.04,training course
+1826,2024-09-04,Operations,events,1583.81,cloud overage
+1827,2024-09-06,Finance,events,447.42,conference travel
+1828,2024-09-03,Sales,events,2604.99,client dinner
+1829,2024-09-08,Support,cloud,3365.42,laptop
+1830,2024-11-15,Support,travel,1407.75,team offsite
+1831,2023-10-11,Marketing,cloud,1572.62,job board
+1832,2024-02-12,Product,events,2159.14,conference travel
+1833,2023-07-01,Engineering,events,891.7,conference travel
+1834,2024-05-22,Marketing,cloud,3881.11,client dinner
+1835,2024-03-03,Support,travel,3461.57,job board
+1836,2024-03-13,Support,cloud,1513.74,conference travel
+1837,2024-09-06,Product,recruiting,579.87,conference travel
+1838,2024-12-14,Finance,training,3173.03,job board
+1839,2024-01-26,Sales,recruiting,3125.31,laptop
+1840,2024-02-24,Finance,recruiting,2140.7,conference travel
+1841,2024-12-17,Engineering,office,2103.51,cloud overage
+1842,2024-06-20,Marketing,cloud,1928.49,training course
+1843,2024-01-11,Sales,recruiting,2281.26,training course
+1844,2024-02-11,Engineering,recruiting,2328.73,conference travel
+1845,2024-12-11,Sales,events,545.0,training course
+1846,2023-09-29,Engineering,cloud,689.56,conference travel
+1847,2024-02-17,Operations,cloud,2647.48,conference travel
+1848,2024-01-02,Finance,training,811.69,job board
+1849,2023-07-15,Finance,software,1037.17,training course
+1850,2024-02-21,Product,office,3478.05,conference travel
+1851,2023-12-12,Engineering,training,1332.95,training course
+1852,2023-09-20,Operations,cloud,3811.5,conference travel
+1853,2024-02-12,Operations,software,829.38,client dinner
+1854,2024-07-23,Marketing,recruiting,1197.5,client dinner
+1855,2023-11-15,Engineering,software,927.56,conference travel
+1856,2024-06-13,Marketing,events,3350.14,laptop
+1857,2023-12-12,Engineering,cloud,50.02,training course
+1858,2024-02-13,Sales,training,2510.9,cloud overage
+1859,2023-10-12,Sales,cloud,2934.25,team offsite
+1860,2024-06-25,Finance,software,2179.82,conference travel
+1861,2024-03-14,Product,events,3489.77,conference travel
+1862,2023-12-04,People,training,3976.1,client dinner
+1863,2023-09-23,Operations,software,1662.84,laptop
+1864,2024-04-23,Engineering,events,263.6,job board
+1865,2024-08-13,Support,travel,2372.76,laptop
+1866,2024-10-03,Marketing,events,2440.62,training course
+1867,2023-08-15,Marketing,training,442.36,job board
+1868,2023-11-14,Operations,events,2294.49,conference travel
+1869,2024-02-25,Support,software,1624.64,training course
+1870,2023-12-24,Marketing,events,2860.48,conference travel
+1871,2023-10-09,People,training,613.56,cloud overage
+1872,2024-10-25,People,software,1559.89,cloud overage
+1873,2024-08-31,Engineering,travel,3359.46,training course
+1874,2024-01-15,Support,events,3281.08,conference travel
+1875,2023-07-25,Finance,recruiting,2118.51,cloud overage
+1876,2024-03-04,Engineering,training,3977.8,client dinner
+1877,2023-10-10,Marketing,cloud,2570.28,client dinner
+1878,2023-10-28,Support,training,1903.57,team offsite
+1879,2024-08-30,Finance,events,1420.26,team offsite
+1880,2024-08-06,Operations,recruiting,701.94,cloud overage
+1881,2024-06-26,Operations,training,1726.41,training course
+1882,2024-04-09,Support,cloud,2078.38,cloud overage
+1883,2024-02-19,People,events,2110.44,laptop
+1884,2024-12-30,Engineering,software,661.38,cloud overage
+1885,2023-08-13,Product,office,208.64,conference travel
+1886,2024-01-30,Engineering,travel,1495.37,job board
+1887,2024-12-12,People,software,1579.85,team offsite
+1888,2024-01-31,Engineering,travel,1944.46,client dinner
+1889,2024-10-03,Support,cloud,2703.45,team offsite
+1890,2024-02-03,Operations,events,2030.88,laptop
+1891,2023-09-22,Finance,events,3877.66,job board
+1892,2024-12-28,Support,cloud,228.16,job board
+1893,2024-05-17,Marketing,events,1416.31,team offsite
+1894,2024-08-01,Sales,travel,939.44,job board
+1895,2023-11-23,Engineering,travel,827.8,cloud overage
+1896,2024-08-29,Support,recruiting,268.46,laptop
+1897,2023-07-03,Finance,training,3140.15,team offsite
+1898,2023-12-02,Engineering,cloud,1034.1,training course
+1899,2024-03-20,Support,software,2184.28,cloud overage
+1900,2024-12-04,Operations,events,1407.61,laptop
+1901,2024-11-30,Finance,software,2423.24,laptop
+1902,2023-09-03,Engineering,software,987.56,client dinner
+1903,2024-11-02,Engineering,software,3093.91,laptop
+1904,2024-11-22,Support,office,2911.14,job board
+1905,2024-08-15,Engineering,cloud,1196.11,training course
+1906,2024-04-11,Operations,software,598.41,laptop
+1907,2023-08-03,Finance,training,310.65,job board
+1908,2023-08-02,Engineering,recruiting,3756.1,job board
+1909,2023-07-30,Product,events,209.89,laptop
+1910,2024-10-01,Operations,events,2727.65,client dinner
+1911,2024-09-27,Sales,cloud,2746.24,conference travel
+1912,2024-08-28,Marketing,software,3112.74,laptop
+1913,2024-12-30,Product,events,2108.49,job board
+1914,2023-11-18,Support,events,803.7,training course
+1915,2023-12-12,Sales,software,1093.88,client dinner
+1916,2023-11-17,Product,events,1071.11,training course
+1917,2023-11-07,Engineering,recruiting,3802.26,laptop
+1918,2024-05-15,Marketing,cloud,2421.49,job board
+1919,2023-09-18,Product,software,2622.23,job board
+1920,2024-12-21,Marketing,recruiting,2243.51,job board
+1921,2024-08-09,Operations,office,2852.9,training course
+1922,2024-03-24,Sales,software,3947.63,conference travel
+1923,2023-07-25,Product,events,3421.77,client dinner
+1924,2023-11-19,Product,office,2886.97,training course
+1925,2023-09-02,Engineering,software,740.18,training course
+1926,2024-03-28,Sales,travel,1249.87,team offsite
+1927,2024-10-30,Operations,office,977.64,training course
+1928,2023-10-25,People,events,2470.84,cloud overage
+1929,2024-05-28,Engineering,recruiting,3827.12,conference travel
+1930,2023-09-11,Finance,events,1474.72,training course
+1931,2023-12-28,Finance,cloud,1673.45,training course
+1932,2024-05-27,Sales,recruiting,2972.68,team offsite
+1933,2024-07-07,Support,travel,1542.39,job board
+1934,2023-09-19,Marketing,travel,440.14,cloud overage
+1935,2024-01-28,Operations,training,3348.91,client dinner
+1936,2023-08-16,Sales,software,2913.65,training course
+1937,2024-04-11,People,events,437.37,job board
+1938,2023-09-03,Sales,training,3214.21,training course
+1939,2024-03-28,Engineering,office,1155.75,client dinner
+1940,2023-08-27,People,recruiting,2407.78,conference travel
+1941,2024-08-21,Engineering,travel,3493.12,conference travel
+1942,2023-12-18,Product,training,1983.09,laptop
+1943,2024-09-23,Marketing,travel,988.07,team offsite
+1944,2024-09-10,Finance,travel,2685.97,client dinner
+1945,2024-12-08,Finance,travel,3555.62,client dinner
+1946,2023-09-26,Finance,travel,778.69,client dinner
+1947,2023-12-03,Engineering,software,1315.26,training course
+1948,2024-12-24,Marketing,recruiting,425.48,conference travel
+1949,2024-06-20,Engineering,office,2065.59,job board
+1950,2024-06-26,People,office,221.9,conference travel
+1951,2024-03-22,Engineering,software,1438.62,conference travel
+1952,2024-11-01,Sales,recruiting,2349.66,laptop
+1953,2024-08-10,Marketing,training,481.01,laptop
+1954,2024-04-20,Sales,cloud,3549.7,conference travel
+1955,2023-09-21,Support,travel,2524.86,laptop
+1956,2023-08-18,Operations,cloud,2014.47,laptop
+1957,2024-12-31,Product,office,3525.66,conference travel
+1958,2024-01-19,Engineering,events,838.51,laptop
+1959,2023-09-30,Product,travel,1325.2,training course
+1960,2024-02-01,Product,cloud,1908.88,training course
+1961,2024-07-20,Marketing,travel,742.92,job board
+1962,2024-10-07,Support,recruiting,2812.55,team offsite
+1963,2024-08-04,People,cloud,596.45,client dinner
+1964,2024-06-13,Product,recruiting,669.55,team offsite
+1965,2024-11-29,Marketing,software,185.7,cloud overage
+1966,2024-02-12,Sales,software,1853.17,client dinner
+1967,2024-10-24,Operations,recruiting,1048.55,laptop
+1968,2024-04-13,Marketing,recruiting,1702.97,cloud overage
+1969,2023-10-20,Sales,training,666.8,cloud overage
+1970,2023-09-02,Support,travel,104.25,training course
+1971,2024-01-10,Operations,events,535.74,job board
+1972,2023-09-08,Operations,office,2686.5,job board
+1973,2023-10-25,Engineering,cloud,2778.64,team offsite
+1974,2024-04-23,Product,recruiting,1422.56,cloud overage
+1975,2023-07-28,Product,software,3589.49,job board
+1976,2024-02-09,Marketing,travel,482.9,client dinner
+1977,2024-07-08,Sales,office,1692.22,cloud overage
+1978,2024-03-23,Finance,recruiting,2279.3,training course
+1979,2023-08-05,People,events,2466.71,team offsite
+1980,2024-06-17,Marketing,software,429.68,job board
+1981,2023-11-28,Engineering,software,745.39,job board
+1982,2024-03-05,Operations,software,1055.0,conference travel
+1983,2023-07-18,Finance,recruiting,2068.34,training course
+1984,2023-08-19,People,events,3295.77,job board
+1985,2024-02-25,People,travel,1309.74,laptop
+1986,2024-12-15,Operations,travel,2793.74,conference travel
+1987,2023-07-02,Marketing,software,2856.34,cloud overage
+1988,2024-08-13,Engineering,cloud,950.4,training course
+1989,2024-03-11,Finance,events,2711.78,conference travel
+1990,2024-03-30,Finance,office,834.39,job board
+1991,2024-05-21,Sales,cloud,807.87,conference travel
+1992,2024-11-27,Marketing,software,3551.02,team offsite
+1993,2024-01-15,Support,travel,3617.05,team offsite
+1994,2024-06-17,Engineering,travel,2295.03,cloud overage
+1995,2023-07-25,Product,recruiting,3219.98,client dinner
+1996,2024-05-25,Marketing,cloud,866.95,team offsite
+1997,2024-10-15,Product,training,598.73,job board
+1998,2024-10-27,People,recruiting,2652.05,training course
+1999,2024-11-27,Support,recruiting,2504.26,team offsite
+2000,2024-09-23,Product,cloud,3664.25,team offsite
+2001,2024-01-10,Sales,recruiting,97.98,job board
+2002,2024-01-14,Product,training,3935.84,team offsite
+2003,2024-05-18,Sales,software,3396.98,laptop
+2004,2024-06-26,Support,training,3655.94,job board
+2005,2024-09-09,Operations,cloud,384.68,conference travel
+2006,2023-09-18,Support,software,3861.46,job board
+2007,2024-02-26,Engineering,recruiting,2372.24,team offsite
+2008,2024-12-22,People,training,2988.96,team offsite
+2009,2024-03-19,People,events,620.63,training course
+2010,2023-12-20,Operations,travel,1573.72,cloud overage
+2011,2024-05-28,Operations,cloud,3009.09,training course
+2012,2024-07-21,Operations,cloud,3600.19,conference travel
+2013,2024-08-06,Finance,recruiting,1874.68,laptop
+2014,2024-01-16,Operations,events,3777.75,training course
+2015,2023-09-27,Support,cloud,1996.45,client dinner
+2016,2023-09-28,Operations,recruiting,1870.28,conference travel
+2017,2024-10-15,Finance,recruiting,2987.87,training course
+2018,2024-02-16,Support,travel,3186.9,team offsite
+2019,2023-09-14,Product,software,3471.98,team offsite
+2020,2024-07-18,Sales,events,2569.79,team offsite
+2021,2023-09-02,Product,training,2463.54,team offsite
+2022,2024-01-20,Product,travel,576.75,client dinner
+2023,2024-08-31,Sales,travel,2252.6,team offsite
+2024,2024-09-24,Finance,travel,612.04,job board
+2025,2024-08-18,People,office,1564.99,client dinner
+2026,2024-10-29,People,recruiting,2420.18,cloud overage
+2027,2023-11-29,Sales,office,511.82,client dinner
+2028,2024-11-06,People,cloud,3634.09,team offsite
+2029,2023-11-09,Finance,events,1030.63,training course
+2030,2024-02-29,Operations,training,1701.98,conference travel
+2031,2024-05-30,Product,cloud,3275.39,team offsite
+2032,2024-11-17,Finance,software,1047.82,cloud overage
+2033,2024-05-04,Marketing,software,1107.05,team offsite
+2034,2024-10-27,People,travel,2737.43,client dinner
+2035,2023-10-27,Product,training,2547.6,conference travel
+2036,2023-08-17,Sales,events,3452.69,conference travel
+2037,2024-12-19,Marketing,software,107.91,cloud overage
+2038,2023-12-29,Product,training,3833.66,conference travel
+2039,2024-02-26,Engineering,software,2185.57,laptop
+2040,2024-05-25,Operations,cloud,3432.08,laptop
+2041,2023-10-03,People,software,2447.28,cloud overage
+2042,2024-05-13,Operations,events,2558.1,conference travel
+2043,2024-11-20,Engineering,recruiting,209.59,job board
+2044,2024-07-25,People,cloud,3438.29,job board
+2045,2024-03-09,Finance,recruiting,3728.91,cloud overage
+2046,2024-11-11,Product,office,2278.17,client dinner
+2047,2024-09-09,Sales,office,1469.76,client dinner
+2048,2023-09-23,Engineering,software,39.31,training course
+2049,2024-05-17,Product,travel,2037.15,cloud overage
+2050,2024-07-06,Finance,training,3668.91,conference travel
+2051,2024-03-16,Product,cloud,139.37,conference travel
+2052,2024-09-04,People,cloud,1583.64,job board
+2053,2024-09-09,Product,software,2951.87,team offsite
+2054,2023-12-19,Support,office,1334.04,training course
+2055,2024-07-08,Finance,cloud,3557.02,laptop
+2056,2024-12-25,Engineering,travel,1373.42,training course
+2057,2024-05-07,Marketing,office,2148.75,cloud overage
+2058,2024-11-18,Sales,travel,3956.24,conference travel
+2059,2023-08-08,Operations,training,3540.75,conference travel
+2060,2024-11-19,Sales,cloud,2310.17,conference travel
+2061,2023-10-17,Product,events,3911.29,job board
+2062,2023-10-28,People,events,2827.34,client dinner
+2063,2023-10-27,People,travel,1238.7,client dinner
+2064,2023-07-18,Marketing,events,2585.47,client dinner
+2065,2024-06-06,Support,training,2249.46,laptop
+2066,2023-11-12,Sales,events,231.35,conference travel
+2067,2024-02-26,Finance,cloud,2600.74,training course
+2068,2024-05-29,Operations,events,403.81,cloud overage
+2069,2023-12-07,Marketing,events,3059.43,job board
+2070,2024-06-14,Support,training,2482.14,job board
+2071,2024-12-16,Sales,travel,3587.45,cloud overage
+2072,2024-08-11,Support,events,3184.4,conference travel
+2073,2024-01-12,Product,events,3821.02,training course
+2074,2023-09-04,Marketing,recruiting,678.22,conference travel
+2075,2024-11-29,Marketing,office,3290.26,team offsite
+2076,2023-10-29,Support,office,3704.34,conference travel
+2077,2023-08-27,Support,travel,2717.17,laptop
+2078,2024-03-25,People,training,1985.57,laptop
+2079,2024-07-22,Engineering,training,448.57,cloud overage
+2080,2024-04-11,Sales,events,352.56,job board
+2081,2024-07-07,Sales,training,2829.32,laptop
+2082,2023-07-20,Finance,office,639.23,client dinner
+2083,2023-10-08,Sales,cloud,3506.87,laptop
+2084,2024-05-26,Marketing,events,1433.23,laptop
+2085,2024-12-26,Marketing,events,1768.58,conference travel
+2086,2024-05-02,Finance,software,1247.03,client dinner
+2087,2023-12-10,Operations,cloud,3079.02,training course
+2088,2024-03-26,Product,office,2534.26,client dinner
+2089,2024-01-20,Operations,travel,417.38,team offsite
+2090,2024-02-02,Marketing,office,3359.53,cloud overage
+2091,2024-09-16,Support,software,2383.53,cloud overage
+2092,2024-09-19,Sales,office,2143.89,conference travel
+2093,2023-11-09,People,training,2902.96,cloud overage
+2094,2024-12-08,Marketing,recruiting,2699.89,laptop
+2095,2023-10-11,Support,software,1584.01,laptop
+2096,2024-01-10,Sales,travel,1070.91,training course
+2097,2024-05-24,Marketing,office,1222.88,laptop
+2098,2023-12-04,People,software,222.88,job board
+2099,2023-11-06,Product,training,3615.85,client dinner
+2100,2024-09-28,Sales,cloud,3095.34,team offsite
+2101,2024-09-15,Operations,recruiting,2074.51,cloud overage
+2102,2024-07-24,People,travel,789.61,team offsite
+2103,2024-11-29,Product,cloud,1099.15,client dinner
+2104,2023-08-25,Support,cloud,2005.95,cloud overage
+2105,2024-04-15,Product,office,2751.8,training course
+2106,2024-02-11,Finance,events,3238.17,job board
+2107,2023-07-07,People,travel,164.5,client dinner
+2108,2024-04-22,People,training,2472.33,training course
+2109,2023-11-13,Marketing,cloud,744.26,laptop
+2110,2023-07-20,Marketing,training,266.99,cloud overage
+2111,2024-12-08,People,events,170.67,training course
+2112,2024-02-27,Finance,training,930.52,client dinner
+2113,2023-12-18,Finance,software,2397.35,team offsite
+2114,2024-11-06,Operations,software,83.56,conference travel
+2115,2024-07-03,Product,software,2114.34,team offsite
+2116,2023-12-16,Product,software,633.57,job board
+2117,2023-07-14,Sales,events,1888.27,training course
+2118,2024-10-30,Operations,events,1929.41,conference travel
+2119,2024-10-29,People,travel,1068.35,team offsite
+2120,2023-07-13,Sales,software,298.78,team offsite
+2121,2023-12-26,People,recruiting,652.83,team offsite
+2122,2024-03-14,Engineering,cloud,3924.49,cloud overage
+2123,2023-09-03,Finance,office,302.91,client dinner
+2124,2023-09-19,Support,cloud,896.47,training course
+2125,2024-05-01,Sales,events,2957.07,training course
+2126,2023-09-21,Support,events,2739.72,cloud overage
+2127,2023-10-15,People,training,1770.49,conference travel
+2128,2024-11-08,Marketing,cloud,2948.75,conference travel
+2129,2023-10-11,Operations,office,1209.0,laptop
+2130,2024-05-09,People,travel,1721.07,cloud overage
+2131,2024-05-17,Marketing,software,2399.3,job board
+2132,2023-09-06,People,events,2648.3,client dinner
+2133,2023-12-25,Sales,travel,2634.18,client dinner
+2134,2024-01-22,Engineering,software,694.98,conference travel
+2135,2024-11-08,Sales,events,1169.21,training course
+2136,2024-11-02,Finance,recruiting,331.89,laptop
+2137,2024-11-30,Support,office,3077.46,client dinner
+2138,2024-06-11,Engineering,software,1626.39,laptop
+2139,2024-10-05,People,office,3003.78,team offsite
+2140,2023-12-21,Support,training,2066.9,training course
+2141,2024-06-06,Marketing,recruiting,2415.97,training course
+2142,2024-03-07,Sales,training,1808.79,cloud overage
+2143,2024-06-23,Marketing,training,3780.27,laptop
+2144,2023-12-08,Sales,travel,1729.0,training course
+2145,2024-09-08,Operations,cloud,1886.75,client dinner
+2146,2024-05-12,Engineering,training,3289.95,conference travel
+2147,2024-10-28,Engineering,events,203.13,job board
+2148,2024-06-23,Operations,recruiting,3579.71,training course
+2149,2024-11-24,Engineering,software,3010.25,conference travel
+2150,2024-07-06,Marketing,software,1164.44,client dinner
+2151,2023-11-01,Engineering,recruiting,1294.92,laptop
+2152,2023-07-01,People,travel,1370.69,laptop
+2153,2024-12-08,Operations,training,3452.37,job board
+2154,2023-11-05,People,recruiting,2535.39,team offsite
+2155,2024-11-18,Support,office,2807.32,training course
+2156,2024-10-24,People,recruiting,885.27,laptop
+2157,2023-12-20,Product,training,1162.39,client dinner
+2158,2023-08-12,Engineering,recruiting,455.41,job board
+2159,2024-10-29,Support,training,620.39,laptop
+2160,2024-10-25,Sales,training,2171.66,job board
+2161,2024-07-05,Support,cloud,2591.6,team offsite
+2162,2024-12-31,Engineering,events,1041.17,cloud overage
+2163,2023-08-06,Product,training,71.08,laptop
+2164,2024-04-13,Sales,cloud,2221.66,conference travel
+2165,2023-10-13,Support,events,3607.96,client dinner
+2166,2024-11-07,People,travel,1594.88,laptop
+2167,2024-04-20,Operations,cloud,2672.4,client dinner
+2168,2024-04-17,Sales,software,2585.24,client dinner
+2169,2024-12-31,Sales,training,3289.88,team offsite
+2170,2023-08-24,Engineering,training,398.49,cloud overage
+2171,2024-08-19,Sales,software,2248.41,job board
+2172,2023-08-14,Sales,travel,2293.38,job board
+2173,2024-01-27,People,software,2384.73,cloud overage
+2174,2024-11-25,Finance,software,3343.39,laptop
+2175,2023-09-24,Engineering,software,3515.61,conference travel
+2176,2023-10-02,Marketing,events,3051.87,job board
+2177,2023-10-21,Marketing,cloud,1619.92,job board
+2178,2024-11-03,Product,travel,3388.99,laptop
+2179,2024-03-08,Finance,recruiting,2023.22,client dinner
+2180,2024-05-19,Finance,office,1979.19,client dinner
+2181,2024-08-17,Finance,events,3066.44,laptop
+2182,2024-08-21,Sales,software,2599.67,client dinner
+2183,2024-01-20,Sales,travel,3383.65,conference travel
+2184,2024-09-28,People,software,879.62,job board
+2185,2024-09-11,Operations,recruiting,798.46,job board
+2186,2024-06-19,Marketing,office,208.73,conference travel
+2187,2023-10-22,Support,office,3231.54,client dinner
+2188,2023-10-30,Marketing,software,1284.52,conference travel
+2189,2024-05-30,Sales,travel,3655.72,client dinner
+2190,2024-07-29,Marketing,recruiting,3581.49,client dinner
+2191,2024-09-25,People,recruiting,967.3,conference travel
+2192,2024-02-10,Operations,office,2993.69,cloud overage
+2193,2024-05-09,Support,events,3823.29,job board
+2194,2023-07-01,Finance,travel,2243.2,team offsite
+2195,2024-01-17,Support,travel,1842.43,team offsite
+2196,2024-06-21,Product,travel,1578.64,conference travel
+2197,2024-12-21,Product,software,528.37,client dinner
+2198,2023-08-04,Engineering,recruiting,683.69,client dinner
+2199,2024-05-19,Product,events,175.99,client dinner
+2200,2024-03-22,Support,software,3976.12,team offsite
+2201,2024-07-14,Support,travel,3365.99,conference travel
+2202,2023-09-24,People,cloud,1362.81,conference travel
+2203,2023-08-02,Finance,software,1671.43,training course
+2204,2024-03-26,Engineering,office,3120.1,team offsite
+2205,2024-10-13,Support,cloud,205.11,job board
+2206,2023-10-20,Marketing,office,2053.91,job board
+2207,2024-02-28,Marketing,recruiting,3572.8,laptop
+2208,2024-09-25,Sales,events,3010.72,job board
+2209,2023-12-08,Support,training,3242.42,conference travel
+2210,2024-11-27,Finance,travel,2543.06,job board
+2211,2023-08-26,Marketing,office,2532.86,job board
+2212,2024-02-08,Engineering,recruiting,287.63,conference travel
+2213,2024-08-20,Marketing,training,1278.5,job board
+2214,2024-02-01,Product,office,2599.01,training course
+2215,2023-07-23,Product,training,1345.49,training course
+2216,2024-05-01,People,training,635.81,team offsite
+2217,2024-12-14,People,recruiting,2387.64,cloud overage
+2218,2023-08-30,Marketing,events,3440.81,team offsite
+2219,2024-01-10,People,cloud,1266.49,conference travel
+2220,2024-01-22,Marketing,recruiting,513.08,training course
+2221,2024-12-14,Sales,events,1562.54,cloud overage
+2222,2024-05-23,People,software,1036.53,conference travel
+2223,2024-03-18,Operations,events,3397.28,cloud overage
+2224,2024-09-26,Support,cloud,3120.07,team offsite
+2225,2024-01-23,Engineering,training,315.89,conference travel
+2226,2024-12-07,Product,cloud,1244.9,training course
+2227,2023-12-22,Finance,office,483.85,laptop
+2228,2023-09-20,Operations,travel,2678.32,cloud overage
+2229,2024-05-20,Engineering,recruiting,1236.32,laptop
+2230,2023-10-09,Finance,cloud,3827.62,client dinner
+2231,2024-01-17,Product,cloud,1079.68,training course
+2232,2023-09-09,Support,office,2277.85,cloud overage
+2233,2023-11-17,Finance,training,3074.01,job board
+2234,2024-10-06,People,events,3777.01,team offsite
+2235,2024-02-16,Support,office,2356.13,training course
+2236,2024-09-08,People,events,1053.96,team offsite
+2237,2024-02-11,Sales,training,1539.92,laptop
+2238,2024-01-25,Sales,training,3132.32,training course
+2239,2023-10-23,Operations,recruiting,1412.93,laptop
+2240,2024-09-02,Engineering,software,3318.62,team offsite
+2241,2024-05-15,People,software,958.04,conference travel
+2242,2023-09-30,Finance,recruiting,2282.8,cloud overage
+2243,2024-05-01,Finance,events,3094.13,training course
+2244,2024-03-17,Marketing,travel,77.82,training course
+2245,2023-09-13,Sales,office,423.63,client dinner
+2246,2024-08-22,Sales,training,231.56,laptop
+2247,2024-05-11,Support,recruiting,2651.73,job board
+2248,2023-09-11,Finance,software,164.2,team offsite
+2249,2024-07-13,Finance,events,1596.69,cloud overage
+2250,2024-11-16,Finance,recruiting,2647.72,team offsite
+2251,2023-10-07,Engineering,cloud,1341.89,laptop
+2252,2024-10-26,Support,training,3345.77,conference travel
+2253,2023-11-07,Operations,office,3119.8,training course
+2254,2024-05-26,Marketing,travel,2044.82,training course
+2255,2023-12-18,Sales,travel,203.36,team offsite
+2256,2024-05-09,Finance,training,378.67,laptop
+2257,2024-05-15,Support,travel,2821.09,cloud overage
+2258,2024-05-27,Product,software,3342.18,training course
+2259,2024-09-09,Marketing,cloud,3051.02,cloud overage
+2260,2024-01-18,Product,training,3905.66,client dinner
+2261,2023-12-09,Support,training,625.98,cloud overage
+2262,2024-08-03,Finance,training,3687.6,client dinner
+2263,2023-09-25,Marketing,office,2569.5,client dinner
+2264,2023-12-18,Marketing,office,3092.57,conference travel
+2265,2023-12-12,Support,events,366.5,training course
+2266,2023-08-18,People,software,1994.49,cloud overage
+2267,2024-08-04,Product,office,414.89,job board
+2268,2024-11-14,Sales,travel,649.06,laptop
+2269,2024-08-22,Marketing,training,1202.49,cloud overage
+2270,2024-11-17,People,events,1211.9,training course
+2271,2023-09-23,Marketing,office,3971.49,conference travel
+2272,2024-10-02,Engineering,office,2278.82,cloud overage
+2273,2024-10-12,Sales,cloud,3203.46,conference travel
+2274,2024-12-24,Finance,recruiting,3071.16,client dinner
+2275,2024-12-22,Sales,recruiting,2247.44,client dinner
+2276,2024-03-07,Sales,travel,2549.58,job board
+2277,2024-04-02,People,cloud,3081.79,job board
+2278,2023-08-25,Support,cloud,1975.57,client dinner
+2279,2024-02-10,Engineering,office,3076.37,laptop
+2280,2024-10-14,Support,software,3350.84,team offsite
+2281,2024-07-18,Operations,recruiting,3906.54,training course
+2282,2023-09-07,Finance,cloud,2320.62,job board
+2283,2023-10-27,People,cloud,3935.25,laptop
+2284,2023-11-25,Operations,cloud,2862.04,client dinner
+2285,2024-06-24,Marketing,software,580.05,training course
+2286,2023-08-12,Marketing,cloud,1609.51,client dinner
+2287,2024-07-11,Product,travel,1699.65,team offsite
+2288,2023-07-31,Marketing,recruiting,1159.71,cloud overage
+2289,2024-06-22,Support,recruiting,1340.06,laptop
+2290,2024-11-05,Product,events,1639.98,job board
+2291,2024-04-03,Operations,travel,1383.32,team offsite
+2292,2024-06-08,Support,software,3911.62,cloud overage
+2293,2024-06-19,Support,software,3046.78,conference travel
+2294,2023-09-19,Sales,training,2649.82,conference travel
+2295,2023-09-30,Operations,office,3071.56,laptop
+2296,2024-08-02,Marketing,recruiting,3448.49,client dinner
+2297,2024-09-21,Operations,events,1793.61,cloud overage
+2298,2024-09-18,Product,cloud,1986.6,training course
+2299,2023-12-22,Support,recruiting,1416.9,team offsite
+2300,2024-07-21,Operations,recruiting,1616.66,cloud overage
+2301,2024-02-17,Engineering,office,3812.71,conference travel
+2302,2024-02-18,People,cloud,1460.78,training course
+2303,2023-08-02,Operations,cloud,2851.32,conference travel
+2304,2024-01-14,Product,training,1037.96,job board
+2305,2024-12-09,Product,software,2738.06,laptop
+2306,2023-10-21,Finance,events,2651.39,conference travel
+2307,2024-09-16,Engineering,cloud,2546.61,team offsite
+2308,2024-06-26,Marketing,cloud,1931.66,cloud overage
+2309,2023-12-26,Marketing,office,2085.6,laptop
+2310,2023-08-18,Marketing,travel,48.14,training course
+2311,2024-06-26,Operations,events,2332.94,training course
+2312,2024-10-17,Product,training,2570.24,cloud overage
+2313,2024-09-18,Operations,software,1007.31,laptop
+2314,2024-03-31,People,software,2849.68,conference travel
+2315,2024-10-16,Finance,office,3072.59,conference travel
+2316,2023-11-13,Marketing,events,1214.67,job board
+2317,2024-12-15,Operations,travel,1833.24,job board
+2318,2024-10-12,Support,events,2160.37,conference travel
+2319,2024-03-26,Support,events,1572.2,team offsite
+2320,2024-01-02,Operations,software,3384.14,team offsite
+2321,2024-04-19,Sales,software,1668.92,cloud overage
+2322,2024-08-21,Sales,cloud,3039.07,laptop
+2323,2023-09-02,Support,cloud,3083.18,cloud overage
+2324,2024-10-05,Engineering,travel,3298.88,cloud overage
+2325,2024-12-31,People,cloud,526.55,laptop
+2326,2024-10-11,Marketing,training,1104.6,training course
+2327,2023-12-07,Support,training,1850.77,team offsite
+2328,2024-12-22,Marketing,software,541.72,team offsite
+2329,2024-07-27,Product,software,2948.54,client dinner
+2330,2023-10-25,People,travel,1176.44,team offsite
+2331,2023-12-17,Support,software,770.84,team offsite
+2332,2024-06-06,People,office,3755.76,job board
+2333,2024-06-27,People,events,493.65,training course
+2334,2024-07-31,Support,recruiting,3471.32,client dinner
+2335,2023-07-15,Marketing,recruiting,2244.55,cloud overage
+2336,2024-11-23,Sales,office,3480.13,conference travel
+2337,2024-11-22,Operations,travel,3514.36,laptop
+2338,2023-09-04,Engineering,recruiting,2456.54,client dinner
+2339,2024-11-28,Operations,events,1633.11,team offsite
+2340,2024-03-18,People,training,2181.86,conference travel
+2341,2023-10-05,Marketing,travel,1554.16,client dinner
+2342,2024-04-15,Support,software,3346.76,laptop
+2343,2024-08-03,Sales,recruiting,1515.6,team offsite
+2344,2024-05-26,Operations,software,1349.5,job board
+2345,2023-07-06,Engineering,software,2376.61,job board
+2346,2024-06-02,Product,software,52.75,team offsite
+2347,2024-07-08,Sales,travel,2260.75,team offsite
+2348,2024-03-25,Sales,software,1813.19,job board
+2349,2023-12-25,Marketing,office,579.66,client dinner
+2350,2024-11-30,Engineering,cloud,739.83,client dinner
+2351,2024-09-18,Finance,cloud,41.78,team offsite
+2352,2024-04-11,Finance,events,1888.45,cloud overage
+2353,2024-09-23,Operations,recruiting,1307.5,conference travel
+2354,2023-11-27,Engineering,recruiting,2292.09,conference travel
+2355,2024-08-24,Marketing,software,1862.57,team offsite
+2356,2023-07-22,People,recruiting,1276.15,laptop
+2357,2024-04-07,Marketing,events,3871.22,team offsite
+2358,2023-08-24,Marketing,software,394.04,laptop
+2359,2023-08-10,People,recruiting,90.2,job board
+2360,2024-05-01,Marketing,events,1587.14,client dinner
+2361,2024-06-19,Sales,software,244.81,laptop
+2362,2024-03-21,Operations,recruiting,376.21,client dinner
+2363,2024-10-27,Operations,cloud,912.54,job board
+2364,2024-09-25,Operations,software,1521.76,client dinner
+2365,2023-08-10,Finance,office,611.82,client dinner
+2366,2023-10-28,Support,training,1827.52,client dinner
+2367,2024-03-26,Sales,software,2759.14,job board
+2368,2024-10-13,Sales,cloud,2543.67,laptop
+2369,2024-07-20,Support,software,1325.52,laptop
+2370,2024-01-31,Marketing,travel,2666.43,cloud overage
+2371,2024-12-24,Sales,recruiting,1970.49,team offsite
+2372,2024-12-12,People,recruiting,3758.99,laptop
+2373,2024-02-21,People,cloud,3954.48,cloud overage
+2374,2023-09-19,Sales,recruiting,493.95,cloud overage
+2375,2024-11-04,Sales,software,1214.83,job board
+2376,2023-07-08,Product,training,3404.4,training course
+2377,2024-04-26,Sales,recruiting,3690.12,cloud overage
+2378,2023-12-08,Support,training,160.17,team offsite
+2379,2024-07-04,Product,cloud,2273.1,job board
+2380,2024-09-25,Finance,events,570.32,training course
+2381,2024-09-20,People,software,3461.33,team offsite
+2382,2023-07-28,Finance,travel,3780.3,job board
+2383,2023-11-25,Finance,recruiting,2507.91,job board
+2384,2024-07-21,Product,cloud,588.96,training course
+2385,2024-01-09,Support,training,720.34,laptop
+2386,2024-11-03,Finance,office,2533.37,conference travel
+2387,2023-10-29,Sales,training,119.99,laptop
+2388,2024-10-07,Marketing,training,793.17,conference travel
+2389,2024-02-27,Marketing,travel,648.29,cloud overage
+2390,2023-12-14,Finance,events,3501.6,job board
+2391,2024-03-18,Finance,events,1874.19,training course
+2392,2024-01-03,Product,recruiting,2036.64,team offsite
+2393,2024-12-07,Finance,recruiting,1396.63,cloud overage
+2394,2023-11-30,People,cloud,515.51,team offsite
+2395,2024-08-23,People,events,1390.02,laptop
+2396,2023-10-21,Support,events,2158.82,conference travel
+2397,2024-12-28,Finance,events,527.13,client dinner
+2398,2023-10-19,Support,office,3525.58,job board
+2399,2023-07-16,Operations,cloud,1284.25,laptop
+2400,2024-07-21,Support,recruiting,1780.87,training course
+2401,2023-08-15,Product,events,302.92,team offsite
+2402,2024-03-02,Support,software,1090.51,conference travel
+2403,2024-11-29,Product,cloud,3729.32,conference travel
+2404,2024-06-14,Product,cloud,2080.12,conference travel
+2405,2024-04-07,Support,office,3848.34,cloud overage
+2406,2024-07-21,Finance,travel,308.85,cloud overage
+2407,2024-08-22,Operations,events,447.48,conference travel
+2408,2024-05-27,People,training,3224.09,conference travel
+2409,2024-06-03,Sales,software,2534.82,cloud overage
+2410,2023-12-25,Marketing,training,3987.41,team offsite
+2411,2024-09-29,Finance,software,2419.11,cloud overage
+2412,2024-01-15,Marketing,software,290.19,cloud overage
+2413,2023-12-29,Operations,office,1744.29,conference travel
+2414,2024-01-03,Support,recruiting,129.6,cloud overage
+2415,2024-09-26,Operations,recruiting,2514.15,team offsite
+2416,2023-10-21,Engineering,training,2515.09,conference travel
+2417,2024-05-02,Finance,events,3384.95,job board
+2418,2023-09-12,People,software,3904.11,laptop
+2419,2023-12-15,Support,cloud,73.37,job board
+2420,2023-09-12,Finance,cloud,3079.88,training course
+2421,2023-12-08,Marketing,travel,24.66,client dinner
+2422,2024-05-09,Operations,travel,3720.63,job board
+2423,2023-07-12,Operations,cloud,1601.01,training course
+2424,2023-09-22,Engineering,cloud,3350.36,conference travel
+2425,2024-03-20,People,office,2159.43,cloud overage
+2426,2024-07-24,Sales,events,2728.28,job board
+2427,2024-04-27,Marketing,training,1274.36,training course
+2428,2024-08-26,Sales,travel,2822.48,client dinner
+2429,2024-02-26,Sales,events,3510.74,team offsite
+2430,2024-07-06,Engineering,training,3656.01,cloud overage
+2431,2023-08-19,Product,training,438.96,training course
+2432,2023-09-19,Finance,recruiting,2243.9,training course
+2433,2024-04-08,Operations,events,3575.2,team offsite
+2434,2024-10-02,People,events,3551.88,client dinner
+2435,2024-11-15,Operations,events,1228.95,laptop
+2436,2024-12-30,Sales,office,1111.43,conference travel
+2437,2024-09-21,Product,travel,863.66,team offsite
+2438,2023-11-28,Engineering,software,695.42,team offsite
+2439,2023-12-19,Support,office,1235.55,cloud overage
+2440,2024-05-30,Engineering,travel,1723.93,client dinner
+2441,2024-01-15,Support,recruiting,2688.61,team offsite
+2442,2024-12-28,People,cloud,1625.05,job board
+2443,2024-02-15,Engineering,training,752.32,team offsite
+2444,2023-10-06,Sales,events,2564.37,client dinner
+2445,2024-10-01,Sales,software,278.59,cloud overage
+2446,2024-01-09,Sales,office,2475.35,client dinner
+2447,2024-05-22,Finance,office,1777.87,job board
+2448,2023-11-18,People,cloud,1744.04,team offsite
+2449,2024-12-17,Sales,recruiting,2576.52,laptop
+2450,2024-08-11,Operations,recruiting,399.54,client dinner
+2451,2024-02-08,Sales,recruiting,1458.48,team offsite
+2452,2024-11-15,People,events,3933.25,conference travel
+2453,2024-07-10,Product,software,3525.48,client dinner
+2454,2024-09-15,People,recruiting,2323.64,laptop
+2455,2023-07-25,Finance,recruiting,367.66,training course
+2456,2024-02-12,Finance,software,798.73,cloud overage
+2457,2023-07-18,Finance,events,1375.59,training course
+2458,2023-08-29,Engineering,events,2717.08,client dinner
+2459,2024-10-13,Product,training,2236.22,training course
+2460,2024-08-22,Marketing,software,2749.55,conference travel
+2461,2024-12-27,Sales,office,374.07,training course
+2462,2024-11-04,Finance,travel,3156.05,conference travel
+2463,2024-07-15,Support,software,3942.14,cloud overage
+2464,2024-11-13,Support,cloud,104.14,cloud overage
+2465,2023-07-25,Operations,training,1584.5,team offsite
+2466,2024-09-21,People,travel,909.19,client dinner
+2467,2024-09-09,People,travel,2318.6,training course
+2468,2024-11-19,Product,events,3510.85,laptop
+2469,2024-08-14,Marketing,software,1999.85,client dinner
+2470,2023-11-04,Engineering,training,3551.45,laptop
+2471,2023-09-02,Marketing,recruiting,2168.0,training course
+2472,2024-10-05,People,travel,1405.2,cloud overage
+2473,2024-01-01,People,training,247.31,conference travel
+2474,2023-11-07,Operations,office,1605.09,cloud overage
+2475,2023-10-05,Operations,training,2689.09,conference travel
+2476,2024-04-18,Engineering,cloud,1348.05,laptop
+2477,2024-07-19,Product,events,393.18,client dinner
+2478,2023-11-26,Marketing,events,2761.47,team offsite
+2479,2023-12-19,Finance,cloud,1603.92,conference travel
+2480,2023-12-08,Finance,events,3049.72,job board
+2481,2024-10-26,Operations,cloud,990.15,client dinner
+2482,2023-11-22,Support,cloud,2684.3,laptop
+2483,2024-04-08,Operations,recruiting,2477.37,team offsite
+2484,2024-01-15,Sales,office,2437.52,client dinner
+2485,2024-07-23,Engineering,office,1684.72,job board
+2486,2024-02-28,Support,travel,190.16,cloud overage
+2487,2024-02-11,Operations,events,2493.74,conference travel
+2488,2024-11-26,Engineering,training,1494.25,conference travel
+2489,2024-03-12,Engineering,events,3672.03,training course
+2490,2023-12-10,People,office,53.65,training course
+2491,2024-12-06,Support,software,82.86,cloud overage
+2492,2024-04-05,People,office,3029.95,laptop
+2493,2024-07-21,Product,events,329.2,job board
+2494,2024-03-15,Support,training,2360.39,client dinner
+2495,2024-05-26,Support,software,1261.35,cloud overage
+2496,2024-10-07,Sales,recruiting,98.38,training course
+2497,2024-03-22,People,cloud,680.65,team offsite
+2498,2023-07-25,Finance,cloud,2417.27,team offsite
+2499,2024-05-02,Product,cloud,3921.17,team offsite
+2500,2024-05-15,Engineering,office,844.86,team offsite
+2501,2023-07-15,Operations,training,841.66,conference travel
+2502,2024-01-05,Operations,events,586.57,cloud overage
+2503,2023-10-22,Support,events,3818.08,job board
+2504,2024-10-17,Sales,events,1449.84,client dinner
+2505,2024-03-30,Support,office,1710.27,client dinner
+2506,2024-11-30,Engineering,software,3558.05,client dinner
+2507,2023-07-06,Marketing,office,3606.04,job board
+2508,2023-07-25,Support,software,2512.61,conference travel
+2509,2023-07-09,Operations,travel,2373.31,team offsite
+2510,2024-06-10,Marketing,training,2213.08,team offsite
+2511,2024-10-30,Product,events,3276.23,job board
+2512,2024-07-07,Finance,software,2389.68,team offsite
+2513,2023-09-22,Product,travel,3047.28,training course
+2514,2023-10-22,Finance,software,1216.18,training course
+2515,2023-12-29,Support,office,2776.19,training course
+2516,2024-12-14,People,software,2515.17,training course
+2517,2024-04-20,Product,training,1988.96,client dinner
+2518,2024-12-12,Support,recruiting,2833.57,laptop
+2519,2024-09-16,People,travel,2251.79,training course
+2520,2023-12-04,Finance,events,319.73,training course
+2521,2023-11-08,Marketing,cloud,3313.11,job board
+2522,2024-09-30,Engineering,cloud,3541.69,cloud overage
+2523,2023-08-11,Sales,software,1284.66,team offsite
+2524,2024-02-06,Sales,cloud,3500.96,job board
+2525,2023-08-10,Marketing,events,1490.62,team offsite
+2526,2024-07-17,Support,software,3635.61,laptop
+2527,2023-11-04,Engineering,cloud,3876.64,training course
+2528,2023-12-17,Marketing,events,2713.81,training course
+2529,2024-03-19,Finance,office,1717.41,client dinner
+2530,2024-05-11,Product,software,1202.25,team offsite
+2531,2024-01-04,Product,software,912.76,team offsite
+2532,2023-11-03,Support,recruiting,1793.42,client dinner
+2533,2023-10-17,Sales,software,2180.13,client dinner
+2534,2024-06-27,People,office,1448.87,cloud overage
+2535,2024-03-15,People,training,550.89,client dinner
+2536,2024-10-29,Engineering,recruiting,2157.74,cloud overage
+2537,2024-06-17,Sales,training,670.02,client dinner
+2538,2023-10-24,Support,travel,1831.19,training course
+2539,2024-01-12,Finance,training,436.36,conference travel
+2540,2024-11-07,Sales,software,2088.53,conference travel
+2541,2024-09-17,Finance,cloud,1697.42,cloud overage
+2542,2023-07-09,Product,cloud,3193.45,laptop
+2543,2023-10-23,Finance,training,2478.85,client dinner
+2544,2024-03-09,Operations,office,850.77,conference travel
+2545,2023-12-09,Marketing,travel,2407.21,laptop
+2546,2023-09-10,People,office,3928.01,team offsite
+2547,2024-08-16,Finance,cloud,2908.08,team offsite
+2548,2024-02-20,Operations,travel,1822.87,training course
+2549,2024-04-03,Marketing,recruiting,3167.42,job board
+2550,2024-10-08,Finance,software,987.66,training course
+2551,2024-03-27,Marketing,software,3048.07,job board
+2552,2024-10-31,Operations,training,3078.39,training course
+2553,2024-01-09,Finance,training,847.64,client dinner
+2554,2024-03-20,Finance,travel,730.15,laptop
+2555,2024-11-14,Support,recruiting,1105.7,conference travel
+2556,2024-02-04,Operations,events,758.64,cloud overage
+2557,2024-09-20,Product,travel,1181.1,job board
+2558,2024-11-18,Operations,office,2132.55,client dinner
+2559,2023-11-29,Marketing,software,454.18,client dinner
+2560,2023-12-26,People,recruiting,2862.49,conference travel
+2561,2024-10-11,Support,cloud,508.37,client dinner
+2562,2024-09-10,Marketing,training,526.44,team offsite
+2563,2023-11-23,Product,travel,2982.54,client dinner
+2564,2023-12-26,Support,office,1878.04,team offsite
+2565,2024-04-16,Marketing,travel,3685.53,conference travel
+2566,2024-04-09,Sales,training,2860.85,team offsite
+2567,2024-02-10,People,cloud,3913.17,laptop
+2568,2024-11-25,People,events,3381.74,cloud overage
+2569,2023-11-14,Product,recruiting,2638.92,conference travel
+2570,2024-02-27,Sales,events,2810.48,training course
+2571,2024-04-11,Marketing,cloud,2900.95,client dinner
+2572,2023-12-08,Operations,training,2376.49,laptop
+2573,2024-04-08,Marketing,travel,1824.22,team offsite
+2574,2024-09-09,Engineering,software,1675.42,job board
+2575,2024-04-22,Marketing,office,1961.39,conference travel
+2576,2023-07-27,People,software,340.83,conference travel
+2577,2024-07-16,Finance,recruiting,816.86,laptop
+2578,2023-12-10,People,travel,2088.47,team offsite
+2579,2024-12-16,Marketing,recruiting,1983.99,cloud overage
+2580,2024-06-22,Product,office,2452.41,client dinner
+2581,2023-08-14,Engineering,training,412.27,team offsite
+2582,2024-08-12,People,cloud,2688.82,job board
+2583,2024-06-12,Product,recruiting,2355.5,team offsite
+2584,2023-07-24,Engineering,recruiting,3342.61,team offsite
+2585,2023-08-09,Sales,training,3330.97,conference travel
+2586,2024-08-11,Marketing,training,1803.01,team offsite
+2587,2024-06-22,People,software,1809.15,client dinner
+2588,2024-09-19,Support,travel,270.9,client dinner
+2589,2023-08-18,Engineering,travel,3500.67,client dinner
+2590,2024-04-16,Marketing,travel,758.77,cloud overage
+2591,2023-08-12,Sales,events,2612.68,conference travel
+2592,2024-02-15,People,recruiting,2919.24,team offsite
+2593,2024-12-19,People,events,3755.7,client dinner
+2594,2024-01-08,People,travel,570.7,laptop
+2595,2024-02-14,People,office,825.18,training course
+2596,2023-10-22,Operations,software,3079.97,client dinner
+2597,2024-12-28,People,cloud,2724.36,cloud overage
+2598,2024-02-02,Finance,recruiting,2007.3,laptop
+2599,2024-06-07,Sales,training,2190.86,client dinner
+2600,2023-12-13,Engineering,office,111.34,job board
+2601,2024-07-11,Product,events,3755.12,cloud overage
+2602,2024-08-14,Support,cloud,3512.75,laptop
+2603,2024-08-16,People,software,266.52,job board
+2604,2024-12-27,Finance,travel,2666.62,training course
+2605,2024-06-25,Product,software,3413.2,laptop
+2606,2024-10-13,People,events,2646.63,client dinner
+2607,2023-11-23,Support,travel,438.32,job board
+2608,2023-07-05,People,cloud,1235.04,job board
+2609,2024-03-20,Sales,events,1051.98,training course
+2610,2024-10-08,People,office,1491.72,training course
+2611,2024-03-17,Product,travel,2571.06,laptop
+2612,2023-07-16,Engineering,recruiting,2375.64,team offsite
+2613,2024-08-13,Product,travel,1611.26,cloud overage
+2614,2024-12-14,Sales,recruiting,1836.72,laptop
+2615,2023-08-23,Sales,training,3462.63,team offsite
+2616,2024-07-28,Finance,events,1417.39,job board
+2617,2024-08-19,Marketing,office,2488.24,client dinner
+2618,2024-07-26,People,events,2372.95,cloud overage
+2619,2023-09-24,People,office,2421.0,job board
+2620,2024-03-19,Sales,software,2459.35,laptop
+2621,2024-08-27,Sales,events,2255.31,client dinner
+2622,2023-07-03,Support,recruiting,712.94,training course
+2623,2023-07-24,Support,office,2868.04,training course
+2624,2024-04-11,People,training,2017.32,laptop
+2625,2024-02-03,Engineering,training,636.81,conference travel
+2626,2024-02-04,Sales,cloud,3041.97,laptop
+2627,2024-01-31,Sales,events,2810.62,job board
+2628,2023-10-30,Operations,cloud,1289.12,team offsite
+2629,2023-10-02,Product,office,3608.96,conference travel
+2630,2024-12-05,Marketing,events,3429.31,laptop
+2631,2024-11-28,Support,recruiting,2478.19,conference travel
+2632,2024-01-21,Product,travel,2255.33,conference travel
+2633,2023-09-12,Finance,cloud,2365.9,client dinner
+2634,2024-01-12,Finance,cloud,3191.01,training course
+2635,2024-02-28,Engineering,software,810.66,team offsite
+2636,2023-12-31,People,travel,3938.01,client dinner
+2637,2023-11-26,Product,training,1004.01,job board
+2638,2024-02-22,Sales,cloud,1093.61,laptop
+2639,2024-04-16,Marketing,travel,2873.59,client dinner
+2640,2024-07-13,Sales,recruiting,3864.57,training course
+2641,2024-02-20,Operations,training,2434.63,training course
+2642,2023-12-19,Support,training,2167.83,conference travel
+2643,2024-09-05,Product,recruiting,505.09,team offsite
+2644,2024-08-20,Finance,office,2683.07,training course
+2645,2023-11-14,Finance,training,286.43,laptop
+2646,2024-11-04,Product,travel,122.84,training course
+2647,2024-04-16,People,software,432.14,job board
+2648,2023-11-26,Support,training,1128.72,job board
+2649,2023-12-06,Support,cloud,1167.94,cloud overage
+2650,2023-07-04,Operations,cloud,3217.21,conference travel
+2651,2024-04-14,Engineering,software,3583.12,laptop
+2652,2023-12-24,Finance,travel,3062.35,team offsite
+2653,2023-09-26,Finance,travel,1236.64,job board
+2654,2023-12-15,Finance,training,3132.45,laptop
+2655,2024-08-08,People,events,3415.44,cloud overage
+2656,2024-08-23,Operations,office,132.81,training course
+2657,2023-10-27,People,travel,331.84,client dinner
+2658,2024-10-05,Support,recruiting,2446.11,laptop
+2659,2024-09-19,Support,travel,2654.91,training course
+2660,2024-01-25,Marketing,cloud,1514.03,cloud overage
+2661,2024-07-03,Product,events,2655.73,team offsite
+2662,2024-03-12,People,cloud,1841.51,training course
+2663,2023-09-05,Support,software,1939.34,client dinner
+2664,2024-12-19,Operations,events,1785.43,cloud overage
+2665,2024-05-17,Engineering,events,2013.17,team offsite
+2666,2024-01-18,Marketing,recruiting,1421.18,laptop
+2667,2023-09-02,Sales,cloud,3795.74,cloud overage
+2668,2023-07-24,Operations,events,2550.46,cloud overage
+2669,2023-11-05,Finance,travel,2668.25,client dinner
+2670,2023-12-22,Engineering,events,428.75,laptop
+2671,2024-07-14,Marketing,events,3982.1,team offsite
+2672,2024-01-24,Marketing,software,24.1,laptop
+2673,2024-09-17,Support,training,1689.18,training course
+2674,2023-12-19,People,office,3933.17,team offsite
+2675,2024-05-02,Sales,office,3852.65,conference travel
+2676,2024-05-22,Sales,software,572.75,job board
+2677,2024-03-14,Marketing,recruiting,1439.34,client dinner
+2678,2024-12-12,Engineering,travel,3433.07,laptop
+2679,2024-02-06,Support,travel,364.27,team offsite
+2680,2024-10-10,Sales,events,937.74,laptop
+2681,2024-06-16,People,cloud,1056.93,conference travel
+2682,2023-08-17,Operations,office,1542.37,job board
+2683,2024-04-01,People,recruiting,3547.0,training course
+2684,2023-10-02,Operations,software,1318.22,conference travel
+2685,2024-03-25,Marketing,cloud,1919.75,team offsite
+2686,2023-12-19,People,office,1229.9,cloud overage
+2687,2023-08-11,People,events,795.63,laptop
+2688,2023-10-18,Operations,recruiting,1099.98,laptop
+2689,2023-07-19,Sales,travel,435.07,team offsite
+2690,2023-10-03,Support,software,3482.77,training course
+2691,2024-09-25,Marketing,events,2857.66,cloud overage
+2692,2024-12-20,Operations,software,176.26,conference travel
+2693,2024-09-02,Finance,cloud,3481.1,team offsite
+2694,2024-02-03,Marketing,software,2192.43,conference travel
+2695,2024-09-17,Sales,office,1444.09,team offsite
+2696,2024-02-03,Engineering,recruiting,3260.67,training course
+2697,2024-10-20,Support,travel,75.84,job board
+2698,2023-10-08,Engineering,software,1399.06,laptop
+2699,2024-06-19,Sales,events,1381.0,team offsite
+2700,2024-10-11,Operations,events,359.4,training course
+2701,2024-08-18,Operations,cloud,2240.14,cloud overage
+2702,2024-05-17,Support,travel,3263.79,laptop
+2703,2024-05-23,Support,training,3630.73,team offsite
+2704,2024-09-08,Product,events,550.42,cloud overage
+2705,2023-10-28,Product,office,290.7,job board
+2706,2023-08-15,Product,training,1559.78,training course
+2707,2023-08-26,Operations,training,3240.03,team offsite
+2708,2024-06-07,Engineering,software,476.46,laptop
+2709,2023-10-24,People,events,3389.6,client dinner
+2710,2024-05-02,Sales,software,1896.12,team offsite
+2711,2024-01-09,Sales,cloud,1779.11,cloud overage
+2712,2023-12-13,Engineering,events,1806.99,job board
+2713,2024-09-06,Operations,software,787.61,laptop
+2714,2024-06-09,Engineering,cloud,3079.87,laptop
+2715,2023-09-03,Finance,recruiting,2723.24,laptop
+2716,2024-11-17,Finance,office,1743.36,team offsite
+2717,2024-05-17,Sales,recruiting,1679.88,laptop
+2718,2024-05-17,Support,office,3546.69,cloud overage
+2719,2024-11-12,Product,travel,3204.53,cloud overage
+2720,2023-10-15,Product,software,3997.63,training course
+2721,2024-04-28,People,software,2148.04,job board
+2722,2024-12-29,Finance,events,2387.62,job board
+2723,2023-12-29,Marketing,software,1628.22,client dinner
+2724,2024-12-10,Engineering,office,908.41,training course
+2725,2024-03-15,People,software,2634.19,client dinner
+2726,2024-06-18,Finance,office,1941.0,team offsite
+2727,2024-09-29,Engineering,training,3445.32,team offsite
+2728,2024-07-11,Engineering,events,3582.82,client dinner
+2729,2023-10-15,Sales,cloud,1167.81,client dinner
+2730,2024-11-01,Finance,travel,2237.74,laptop
+2731,2024-07-03,Product,cloud,3770.1,team offsite
+2732,2024-03-24,Marketing,software,1399.87,client dinner
+2733,2024-06-27,Operations,software,817.57,conference travel
+2734,2023-09-02,Product,cloud,2439.17,cloud overage
+2735,2023-09-12,People,training,3408.15,job board
+2736,2023-09-05,Operations,cloud,1255.33,training course
+2737,2023-11-21,Product,events,1455.72,cloud overage
+2738,2024-05-16,Engineering,events,2082.17,laptop
+2739,2023-07-02,Support,cloud,420.91,job board
+2740,2024-02-04,Finance,recruiting,3139.33,team offsite
+2741,2024-09-04,Support,recruiting,673.51,cloud overage
+2742,2024-07-14,Marketing,travel,3864.44,job board
+2743,2024-07-21,Operations,software,1812.86,job board
+2744,2023-09-09,Sales,office,3669.93,job board
+2745,2024-11-20,Support,software,1585.38,client dinner
+2746,2023-08-10,Operations,cloud,3075.0,laptop
+2747,2024-12-30,Sales,training,3995.03,team offsite
+2748,2024-09-24,Product,recruiting,818.47,conference travel
+2749,2024-04-07,Operations,travel,870.15,client dinner
+2750,2023-07-09,Engineering,cloud,793.53,job board
+2751,2023-09-27,People,software,255.27,job board
+2752,2024-01-20,People,software,3159.94,cloud overage
+2753,2024-07-10,Marketing,training,2701.62,conference travel
+2754,2023-11-20,Product,software,590.8,training course
+2755,2023-09-03,Marketing,recruiting,1058.57,team offsite
+2756,2024-07-09,Sales,training,2343.21,job board
+2757,2024-06-14,Operations,training,96.55,cloud overage
+2758,2023-07-27,Product,events,3399.86,training course
+2759,2024-02-09,Sales,travel,1767.69,job board
+2760,2024-01-14,Engineering,events,167.39,laptop
+2761,2023-07-29,Marketing,software,2874.86,team offsite
+2762,2024-07-22,People,events,2660.52,job board
+2763,2024-10-14,Engineering,recruiting,268.36,client dinner
+2764,2024-11-02,Operations,recruiting,3581.8,team offsite
+2765,2024-05-19,People,recruiting,2234.85,team offsite
+2766,2024-10-25,People,recruiting,351.81,training course
+2767,2024-03-07,Finance,travel,2979.06,training course
+2768,2023-08-17,Engineering,cloud,1410.72,job board
+2769,2023-10-05,People,office,3096.14,cloud overage
+2770,2023-11-14,Finance,travel,3694.94,training course
+2771,2024-10-12,Sales,training,3313.15,client dinner
+2772,2024-01-12,Engineering,recruiting,3480.83,cloud overage
+2773,2023-11-26,People,training,3745.15,job board
+2774,2023-08-01,Engineering,software,358.87,team offsite
+2775,2023-12-11,Product,events,1817.14,conference travel
+2776,2023-10-27,Engineering,events,3584.25,laptop
+2777,2023-12-08,Support,recruiting,3315.73,team offsite
+2778,2024-02-21,Sales,travel,1167.53,client dinner
+2779,2024-10-19,Marketing,events,804.21,job board
+2780,2024-08-22,Support,training,3441.63,job board
+2781,2024-04-29,People,travel,799.52,team offsite
+2782,2024-03-12,People,travel,1390.65,training course
+2783,2023-09-25,Finance,recruiting,1558.65,conference travel
+2784,2024-07-02,People,training,3458.64,client dinner
+2785,2023-11-06,Product,office,1402.44,job board
+2786,2024-12-28,Finance,software,167.27,client dinner
+2787,2023-11-13,Product,training,1495.41,client dinner
+2788,2024-02-25,Support,cloud,2707.54,training course
+2789,2024-02-21,Engineering,travel,3436.77,client dinner
+2790,2024-01-07,People,software,3833.34,client dinner
+2791,2024-04-25,Finance,office,2257.85,laptop
+2792,2024-03-27,People,events,1721.5,job board
+2793,2023-12-20,Product,events,33.23,job board
+2794,2023-11-02,Product,training,1353.98,job board
+2795,2023-11-29,Product,office,1468.81,conference travel
+2796,2024-09-01,Product,recruiting,1756.32,team offsite
+2797,2024-12-10,Marketing,events,627.71,cloud overage
+2798,2024-04-24,Support,training,499.43,team offsite
+2799,2023-11-29,Marketing,cloud,3854.47,laptop
+2800,2023-08-22,People,events,2719.65,training course
+2801,2023-11-13,Finance,events,1907.59,conference travel
+2802,2023-07-05,Finance,software,3614.27,team offsite
+2803,2024-08-21,Support,office,1722.22,cloud overage
+2804,2024-12-06,Product,office,558.48,job board
+2805,2024-06-01,Engineering,cloud,2048.03,training course
+2806,2023-08-11,Support,training,1844.25,laptop
+2807,2023-08-28,Sales,recruiting,1576.28,training course
+2808,2023-08-17,People,recruiting,2984.8,client dinner
+2809,2024-03-02,Finance,training,2042.92,job board
+2810,2024-11-30,Operations,software,3124.06,client dinner
+2811,2024-03-22,Finance,events,3614.23,laptop
+2812,2024-11-11,Engineering,events,132.07,training course
+2813,2024-12-22,Marketing,training,1509.52,team offsite
+2814,2024-02-13,Sales,events,1425.67,job board
+2815,2024-05-02,Engineering,software,2959.63,training course
+2816,2024-04-20,Marketing,cloud,1906.07,laptop
+2817,2024-03-17,Marketing,cloud,1439.68,job board
+2818,2024-03-22,Marketing,cloud,3131.33,cloud overage
+2819,2023-09-25,Marketing,software,1715.8,training course
+2820,2023-11-11,Sales,cloud,2142.84,conference travel
+2821,2024-09-10,Sales,cloud,1011.5,job board
+2822,2023-07-14,Product,software,1721.21,client dinner
+2823,2024-10-23,Marketing,recruiting,733.84,job board
+2824,2024-12-14,Support,recruiting,2116.02,cloud overage
+2825,2024-08-16,Operations,recruiting,2548.04,conference travel
+2826,2024-12-03,People,office,3288.71,laptop
+2827,2023-08-04,Operations,travel,1945.18,conference travel
+2828,2023-11-08,Engineering,cloud,1067.94,cloud overage
+2829,2024-03-01,Marketing,software,1539.42,training course
+2830,2024-01-27,Finance,software,1847.96,conference travel
+2831,2023-08-04,People,software,1376.78,client dinner
+2832,2024-01-02,People,software,1223.61,cloud overage
+2833,2023-11-04,Operations,travel,2664.65,cloud overage
+2834,2023-10-12,Finance,recruiting,3646.77,training course
+2835,2024-12-04,Operations,training,3650.15,job board
+2836,2024-10-26,Marketing,software,2017.24,training course
+2837,2023-09-17,Engineering,training,2434.57,job board
+2838,2024-02-02,Operations,recruiting,3689.66,laptop
+2839,2023-08-05,Support,events,3881.54,laptop
+2840,2023-10-23,Finance,software,2509.76,job board
+2841,2023-07-14,Finance,travel,1584.2,job board
+2842,2024-05-10,Finance,recruiting,3972.37,laptop
+2843,2024-11-13,Sales,office,2767.87,team offsite
+2844,2024-04-15,Support,travel,1384.68,client dinner
+2845,2024-08-04,Operations,software,466.26,team offsite
+2846,2024-03-05,Operations,travel,2010.6,cloud overage
+2847,2023-11-26,Marketing,events,1725.3,conference travel
+2848,2023-10-24,Marketing,cloud,1133.09,team offsite
+2849,2024-05-14,Product,travel,245.8,conference travel
+2850,2024-08-07,Engineering,training,605.65,client dinner
+2851,2023-11-29,People,training,1163.65,laptop
+2852,2024-05-01,Product,cloud,2815.33,client dinner
+2853,2024-10-03,Finance,events,3929.82,team offsite
+2854,2024-02-01,Sales,training,1521.27,job board
+2855,2023-09-01,People,events,2307.2,client dinner
+2856,2024-08-07,Support,office,1889.89,laptop
+2857,2024-02-21,Finance,training,1375.33,team offsite
+2858,2023-09-11,Product,software,2316.78,team offsite
+2859,2024-04-30,Sales,training,3348.18,cloud overage
+2860,2023-12-28,Sales,recruiting,2910.66,client dinner
+2861,2024-08-17,Finance,events,1817.46,laptop
+2862,2023-07-31,Operations,cloud,2367.55,laptop
+2863,2023-12-24,Sales,software,1046.83,conference travel
+2864,2024-04-10,Operations,cloud,2672.98,job board
+2865,2024-08-10,Finance,events,3437.59,job board
+2866,2024-06-21,Sales,software,1670.68,training course
+2867,2024-02-06,Finance,recruiting,3114.04,laptop
+2868,2023-12-14,Support,events,506.27,training course
+2869,2024-09-13,Finance,software,539.56,conference travel
+2870,2023-08-28,People,events,980.89,team offsite
+2871,2024-10-15,Engineering,software,3584.26,cloud overage
+2872,2024-06-17,Operations,cloud,2004.62,client dinner
+2873,2024-01-29,Support,recruiting,1445.85,conference travel
+2874,2024-12-07,Finance,office,1591.67,laptop
+2875,2024-07-05,Operations,software,3521.76,cloud overage
+2876,2024-02-01,Sales,recruiting,2519.47,client dinner
+2877,2023-09-13,Sales,training,1785.12,cloud overage
+2878,2024-04-13,Engineering,travel,2627.33,job board
+2879,2024-08-02,Product,software,2663.55,team offsite
+2880,2023-09-01,Product,software,3573.01,conference travel
+2881,2023-09-15,Marketing,travel,3534.47,client dinner
+2882,2024-07-08,Sales,recruiting,1791.92,conference travel
+2883,2024-03-06,Sales,events,3006.92,cloud overage
+2884,2023-09-09,Operations,training,2978.45,team offsite
+2885,2023-12-30,Support,travel,670.12,team offsite
+2886,2023-11-28,Finance,software,1352.62,team offsite
+2887,2024-09-25,Engineering,office,1931.34,team offsite
+2888,2023-09-26,Finance,office,2958.2,conference travel
+2889,2023-09-24,Operations,office,1370.1,cloud overage
+2890,2023-11-17,People,software,3826.56,team offsite
+2891,2023-11-15,Product,recruiting,2761.47,client dinner
+2892,2023-08-22,Engineering,training,2055.09,training course
+2893,2023-12-24,Sales,office,307.04,client dinner
+2894,2024-05-15,Product,events,2192.79,job board
+2895,2024-12-18,Product,events,887.17,laptop
+2896,2024-09-21,Sales,events,3446.88,training course
+2897,2024-06-08,Sales,recruiting,596.18,laptop
+2898,2023-09-11,Sales,events,2738.01,training course
+2899,2024-06-11,Finance,recruiting,3658.69,team offsite
+2900,2024-11-29,Sales,recruiting,3123.27,team offsite
+2901,2023-12-11,Finance,events,455.89,team offsite
+2902,2024-07-01,People,office,1253.49,team offsite
+2903,2024-05-03,Sales,software,3102.36,team offsite
+2904,2024-11-23,Sales,travel,378.95,team offsite
+2905,2023-12-02,Finance,events,3010.43,training course
+2906,2024-01-23,People,office,3906.33,client dinner
+2907,2024-10-15,Sales,cloud,687.33,job board
+2908,2024-06-22,Engineering,events,962.45,laptop
+2909,2023-12-28,Sales,cloud,2800.94,job board
+2910,2024-06-14,Sales,training,1281.72,conference travel
+2911,2024-08-01,Operations,recruiting,76.19,job board
+2912,2024-03-17,Finance,travel,3138.69,team offsite
+2913,2023-07-18,Support,software,886.39,conference travel
+2914,2024-09-06,Engineering,training,176.26,cloud overage
+2915,2023-07-01,Engineering,software,959.54,conference travel
+2916,2024-08-06,People,office,1831.4,training course
+2917,2024-08-04,Support,office,2258.08,job board
+2918,2024-07-26,Product,software,1774.35,conference travel
+2919,2024-12-05,Operations,travel,3983.66,job board
+2920,2024-09-01,Product,software,1209.94,training course
+2921,2024-05-01,Support,software,464.26,laptop
+2922,2024-11-30,Finance,training,2442.37,conference travel
+2923,2024-10-07,Marketing,cloud,1214.02,job board
+2924,2024-04-12,Support,travel,1776.4,job board
+2925,2024-08-09,Finance,recruiting,3751.36,training course
+2926,2024-10-30,Finance,training,2992.91,team offsite
+2927,2023-09-23,Product,training,3949.07,cloud overage
+2928,2023-10-26,Finance,events,3853.42,cloud overage
+2929,2024-02-20,People,software,3490.37,training course
+2930,2023-07-15,Marketing,office,2158.16,cloud overage
+2931,2024-09-25,Support,office,1343.85,team offsite
+2932,2024-04-05,Engineering,travel,2584.81,cloud overage
+2933,2024-12-13,Sales,office,1478.68,cloud overage
+2934,2024-03-31,People,travel,26.79,client dinner
+2935,2024-12-11,Sales,office,700.66,conference travel
+2936,2024-04-04,Support,software,631.44,conference travel
+2937,2024-05-25,Product,office,645.39,team offsite
+2938,2024-06-18,Product,travel,784.5,cloud overage
+2939,2024-02-29,Finance,office,1070.19,training course
+2940,2024-08-11,People,office,195.62,client dinner
+2941,2024-08-04,Engineering,cloud,1820.02,cloud overage
+2942,2023-10-14,Finance,events,1569.55,conference travel
+2943,2024-06-20,People,recruiting,325.89,conference travel
+2944,2023-12-28,Finance,software,294.35,team offsite
+2945,2024-09-12,Operations,cloud,2095.17,client dinner
+2946,2024-09-27,Sales,recruiting,3302.8,job board
+2947,2024-10-26,Operations,travel,2112.61,client dinner
+2948,2024-09-16,Support,recruiting,3755.99,job board
+2949,2023-07-27,Marketing,office,1772.41,conference travel
+2950,2023-09-13,Sales,software,3413.11,job board
+2951,2024-01-14,Support,software,1474.53,training course
+2952,2024-08-19,People,travel,423.32,job board
+2953,2024-01-05,Operations,training,3566.15,client dinner
+2954,2023-10-08,Operations,cloud,3037.27,training course
+2955,2024-08-17,Marketing,office,3057.28,laptop
+2956,2024-07-15,Support,software,2848.74,team offsite
+2957,2024-10-11,Product,recruiting,3926.13,cloud overage
+2958,2024-07-26,Support,software,1736.61,training course
+2959,2023-11-07,Marketing,office,1915.81,training course
+2960,2024-05-20,Engineering,events,2690.01,client dinner
+2961,2024-01-18,Marketing,cloud,1815.07,conference travel
+2962,2024-07-13,Product,recruiting,318.76,team offsite
+2963,2024-04-30,Marketing,events,1218.2,laptop
+2964,2024-04-11,Operations,recruiting,1011.55,client dinner
+2965,2023-09-06,Sales,events,3337.71,training course
+2966,2023-08-08,Product,events,2496.08,job board
+2967,2024-03-26,People,events,502.33,laptop
+2968,2024-02-08,Product,travel,2393.59,client dinner
+2969,2023-12-16,Operations,travel,1145.2,laptop
+2970,2024-08-13,Support,recruiting,2803.3,training course
+2971,2023-08-28,Support,training,3406.9,client dinner
+2972,2023-09-18,Finance,software,1701.6,cloud overage
+2973,2023-08-29,Support,cloud,3422.16,job board
+2974,2024-12-22,People,office,3965.39,team offsite
+2975,2024-10-26,People,training,3625.79,team offsite
+2976,2024-12-16,Product,software,631.98,cloud overage
+2977,2024-12-03,Operations,software,1967.4,client dinner
+2978,2024-08-04,Support,travel,3824.09,conference travel
+2979,2023-11-20,Marketing,office,3658.61,client dinner
+2980,2024-08-21,Marketing,software,842.77,job board
+2981,2024-09-19,People,travel,3540.14,laptop
+2982,2023-07-24,People,events,2305.05,laptop
+2983,2024-08-19,Support,travel,979.91,team offsite
+2984,2023-09-27,Product,office,3262.0,team offsite
+2985,2024-02-18,Operations,cloud,1687.14,client dinner
+2986,2024-09-04,Engineering,training,2760.18,training course
+2987,2024-05-05,Operations,events,2113.68,laptop
+2988,2023-08-03,Engineering,events,662.9,training course
+2989,2024-09-21,Sales,cloud,464.95,job board
+2990,2024-07-20,Product,events,1860.2,cloud overage
+2991,2024-03-20,Sales,cloud,3892.1,client dinner
+2992,2023-12-11,Engineering,cloud,3203.65,conference travel
+2993,2023-09-07,Support,travel,1548.58,client dinner
+2994,2024-03-30,Product,travel,1044.44,training course
+2995,2024-08-08,People,office,3351.66,team offsite
+2996,2023-10-03,Support,cloud,1090.68,cloud overage
+2997,2023-10-08,Product,recruiting,1627.06,team offsite
+2998,2023-12-14,Operations,office,1454.13,job board
+2999,2023-10-19,Engineering,software,921.23,team offsite
+3000,2024-04-30,Engineering,events,672.26,cloud overage

@@ -65,14 +65,28 @@ class Registry:
                 raise ValueError(f"Employee {record.email} references unknown company")
             self.employees[record.email] = record
 
+    def _generated(self, email: str) -> Optional[Employee]:
+        """Generated (non-demo) population — backend scale, not shown in the
+        login UI. Stored in the platform DB by scale.population."""
+        from nexus_platform import store
+        row = store.get_generated_employee(email)
+        if row is None:
+            return None
+        return Employee(
+            email=row["email"], name=row["name"],
+            company_slug=row["company"], role=row["role"],
+            password_hash=row["password_hash"], title=row["title"],
+        )
+
     def authenticate(self, email: str, password: str) -> Optional[Employee]:
-        emp = self.employees.get(email.strip().lower())
+        emp = self.get_employee(email)
         if emp and emp.password_hash == hash_password(password):
             return emp
         return None
 
     def get_employee(self, email: str) -> Optional[Employee]:
-        return self.employees.get(email.strip().lower())
+        key = email.strip().lower()
+        return self.employees.get(key) or self._generated(key)
 
     def get_company(self, slug: str) -> Optional[Company]:
         return self.companies.get(slug)

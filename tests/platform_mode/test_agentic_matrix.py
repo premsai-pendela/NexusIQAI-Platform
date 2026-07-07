@@ -345,3 +345,12 @@ def test_repeat_choice_trace_recorded(no_llm):
     r2 = qs.run_query(ctx, q, s)
     t = store.get_trace(ctx.company.slug, r2["platform"]["trace_id"])
     assert t["payload"]["route"] == "repeat_question_choice"
+
+
+def test_sla_policy_question_not_answered_as_ticket_count(capture_llm):
+    """Found by the Health Check over generated history: 'SLA targets' must
+    route to documents (mixed), never to a deterministic ticket count."""
+    r = qs.run_query(ctx_for(ANALYST),
+                     "What are the SLA targets for urgent tickets?", session())
+    assert r["platform"]["route"] == "sql_plus_rag"
+    assert capture_llm.calls

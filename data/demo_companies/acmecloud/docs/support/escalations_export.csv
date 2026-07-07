@@ -1,0 +1,168 @@
+escalation_id,ticket_id,escalated_on,to_team,reason
+1,1,2023-10-18 04:07:36.056122,platform,security question
+2,4,2024-12-17 09:17:49.547595,billing,requires engineering
+3,9,2024-07-15 00:17:58.041621,security,billing dispute
+4,17,2024-08-08 12:44:09.762980,security,billing dispute
+5,24,2024-02-03 11:10:26.616312,data,SLA breach risk
+6,50,2024-01-04 01:22:24.382550,data,SLA breach risk
+7,58,2023-08-16 21:46:58.391195,security,security question
+8,77,2024-07-17 04:13:04.833646,billing,security question
+9,89,2024-06-09 12:29:14.504910,platform,requires engineering
+10,142,2023-08-08 18:06:14.042145,security,security question
+11,169,2024-03-06 15:13:29.707420,data,requires engineering
+12,194,2024-04-29 05:20:38.398969,security,requires engineering
+13,319,2023-09-03 10:41:31.239109,security,billing dispute
+14,347,2024-03-19 10:46:12.439880,platform,SLA breach risk
+15,384,2024-09-15 02:19:35.086152,security,billing dispute
+16,393,2024-05-25 03:38:15.821052,billing,requires engineering
+17,415,2024-10-04 02:44:14.822319,security,SLA breach risk
+18,420,2024-10-09 23:32:22.146949,security,SLA breach risk
+19,465,2023-12-13 02:54:58.093841,platform,security question
+20,501,2024-07-28 14:31:21.465799,billing,security question
+21,508,2024-10-08 06:44:09.835319,security,billing dispute
+22,509,2024-07-04 19:49:51.599494,security,SLA breach risk
+23,514,2024-07-11 15:59:41.495171,platform,SLA breach risk
+24,531,2024-04-12 09:16:47.070816,data,requires engineering
+25,588,2024-10-09 08:14:08.297292,platform,requires engineering
+26,623,2024-05-13 19:03:41.135375,billing,requires engineering
+27,640,2024-11-18 04:49:47.137396,security,SLA breach risk
+28,666,2024-08-29 08:52:05.268154,security,SLA breach risk
+29,679,2024-02-06 17:25:54.462934,data,security question
+30,734,2024-11-28 17:30:27.438847,security,security question
+31,737,2024-03-19 16:44:47.811604,data,billing dispute
+32,758,2024-12-23 00:30:43.817620,billing,requires engineering
+33,768,2023-12-24 05:36:55.907263,data,SLA breach risk
+34,782,2024-07-17 19:49:36.803491,billing,requires engineering
+35,785,2023-11-22 16:14:34.617059,data,security question
+36,839,2024-11-13 22:08:58.670894,data,billing dispute
+37,841,2024-03-15 12:14:53.216019,platform,requires engineering
+38,851,2024-12-05 06:46:13.219177,platform,requires engineering
+39,883,2024-11-07 01:16:26.535024,billing,security question
+40,909,2024-01-29 09:57:40.406848,platform,billing dispute
+41,915,2024-01-02 18:26:04.480262,platform,billing dispute
+42,957,2023-10-14 17:05:50.109550,platform,requires engineering
+43,958,2023-12-06 10:06:47.691804,security,security question
+44,1044,2024-06-08 09:58:04.915278,billing,SLA breach risk
+45,1054,2024-12-05 04:41:29.843008,data,security question
+46,1080,2023-12-15 20:45:29.390588,billing,security question
+47,1108,2024-08-25 17:44:14.938519,data,requires engineering
+48,1147,2024-07-23 20:53:48.635382,billing,billing dispute
+49,1153,2024-03-22 15:45:14.247452,data,SLA breach risk
+50,1202,2024-10-12 22:43:37.838301,platform,requires engineering
+51,1247,2024-12-11 03:30:12.440175,platform,security question
+52,1267,2024-11-26 09:17:40.018829,data,SLA breach risk
+53,1268,2024-05-28 13:13:54.363309,billing,billing dispute
+54,1269,2023-09-22 10:14:51.720433,billing,billing dispute
+55,1277,2024-08-19 22:29:36.214044,security,billing dispute
+56,1285,2023-09-22 02:08:18.398643,security,billing dispute
+57,1318,2023-07-27 12:13:48.988758,platform,security question
+58,1338,2024-10-22 21:36:59.048848,platform,requires engineering
+59,1417,2024-10-27 12:27:11.247165,security,billing dispute
+60,1429,2024-10-14 20:14:51.428600,billing,SLA breach risk
+61,1439,2024-05-09 14:06:55.249400,billing,SLA breach risk
+62,1456,2024-04-28 20:43:18.586550,billing,requires engineering
+63,1462,2024-09-06 02:46:22.692769,billing,SLA breach risk
+64,1463,2024-11-25 04:48:57.838534,data,security question
+65,1490,2024-11-21 06:31:49.760594,platform,security question
+66,1494,2024-11-28 18:49:26.741210,platform,billing dispute
+67,1525,2024-04-04 13:36:41.231520,billing,SLA breach risk
+68,1535,2024-04-22 05:37:27.870416,platform,security question
+69,1581,2023-12-26 08:52:27.939973,platform,requires engineering
+70,1598,2024-06-13 23:44:10.144184,platform,security question
+71,1603,2024-05-29 01:15:59.295728,billing,requires engineering
+72,1611,2024-04-18 23:30:07.994445,security,requires engineering
+73,1616,2024-12-01 21:46:08.909600,billing,billing dispute
+74,1620,2024-11-16 11:11:43.868592,security,security question
+75,1622,2024-01-28 04:52:12.130916,security,SLA breach risk
+76,1644,2024-08-01 14:36:50.980541,security,security question
+77,1722,2024-01-24 19:26:29.241398,security,billing dispute
+78,1751,2023-11-08 08:04:15.314335,security,security question
+79,1786,2024-05-29 19:02:27.880787,billing,SLA breach risk
+80,1789,2023-08-28 15:00:20.910374,data,SLA breach risk
+81,1853,2024-10-12 12:29:57.163983,billing,billing dispute
+82,1859,2024-03-16 12:16:55.898579,data,billing dispute
+83,1996,2024-10-15 14:55:08.734965,billing,SLA breach risk
+84,2028,2024-10-21 10:59:00.625708,security,security question
+85,2065,2024-05-10 10:52:07.222056,platform,billing dispute
+86,2066,2024-09-16 04:31:58.140775,data,billing dispute
+87,2071,2024-07-05 08:45:50.307354,billing,SLA breach risk
+88,2074,2024-12-04 13:02:41.137234,security,SLA breach risk
+89,2104,2024-11-24 03:38:21.787468,security,SLA breach risk
+90,2130,2024-03-06 15:22:57.716546,platform,requires engineering
+91,2137,2023-12-15 15:38:18.119317,security,SLA breach risk
+92,2154,2024-03-15 08:05:14.183938,security,security question
+93,2243,2024-10-21 15:15:43.799162,billing,security question
+94,2262,2024-12-06 22:42:30.119642,data,requires engineering
+95,2366,2023-10-23 09:06:13.618846,platform,security question
+96,2397,2024-10-04 11:28:29.360043,security,requires engineering
+97,2453,2024-04-21 04:41:01.637074,data,billing dispute
+98,2559,2023-12-28 06:47:43.920762,security,security question
+99,2571,2024-07-17 07:03:54.234795,platform,requires engineering
+100,2590,2023-11-16 23:47:52.436530,platform,requires engineering
+101,2594,2024-08-29 00:13:32.653611,platform,requires engineering
+102,2598,2024-12-29 15:44:43.319884,data,SLA breach risk
+103,2613,2024-11-27 01:03:18.008574,platform,billing dispute
+104,2625,2024-05-26 09:10:45.359740,data,requires engineering
+105,2629,2024-01-27 23:25:36.293434,platform,SLA breach risk
+106,2632,2024-12-08 10:20:03.626013,platform,security question
+107,2662,2024-04-18 11:15:40.619305,security,security question
+108,2745,2024-07-24 14:00:25.555027,data,SLA breach risk
+109,2803,2024-10-05 13:10:52.543798,platform,SLA breach risk
+110,2804,2024-11-06 01:21:53.314750,security,security question
+111,2820,2024-12-09 19:09:07.413519,billing,SLA breach risk
+112,2839,2024-11-12 04:58:52.772661,platform,requires engineering
+113,2886,2024-11-17 14:14:08.532539,security,SLA breach risk
+114,2904,2024-05-25 12:45:38.208278,billing,SLA breach risk
+115,2908,2024-11-07 21:36:30.148090,platform,requires engineering
+116,2964,2024-06-02 22:38:17.895441,platform,billing dispute
+117,2976,2024-12-28 22:09:42.493526,platform,requires engineering
+118,2981,2024-12-11 11:10:26.273743,billing,billing dispute
+119,3020,2024-12-04 20:32:59.739220,billing,security question
+120,3036,2024-08-29 00:26:29.846574,security,SLA breach risk
+121,3056,2023-09-08 22:17:14.578632,billing,SLA breach risk
+122,3058,2023-09-19 15:59:03.440652,platform,billing dispute
+123,3061,2024-05-20 17:55:08.685645,billing,requires engineering
+124,3086,2024-03-09 07:33:25.469593,data,security question
+125,3143,2024-09-18 16:23:30.500297,platform,security question
+126,3145,2024-09-15 16:49:18.261299,billing,SLA breach risk
+127,3195,2024-12-04 17:07:09.453894,data,SLA breach risk
+128,3201,2024-07-20 13:13:21.842844,data,SLA breach risk
+129,3212,2024-10-06 06:57:22.756336,billing,billing dispute
+130,3240,2024-03-05 02:18:40.507364,platform,SLA breach risk
+131,3279,2024-01-29 02:55:44.507904,security,SLA breach risk
+132,3287,2024-11-24 21:34:13.876325,data,SLA breach risk
+133,3310,2023-10-13 01:08:15.927572,platform,security question
+134,3316,2024-01-24 17:26:17.762072,data,requires engineering
+135,3325,2024-01-02 01:54:14.060128,data,billing dispute
+136,3336,2024-02-26 06:11:14.007913,platform,security question
+137,3375,2024-11-12 22:55:47.214699,platform,security question
+138,3536,2024-10-12 12:31:03.186364,data,SLA breach risk
+139,3549,2024-11-08 04:52:43.090106,billing,SLA breach risk
+140,3600,2024-09-21 01:28:13.111880,data,requires engineering
+141,3632,2024-08-17 05:20:35.921208,platform,security question
+142,3633,2024-06-03 22:24:46.271762,platform,requires engineering
+143,3730,2024-08-13 00:29:16.625286,platform,requires engineering
+144,3747,2023-07-19 10:21:04.384319,security,requires engineering
+145,3797,2024-08-03 08:07:29.856778,security,billing dispute
+146,3855,2024-10-04 20:56:48.246951,billing,SLA breach risk
+147,3867,2024-09-04 12:24:22.459000,platform,billing dispute
+148,3883,2024-06-09 14:01:28.768900,billing,requires engineering
+149,3927,2024-11-14 16:24:46.575820,billing,requires engineering
+150,3964,2024-08-09 15:29:38.008550,platform,billing dispute
+151,4054,2024-07-22 03:04:17.671686,data,SLA breach risk
+152,4078,2024-05-29 17:01:27.259632,platform,requires engineering
+153,4082,2024-11-29 10:12:49.805604,platform,billing dispute
+154,4099,2024-09-25 02:37:58.067791,platform,requires engineering
+155,4139,2024-11-29 09:59:53.691319,platform,requires engineering
+156,4153,2024-08-12 21:51:19.612411,platform,security question
+157,4175,2023-07-28 20:30:07.417050,platform,SLA breach risk
+158,4202,2024-11-22 02:05:04.096352,billing,requires engineering
+159,4268,2024-05-04 00:06:59.188731,billing,SLA breach risk
+160,4269,2024-10-23 10:58:39.646322,security,requires engineering
+161,4271,2024-10-13 23:16:22.113438,data,SLA breach risk
+162,4357,2024-11-28 23:01:30.453595,data,security question
+163,4426,2024-12-09 06:27:20.747387,data,requires engineering
+164,4439,2024-05-17 22:54:02.486208,billing,SLA breach risk
+165,4463,2024-08-06 09:30:10.672501,platform,billing dispute
+166,4497,2024-11-21 14:25:16.398522,billing,requires engineering
+167,4499,2023-12-17 00:24:51.691082,billing,SLA breach risk

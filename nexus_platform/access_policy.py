@@ -18,15 +18,30 @@ from dataclasses import dataclass, field
 # Departments used to tag document chunks at brain-build time.
 ALL_DEPARTMENTS = ("general", "finance", "hr", "support", "product", "ops")
 
-# Tables every demo company database contains.
-ALL_TABLES = (
-    "orders",
-    "customers",
-    "products",
-    "invoices",
-    "support_tickets",
-    "employees_hr",
-)
+# Tables grouped into access areas. Access policy metadata lives here so a
+# role grants whole business areas, not hand-maintained table lists.
+TABLE_AREAS: dict[str, tuple[str, ...]] = {
+    "sales": ("orders", "order_items", "subscriptions", "usage_events",
+              "churn_events"),
+    "customer": ("customers", "contacts"),
+    "product": ("products", "plans", "price_changes"),
+    "finance": ("invoices", "invoice_lines", "payments", "refunds",
+                "credit_notes", "expenses", "bills", "saas_subscriptions",
+                "contracts", "finance_reports"),
+    "procurement": ("vendors", "purchase_orders"),
+    "support": ("support_tickets", "ticket_messages", "slas",
+                "csat_responses", "escalations"),
+    "ops": ("incidents",),
+    "marketing": ("campaigns", "leads"),
+    "hr": ("employees_hr", "departments", "teams", "payroll_summary"),
+    "exec": ("board_updates",),
+}
+
+ALL_TABLES = tuple(t for tables in TABLE_AREAS.values() for t in tables)
+
+
+def _areas(*names: str) -> tuple[str, ...]:
+    return tuple(t for a in names for t in TABLE_AREAS[a])
 
 
 @dataclass(frozen=True)
@@ -55,37 +70,40 @@ ROLE_POLICIES: dict[str, RolePolicy] = {
     ),
     "Analyst": RolePolicy(
         role="Analyst",
-        allowed_tables=("orders", "customers", "products", "invoices", "support_tickets"),
+        allowed_tables=_areas("sales", "customer", "product", "finance",
+                              "support", "marketing"),
         allowed_departments=("general", "finance", "product", "support"),
-        summary="Revenue, orders, customers, products, invoices, and support metrics; finance/product/support documents.",
+        summary="Revenue, orders, customers, products, invoices, support metrics, and marketing funnel; finance/product/support documents.",
         denied_summary="HR workforce data and HR policy documents.",
     ),
     "Finance": RolePolicy(
         role="Finance",
-        allowed_tables=("invoices", "orders", "customers", "products"),
+        allowed_tables=_areas("finance", "sales", "customer", "product",
+                              "procurement"),
         allowed_departments=("general", "finance", "product"),
-        summary="Invoices, revenue, payments, orders, and customer spend; finance documents.",
+        summary="Invoices, payments, refunds, expenses, vendor spend, revenue, orders, and customer spend; finance documents.",
         denied_summary="HR workforce data, support tickets, and HR/support documents.",
     ),
     "HR": RolePolicy(
         role="HR",
-        allowed_tables=("employees_hr",),
+        allowed_tables=_areas("hr"),
         allowed_departments=("general", "hr"),
-        summary="Headcount, attrition, departments, and HR/compliance policy documents.",
+        summary="Headcount, attrition, departments, teams, payroll summaries, and HR/compliance policy documents.",
         denied_summary="Revenue, orders, customers, invoices, support tickets, and finance documents.",
     ),
     "Support": RolePolicy(
         role="Support",
-        allowed_tables=("support_tickets", "customers", "products"),
+        allowed_tables=_areas("support", "customer", "product"),
         allowed_departments=("general", "support", "product"),
-        summary="Support tickets, SLAs, customer issues, and support/product documents.",
+        summary="Support tickets, messages, SLAs, CSAT, escalations, customer issues, and support/product documents.",
         denied_summary="Revenue, invoices, HR data, and finance/HR documents.",
     ),
     "Ops": RolePolicy(
         role="Ops",
-        allowed_tables=("orders", "products", "support_tickets"),
+        allowed_tables=_areas("sales", "product", "support", "procurement",
+                              "ops"),
         allowed_departments=("general", "ops", "product", "support"),
-        summary="Orders, products, incidents, and operations documents.",
+        summary="Orders, products, incidents, vendors, purchase orders, and operations documents.",
         denied_summary="Invoices, customer financials, HR data, and finance/HR documents.",
     ),
 }

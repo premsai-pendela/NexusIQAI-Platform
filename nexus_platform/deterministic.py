@@ -21,12 +21,10 @@ from __future__ import annotations
 import calendar
 import json
 import re
-import sqlite3
 from dataclasses import asdict, dataclass, field
 from typing import Optional
 
 from nexus_platform.auth import AccessContext
-from nexus_platform.contexts import company_db_path
 
 # ── Periods (fiscal 2024, matching the demo data) ───────────────────────
 
@@ -494,7 +492,8 @@ def _where_clause(mdef: MetricDef, period: Optional[tuple]) -> str:
     return f" WHERE {' AND '.join(wheres)}" if wheres else ""
 
 
-def build_sql(intent: Intent) -> Optional[tuple[str, tuple[str, ...], str]]:
+def build_sql(intent: Intent,
+              dialect: str = "sqlite") -> Optional[tuple[str, tuple[str, ...], str]]:
     """(sql, tables_required, template_id) or None if unsupported combo."""
     mdef = METRICS.get(intent.metric or "")
     if mdef is None:
@@ -517,10 +516,11 @@ def build_sql(intent: Intent) -> Optional[tuple[str, tuple[str, ...], str]]:
     if intent.group_by in ("month", "quarter"):
         if not mdef.date_col:
             return None
+        from nexus_platform.db import month_expr, quarter_expr
         if intent.group_by == "month":
-            label = f"strftime('%Y-%m', {mdef.date_col})"
+            label = month_expr(dialect, mdef.date_col)
         else:
-            label = (f"'Q' || ((CAST(strftime('%m', {mdef.date_col}) AS INTEGER) + 2) / 3)")
+            label = quarter_expr(dialect, mdef.date_col)
         sql = (f"SELECT {label} AS {intent.group_by}, {mdef.value_sql} AS value "
                f"FROM {mdef.base_from}{where} GROUP BY {intent.group_by} ORDER BY {intent.group_by}")
         return sql, mdef.tables, f"{intent.metric}_by_{intent.group_by}"
@@ -581,7 +581,21 @@ def execute(ctx: AccessContext, intent: Intent) -> Optional[dict]:
     {denied: bool, denied_tables, answer, rows, sql, tables, template_id,
      chart, compare_rows}
     """
-    built = build_sql(intent)
+    from nexus_platform.db import dialect_name, run_rows
+
+    dialect = dialect_name(ctx.company.slug)
+
+    # Workspace history spans 18+ months; an unqualified metric means the
+    # current fiscal year, never a silent all-time aggregate.
+    mdef0 = METRICS.get(intent.metric or "")
+    if (mdef0 is not None and mdef0.date_col and intent.period is None
+            and not intent.selected_periods):
+        intent = Intent(**{**asdict(intent)})
+        if intent.compare:
+            intent.compare = tuple(intent.compare)
+        intent.period = _YEAR
+
+    built = build_sql(intent, dialect=dialect)
     if built is None:
         return None
     sql, tables, template_id = built
@@ -595,22 +609,17 @@ def execute(ctx: AccessContext, intent: Intent) -> Optional[dict]:
             "answer": "", "rows": [], "sql": None, "chart": None,
         }
 
-    conn = sqlite3.connect(str(company_db_path(ctx.company.slug)))
-    conn.row_factory = sqlite3.Row
-    try:
-        rows = [dict(r) for r in conn.execute(sql).fetchall()]
-        compare_rows = None
-        compare_sql = None
-        if intent.compare:
-            cmp_intent = Intent(**{**asdict(intent)})
-            cmp_intent.period = tuple(intent.compare)
-            cmp_intent.compare = None
-            cmp_built = build_sql(cmp_intent)
-            if cmp_built:
-                compare_sql = cmp_built[0]
-                compare_rows = [dict(r) for r in conn.execute(compare_sql).fetchall()]
-    finally:
-        conn.close()
+    rows = run_rows(ctx.company.slug, sql)
+    compare_rows = None
+    compare_sql = None
+    if intent.compare:
+        cmp_intent = Intent(**{**asdict(intent)})
+        cmp_intent.period = tuple(intent.compare)
+        cmp_intent.compare = None
+        cmp_built = build_sql(cmp_intent, dialect=dialect)
+        if cmp_built:
+            compare_sql = cmp_built[0]
+            compare_rows = run_rows(ctx.company.slug, compare_sql)
 
     mdef = METRICS[intent.metric]
     label = _METRIC_LABELS.get(intent.metric, intent.metric)

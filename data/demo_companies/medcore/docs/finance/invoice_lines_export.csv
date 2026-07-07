@@ -1,0 +1,1501 @@
+line_id,invoice_id,description,quantity,unit_price,line_total
+1,1,add-on seats,10,2105.94,21059.4
+2,1,usage overage,1,3065.89,3065.89
+3,2,usage overage,9,837.88,7540.92
+4,3,onboarding services,5,2197.39,10986.95
+5,3,add-on seats,4,2555.77,10223.08
+6,3,add-on seats,9,2011.74,18105.66
+7,4,support plan,2,2298.71,4597.42
+8,4,add-on seats,6,617.67,3706.02
+9,5,subscription,4,3478.79,13915.16
+10,6,add-on seats,6,1033.83,6202.98
+11,6,usage overage,7,2776.64,19436.48
+12,7,support plan,5,2483.26,12416.3
+13,7,onboarding services,3,141.89,425.67
+14,8,usage overage,2,3122.24,6244.48
+15,8,onboarding services,7,198.25,1387.75
+16,8,usage overage,3,305.29,915.87
+17,9,add-on seats,5,3399.11,16995.55
+18,9,support plan,10,2447.8,24478.0
+19,9,onboarding services,1,2561.84,2561.84
+20,10,onboarding services,10,182.25,1822.5
+21,10,subscription,2,1721.65,3443.3
+22,10,usage overage,2,1166.13,2332.26
+23,11,usage overage,6,279.41,1676.46
+24,12,add-on seats,9,1832.45,16492.05
+25,12,onboarding services,5,404.55,2022.75
+26,13,subscription,10,1285.67,12856.7
+27,13,support plan,9,787.5,7087.5
+28,14,onboarding services,7,1396.17,9773.19
+29,15,onboarding services,8,1954.79,15638.32
+30,16,add-on seats,6,1775.95,10655.7
+31,17,add-on seats,10,2131.9,21319.0
+32,17,onboarding services,5,450.59,2252.95
+33,17,add-on seats,5,2989.75,14948.75
+34,18,onboarding services,2,958.23,1916.46
+35,18,support plan,2,2718.34,5436.68
+36,19,add-on seats,3,2032.4,6097.2
+37,20,support plan,7,248.49,1739.43
+38,20,support plan,3,2905.92,8717.76
+39,21,subscription,8,2594.2,20753.6
+40,21,onboarding services,6,2151.17,12907.02
+41,22,usage overage,8,2926.12,23408.96
+42,22,add-on seats,4,1250.72,5002.88
+43,23,usage overage,2,930.79,1861.58
+44,23,add-on seats,6,467.88,2807.28
+45,24,onboarding services,8,1634.25,13074.0
+46,24,support plan,1,2643.12,2643.12
+47,25,onboarding services,1,938.95,938.95
+48,25,usage overage,3,3190.17,9570.51
+49,25,add-on seats,6,710.56,4263.36
+50,26,onboarding services,3,1950.08,5850.24
+51,27,add-on seats,7,2667.05,18669.35
+52,27,subscription,6,1718.87,10313.22
+53,27,usage overage,6,3400.24,20401.44
+54,28,usage overage,3,2296.82,6890.46
+55,28,add-on seats,10,2263.28,22632.8
+56,29,onboarding services,2,1395.17,2790.34
+57,29,add-on seats,4,390.73,1562.92
+58,29,add-on seats,4,2704.36,10817.44
+59,30,add-on seats,9,1561.72,14055.48
+60,30,onboarding services,1,2618.41,2618.41
+61,30,add-on seats,6,2277.45,13664.7
+62,31,subscription,4,893.9,3575.6
+63,31,support plan,8,1312.53,10500.24
+64,32,usage overage,7,2571.79,18002.53
+65,33,usage overage,7,233.63,1635.41
+66,34,support plan,7,2585.3,18097.1
+67,34,add-on seats,3,2113.72,6341.16
+68,34,support plan,10,1553.29,15532.9
+69,35,subscription,8,1392.31,11138.48
+70,35,add-on seats,3,2686.27,8058.81
+71,35,subscription,8,2004.32,16034.56
+72,36,support plan,10,2603.99,26039.9
+73,37,onboarding services,10,1720.43,17204.3
+74,37,usage overage,6,1649.3,9895.8
+75,37,subscription,1,1984.04,1984.04
+76,38,support plan,1,1860.63,1860.63
+77,39,onboarding services,6,1467.9,8807.4
+78,39,support plan,5,1684.08,8420.4
+79,39,add-on seats,3,824.67,2474.01
+80,40,add-on seats,9,2895.21,26056.89
+81,41,onboarding services,6,3168.72,19012.32
+82,41,support plan,3,2347.11,7041.33
+83,42,usage overage,1,2891.35,2891.35
+84,42,subscription,10,2690.37,26903.7
+85,43,onboarding services,3,1691.03,5073.09
+86,43,usage overage,1,1825.1,1825.1
+87,44,add-on seats,5,2989.58,14947.9
+88,45,support plan,8,2049.48,16395.84
+89,45,support plan,5,2628.35,13141.75
+90,46,add-on seats,5,2932.21,14661.05
+91,47,subscription,4,2762.43,11049.72
+92,47,subscription,5,2048.2,10241.0
+93,47,subscription,8,1829.39,14635.12
+94,48,support plan,9,2599.4,23394.6
+95,49,usage overage,6,2968.37,17810.22
+96,49,support plan,7,1835.72,12850.04
+97,50,support plan,5,1944.0,9720.0
+98,50,subscription,2,3235.23,6470.46
+99,50,support plan,3,3035.48,9106.44
+100,51,usage overage,2,2348.69,4697.38
+101,51,usage overage,6,2689.94,16139.64
+102,52,onboarding services,8,1402.98,11223.84
+103,53,subscription,8,1681.18,13449.44
+104,54,subscription,8,1066.0,8528.0
+105,54,usage overage,10,233.67,2336.7
+106,54,add-on seats,1,1302.59,1302.59
+107,55,onboarding services,9,670.66,6035.94
+108,56,add-on seats,10,3040.19,30401.9
+109,56,add-on seats,7,1662.98,11640.86
+110,57,support plan,1,2558.19,2558.19
+111,58,add-on seats,2,1814.78,3629.56
+112,59,subscription,5,1746.02,8730.1
+113,59,add-on seats,8,299.19,2393.52
+114,60,onboarding services,6,1860.11,11160.66
+115,61,subscription,8,1549.53,12396.24
+116,61,subscription,9,1223.8,11014.2
+117,62,subscription,10,3221.92,32219.2
+118,63,onboarding services,7,3496.6,24476.2
+119,64,onboarding services,7,395.96,2771.72
+120,65,subscription,1,2286.82,2286.82
+121,65,support plan,7,2069.38,14485.66
+122,65,onboarding services,3,1055.47,3166.41
+123,66,usage overage,5,653.08,3265.4
+124,66,subscription,1,896.98,896.98
+125,67,support plan,3,3292.03,9876.09
+126,67,usage overage,6,1062.71,6376.26
+127,68,support plan,6,2161.33,12967.98
+128,68,subscription,6,335.53,2013.18
+129,68,usage overage,5,2073.24,10366.2
+130,69,onboarding services,3,834.54,2503.62
+131,69,onboarding services,4,2825.51,11302.04
+132,69,usage overage,9,3099.04,27891.36
+133,70,onboarding services,2,964.03,1928.06
+134,70,subscription,7,924.55,6471.85
+135,71,onboarding services,3,835.9,2507.7
+136,72,usage overage,1,1034.27,1034.27
+137,72,onboarding services,1,980.78,980.78
+138,73,onboarding services,9,634.77,5712.93
+139,73,subscription,6,2900.42,17402.52
+140,74,onboarding services,10,2707.0,27070.0
+141,74,add-on seats,3,2461.0,7383.0
+142,74,onboarding services,7,1530.44,10713.08
+143,75,support plan,7,1766.77,12367.39
+144,76,add-on seats,1,2366.57,2366.57
+145,76,subscription,2,2462.44,4924.88
+146,76,support plan,4,669.66,2678.64
+147,77,usage overage,3,2648.6,7945.8
+148,77,usage overage,2,1047.67,2095.34
+149,78,support plan,5,210.88,1054.4
+150,79,onboarding services,5,3143.54,15717.7
+151,79,onboarding services,4,408.9,1635.6
+152,80,support plan,3,1209.87,3629.61
+153,80,onboarding services,9,2796.9,25172.1
+154,81,support plan,8,2471.8,19774.4
+155,81,onboarding services,4,1042.05,4168.2
+156,81,usage overage,5,2276.07,11380.35
+157,82,support plan,4,1828.84,7315.36
+158,82,onboarding services,1,965.02,965.02
+159,83,add-on seats,4,2575.85,10303.4
+160,83,onboarding services,1,1688.33,1688.33
+161,83,onboarding services,5,911.95,4559.75
+162,84,subscription,1,2282.82,2282.82
+163,84,usage overage,8,1907.37,15258.96
+164,85,onboarding services,6,1287.32,7723.92
+165,85,onboarding services,8,2041.03,16328.24
+166,86,add-on seats,1,1631.15,1631.15
+167,87,onboarding services,10,847.69,8476.9
+168,87,subscription,10,2965.76,29657.6
+169,88,subscription,2,3374.99,6749.98
+170,88,usage overage,1,624.82,624.82
+171,88,support plan,3,2105.38,6316.14
+172,89,onboarding services,1,2933.52,2933.52
+173,89,onboarding services,2,1683.1,3366.2
+174,89,onboarding services,9,2219.69,19977.21
+175,90,subscription,10,3170.98,31709.8
+176,91,add-on seats,7,338.41,2368.87
+177,91,add-on seats,9,2624.79,23623.11
+178,91,onboarding services,1,451.64,451.64
+179,92,support plan,5,2334.6,11673.0
+180,93,onboarding services,7,1466.33,10264.31
+181,94,usage overage,3,3431.07,10293.21
+182,95,usage overage,2,2953.81,5907.62
+183,95,subscription,10,1762.05,17620.5
+184,95,onboarding services,8,248.03,1984.24
+185,96,usage overage,8,2174.52,17396.16
+186,96,onboarding services,10,371.36,3713.6
+187,96,support plan,7,2468.21,17277.47
+188,97,subscription,9,2413.38,21720.42
+189,97,support plan,10,884.08,8840.8
+190,98,usage overage,2,2038.5,4077.0
+191,98,subscription,6,3139.04,18834.24
+192,99,subscription,6,2429.68,14578.08
+193,99,add-on seats,1,546.89,546.89
+194,100,support plan,2,1896.24,3792.48
+195,101,subscription,8,2452.71,19621.68
+196,101,onboarding services,4,2468.09,9872.36
+197,102,usage overage,6,968.77,5812.62
+198,103,usage overage,7,2679.29,18755.03
+199,103,subscription,3,2608.54,7825.62
+200,104,add-on seats,4,1018.78,4075.12
+201,105,onboarding services,6,1433.98,8603.88
+202,105,support plan,1,2844.43,2844.43
+203,106,usage overage,8,3255.15,26041.2
+204,107,subscription,9,3066.34,27597.06
+205,107,onboarding services,10,1643.51,16435.1
+206,108,subscription,1,1156.32,1156.32
+207,109,add-on seats,6,2153.0,12918.0
+208,110,support plan,8,3340.35,26722.8
+209,110,support plan,9,728.68,6558.12
+210,111,onboarding services,6,900.2,5401.2
+211,111,onboarding services,3,1407.57,4222.71
+212,112,subscription,10,197.53,1975.3
+213,112,add-on seats,1,539.99,539.99
+214,113,subscription,8,3514.99,28119.92
+215,113,subscription,2,3118.21,6236.42
+216,113,support plan,5,1407.14,7035.7
+217,114,support plan,6,1790.52,10743.12
+218,114,support plan,3,1242.71,3728.13
+219,115,usage overage,1,566.47,566.47
+220,115,usage overage,6,503.98,3023.88
+221,115,subscription,5,684.87,3424.35
+222,116,onboarding services,1,362.9,362.9
+223,116,support plan,8,3268.24,26145.92
+224,116,usage overage,6,989.93,5939.58
+225,117,usage overage,2,1035.5,2071.0
+226,117,subscription,4,1443.37,5773.48
+227,118,support plan,2,343.22,686.44
+228,118,usage overage,8,277.48,2219.84
+229,119,onboarding services,5,1025.85,5129.25
+230,119,support plan,5,613.91,3069.55
+231,120,add-on seats,3,810.92,2432.76
+232,120,support plan,5,209.21,1046.05
+233,120,add-on seats,3,2416.75,7250.25
+234,121,usage overage,6,359.16,2154.96
+235,122,support plan,2,1203.83,2407.66
+236,122,support plan,8,971.15,7769.2
+237,122,support plan,1,2899.81,2899.81
+238,123,subscription,9,2578.06,23202.54
+239,123,onboarding services,7,2893.07,20251.49
+240,124,add-on seats,4,3330.37,13321.48
+241,124,usage overage,4,768.95,3075.8
+242,124,subscription,2,684.67,1369.34
+243,125,onboarding services,4,1437.1,5748.4
+244,126,subscription,4,1334.21,5336.84
+245,126,support plan,6,1433.63,8601.78
+246,127,add-on seats,5,2083.33,10416.65
+247,128,subscription,2,3383.53,6767.06
+248,128,usage overage,7,369.2,2584.4
+249,128,subscription,7,689.93,4829.51
+250,129,support plan,2,1747.88,3495.76
+251,129,add-on seats,6,2869.73,17218.38
+252,129,support plan,1,1586.8,1586.8
+253,130,usage overage,9,2265.07,20385.63
+254,130,onboarding services,6,3376.9,20261.4
+255,130,support plan,5,415.5,2077.5
+256,131,support plan,10,2133.74,21337.4
+257,132,usage overage,9,206.91,1862.19
+258,132,support plan,4,1781.1,7124.4
+259,132,support plan,1,627.16,627.16
+260,133,add-on seats,3,1135.11,3405.33
+261,133,onboarding services,5,2491.84,12459.2
+262,133,usage overage,4,2497.77,9991.08
+263,134,support plan,7,3169.35,22185.45
+264,135,onboarding services,8,833.71,6669.68
+265,136,subscription,6,229.37,1376.22
+266,136,onboarding services,8,2076.19,16609.52
+267,137,subscription,3,1787.92,5363.76
+268,137,add-on seats,2,642.25,1284.5
+269,137,onboarding services,2,1877.47,3754.94
+270,138,onboarding services,10,1096.97,10969.7
+271,138,support plan,8,2062.08,16496.64
+272,138,usage overage,5,2525.89,12629.45
+273,139,onboarding services,9,2913.74,26223.66
+274,140,support plan,5,367.89,1839.45
+275,141,usage overage,8,1728.88,13831.04
+276,142,support plan,2,1700.64,3401.28
+277,143,usage overage,3,1172.65,3517.95
+278,143,support plan,5,3372.36,16861.8
+279,144,subscription,5,1539.19,7695.95
+280,144,subscription,10,2707.53,27075.3
+281,144,onboarding services,5,3200.75,16003.75
+282,145,onboarding services,8,1668.92,13351.36
+283,145,onboarding services,9,2328.28,20954.52
+284,146,support plan,8,1444.52,11556.16
+285,146,support plan,10,3202.09,32020.9
+286,147,support plan,6,2306.01,13836.06
+287,148,subscription,3,604.89,1814.67
+288,148,add-on seats,6,1645.33,9871.98
+289,148,onboarding services,2,1271.08,2542.16
+290,149,onboarding services,9,1338.6,12047.4
+291,149,support plan,4,3198.71,12794.84
+292,150,subscription,4,2986.82,11947.28
+293,150,usage overage,8,1501.46,12011.68
+294,150,subscription,6,2507.75,15046.5
+295,151,onboarding services,2,2083.67,4167.34
+296,151,onboarding services,10,268.88,2688.8
+297,152,support plan,7,2561.3,17929.1
+298,153,support plan,8,763.09,6104.72
+299,154,usage overage,2,3049.1,6098.2
+300,154,usage overage,8,1013.51,8108.08
+301,155,subscription,2,3457.31,6914.62
+302,155,support plan,1,3427.67,3427.67
+303,156,support plan,3,385.95,1157.85
+304,156,usage overage,6,1075.2,6451.2
+305,157,usage overage,9,2640.47,23764.23
+306,157,subscription,5,2019.61,10098.05
+307,157,add-on seats,9,2773.87,24964.83
+308,158,subscription,6,2797.96,16787.76
+309,159,subscription,5,2749.98,13749.9
+310,159,usage overage,8,388.27,3106.16
+311,159,onboarding services,9,2014.71,18132.39
+312,160,usage overage,8,1675.71,13405.68
+313,161,subscription,2,1285.2,2570.4
+314,161,usage overage,5,791.24,3956.2
+315,161,add-on seats,2,3154.5,6309.0
+316,162,usage overage,10,788.82,7888.2
+317,162,add-on seats,2,2063.86,4127.72
+318,162,usage overage,6,2789.5,16737.0
+319,163,subscription,6,3104.88,18629.28
+320,163,usage overage,9,2878.02,25902.18
+321,164,support plan,2,349.53,699.06
+322,164,usage overage,9,1769.31,15923.79
+323,164,subscription,3,2508.86,7526.58
+324,165,subscription,7,1235.63,8649.41
+325,165,onboarding services,3,434.71,1304.13
+326,166,onboarding services,8,2112.11,16896.88
+327,166,usage overage,5,1111.44,5557.2
+328,166,onboarding services,10,2846.42,28464.2
+329,167,support plan,6,2929.73,17578.38
+330,167,onboarding services,10,3268.8,32688.0
+331,167,add-on seats,6,1967.37,11804.22
+332,168,onboarding services,3,1723.71,5171.13
+333,169,add-on seats,6,1652.24,9913.44
+334,169,subscription,4,1809.82,7239.28
+335,169,support plan,7,3173.12,22211.84
+336,170,usage overage,3,614.91,1844.73
+337,170,subscription,8,217.55,1740.4
+338,171,add-on seats,5,763.99,3819.95
+339,171,subscription,2,2944.54,5889.08
+340,172,add-on seats,1,2007.42,2007.42
+341,172,support plan,1,3260.37,3260.37
+342,172,add-on seats,3,2105.82,6317.46
+343,173,support plan,7,2181.72,15272.04
+344,174,onboarding services,4,2857.9,11431.6
+345,175,usage overage,10,2737.97,27379.7
+346,175,usage overage,2,2782.17,5564.34
+347,176,add-on seats,3,1199.05,3597.15
+348,176,onboarding services,5,2110.39,10551.95
+349,177,usage overage,3,2161.53,6484.59
+350,177,usage overage,3,1915.02,5745.06
+351,177,usage overage,7,2392.45,16747.15
+352,178,subscription,7,2769.42,19385.94
+353,179,support plan,3,450.94,1352.82
+354,179,onboarding services,8,2713.98,21711.84
+355,180,subscription,2,2605.45,5210.9
+356,180,onboarding services,5,620.39,3101.95
+357,180,usage overage,10,2004.29,20042.9
+358,181,add-on seats,8,1102.06,8816.48
+359,181,add-on seats,9,337.33,3035.97
+360,182,support plan,7,2648.68,18540.76
+361,182,usage overage,7,1217.64,8523.48
+362,182,onboarding services,6,3326.91,19961.46
+363,183,usage overage,6,1888.65,11331.9
+364,183,support plan,3,920.02,2760.06
+365,183,support plan,3,2416.54,7249.62
+366,184,support plan,3,1322.99,3968.97
+367,184,add-on seats,6,1407.36,8444.16
+368,184,usage overage,10,399.21,3992.1
+369,185,support plan,10,2840.38,28403.8
+370,185,support plan,4,2829.07,11316.28
+371,185,add-on seats,6,2560.39,15362.34
+372,186,usage overage,3,3330.24,9990.72
+373,186,onboarding services,6,1649.29,9895.74
+374,186,add-on seats,2,1285.12,2570.24
+375,187,add-on seats,4,617.65,2470.6
+376,187,usage overage,1,2571.23,2571.23
+377,187,support plan,6,2209.11,13254.66
+378,188,support plan,2,3450.11,6900.22
+379,188,usage overage,8,1027.37,8218.96
+380,189,add-on seats,8,2258.97,18071.76
+381,189,support plan,2,2394.12,4788.24
+382,189,add-on seats,6,3018.77,18112.62
+383,190,add-on seats,3,2010.62,6031.86
+384,191,usage overage,2,2078.56,4157.12
+385,192,usage overage,3,2234.33,6702.99
+386,193,onboarding services,4,372.87,1491.48
+387,194,support plan,5,2245.01,11225.05
+388,195,usage overage,5,2442.55,12212.75
+389,195,usage overage,4,3245.98,12983.92
+390,196,add-on seats,6,2175.88,13055.28
+391,196,onboarding services,1,1925.0,1925.0
+392,197,subscription,8,2430.68,19445.44
+393,197,support plan,3,1798.59,5395.77
+394,198,usage overage,7,1311.42,9179.94
+395,198,support plan,5,396.2,1981.0
+396,198,support plan,8,655.57,5244.56
+397,199,add-on seats,7,2994.18,20959.26
+398,200,onboarding services,4,927.83,3711.32
+399,200,support plan,10,3073.47,30734.7
+400,200,add-on seats,2,307.03,614.06
+401,201,usage overage,8,1801.06,14408.48
+402,202,onboarding services,4,278.48,1113.92
+403,202,add-on seats,1,760.92,760.92
+404,202,usage overage,4,831.31,3325.24
+405,203,usage overage,9,1220.01,10980.09
+406,204,add-on seats,8,810.85,6486.8
+407,204,onboarding services,4,1202.16,4808.64
+408,204,onboarding services,7,517.54,3622.78
+409,205,usage overage,5,2092.87,10464.35
+410,205,usage overage,10,3505.75,35057.5
+411,205,support plan,5,3153.43,15767.15
+412,206,support plan,1,3041.0,3041.0
+413,207,add-on seats,5,2726.7,13633.5
+414,207,usage overage,4,1830.07,7320.28
+415,207,add-on seats,6,2670.44,16022.64
+416,208,subscription,1,1639.95,1639.95
+417,208,usage overage,10,325.35,3253.5
+418,209,support plan,1,987.63,987.63
+419,210,support plan,8,3308.42,26467.36
+420,211,onboarding services,9,1928.78,17359.02
+421,211,usage overage,1,932.55,932.55
+422,212,support plan,2,1362.89,2725.78
+423,212,add-on seats,2,2376.51,4753.02
+424,212,subscription,1,242.67,242.67
+425,213,support plan,8,2586.65,20693.2
+426,213,add-on seats,3,340.71,1022.13
+427,213,usage overage,5,924.6,4623.0
+428,214,add-on seats,5,130.71,653.55
+429,215,support plan,1,232.81,232.81
+430,215,support plan,9,455.44,4098.96
+431,216,add-on seats,6,1171.87,7031.22
+432,216,usage overage,3,1939.37,5818.11
+433,216,support plan,5,2533.64,12668.2
+434,217,subscription,4,314.21,1256.84
+435,217,add-on seats,1,3175.67,3175.67
+436,217,onboarding services,1,2860.03,2860.03
+437,218,subscription,1,2230.57,2230.57
+438,218,add-on seats,6,1703.87,10223.22
+439,219,support plan,6,1890.71,11344.26
+440,220,support plan,6,2822.8,16936.8
+441,220,add-on seats,1,3354.07,3354.07
+442,221,subscription,8,3441.93,27535.44
+443,221,support plan,9,3316.85,29851.65
+444,222,subscription,9,606.93,5462.37
+445,222,subscription,5,2566.67,12833.35
+446,222,subscription,1,3339.53,3339.53
+447,223,support plan,10,442.47,4424.7
+448,223,onboarding services,10,2554.0,25540.0
+449,224,usage overage,6,1057.21,6343.26
+450,224,subscription,9,1894.28,17048.52
+451,224,add-on seats,3,1781.8,5345.4
+452,225,support plan,10,2557.6,25576.0
+453,225,subscription,5,1106.41,5532.05
+454,226,add-on seats,3,3385.22,10155.66
+455,226,onboarding services,6,872.26,5233.56
+456,226,usage overage,1,1055.67,1055.67
+457,227,usage overage,1,3106.8,3106.8
+458,228,subscription,3,184.02,552.06
+459,229,usage overage,4,909.27,3637.08
+460,229,usage overage,2,1674.58,3349.16
+461,230,add-on seats,10,329.26,3292.6
+462,230,support plan,2,153.3,306.6
+463,230,subscription,4,609.92,2439.68
+464,231,subscription,10,188.9,1889.0
+465,231,support plan,3,2905.32,8715.96
+466,231,usage overage,4,393.06,1572.24
+467,232,add-on seats,9,1942.69,17484.21
+468,232,add-on seats,2,2606.31,5212.62
+469,232,onboarding services,10,2357.05,23570.5
+470,233,support plan,1,1490.56,1490.56
+471,233,onboarding services,10,383.33,3833.3
+472,234,onboarding services,2,2766.02,5532.04
+473,234,onboarding services,7,210.42,1472.94
+474,234,subscription,10,1321.63,13216.3
+475,235,subscription,3,2516.47,7549.41
+476,236,usage overage,6,2805.38,16832.28
+477,236,support plan,5,2187.25,10936.25
+478,237,subscription,3,3155.34,9466.02
+479,237,add-on seats,1,2266.0,2266.0
+480,238,usage overage,9,2471.56,22244.04
+481,238,usage overage,8,3016.46,24131.68
+482,239,usage overage,1,1248.39,1248.39
+483,239,usage overage,9,1215.26,10937.34
+484,240,support plan,10,2882.58,28825.8
+485,241,onboarding services,8,1452.27,11618.16
+486,242,add-on seats,1,2262.89,2262.89
+487,243,subscription,6,1247.34,7484.04
+488,244,subscription,2,3474.53,6949.06
+489,244,support plan,10,2162.6,21626.0
+490,245,usage overage,7,2860.85,20025.95
+491,245,onboarding services,2,766.6,1533.2
+492,245,onboarding services,1,2532.87,2532.87
+493,246,add-on seats,2,2346.38,4692.76
+494,246,subscription,1,2241.68,2241.68
+495,246,usage overage,10,3035.37,30353.7
+496,247,usage overage,5,3503.3,17516.5
+497,248,support plan,7,2937.22,20560.54
+498,248,subscription,10,1637.25,16372.5
+499,249,onboarding services,9,1262.5,11362.5
+500,249,onboarding services,3,2308.53,6925.59
+501,249,add-on seats,6,2274.01,13644.06
+502,250,support plan,8,3516.85,28134.8
+503,250,subscription,8,3356.1,26848.8
+504,250,subscription,1,2008.18,2008.18
+505,251,add-on seats,7,2987.6,20913.2
+506,251,onboarding services,6,451.26,2707.56
+507,252,onboarding services,2,3169.79,6339.58
+508,252,add-on seats,5,1426.35,7131.75
+509,252,subscription,8,3468.23,27745.84
+510,253,onboarding services,9,2706.87,24361.83
+511,254,usage overage,9,2222.75,20004.75
+512,254,onboarding services,6,544.87,3269.22
+513,254,usage overage,8,444.93,3559.44
+514,255,add-on seats,8,2371.11,18968.88
+515,256,support plan,10,129.59,1295.9
+516,256,add-on seats,4,2319.24,9276.96
+517,257,onboarding services,5,2596.69,12983.45
+518,257,usage overage,4,3400.8,13603.2
+519,257,usage overage,7,1621.2,11348.4
+520,258,usage overage,4,536.12,2144.48
+521,258,usage overage,3,1314.6,3943.8
+522,258,usage overage,8,217.55,1740.4
+523,259,subscription,1,1154.48,1154.48
+524,259,subscription,7,1832.4,12826.8
+525,260,subscription,3,295.19,885.57
+526,261,subscription,2,3248.96,6497.92
+527,261,subscription,6,2942.36,17654.16
+528,262,support plan,3,2528.59,7585.77
+529,262,usage overage,5,1021.85,5109.25
+530,262,subscription,5,2875.24,14376.2
+531,263,usage overage,10,1685.0,16850.0
+532,263,usage overage,2,2776.36,5552.72
+533,264,add-on seats,10,1496.45,14964.5
+534,265,support plan,7,928.87,6502.09
+535,265,subscription,8,2379.96,19039.68
+536,265,add-on seats,2,696.58,1393.16
+537,266,usage overage,8,917.72,7341.76
+538,266,support plan,10,1463.94,14639.4
+539,266,usage overage,1,3206.48,3206.48
+540,267,usage overage,2,2261.99,4523.98
+541,267,support plan,8,3424.38,27395.04
+542,268,onboarding services,9,1318.9,11870.1
+543,268,add-on seats,8,1760.36,14082.88
+544,269,onboarding services,9,804.46,7240.14
+545,270,add-on seats,3,1240.93,3722.79
+546,270,add-on seats,7,3369.51,23586.57
+547,270,add-on seats,8,1525.83,12206.64
+548,271,add-on seats,1,582.75,582.75
+549,271,subscription,2,2546.42,5092.84
+550,272,usage overage,6,1608.57,9651.42
+551,272,onboarding services,4,2998.31,11993.24
+552,272,subscription,10,2111.55,21115.5
+553,273,usage overage,3,843.34,2530.02
+554,273,subscription,9,2123.19,19108.71
+555,274,add-on seats,7,2563.96,17947.72
+556,275,subscription,1,1549.87,1549.87
+557,275,onboarding services,5,2113.48,10567.4
+558,276,usage overage,7,2301.47,16110.29
+559,276,usage overage,10,791.88,7918.8
+560,276,usage overage,5,2863.15,14315.75
+561,277,subscription,5,1447.13,7235.65
+562,277,support plan,3,3068.67,9206.01
+563,278,usage overage,7,913.53,6394.71
+564,279,usage overage,1,1251.99,1251.99
+565,279,add-on seats,2,3434.94,6869.88
+566,280,onboarding services,9,2933.03,26397.27
+567,280,usage overage,7,2035.99,14251.93
+568,281,onboarding services,2,129.15,258.3
+569,281,support plan,4,3049.98,12199.92
+570,281,subscription,3,392.03,1176.09
+571,282,subscription,10,222.89,2228.9
+572,283,support plan,8,1076.06,8608.48
+573,283,onboarding services,3,2478.06,7434.18
+574,284,onboarding services,6,3398.0,20388.0
+575,285,add-on seats,10,3376.95,33769.5
+576,286,support plan,5,1849.77,9248.85
+577,287,usage overage,9,2141.92,19277.28
+578,288,subscription,7,748.79,5241.53
+579,288,support plan,3,3034.42,9103.26
+580,289,subscription,3,3322.71,9968.13
+581,289,subscription,8,3199.74,25597.92
+582,290,support plan,7,3110.48,21773.36
+583,290,onboarding services,5,965.68,4828.4
+584,291,support plan,6,2374.24,14245.44
+585,291,subscription,2,2093.23,4186.46
+586,291,onboarding services,9,2686.97,24182.73
+587,292,support plan,4,147.51,590.04
+588,293,add-on seats,9,484.82,4363.38
+589,293,onboarding services,8,2268.76,18150.08
+590,294,support plan,8,169.44,1355.52
+591,295,subscription,3,2608.04,7824.12
+592,296,subscription,6,1552.0,9312.0
+593,297,usage overage,2,2800.45,5600.9
+594,298,usage overage,9,336.74,3030.66
+595,299,subscription,4,2768.85,11075.4
+596,299,add-on seats,5,2459.6,12298.0
+597,300,subscription,8,1044.4,8355.2
+598,300,support plan,3,1730.86,5192.58
+599,301,support plan,1,1576.54,1576.54
+600,301,subscription,5,429.26,2146.3
+601,301,support plan,2,416.78,833.56
+602,302,usage overage,2,3168.48,6336.96
+603,302,subscription,1,3237.26,3237.26
+604,302,onboarding services,6,1023.48,6140.88
+605,303,usage overage,3,2254.67,6764.01
+606,304,add-on seats,1,2151.37,2151.37
+607,305,usage overage,4,861.91,3447.64
+608,305,onboarding services,1,657.45,657.45
+609,306,add-on seats,8,411.63,3293.04
+610,307,subscription,4,857.8,3431.2
+611,307,support plan,1,3322.83,3322.83
+612,308,add-on seats,9,269.03,2421.27
+613,308,add-on seats,4,3428.06,13712.24
+614,308,support plan,3,1037.08,3111.24
+615,309,support plan,7,2763.26,19342.82
+616,309,add-on seats,3,711.28,2133.84
+617,309,add-on seats,1,3497.83,3497.83
+618,310,subscription,10,2216.55,22165.5
+619,311,add-on seats,3,3138.56,9415.68
+620,311,add-on seats,7,2789.37,19525.59
+621,312,support plan,6,932.34,5594.04
+622,313,usage overage,4,972.46,3889.84
+623,313,support plan,4,3081.09,12324.36
+624,313,onboarding services,2,3194.11,6388.22
+625,314,usage overage,1,1688.94,1688.94
+626,314,support plan,6,1146.95,6881.7
+627,314,subscription,4,2132.41,8529.64
+628,315,support plan,4,1093.45,4373.8
+629,316,subscription,5,2164.06,10820.3
+630,316,support plan,9,1183.92,10655.28
+631,317,subscription,1,2496.4,2496.4
+632,317,usage overage,3,3136.1,9408.3
+633,317,onboarding services,4,827.4,3309.6
+634,318,support plan,7,1578.21,11047.47
+635,318,support plan,4,2477.2,9908.8
+636,318,support plan,3,1738.21,5214.63
+637,319,add-on seats,9,794.04,7146.36
+638,319,add-on seats,4,2870.13,11480.52
+639,319,usage overage,8,498.61,3988.88
+640,320,usage overage,10,1187.92,11879.2
+641,320,subscription,6,1106.17,6637.02
+642,320,onboarding services,5,3241.5,16207.5
+643,321,support plan,9,643.51,5791.59
+644,321,add-on seats,2,3423.23,6846.46
+645,322,onboarding services,8,1540.63,12325.04
+646,322,usage overage,5,2187.6,10938.0
+647,322,usage overage,7,1246.59,8726.13
+648,323,subscription,10,2429.93,24299.3
+649,323,subscription,2,648.54,1297.08
+650,323,usage overage,4,990.89,3963.56
+651,324,support plan,3,1520.36,4561.08
+652,324,add-on seats,9,378.96,3410.64
+653,325,subscription,2,3455.37,6910.74
+654,326,usage overage,2,509.04,1018.08
+655,327,subscription,4,3344.35,13377.4
+656,328,support plan,3,2150.36,6451.08
+657,329,add-on seats,5,937.43,4687.15
+658,329,usage overage,7,2776.13,19432.91
+659,330,onboarding services,10,1508.18,15081.8
+660,331,support plan,10,1494.13,14941.3
+661,331,subscription,8,961.73,7693.84
+662,331,add-on seats,2,2552.84,5105.68
+663,332,usage overage,6,941.4,5648.4
+664,333,subscription,3,781.1,2343.3
+665,333,subscription,4,3312.64,13250.56
+666,334,support plan,10,689.72,6897.2
+667,334,add-on seats,3,389.91,1169.73
+668,335,subscription,5,732.92,3664.6
+669,335,add-on seats,3,214.35,643.05
+670,335,usage overage,5,203.8,1019.0
+671,336,onboarding services,4,905.93,3623.72
+672,336,add-on seats,10,2779.98,27799.8
+673,337,add-on seats,3,3332.23,9996.69
+674,337,subscription,4,2600.49,10401.96
+675,338,onboarding services,2,1524.54,3049.08
+676,339,support plan,1,2247.68,2247.68
+677,339,subscription,4,3005.69,12022.76
+678,339,onboarding services,6,553.93,3323.58
+679,340,add-on seats,10,3315.22,33152.2
+680,340,subscription,8,2642.72,21141.76
+681,341,support plan,7,1810.38,12672.66
+682,342,subscription,4,1496.11,5984.44
+683,343,subscription,7,3061.01,21427.07
+684,343,support plan,10,147.24,1472.4
+685,344,support plan,3,2938.71,8816.13
+686,344,add-on seats,7,2283.38,15983.66
+687,345,support plan,5,1813.99,9069.95
+688,345,subscription,1,360.78,360.78
+689,345,add-on seats,10,3268.59,32685.9
+690,346,support plan,4,1724.97,6899.88
+691,346,onboarding services,9,3287.56,29588.04
+692,347,support plan,4,2577.3,10309.2
+693,348,usage overage,3,2399.48,7198.44
+694,349,onboarding services,8,2629.71,21037.68
+695,349,onboarding services,7,1573.19,11012.33
+696,349,usage overage,4,3510.93,14043.72
+697,350,usage overage,7,582.1,4074.7
+698,351,usage overage,5,3387.73,16938.65
+699,351,usage overage,6,2775.53,16653.18
+700,352,onboarding services,2,988.34,1976.68
+701,352,onboarding services,5,1659.66,8298.3
+702,352,onboarding services,7,1565.6,10959.2
+703,353,usage overage,6,3246.96,19481.76
+704,353,support plan,8,1384.48,11075.84
+705,353,subscription,1,2658.37,2658.37
+706,354,usage overage,9,2382.75,21444.75
+707,354,subscription,10,1299.65,12996.5
+708,354,onboarding services,4,318.71,1274.84
+709,355,subscription,1,2669.48,2669.48
+710,355,onboarding services,2,2570.55,5141.1
+711,356,support plan,5,2359.31,11796.55
+712,356,usage overage,6,1726.99,10361.94
+713,356,subscription,3,1936.45,5809.35
+714,357,add-on seats,5,980.77,4903.85
+715,357,usage overage,5,2945.25,14726.25
+716,358,subscription,7,1014.21,7099.47
+717,358,onboarding services,10,902.94,9029.4
+718,359,add-on seats,3,2625.84,7877.52
+719,360,usage overage,7,500.31,3502.17
+720,360,onboarding services,6,1581.06,9486.36
+721,360,support plan,7,2579.38,18055.66
+722,361,add-on seats,4,2543.27,10173.08
+723,361,add-on seats,8,524.94,4199.52
+724,362,subscription,2,2204.75,4409.5
+725,362,add-on seats,9,3293.1,29637.9
+726,363,add-on seats,9,1853.85,16684.65
+727,363,support plan,9,860.18,7741.62
+728,364,add-on seats,2,394.22,788.44
+729,364,onboarding services,2,1928.56,3857.12
+730,364,support plan,2,3287.68,6575.36
+731,365,subscription,10,2731.51,27315.1
+732,365,onboarding services,3,3287.59,9862.77
+733,365,onboarding services,7,2002.81,14019.67
+734,366,support plan,1,2720.77,2720.77
+735,366,add-on seats,8,3133.5,25068.0
+736,367,subscription,5,3068.25,15341.25
+737,367,add-on seats,7,2016.86,14118.02
+738,367,onboarding services,5,1129.01,5645.05
+739,368,usage overage,4,287.98,1151.92
+740,368,subscription,4,229.65,918.6
+741,369,support plan,2,488.47,976.94
+742,370,subscription,5,1224.23,6121.15
+743,370,onboarding services,7,3306.84,23147.88
+744,371,onboarding services,10,3161.73,31617.3
+745,371,subscription,4,1053.95,4215.8
+746,371,subscription,3,2055.32,6165.96
+747,372,onboarding services,2,3431.63,6863.26
+748,372,support plan,2,3299.98,6599.96
+749,372,subscription,6,2060.82,12364.92
+750,373,subscription,4,2902.73,11610.92
+751,373,onboarding services,1,2876.51,2876.51
+752,373,usage overage,9,1578.69,14208.21
+753,374,support plan,4,2765.98,11063.92
+754,374,onboarding services,1,2345.62,2345.62
+755,375,add-on seats,7,2605.26,18236.82
+756,376,support plan,5,2131.43,10657.15
+757,377,add-on seats,7,1765.3,12357.1
+758,377,add-on seats,1,1776.47,1776.47
+759,378,onboarding services,7,3445.62,24119.34
+760,379,subscription,4,1795.88,7183.52
+761,380,usage overage,4,3223.89,12895.56
+762,380,subscription,3,426.72,1280.16
+763,380,usage overage,8,810.1,6480.8
+764,381,add-on seats,5,1563.13,7815.65
+765,382,subscription,3,2501.71,7505.13
+766,383,support plan,10,873.79,8737.9
+767,383,add-on seats,5,2713.51,13567.55
+768,384,usage overage,9,187.39,1686.51
+769,384,support plan,9,2696.35,24267.15
+770,384,onboarding services,10,2868.52,28685.2
+771,385,subscription,9,845.79,7612.11
+772,385,support plan,4,148.34,593.36
+773,386,usage overage,3,2376.31,7128.93
+774,387,support plan,7,3446.51,24125.57
+775,388,usage overage,3,859.55,2578.65
+776,388,add-on seats,4,1246.26,4985.04
+777,389,support plan,8,148.99,1191.92
+778,390,usage overage,10,533.88,5338.8
+779,390,usage overage,10,3467.66,34676.6
+780,390,support plan,6,1876.22,11257.32
+781,391,usage overage,2,2460.11,4920.22
+782,391,add-on seats,3,2976.09,8928.27
+783,392,add-on seats,1,2130.98,2130.98
+784,392,support plan,5,3361.56,16807.8
+785,392,add-on seats,9,1263.77,11373.93
+786,393,usage overage,6,2487.92,14927.52
+787,393,subscription,5,1735.92,8679.6
+788,394,add-on seats,6,2627.92,15767.52
+789,394,add-on seats,4,3246.92,12987.68
+790,395,add-on seats,7,619.89,4339.23
+791,395,onboarding services,2,2783.65,5567.3
+792,395,support plan,6,1307.61,7845.66
+793,396,usage overage,10,2550.95,25509.5
+794,396,onboarding services,10,3399.11,33991.1
+795,396,usage overage,1,427.79,427.79
+796,397,onboarding services,5,1786.23,8931.15
+797,397,subscription,9,3510.36,31593.24
+798,398,add-on seats,3,813.49,2440.47
+799,398,add-on seats,9,2786.68,25080.12
+800,398,usage overage,10,1600.88,16008.8
+801,399,subscription,9,436.31,3926.79
+802,400,subscription,8,1109.17,8873.36
+803,400,add-on seats,9,3509.03,31581.27
+804,401,support plan,4,837.2,3348.8
+805,401,add-on seats,5,2303.81,11519.05
+806,402,onboarding services,10,3236.33,32363.3
+807,403,support plan,9,214.5,1930.5
+808,404,subscription,3,915.7,2747.1
+809,404,usage overage,6,3422.8,20536.8
+810,405,support plan,2,2364.63,4729.26
+811,406,support plan,9,3440.9,30968.1
+812,407,usage overage,8,3051.33,24410.64
+813,407,add-on seats,5,2514.15,12570.75
+814,407,usage overage,10,139.03,1390.3
+815,408,support plan,1,1661.08,1661.08
+816,408,subscription,9,1167.62,10508.58
+817,409,usage overage,10,828.3,8283.0
+818,409,add-on seats,2,2373.71,4747.42
+819,409,add-on seats,2,717.56,1435.12
+820,410,support plan,10,798.64,7986.4
+821,410,subscription,9,2278.3,20504.7
+822,410,usage overage,3,2956.41,8869.23
+823,411,subscription,2,939.79,1879.58
+824,411,usage overage,7,3281.25,22968.75
+825,412,subscription,1,2709.07,2709.07
+826,413,usage overage,7,2009.53,14066.71
+827,414,support plan,7,1334.73,9343.11
+828,414,add-on seats,1,2869.86,2869.86
+829,415,subscription,1,2834.47,2834.47
+830,415,onboarding services,9,1730.39,15573.51
+831,415,onboarding services,9,298.86,2689.74
+832,416,onboarding services,9,3014.23,27128.07
+833,416,add-on seats,1,318.35,318.35
+834,417,add-on seats,1,827.13,827.13
+835,417,support plan,10,1547.74,15477.4
+836,417,subscription,6,3078.83,18472.98
+837,418,add-on seats,2,288.08,576.16
+838,418,subscription,1,3243.01,3243.01
+839,419,add-on seats,6,1698.38,10190.28
+840,419,subscription,3,749.31,2247.93
+841,419,onboarding services,9,1826.23,16436.07
+842,420,add-on seats,4,2102.17,8408.68
+843,421,onboarding services,4,3149.45,12597.8
+844,422,onboarding services,6,1613.92,9683.52
+845,422,add-on seats,9,2966.25,26696.25
+846,423,support plan,10,1726.5,17265.0
+847,424,onboarding services,7,3471.19,24298.33
+848,425,subscription,7,2120.89,14846.23
+849,425,subscription,6,2733.82,16402.92
+850,425,subscription,2,1089.72,2179.44
+851,426,support plan,7,1831.7,12821.9
+852,427,onboarding services,6,319.04,1914.24
+853,428,subscription,6,1118.67,6712.02
+854,428,support plan,4,3006.85,12027.4
+855,429,add-on seats,7,3035.84,21250.88
+856,430,subscription,9,3003.77,27033.93
+857,431,onboarding services,9,830.99,7478.91
+858,432,support plan,3,2253.95,6761.85
+859,432,subscription,4,760.27,3041.08
+860,432,onboarding services,3,2616.55,7849.65
+861,433,usage overage,4,1848.19,7392.76
+862,434,support plan,3,3380.09,10140.27
+863,435,support plan,5,565.65,2828.25
+864,435,add-on seats,2,3326.62,6653.24
+865,436,support plan,8,2298.18,18385.44
+866,436,usage overage,5,352.87,1764.35
+867,436,subscription,1,728.82,728.82
+868,437,add-on seats,4,3087.36,12349.44
+869,437,usage overage,7,2780.39,19462.73
+870,437,support plan,9,2494.26,22448.34
+871,438,usage overage,5,1893.19,9465.95
+872,438,subscription,7,1766.18,12363.26
+873,438,usage overage,2,3463.22,6926.44
+874,439,onboarding services,4,2335.4,9341.6
+875,440,subscription,1,1463.88,1463.88
+876,440,add-on seats,2,2311.32,4622.64
+877,440,usage overage,8,1279.33,10234.64
+878,441,onboarding services,3,2072.02,6216.06
+879,442,usage overage,8,2513.59,20108.72
+880,442,add-on seats,7,1044.84,7313.88
+881,443,support plan,8,1908.95,15271.6
+882,443,subscription,7,135.55,948.85
+883,443,onboarding services,8,154.02,1232.16
+884,444,add-on seats,10,3326.87,33268.7
+885,444,support plan,4,2431.51,9726.04
+886,445,subscription,2,427.38,854.76
+887,446,support plan,4,2191.51,8766.04
+888,446,usage overage,9,1832.29,16490.61
+889,446,add-on seats,10,1212.9,12129.0
+890,447,subscription,6,1840.31,11041.86
+891,448,usage overage,9,1439.8,12958.2
+892,448,onboarding services,10,2987.33,29873.3
+893,448,onboarding services,5,464.25,2321.25
+894,449,support plan,10,3336.74,33367.4
+895,450,support plan,10,533.52,5335.2
+896,451,usage overage,4,573.17,2292.68
+897,451,support plan,9,2970.77,26736.93
+898,451,onboarding services,7,892.91,6250.37
+899,452,usage overage,8,2917.27,23338.16
+900,452,subscription,3,919.19,2757.57
+901,452,usage overage,4,3129.19,12516.76
+902,453,subscription,7,1369.88,9589.16
+903,454,usage overage,6,1023.27,6139.62
+904,455,subscription,1,1335.44,1335.44
+905,455,usage overage,5,300.89,1504.45
+906,455,onboarding services,1,1826.89,1826.89
+907,456,usage overage,10,3151.55,31515.5
+908,456,add-on seats,10,200.62,2006.2
+909,457,support plan,5,3168.93,15844.65
+910,457,add-on seats,3,3349.47,10048.41
+911,458,usage overage,10,3300.38,33003.8
+912,459,support plan,9,1977.43,17796.87
+913,460,subscription,5,1996.28,9981.4
+914,460,add-on seats,7,2876.83,20137.81
+915,460,subscription,9,2234.93,20114.37
+916,461,add-on seats,8,3064.73,24517.84
+917,462,usage overage,3,567.58,1702.74
+918,462,subscription,7,2951.7,20661.9
+919,462,add-on seats,9,3279.4,29514.6
+920,463,add-on seats,8,2894.35,23154.8
+921,463,add-on seats,8,1096.7,8773.6
+922,464,usage overage,4,1614.51,6458.04
+923,465,onboarding services,10,290.42,2904.2
+924,466,support plan,8,3078.23,24625.84
+925,467,support plan,8,785.19,6281.52
+926,467,usage overage,8,1086.48,8691.84
+927,467,subscription,9,2021.42,18192.78
+928,468,usage overage,3,255.7,767.1
+929,468,add-on seats,5,1213.56,6067.8
+930,468,usage overage,10,168.16,1681.6
+931,469,onboarding services,1,1440.54,1440.54
+932,469,support plan,6,2879.99,17279.94
+933,469,onboarding services,4,461.65,1846.6
+934,470,onboarding services,9,2386.9,21482.1
+935,470,subscription,7,3307.76,23154.32
+936,471,add-on seats,6,3229.18,19375.08
+937,471,onboarding services,8,213.61,1708.88
+938,471,usage overage,2,2321.19,4642.38
+939,472,usage overage,6,288.21,1729.26
+940,472,usage overage,10,1898.33,18983.3
+941,473,support plan,8,3435.53,27484.24
+942,473,onboarding services,6,1633.34,9800.04
+943,474,add-on seats,7,3249.15,22744.05
+944,474,subscription,5,1810.84,9054.2
+945,475,onboarding services,5,1560.4,7802.0
+946,476,support plan,8,3168.63,25349.04
+947,477,onboarding services,3,3500.68,10502.04
+948,477,add-on seats,1,1812.07,1812.07
+949,478,support plan,3,669.11,2007.33
+950,478,onboarding services,10,2629.19,26291.9
+951,479,add-on seats,3,2552.07,7656.21
+952,480,support plan,4,1110.64,4442.56
+953,480,support plan,9,2313.06,20817.54
+954,480,usage overage,10,2021.58,20215.8
+955,481,support plan,4,3045.57,12182.28
+956,482,onboarding services,9,2317.09,20853.81
+957,482,support plan,9,2469.7,22227.3
+958,482,support plan,1,924.29,924.29
+959,483,add-on seats,4,1595.73,6382.92
+960,483,support plan,1,183.27,183.27
+961,483,onboarding services,2,2716.91,5433.82
+962,484,support plan,5,2309.67,11548.35
+963,484,onboarding services,6,2410.47,14462.82
+964,484,subscription,8,2739.84,21918.72
+965,485,usage overage,8,1437.04,11496.32
+966,486,onboarding services,7,731.28,5118.96
+967,486,usage overage,1,2346.41,2346.41
+968,487,add-on seats,7,1568.27,10977.89
+969,487,subscription,7,546.15,3823.05
+970,488,onboarding services,8,1884.59,15076.72
+971,489,usage overage,8,2603.21,20825.68
+972,489,onboarding services,6,1583.16,9498.96
+973,489,subscription,8,616.01,4928.08
+974,490,add-on seats,4,3472.38,13889.52
+975,490,usage overage,6,1149.36,6896.16
+976,490,usage overage,4,1827.55,7310.2
+977,491,support plan,7,1736.7,12156.9
+978,492,support plan,6,540.22,3241.32
+979,492,add-on seats,1,2333.63,2333.63
+980,493,usage overage,4,3448.82,13795.28
+981,493,add-on seats,9,854.16,7687.44
+982,493,onboarding services,6,487.13,2922.78
+983,494,subscription,4,3511.73,14046.92
+984,494,subscription,8,750.19,6001.52
+985,495,usage overage,2,2802.44,5604.88
+986,496,subscription,1,213.44,213.44
+987,496,support plan,8,2394.5,19156.0
+988,496,onboarding services,7,1358.93,9512.51
+989,497,subscription,5,815.22,4076.1
+990,497,add-on seats,3,2568.06,7704.18
+991,498,onboarding services,4,803.94,3215.76
+992,498,add-on seats,4,1027.76,4111.04
+993,498,add-on seats,6,1869.9,11219.4
+994,499,onboarding services,9,3433.02,30897.18
+995,499,add-on seats,2,2268.41,4536.82
+996,500,add-on seats,6,2392.2,14353.2
+997,500,onboarding services,8,197.94,1583.52
+998,500,add-on seats,3,3021.87,9065.61
+999,501,subscription,6,154.74,928.44
+1000,501,subscription,4,2874.27,11497.08
+1001,501,support plan,7,1674.61,11722.27
+1002,502,subscription,8,1475.22,11801.76
+1003,502,support plan,7,658.14,4606.98
+1004,502,subscription,8,2548.84,20390.72
+1005,503,support plan,3,3134.77,9404.31
+1006,503,support plan,2,1764.67,3529.34
+1007,503,subscription,5,1159.37,5796.85
+1008,504,usage overage,9,2002.1,18018.9
+1009,505,subscription,6,3411.18,20467.08
+1010,505,subscription,10,543.22,5432.2
+1011,506,support plan,2,1493.62,2987.24
+1012,507,subscription,6,1927.95,11567.7
+1013,507,usage overage,9,3211.46,28903.14
+1014,508,support plan,3,568.36,1705.08
+1015,509,subscription,3,1583.96,4751.88
+1016,509,usage overage,10,764.82,7648.2
+1017,509,add-on seats,1,1224.96,1224.96
+1018,510,subscription,7,3401.83,23812.81
+1019,510,usage overage,3,3244.98,9734.94
+1020,510,onboarding services,1,2556.66,2556.66
+1021,511,add-on seats,6,1168.37,7010.22
+1022,512,add-on seats,8,1899.81,15198.48
+1023,512,support plan,4,2340.22,9360.88
+1024,513,subscription,4,761.13,3044.52
+1025,513,add-on seats,7,719.17,5034.19
+1026,514,usage overage,2,2040.33,4080.66
+1027,515,support plan,5,1396.4,6982.0
+1028,515,support plan,6,3449.07,20694.42
+1029,515,onboarding services,1,1466.79,1466.79
+1030,516,add-on seats,6,189.36,1136.16
+1031,516,usage overage,5,3082.16,15410.8
+1032,516,subscription,3,585.5,1756.5
+1033,517,usage overage,3,654.19,1962.57
+1034,517,add-on seats,4,2361.3,9445.2
+1035,517,subscription,8,1913.11,15304.88
+1036,518,usage overage,7,1282.06,8974.42
+1037,518,usage overage,2,3024.35,6048.7
+1038,519,support plan,7,704.7,4932.9
+1039,519,support plan,7,3081.82,21572.74
+1040,519,onboarding services,4,781.12,3124.48
+1041,520,add-on seats,7,2314.2,16199.4
+1042,521,usage overage,3,833.31,2499.93
+1043,521,subscription,1,2911.72,2911.72
+1044,522,subscription,4,310.43,1241.72
+1045,522,add-on seats,1,2744.89,2744.89
+1046,523,add-on seats,3,1294.43,3883.29
+1047,523,usage overage,2,2979.02,5958.04
+1048,524,add-on seats,4,1634.09,6536.36
+1049,524,support plan,9,1024.05,9216.45
+1050,525,add-on seats,9,2681.84,24136.56
+1051,526,support plan,5,2786.93,13934.65
+1052,526,support plan,8,2366.33,18930.64
+1053,526,support plan,8,2013.7,16109.6
+1054,527,add-on seats,8,358.56,2868.48
+1055,527,support plan,2,544.38,1088.76
+1056,527,add-on seats,5,3235.42,16177.1
+1057,528,add-on seats,6,3128.95,18773.7
+1058,528,add-on seats,4,2814.88,11259.52
+1059,528,onboarding services,3,568.9,1706.7
+1060,529,support plan,5,1539.8,7699.0
+1061,529,subscription,4,1391.35,5565.4
+1062,529,add-on seats,5,2276.18,11380.9
+1063,530,support plan,7,1798.43,12589.01
+1064,531,support plan,1,563.62,563.62
+1065,531,onboarding services,1,2819.2,2819.2
+1066,532,add-on seats,3,180.8,542.4
+1067,532,support plan,9,1972.69,17754.21
+1068,533,add-on seats,6,2732.39,16394.34
+1069,533,subscription,1,1819.58,1819.58
+1070,534,subscription,7,2986.37,20904.59
+1071,535,onboarding services,7,2346.32,16424.24
+1072,535,usage overage,9,306.4,2757.6
+1073,535,support plan,2,2170.15,4340.3
+1074,536,subscription,1,622.9,622.9
+1075,537,subscription,6,443.57,2661.42
+1076,538,add-on seats,9,1889.19,17002.71
+1077,538,add-on seats,8,3005.04,24040.32
+1078,539,add-on seats,8,1588.47,12707.76
+1079,540,support plan,10,1236.68,12366.8
+1080,540,support plan,7,2694.77,18863.39
+1081,540,subscription,8,3439.81,27518.48
+1082,541,add-on seats,2,1628.5,3257.0
+1083,541,add-on seats,10,3428.84,34288.4
+1084,542,usage overage,9,742.72,6684.48
+1085,542,onboarding services,6,3128.41,18770.46
+1086,543,onboarding services,2,1816.87,3633.74
+1087,544,subscription,2,156.51,313.02
+1088,545,onboarding services,1,786.94,786.94
+1089,545,onboarding services,1,1995.68,1995.68
+1090,546,support plan,1,393.06,393.06
+1091,546,usage overage,9,986.91,8882.19
+1092,547,onboarding services,6,1917.1,11502.6
+1093,547,add-on seats,4,2090.63,8362.52
+1094,547,usage overage,3,503.09,1509.27
+1095,548,subscription,9,1997.76,17979.84
+1096,548,subscription,9,409.96,3689.64
+1097,548,usage overage,2,3517.13,7034.26
+1098,549,support plan,10,568.04,5680.4
+1099,550,onboarding services,2,853.77,1707.54
+1100,550,onboarding services,2,599.46,1198.92
+1101,551,add-on seats,7,903.74,6326.18
+1102,551,add-on seats,3,1544.23,4632.69
+1103,551,subscription,6,901.36,5408.16
+1104,552,onboarding services,7,2152.66,15068.62
+1105,553,usage overage,2,3130.02,6260.04
+1106,553,add-on seats,1,763.88,763.88
+1107,553,subscription,6,1409.35,8456.1
+1108,554,onboarding services,2,1221.19,2442.38
+1109,554,support plan,4,184.32,737.28
+1110,554,onboarding services,6,1754.96,10529.76
+1111,555,support plan,4,3117.18,12468.72
+1112,555,subscription,1,347.06,347.06
+1113,555,onboarding services,4,3480.85,13923.4
+1114,556,add-on seats,10,2656.75,26567.5
+1115,556,usage overage,3,2800.68,8402.04
+1116,557,onboarding services,4,2756.76,11027.04
+1117,557,usage overage,10,2816.4,28164.0
+1118,557,support plan,7,2634.72,18443.04
+1119,558,usage overage,7,1611.11,11277.77
+1120,558,support plan,9,1723.48,15511.32
+1121,558,support plan,7,3467.14,24269.98
+1122,559,support plan,3,1348.09,4044.27
+1123,560,subscription,5,2143.41,10717.05
+1124,560,usage overage,1,1052.04,1052.04
+1125,561,support plan,7,3087.74,21614.18
+1126,562,add-on seats,3,1243.98,3731.94
+1127,563,usage overage,6,1551.99,9311.94
+1128,563,add-on seats,7,1127.33,7891.31
+1129,564,add-on seats,1,2228.81,2228.81
+1130,564,onboarding services,9,1025.56,9230.04
+1131,564,usage overage,5,2686.02,13430.1
+1132,565,onboarding services,3,207.67,623.01
+1133,565,usage overage,5,512.68,2563.4
+1134,566,usage overage,5,1465.64,7328.2
+1135,566,subscription,9,3012.52,27112.68
+1136,566,add-on seats,10,404.7,4047.0
+1137,567,usage overage,4,1261.43,5045.72
+1138,567,subscription,6,2785.95,16715.7
+1139,567,onboarding services,8,3345.02,26760.16
+1140,568,add-on seats,7,738.86,5172.02
+1141,568,onboarding services,7,902.71,6318.97
+1142,569,add-on seats,9,717.51,6457.59
+1143,569,subscription,1,1961.82,1961.82
+1144,570,onboarding services,2,1781.43,3562.86
+1145,570,usage overage,8,2884.87,23078.96
+1146,571,add-on seats,4,2991.02,11964.08
+1147,571,subscription,10,3013.89,30138.9
+1148,572,onboarding services,9,859.61,7736.49
+1149,572,add-on seats,5,1500.67,7503.35
+1150,573,support plan,10,2026.33,20263.3
+1151,574,subscription,1,604.06,604.06
+1152,574,onboarding services,6,1826.25,10957.5
+1153,574,usage overage,8,3369.04,26952.32
+1154,575,subscription,10,2049.04,20490.4
+1155,576,usage overage,2,1930.23,3860.46
+1156,576,add-on seats,2,623.14,1246.28
+1157,576,usage overage,4,2046.64,8186.56
+1158,577,usage overage,4,1230.22,4920.88
+1159,577,onboarding services,10,2509.75,25097.5
+1160,578,subscription,6,850.22,5101.32
+1161,579,subscription,4,1558.05,6232.2
+1162,579,support plan,4,2871.9,11487.6
+1163,579,add-on seats,1,3311.7,3311.7
+1164,580,subscription,8,1139.94,9119.52
+1165,580,usage overage,7,2905.92,20341.44
+1166,581,add-on seats,1,3082.0,3082.0
+1167,581,add-on seats,6,3481.43,20888.58
+1168,581,onboarding services,1,3471.87,3471.87
+1169,582,subscription,6,917.71,5506.26
+1170,582,subscription,2,3172.68,6345.36
+1171,582,support plan,5,919.45,4597.25
+1172,583,support plan,10,1421.31,14213.1
+1173,583,support plan,4,2951.97,11807.88
+1174,584,usage overage,8,1140.22,9121.76
+1175,584,usage overage,6,3457.69,20746.14
+1176,584,support plan,1,914.12,914.12
+1177,585,usage overage,10,3279.16,32791.6
+1178,586,subscription,2,2465.54,4931.08
+1179,586,usage overage,4,222.78,891.12
+1180,586,add-on seats,2,3108.32,6216.64
+1181,587,support plan,9,1955.04,17595.36
+1182,587,support plan,1,1167.56,1167.56
+1183,588,add-on seats,8,1516.85,12134.8
+1184,588,usage overage,7,2620.34,18342.38
+1185,589,add-on seats,10,1181.15,11811.5
+1186,589,subscription,2,575.6,1151.2
+1187,590,usage overage,7,3021.17,21148.19
+1188,590,usage overage,4,1343.51,5374.04
+1189,591,support plan,6,1258.22,7549.32
+1190,592,usage overage,3,752.27,2256.81
+1191,592,usage overage,9,2939.57,26456.13
+1192,593,add-on seats,10,198.0,1980.0
+1193,593,add-on seats,1,1554.79,1554.79
+1194,593,usage overage,3,2300.24,6900.72
+1195,594,add-on seats,4,3040.28,12161.12
+1196,595,subscription,10,1178.28,11782.8
+1197,595,usage overage,6,1676.46,10058.76
+1198,596,usage overage,3,1295.5,3886.5
+1199,597,support plan,6,1837.55,11025.3
+1200,597,usage overage,2,2077.06,4154.12
+1201,598,subscription,10,297.59,2975.9
+1202,599,add-on seats,10,1863.07,18630.7
+1203,599,add-on seats,7,3239.92,22679.44
+1204,599,subscription,7,1322.87,9260.09
+1205,600,subscription,4,2564.92,10259.68
+1206,601,usage overage,3,503.65,1510.95
+1207,601,subscription,4,750.57,3002.28
+1208,601,usage overage,1,753.47,753.47
+1209,602,add-on seats,7,2034.94,14244.58
+1210,603,subscription,7,1869.6,13087.2
+1211,603,onboarding services,8,2629.47,21035.76
+1212,603,add-on seats,2,2207.74,4415.48
+1213,604,support plan,5,1287.32,6436.6
+1214,604,support plan,4,1533.09,6132.36
+1215,605,add-on seats,5,1502.62,7513.1
+1216,605,add-on seats,5,2755.13,13775.65
+1217,606,add-on seats,8,1204.79,9638.32
+1218,606,onboarding services,9,2132.0,19188.0
+1219,606,support plan,1,2304.01,2304.01
+1220,607,onboarding services,7,593.83,4156.81
+1221,607,add-on seats,5,1362.0,6810.0
+1222,608,subscription,8,2650.01,21200.08
+1223,609,subscription,5,1356.57,6782.85
+1224,610,usage overage,7,1248.28,8737.96
+1225,610,usage overage,5,3162.4,15812.0
+1226,611,subscription,3,1688.48,5065.44
+1227,611,add-on seats,10,2502.31,25023.1
+1228,611,usage overage,3,2523.53,7570.59
+1229,612,onboarding services,3,2203.72,6611.16
+1230,612,add-on seats,4,692.35,2769.4
+1231,613,subscription,2,1192.35,2384.7
+1232,613,subscription,10,779.24,7792.4
+1233,613,add-on seats,5,783.21,3916.05
+1234,614,support plan,5,3251.56,16257.8
+1235,615,add-on seats,4,3407.77,13631.08
+1236,616,usage overage,3,721.39,2164.17
+1237,616,support plan,5,1535.64,7678.2
+1238,617,onboarding services,8,1298.29,10386.32
+1239,618,add-on seats,4,2612.76,10451.04
+1240,619,onboarding services,4,1367.14,5468.56
+1241,620,usage overage,4,2933.47,11733.88
+1242,620,subscription,6,3195.71,19174.26
+1243,621,support plan,8,2970.67,23765.36
+1244,621,add-on seats,1,1958.08,1958.08
+1245,621,usage overage,4,2803.51,11214.04
+1246,622,usage overage,6,2523.02,15138.12
+1247,622,support plan,9,1751.96,15767.64
+1248,622,add-on seats,4,1729.59,6918.36
+1249,623,usage overage,1,2948.53,2948.53
+1250,623,add-on seats,5,2694.18,13470.9
+1251,623,add-on seats,7,1161.61,8131.27
+1252,624,support plan,6,3128.33,18769.98
+1253,625,subscription,5,3397.24,16986.2
+1254,625,add-on seats,10,1556.3,15563.0
+1255,625,add-on seats,3,2072.46,6217.38
+1256,626,subscription,5,1403.21,7016.05
+1257,626,support plan,2,351.71,703.42
+1258,626,usage overage,6,654.44,3926.64
+1259,627,support plan,2,1819.0,3638.0
+1260,627,add-on seats,3,1656.64,4969.92
+1261,627,support plan,2,733.06,1466.12
+1262,628,usage overage,2,979.07,1958.14
+1263,628,support plan,4,1769.54,7078.16
+1264,629,add-on seats,10,2270.05,22700.5
+1265,630,usage overage,6,254.62,1527.72
+1266,631,usage overage,3,2767.28,8301.84
+1267,632,usage overage,10,2567.78,25677.8
+1268,632,support plan,7,1811.24,12678.68
+1269,633,subscription,2,374.63,749.26
+1270,633,onboarding services,3,1675.3,5025.9
+1271,633,usage overage,5,756.83,3784.15
+1272,634,add-on seats,3,3084.52,9253.56
+1273,635,onboarding services,6,603.96,3623.76
+1274,636,subscription,5,1031.06,5155.3
+1275,636,usage overage,5,2788.26,13941.3
+1276,636,usage overage,9,2083.52,18751.68
+1277,637,usage overage,8,1828.35,14626.8
+1278,638,subscription,4,1491.84,5967.36
+1279,638,onboarding services,2,1467.12,2934.24
+1280,638,subscription,8,1765.16,14121.28
+1281,639,usage overage,4,1865.98,7463.92
+1282,639,onboarding services,4,1619.35,6477.4
+1283,640,onboarding services,5,2876.97,14384.85
+1284,640,support plan,3,2378.56,7135.68
+1285,641,add-on seats,7,1665.73,11660.11
+1286,642,subscription,10,3079.3,30793.0
+1287,642,onboarding services,4,1005.14,4020.56
+1288,642,add-on seats,5,1924.62,9623.1
+1289,643,add-on seats,8,870.37,6962.96
+1290,644,add-on seats,10,2439.94,24399.4
+1291,645,usage overage,3,1061.81,3185.43
+1292,646,support plan,10,1947.92,19479.2
+1293,647,usage overage,4,647.79,2591.16
+1294,648,subscription,2,2315.34,4630.68
+1295,648,add-on seats,10,3262.27,32622.7
+1296,648,support plan,8,1596.08,12768.64
+1297,649,support plan,1,3287.22,3287.22
+1298,649,subscription,6,2728.48,16370.88
+1299,650,support plan,2,145.01,290.02
+1300,651,onboarding services,4,1662.97,6651.88
+1301,651,usage overage,5,955.81,4779.05
+1302,652,add-on seats,2,2737.06,5474.12
+1303,652,usage overage,1,2186.16,2186.16
+1304,653,onboarding services,8,1239.63,9917.04
+1305,654,usage overage,4,445.69,1782.76
+1306,654,onboarding services,5,3119.76,15598.8
+1307,654,subscription,2,1259.92,2519.84
+1308,655,subscription,10,2748.71,27487.1
+1309,656,usage overage,6,3019.58,18117.48
+1310,657,support plan,10,1921.5,19215.0
+1311,657,add-on seats,2,2532.1,5064.2
+1312,658,usage overage,4,3202.23,12808.92
+1313,658,support plan,5,3389.75,16948.75
+1314,658,add-on seats,8,3248.92,25991.36
+1315,659,add-on seats,8,2324.26,18594.08
+1316,659,support plan,9,519.26,4673.34
+1317,660,add-on seats,4,1215.64,4862.56
+1318,660,onboarding services,10,2130.55,21305.5
+1319,661,subscription,1,1297.16,1297.16
+1320,661,add-on seats,4,1840.79,7363.16
+1321,662,subscription,4,1260.68,5042.72
+1322,663,subscription,3,254.58,763.74
+1323,663,support plan,4,2734.69,10938.76
+1324,663,support plan,1,489.13,489.13
+1325,664,subscription,10,275.46,2754.6
+1326,664,subscription,10,2687.78,26877.8
+1327,665,subscription,10,1338.59,13385.9
+1328,665,onboarding services,5,1103.89,5519.45
+1329,666,support plan,9,2966.67,26700.03
+1330,666,add-on seats,8,2452.48,19619.84
+1331,667,subscription,5,1692.34,8461.7
+1332,667,add-on seats,1,1893.85,1893.85
+1333,668,support plan,10,852.66,8526.6
+1334,668,onboarding services,7,2420.85,16945.95
+1335,669,onboarding services,2,2897.37,5794.74
+1336,669,usage overage,9,2001.55,18013.95
+1337,669,onboarding services,10,1188.91,11889.1
+1338,670,subscription,4,226.84,907.36
+1339,670,subscription,6,2427.24,14563.44
+1340,670,onboarding services,3,2215.84,6647.52
+1341,671,support plan,8,1552.07,12416.56
+1342,672,support plan,10,2850.67,28506.7
+1343,673,usage overage,1,139.37,139.37
+1344,673,subscription,3,1302.54,3907.62
+1345,674,onboarding services,4,1262.3,5049.2
+1346,675,onboarding services,3,1409.54,4228.62
+1347,675,add-on seats,5,523.19,2615.95
+1348,675,usage overage,2,926.04,1852.08
+1349,676,support plan,10,714.34,7143.4
+1350,676,support plan,2,2631.98,5263.96
+1351,676,subscription,7,2379.39,16655.73
+1352,677,usage overage,4,993.53,3974.12
+1353,677,onboarding services,10,1024.13,10241.3
+1354,678,subscription,2,982.13,1964.26
+1355,679,add-on seats,6,3057.56,18345.36
+1356,679,support plan,3,1468.5,4405.5
+1357,679,subscription,5,2150.59,10752.95
+1358,680,support plan,4,721.69,2886.76
+1359,680,add-on seats,9,1879.7,16917.3
+1360,681,usage overage,4,2357.09,9428.36
+1361,681,add-on seats,8,2913.64,23309.12
+1362,682,add-on seats,10,495.5,4955.0
+1363,682,onboarding services,6,1268.76,7612.56
+1364,682,subscription,10,3106.29,31062.9
+1365,683,usage overage,3,2016.64,6049.92
+1366,684,add-on seats,1,306.94,306.94
+1367,684,support plan,10,2856.37,28563.7
+1368,684,subscription,10,1074.49,10744.9
+1369,685,subscription,10,2971.04,29710.4
+1370,686,onboarding services,8,1010.53,8084.24
+1371,686,usage overage,1,899.77,899.77
+1372,686,support plan,9,3228.98,29060.82
+1373,687,onboarding services,4,3154.12,12616.48
+1374,687,subscription,1,801.06,801.06
+1375,687,add-on seats,9,696.67,6270.03
+1376,688,usage overage,7,2374.86,16624.02
+1377,689,add-on seats,4,1106.21,4424.84
+1378,689,onboarding services,4,3169.43,12677.72
+1379,689,add-on seats,8,3186.01,25488.08
+1380,690,onboarding services,3,533.41,1600.23
+1381,690,add-on seats,6,1784.14,10704.84
+1382,690,usage overage,8,3495.39,27963.12
+1383,691,usage overage,3,1784.57,5353.71
+1384,691,subscription,10,3452.55,34525.5
+1385,692,support plan,1,2290.96,2290.96
+1386,692,onboarding services,4,1785.01,7140.04
+1387,693,support plan,3,2748.06,8244.18
+1388,693,support plan,7,1160.87,8126.09
+1389,694,support plan,3,963.18,2889.54
+1390,694,usage overage,3,1064.82,3194.46
+1391,695,add-on seats,7,2088.24,14617.68
+1392,695,subscription,7,2719.22,19034.54
+1393,696,usage overage,8,228.61,1828.88
+1394,696,add-on seats,9,1581.04,14229.36
+1395,697,support plan,5,1919.39,9596.95
+1396,698,usage overage,3,1151.67,3455.01
+1397,699,usage overage,2,3295.31,6590.62
+1398,699,support plan,7,1948.97,13642.79
+1399,699,onboarding services,6,3036.79,18220.74
+1400,700,subscription,8,1170.38,9363.04
+1401,700,subscription,2,2978.32,5956.64
+1402,700,add-on seats,2,270.97,541.94
+1403,701,subscription,3,674.61,2023.83
+1404,702,subscription,2,1159.85,2319.7
+1405,702,add-on seats,1,215.95,215.95
+1406,703,add-on seats,5,643.03,3215.15
+1407,703,subscription,9,1973.96,17765.64
+1408,704,onboarding services,3,1764.71,5294.13
+1409,705,subscription,10,2358.33,23583.3
+1410,705,usage overage,8,2881.49,23051.92
+1411,705,usage overage,1,1498.54,1498.54
+1412,706,subscription,2,304.38,608.76
+1413,707,onboarding services,8,1733.54,13868.32
+1414,708,add-on seats,9,906.03,8154.27
+1415,708,usage overage,7,2178.24,15247.68
+1416,709,add-on seats,5,3190.59,15952.95
+1417,709,usage overage,7,753.66,5275.62
+1418,709,support plan,8,3220.13,25761.04
+1419,710,subscription,3,2967.61,8902.83
+1420,710,add-on seats,5,2635.3,13176.5
+1421,710,usage overage,2,2835.3,5670.6
+1422,711,subscription,1,2643.13,2643.13
+1423,712,onboarding services,8,1768.58,14148.64
+1424,712,support plan,6,2915.7,17494.2
+1425,713,subscription,2,3302.28,6604.56
+1426,713,subscription,4,1270.29,5081.16
+1427,713,add-on seats,5,2344.26,11721.3
+1428,714,onboarding services,3,276.96,830.88
+1429,714,support plan,1,1678.64,1678.64
+1430,715,add-on seats,1,1703.82,1703.82
+1431,715,add-on seats,4,1814.8,7259.2
+1432,715,usage overage,1,1903.79,1903.79
+1433,716,support plan,9,363.66,3272.94
+1434,717,add-on seats,2,2747.15,5494.3
+1435,718,onboarding services,9,2922.8,26305.2
+1436,719,support plan,5,2715.34,13576.7
+1437,719,usage overage,3,1311.11,3933.33
+1438,719,onboarding services,7,1608.42,11258.94
+1439,720,onboarding services,6,1274.0,7644.0
+1440,721,add-on seats,5,1135.74,5678.7
+1441,721,usage overage,5,1195.67,5978.35
+1442,721,usage overage,4,526.05,2104.2
+1443,722,add-on seats,10,1885.63,18856.3
+1444,722,onboarding services,10,1788.62,17886.2
+1445,723,subscription,9,1795.13,16156.17
+1446,723,subscription,7,3413.59,23895.13
+1447,724,support plan,9,1711.19,15400.71
+1448,725,onboarding services,1,3005.34,3005.34
+1449,725,support plan,3,198.78,596.34
+1450,726,subscription,5,2312.57,11562.85
+1451,727,add-on seats,7,2324.72,16273.04
+1452,727,support plan,8,831.59,6652.72
+1453,727,usage overage,1,3385.72,3385.72
+1454,728,add-on seats,4,1768.11,7072.44
+1455,728,subscription,10,3414.76,34147.6
+1456,729,usage overage,3,3394.96,10184.88
+1457,729,support plan,8,1242.6,9940.8
+1458,729,subscription,4,620.92,2483.68
+1459,730,subscription,9,2467.84,22210.56
+1460,730,add-on seats,3,2903.2,8709.6
+1461,731,onboarding services,1,1773.13,1773.13
+1462,732,onboarding services,3,2742.16,8226.48
+1463,732,add-on seats,1,969.68,969.68
+1464,732,onboarding services,1,965.32,965.32
+1465,733,subscription,9,1733.59,15602.31
+1466,734,support plan,9,2113.92,19025.28
+1467,735,onboarding services,4,2954.84,11819.36
+1468,736,add-on seats,4,621.14,2484.56
+1469,736,add-on seats,1,2991.84,2991.84
+1470,737,support plan,5,2866.43,14332.15
+1471,738,support plan,5,3240.26,16201.3
+1472,738,add-on seats,1,2577.14,2577.14
+1473,738,subscription,2,546.55,1093.1
+1474,739,onboarding services,3,3489.82,10469.46
+1475,739,usage overage,9,228.69,2058.21
+1476,739,support plan,8,1840.07,14720.56
+1477,740,usage overage,5,2118.29,10591.45
+1478,740,support plan,4,409.16,1636.64
+1479,740,add-on seats,10,2176.91,21769.1
+1480,741,onboarding services,9,2086.37,18777.33
+1481,741,support plan,8,246.65,1973.2
+1482,742,add-on seats,4,1694.65,6778.6
+1483,743,support plan,2,1818.41,3636.82
+1484,743,support plan,3,1915.37,5746.11
+1485,744,support plan,1,1506.33,1506.33
+1486,744,usage overage,3,1810.99,5432.97
+1487,744,onboarding services,10,3112.49,31124.9
+1488,745,add-on seats,5,1875.79,9378.95
+1489,746,usage overage,1,784.13,784.13
+1490,746,onboarding services,9,825.88,7432.92
+1491,747,onboarding services,1,1190.88,1190.88
+1492,747,add-on seats,5,1887.38,9436.9
+1493,748,subscription,2,806.8,1613.6
+1494,748,onboarding services,2,970.61,1941.22
+1495,749,support plan,2,2887.26,5774.52
+1496,750,add-on seats,3,1860.7,5582.1
+1497,751,add-on seats,3,1577.37,4732.11
+1498,752,subscription,10,3320.81,33208.1
+1499,753,subscription,8,3368.12,26944.96
+1500,753,onboarding services,3,2935.44,8806.32

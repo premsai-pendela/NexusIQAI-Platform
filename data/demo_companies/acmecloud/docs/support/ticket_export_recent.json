@@ -1,0 +1,8002 @@
+[
+ {
+  "ticket_id": 1,
+  "created_at": "2023-10-17 12:36:00",
+  "customer_id": 323,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 2,
+  "created_at": "2024-03-05 07:13:00",
+  "customer_id": 74,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 46.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 3,
+  "created_at": "2024-10-06 18:40:00",
+  "customer_id": 143,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 69.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 4,
+  "created_at": "2024-12-17 07:12:00",
+  "customer_id": 3,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 5,
+  "created_at": "2024-01-11 21:51:00",
+  "customer_id": 225,
+  "category": "billing",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 6,
+  "created_at": "2024-10-04 05:10:00",
+  "customer_id": 294,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 51.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 7,
+  "created_at": "2023-08-22 15:03:00",
+  "customer_id": 85,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 39.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 8,
+  "created_at": "2024-08-28 17:50:00",
+  "customer_id": 239,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 71.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 9,
+  "created_at": "2024-07-14 02:28:00",
+  "customer_id": 396,
+  "category": "bug",
+  "priority": "low",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 10,
+  "created_at": "2024-09-01 13:07:00",
+  "customer_id": 357,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 62.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 11,
+  "created_at": "2023-08-27 00:45:00",
+  "customer_id": 299,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 50.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 12,
+  "created_at": "2024-02-14 16:13:00",
+  "customer_id": 116,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 13,
+  "created_at": "2024-07-01 06:34:00",
+  "customer_id": 51,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 4.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 14,
+  "created_at": "2024-12-26 03:53:00",
+  "customer_id": 7,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 46.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 15,
+  "created_at": "2024-01-21 09:25:00",
+  "customer_id": 65,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 18.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 16,
+  "created_at": "2024-03-13 18:27:00",
+  "customer_id": 27,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 68.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 17,
+  "created_at": "2024-08-07 15:43:00",
+  "customer_id": 390,
+  "category": "billing",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 18,
+  "created_at": "2024-06-17 01:25:00",
+  "customer_id": 18,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 35.4,
+  "csat": 4
+ },
+ {
+  "ticket_id": 19,
+  "created_at": "2024-10-12 04:23:00",
+  "customer_id": 32,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 33.1,
+  "csat": null
+ },
+ {
+  "ticket_id": 20,
+  "created_at": "2024-03-28 13:05:00",
+  "customer_id": 295,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 47.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 21,
+  "created_at": "2024-05-02 15:28:00",
+  "customer_id": 318,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 12.4,
+  "csat": 4
+ },
+ {
+  "ticket_id": 22,
+  "created_at": "2024-08-11 07:18:00",
+  "customer_id": 16,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 41.9,
+  "csat": 4
+ },
+ {
+  "ticket_id": 23,
+  "created_at": "2024-11-03 08:33:00",
+  "customer_id": 31,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 6.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 24,
+  "created_at": "2024-02-03 06:20:00",
+  "customer_id": 62,
+  "category": "outage",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 25,
+  "created_at": "2024-04-16 06:26:00",
+  "customer_id": 158,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 29.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 26,
+  "created_at": "2024-10-14 18:44:00",
+  "customer_id": 344,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 66.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 27,
+  "created_at": "2024-06-03 13:46:00",
+  "customer_id": 144,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 68.1,
+  "csat": null
+ },
+ {
+  "ticket_id": 28,
+  "created_at": "2024-10-06 15:23:00",
+  "customer_id": 330,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 1.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 29,
+  "created_at": "2024-12-27 07:01:00",
+  "customer_id": 332,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 63.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 30,
+  "created_at": "2024-05-02 03:17:00",
+  "customer_id": 245,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 31,
+  "created_at": "2024-10-01 11:48:00",
+  "customer_id": 378,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 66.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 32,
+  "created_at": "2024-07-22 23:23:00",
+  "customer_id": 172,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 48.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 33,
+  "created_at": "2024-11-13 01:27:00",
+  "customer_id": 28,
+  "category": "billing",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 34,
+  "created_at": "2024-09-01 12:56:00",
+  "customer_id": 403,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 49.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 35,
+  "created_at": "2023-09-01 16:45:00",
+  "customer_id": 412,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 33.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 36,
+  "created_at": "2024-01-04 07:02:00",
+  "customer_id": 250,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 15.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 37,
+  "created_at": "2024-01-27 20:24:00",
+  "customer_id": 32,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 42.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 38,
+  "created_at": "2024-07-09 18:58:00",
+  "customer_id": 238,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 7.7,
+  "csat": 3
+ },
+ {
+  "ticket_id": 39,
+  "created_at": "2024-01-21 21:20:00",
+  "customer_id": 107,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 48.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 40,
+  "created_at": "2024-11-11 17:53:00",
+  "customer_id": 403,
+  "category": "how-to",
+  "priority": "high",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 41,
+  "created_at": "2024-01-17 18:08:00",
+  "customer_id": 239,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 66.7,
+  "csat": 1
+ },
+ {
+  "ticket_id": 42,
+  "created_at": "2024-10-26 06:08:00",
+  "customer_id": 53,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 2.0,
+  "csat": 1
+ },
+ {
+  "ticket_id": 43,
+  "created_at": "2023-11-22 08:56:00",
+  "customer_id": 295,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 41.2,
+  "csat": 3
+ },
+ {
+  "ticket_id": 44,
+  "created_at": "2024-02-28 23:43:00",
+  "customer_id": 57,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 47.4,
+  "csat": 4
+ },
+ {
+  "ticket_id": 45,
+  "created_at": "2023-08-08 10:29:00",
+  "customer_id": 192,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 23.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 46,
+  "created_at": "2024-04-15 04:16:00",
+  "customer_id": 107,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 58.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 47,
+  "created_at": "2024-12-24 15:06:00",
+  "customer_id": 295,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 56.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 48,
+  "created_at": "2023-11-18 17:49:00",
+  "customer_id": 238,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 5.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 49,
+  "created_at": "2024-06-14 17:45:00",
+  "customer_id": 84,
+  "category": "outage",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 50,
+  "created_at": "2024-01-03 19:42:00",
+  "customer_id": 299,
+  "category": "how-to",
+  "priority": "high",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 51,
+  "created_at": "2023-11-03 10:23:00",
+  "customer_id": 69,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 21.4,
+  "csat": 4
+ },
+ {
+  "ticket_id": 52,
+  "created_at": "2024-07-02 16:46:00",
+  "customer_id": 81,
+  "category": "bug",
+  "priority": "high",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 53,
+  "created_at": "2024-08-01 23:18:00",
+  "customer_id": 309,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 29.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 54,
+  "created_at": "2024-10-28 23:08:00",
+  "customer_id": 225,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 44.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 55,
+  "created_at": "2024-08-13 08:08:00",
+  "customer_id": 218,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 51.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 56,
+  "created_at": "2024-03-28 20:39:00",
+  "customer_id": 334,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 39.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 57,
+  "created_at": "2024-11-09 16:34:00",
+  "customer_id": 10,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 49.4,
+  "csat": 4
+ },
+ {
+  "ticket_id": 58,
+  "created_at": "2023-08-16 19:05:00",
+  "customer_id": 411,
+  "category": "integration",
+  "priority": "high",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 59,
+  "created_at": "2023-12-15 07:06:00",
+  "customer_id": 65,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 47.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 60,
+  "created_at": "2024-12-13 04:20:00",
+  "customer_id": 100,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 14.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 61,
+  "created_at": "2024-11-16 07:52:00",
+  "customer_id": 84,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 13.8,
+  "csat": 1
+ },
+ {
+  "ticket_id": 62,
+  "created_at": "2024-03-09 18:11:00",
+  "customer_id": 140,
+  "category": "outage",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 63,
+  "created_at": "2023-07-01 23:55:00",
+  "customer_id": 38,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 43.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 64,
+  "created_at": "2024-10-07 02:09:00",
+  "customer_id": 282,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 65.2,
+  "csat": 1
+ },
+ {
+  "ticket_id": 65,
+  "created_at": "2024-07-03 22:52:00",
+  "customer_id": 124,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 70.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 66,
+  "created_at": "2024-05-04 07:25:00",
+  "customer_id": 50,
+  "category": "billing",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 67,
+  "created_at": "2024-10-15 15:36:00",
+  "customer_id": 385,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 27.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 68,
+  "created_at": "2024-06-20 02:52:00",
+  "customer_id": 387,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 3.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 69,
+  "created_at": "2024-04-01 01:35:00",
+  "customer_id": 371,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 43.9,
+  "csat": 3
+ },
+ {
+  "ticket_id": 70,
+  "created_at": "2024-01-23 08:56:00",
+  "customer_id": 401,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 23.5,
+  "csat": null
+ },
+ {
+  "ticket_id": 71,
+  "created_at": "2024-10-02 08:36:00",
+  "customer_id": 373,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 29.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 72,
+  "created_at": "2024-11-09 08:06:00",
+  "customer_id": 213,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 15.1,
+  "csat": 3
+ },
+ {
+  "ticket_id": 73,
+  "created_at": "2024-12-17 08:57:00",
+  "customer_id": 243,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 57.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 74,
+  "created_at": "2024-07-24 20:38:00",
+  "customer_id": 281,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 31.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 75,
+  "created_at": "2024-06-01 02:56:00",
+  "customer_id": 128,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 63.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 76,
+  "created_at": "2024-09-15 02:49:00",
+  "customer_id": 279,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 44.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 77,
+  "created_at": "2024-07-16 23:14:00",
+  "customer_id": 225,
+  "category": "billing",
+  "priority": "low",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 78,
+  "created_at": "2024-06-16 10:45:00",
+  "customer_id": 121,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 39.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 79,
+  "created_at": "2024-09-20 03:33:00",
+  "customer_id": 136,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 20.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 80,
+  "created_at": "2024-07-05 23:57:00",
+  "customer_id": 411,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 54.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 81,
+  "created_at": "2024-01-09 12:53:00",
+  "customer_id": 86,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 55.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 82,
+  "created_at": "2024-11-24 03:49:00",
+  "customer_id": 246,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 37.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 83,
+  "created_at": "2024-05-28 23:17:00",
+  "customer_id": 161,
+  "category": "integration",
+  "priority": "high",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 84,
+  "created_at": "2024-05-25 09:26:00",
+  "customer_id": 358,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 23.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 85,
+  "created_at": "2024-08-11 04:55:00",
+  "customer_id": 90,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 26.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 86,
+  "created_at": "2024-04-19 02:01:00",
+  "customer_id": 11,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 42.3,
+  "csat": 2
+ },
+ {
+  "ticket_id": 87,
+  "created_at": "2024-04-20 20:45:00",
+  "customer_id": 308,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 62.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 88,
+  "created_at": "2023-08-24 21:27:00",
+  "customer_id": 165,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 27.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 89,
+  "created_at": "2024-06-09 00:54:00",
+  "customer_id": 249,
+  "category": "bug",
+  "priority": "low",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 90,
+  "created_at": "2024-03-08 09:08:00",
+  "customer_id": 229,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 33.8,
+  "csat": 4
+ },
+ {
+  "ticket_id": 91,
+  "created_at": "2024-04-07 01:30:00",
+  "customer_id": 330,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 48.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 92,
+  "created_at": "2023-11-16 14:33:00",
+  "customer_id": 50,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 9.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 93,
+  "created_at": "2024-03-06 19:44:00",
+  "customer_id": 313,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 41.9,
+  "csat": 4
+ },
+ {
+  "ticket_id": 94,
+  "created_at": "2024-11-15 08:30:00",
+  "customer_id": 86,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 9.1,
+  "csat": null
+ },
+ {
+  "ticket_id": 95,
+  "created_at": "2024-09-28 12:14:00",
+  "customer_id": 263,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 49.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 96,
+  "created_at": "2024-10-02 18:57:00",
+  "customer_id": 186,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 35.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 97,
+  "created_at": "2024-12-01 04:38:00",
+  "customer_id": 249,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 66.3,
+  "csat": 3
+ },
+ {
+  "ticket_id": 98,
+  "created_at": "2024-11-07 12:42:00",
+  "customer_id": 137,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 27.8,
+  "csat": 3
+ },
+ {
+  "ticket_id": 99,
+  "created_at": "2024-05-28 11:39:00",
+  "customer_id": 111,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 45.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 100,
+  "created_at": "2024-03-26 04:47:00",
+  "customer_id": 410,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 36.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 101,
+  "created_at": "2024-08-22 01:08:00",
+  "customer_id": 255,
+  "category": "integration",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 102,
+  "created_at": "2024-05-08 05:20:00",
+  "customer_id": 304,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 63.6,
+  "csat": 1
+ },
+ {
+  "ticket_id": 103,
+  "created_at": "2024-05-21 18:18:00",
+  "customer_id": 260,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 24.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 104,
+  "created_at": "2024-05-22 07:33:00",
+  "customer_id": 365,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 60.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 105,
+  "created_at": "2024-11-04 18:14:00",
+  "customer_id": 312,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 67.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 106,
+  "created_at": "2024-07-23 18:42:00",
+  "customer_id": 247,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 55.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 107,
+  "created_at": "2024-12-23 19:43:00",
+  "customer_id": 364,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 57.1,
+  "csat": 2
+ },
+ {
+  "ticket_id": 108,
+  "created_at": "2023-12-03 15:19:00",
+  "customer_id": 326,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 6.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 109,
+  "created_at": "2023-08-07 15:54:00",
+  "customer_id": 1,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 25.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 110,
+  "created_at": "2023-09-26 15:31:00",
+  "customer_id": 3,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 58.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 111,
+  "created_at": "2024-06-02 04:48:00",
+  "customer_id": 187,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 43.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 112,
+  "created_at": "2024-09-25 15:21:00",
+  "customer_id": 242,
+  "category": "how-to",
+  "priority": "high",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 113,
+  "created_at": "2023-12-20 10:01:00",
+  "customer_id": 336,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 12.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 114,
+  "created_at": "2024-11-25 16:35:00",
+  "customer_id": 38,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 55.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 115,
+  "created_at": "2024-09-07 12:56:00",
+  "customer_id": 93,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 23.2,
+  "csat": 3
+ },
+ {
+  "ticket_id": 116,
+  "created_at": "2024-10-21 01:32:00",
+  "customer_id": 223,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 5.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 117,
+  "created_at": "2023-07-28 00:56:00",
+  "customer_id": 295,
+  "category": "bug",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 118,
+  "created_at": "2023-09-15 03:23:00",
+  "customer_id": 31,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 68.6,
+  "csat": null
+ },
+ {
+  "ticket_id": 119,
+  "created_at": "2024-01-09 09:00:00",
+  "customer_id": 272,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 59.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 120,
+  "created_at": "2024-03-28 18:12:00",
+  "customer_id": 410,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 29.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 121,
+  "created_at": "2024-06-04 04:12:00",
+  "customer_id": 348,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 26.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 122,
+  "created_at": "2024-12-07 21:36:00",
+  "customer_id": 176,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 30.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 123,
+  "created_at": "2023-10-06 03:51:00",
+  "customer_id": 389,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 40.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 124,
+  "created_at": "2023-12-25 13:49:00",
+  "customer_id": 217,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 69.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 125,
+  "created_at": "2024-09-07 18:49:00",
+  "customer_id": 318,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 37.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 126,
+  "created_at": "2024-12-22 21:04:00",
+  "customer_id": 241,
+  "category": "billing",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 127,
+  "created_at": "2024-07-28 03:53:00",
+  "customer_id": 100,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 56.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 128,
+  "created_at": "2024-12-24 09:33:00",
+  "customer_id": 97,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 52.8,
+  "csat": 1
+ },
+ {
+  "ticket_id": 129,
+  "created_at": "2024-06-22 15:39:00",
+  "customer_id": 286,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 30.4,
+  "csat": 4
+ },
+ {
+  "ticket_id": 130,
+  "created_at": "2024-03-28 13:50:00",
+  "customer_id": 128,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 42.6,
+  "csat": 3
+ },
+ {
+  "ticket_id": 131,
+  "created_at": "2024-10-19 03:26:00",
+  "customer_id": 96,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 4.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 132,
+  "created_at": "2024-05-18 18:52:00",
+  "customer_id": 149,
+  "category": "billing",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 133,
+  "created_at": "2024-10-13 13:16:00",
+  "customer_id": 374,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 38.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 134,
+  "created_at": "2024-10-28 19:49:00",
+  "customer_id": 247,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 52.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 135,
+  "created_at": "2024-01-04 23:16:00",
+  "customer_id": 163,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 11.1,
+  "csat": 2
+ },
+ {
+  "ticket_id": 136,
+  "created_at": "2024-01-23 13:30:00",
+  "customer_id": 172,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 6.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 137,
+  "created_at": "2024-09-02 16:43:00",
+  "customer_id": 231,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 24.7,
+  "csat": 3
+ },
+ {
+  "ticket_id": 138,
+  "created_at": "2024-09-28 16:07:00",
+  "customer_id": 301,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 50.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 139,
+  "created_at": "2024-01-01 03:40:00",
+  "customer_id": 129,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 45.7,
+  "csat": 2
+ },
+ {
+  "ticket_id": 140,
+  "created_at": "2024-04-09 11:24:00",
+  "customer_id": 37,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 39.9,
+  "csat": 3
+ },
+ {
+  "ticket_id": 141,
+  "created_at": "2024-07-24 04:58:00",
+  "customer_id": 195,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 64.5,
+  "csat": 3
+ },
+ {
+  "ticket_id": 142,
+  "created_at": "2023-08-08 15:00:00",
+  "customer_id": 339,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 143,
+  "created_at": "2024-10-09 02:46:00",
+  "customer_id": 201,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 19.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 144,
+  "created_at": "2024-05-17 14:00:00",
+  "customer_id": 386,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 48.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 145,
+  "created_at": "2024-05-28 15:27:00",
+  "customer_id": 191,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 41.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 146,
+  "created_at": "2024-08-15 02:42:00",
+  "customer_id": 132,
+  "category": "bug",
+  "priority": "high",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 147,
+  "created_at": "2024-01-18 15:14:00",
+  "customer_id": 365,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 9.8,
+  "csat": 3
+ },
+ {
+  "ticket_id": 148,
+  "created_at": "2024-02-12 08:46:00",
+  "customer_id": 259,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 7.2,
+  "csat": 2
+ },
+ {
+  "ticket_id": 149,
+  "created_at": "2024-10-25 00:33:00",
+  "customer_id": 263,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 17.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 150,
+  "created_at": "2024-06-04 01:19:00",
+  "customer_id": 323,
+  "category": "bug",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 151,
+  "created_at": "2024-11-27 17:46:00",
+  "customer_id": 64,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 52.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 152,
+  "created_at": "2024-12-24 21:44:00",
+  "customer_id": 302,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 31.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 153,
+  "created_at": "2024-05-13 14:01:00",
+  "customer_id": 296,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 59.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 154,
+  "created_at": "2024-04-28 10:36:00",
+  "customer_id": 391,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 22.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 155,
+  "created_at": "2024-01-28 00:30:00",
+  "customer_id": 19,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 53.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 156,
+  "created_at": "2024-04-25 10:45:00",
+  "customer_id": 95,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 43.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 157,
+  "created_at": "2024-12-19 05:23:00",
+  "customer_id": 367,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 27.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 158,
+  "created_at": "2024-02-05 20:29:00",
+  "customer_id": 203,
+  "category": "outage",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 159,
+  "created_at": "2023-12-23 07:32:00",
+  "customer_id": 64,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 40.8,
+  "csat": 4
+ },
+ {
+  "ticket_id": 160,
+  "created_at": "2024-12-10 15:44:00",
+  "customer_id": 325,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 18.7,
+  "csat": 3
+ },
+ {
+  "ticket_id": 161,
+  "created_at": "2024-07-15 19:58:00",
+  "customer_id": 148,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 71.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 162,
+  "created_at": "2024-12-10 07:04:00",
+  "customer_id": 252,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 3.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 163,
+  "created_at": "2024-07-02 10:45:00",
+  "customer_id": 144,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 43.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 164,
+  "created_at": "2023-12-08 17:08:00",
+  "customer_id": 404,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 71.4,
+  "csat": 2
+ },
+ {
+  "ticket_id": 165,
+  "created_at": "2023-10-25 21:21:00",
+  "customer_id": 308,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 41.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 166,
+  "created_at": "2024-10-05 03:30:00",
+  "customer_id": 135,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 1.1,
+  "csat": 3
+ },
+ {
+  "ticket_id": 167,
+  "created_at": "2024-09-08 00:08:00",
+  "customer_id": 185,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 57.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 168,
+  "created_at": "2024-12-10 13:50:00",
+  "customer_id": 56,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 34.6,
+  "csat": 3
+ },
+ {
+  "ticket_id": 169,
+  "created_at": "2024-03-06 11:44:00",
+  "customer_id": 104,
+  "category": "billing",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 170,
+  "created_at": "2024-11-10 07:48:00",
+  "customer_id": 393,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 16.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 171,
+  "created_at": "2024-01-07 00:06:00",
+  "customer_id": 364,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 57.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 172,
+  "created_at": "2024-12-07 15:30:00",
+  "customer_id": 417,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 42.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 173,
+  "created_at": "2024-04-11 05:10:00",
+  "customer_id": 308,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 66.4,
+  "csat": 2
+ },
+ {
+  "ticket_id": 174,
+  "created_at": "2024-05-01 20:51:00",
+  "customer_id": 108,
+  "category": "bug",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 175,
+  "created_at": "2024-07-25 09:49:00",
+  "customer_id": 71,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 60.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 176,
+  "created_at": "2024-10-28 14:24:00",
+  "customer_id": 64,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 24.0,
+  "csat": 2
+ },
+ {
+  "ticket_id": 177,
+  "created_at": "2024-08-04 21:05:00",
+  "customer_id": 75,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 69.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 178,
+  "created_at": "2024-05-16 02:12:00",
+  "customer_id": 163,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 13.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 179,
+  "created_at": "2024-08-14 13:06:00",
+  "customer_id": 97,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 68.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 180,
+  "created_at": "2024-10-09 16:06:00",
+  "customer_id": 260,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 60.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 181,
+  "created_at": "2024-12-01 07:30:00",
+  "customer_id": 406,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 12.6,
+  "csat": null
+ },
+ {
+  "ticket_id": 182,
+  "created_at": "2024-07-28 13:39:00",
+  "customer_id": 210,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 43.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 183,
+  "created_at": "2024-06-05 16:49:00",
+  "customer_id": 359,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 58.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 184,
+  "created_at": "2024-11-28 08:14:00",
+  "customer_id": 216,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 7.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 185,
+  "created_at": "2024-08-17 05:36:00",
+  "customer_id": 118,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 29.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 186,
+  "created_at": "2024-02-03 13:24:00",
+  "customer_id": 283,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 28.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 187,
+  "created_at": "2024-02-08 11:57:00",
+  "customer_id": 346,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 51.9,
+  "csat": 2
+ },
+ {
+  "ticket_id": 188,
+  "created_at": "2024-06-11 01:42:00",
+  "customer_id": 417,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 32.3,
+  "csat": 1
+ },
+ {
+  "ticket_id": 189,
+  "created_at": "2024-11-14 11:39:00",
+  "customer_id": 330,
+  "category": "outage",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 190,
+  "created_at": "2024-01-18 05:44:00",
+  "customer_id": 13,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 50.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 191,
+  "created_at": "2024-08-25 01:32:00",
+  "customer_id": 331,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 65.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 192,
+  "created_at": "2023-12-27 03:57:00",
+  "customer_id": 201,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 64.3,
+  "csat": 3
+ },
+ {
+  "ticket_id": 193,
+  "created_at": "2024-10-15 03:03:00",
+  "customer_id": 388,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 66.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 194,
+  "created_at": "2024-04-28 08:11:00",
+  "customer_id": 174,
+  "category": "billing",
+  "priority": "low",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 195,
+  "created_at": "2024-10-16 21:22:00",
+  "customer_id": 150,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 67.9,
+  "csat": 4
+ },
+ {
+  "ticket_id": 196,
+  "created_at": "2024-03-21 01:57:00",
+  "customer_id": 369,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 2.3,
+  "csat": 1
+ },
+ {
+  "ticket_id": 197,
+  "created_at": "2024-07-28 07:59:00",
+  "customer_id": 22,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 29.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 198,
+  "created_at": "2024-12-10 13:29:00",
+  "customer_id": 67,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 48.8,
+  "csat": 3
+ },
+ {
+  "ticket_id": 199,
+  "created_at": "2024-02-04 02:58:00",
+  "customer_id": 274,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 30.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 200,
+  "created_at": "2023-10-18 21:36:00",
+  "customer_id": 416,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 16.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 201,
+  "created_at": "2023-08-19 20:43:00",
+  "customer_id": 245,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 65.1,
+  "csat": 3
+ },
+ {
+  "ticket_id": 202,
+  "created_at": "2023-11-22 14:51:00",
+  "customer_id": 361,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 43.9,
+  "csat": 3
+ },
+ {
+  "ticket_id": 203,
+  "created_at": "2024-12-11 12:36:00",
+  "customer_id": 234,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 71.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 204,
+  "created_at": "2024-10-09 23:20:00",
+  "customer_id": 91,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 18.3,
+  "csat": 3
+ },
+ {
+  "ticket_id": 205,
+  "created_at": "2023-12-06 16:39:00",
+  "customer_id": 166,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 4.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 206,
+  "created_at": "2024-05-06 20:42:00",
+  "customer_id": 31,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 46.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 207,
+  "created_at": "2024-11-09 02:26:00",
+  "customer_id": 334,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 68.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 208,
+  "created_at": "2024-08-02 20:35:00",
+  "customer_id": 251,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 24.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 209,
+  "created_at": "2024-07-08 09:53:00",
+  "customer_id": 394,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 19.9,
+  "csat": 3
+ },
+ {
+  "ticket_id": 210,
+  "created_at": "2024-06-06 22:23:00",
+  "customer_id": 325,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 31.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 211,
+  "created_at": "2023-10-27 10:22:00",
+  "customer_id": 309,
+  "category": "billing",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 212,
+  "created_at": "2024-10-20 02:51:00",
+  "customer_id": 273,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 42.6,
+  "csat": 3
+ },
+ {
+  "ticket_id": 213,
+  "created_at": "2024-05-12 03:24:00",
+  "customer_id": 341,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 9.6,
+  "csat": 3
+ },
+ {
+  "ticket_id": 214,
+  "created_at": "2024-10-14 05:13:00",
+  "customer_id": 244,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 54.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 215,
+  "created_at": "2024-01-19 08:48:00",
+  "customer_id": 216,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 63.5,
+  "csat": 3
+ },
+ {
+  "ticket_id": 216,
+  "created_at": "2024-10-15 17:32:00",
+  "customer_id": 39,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 35.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 217,
+  "created_at": "2024-08-14 02:16:00",
+  "customer_id": 109,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 0.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 218,
+  "created_at": "2024-10-07 00:14:00",
+  "customer_id": 311,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 50.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 219,
+  "created_at": "2023-08-13 10:13:00",
+  "customer_id": 141,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 31.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 220,
+  "created_at": "2024-11-20 12:02:00",
+  "customer_id": 323,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 21.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 221,
+  "created_at": "2024-11-14 13:39:00",
+  "customer_id": 178,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 43.1,
+  "csat": 1
+ },
+ {
+  "ticket_id": 222,
+  "created_at": "2024-12-14 21:55:00",
+  "customer_id": 183,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 22.5,
+  "csat": 3
+ },
+ {
+  "ticket_id": 223,
+  "created_at": "2023-10-12 22:10:00",
+  "customer_id": 114,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 8.1,
+  "csat": 2
+ },
+ {
+  "ticket_id": 224,
+  "created_at": "2023-10-25 11:54:00",
+  "customer_id": 74,
+  "category": "billing",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 225,
+  "created_at": "2024-11-19 11:01:00",
+  "customer_id": 301,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 11.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 226,
+  "created_at": "2024-11-26 12:10:00",
+  "customer_id": 384,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 1.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 227,
+  "created_at": "2024-07-11 14:33:00",
+  "customer_id": 350,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 14.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 228,
+  "created_at": "2024-06-02 09:14:00",
+  "customer_id": 203,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 50.5,
+  "csat": 2
+ },
+ {
+  "ticket_id": 229,
+  "created_at": "2024-08-16 08:35:00",
+  "customer_id": 128,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 70.4,
+  "csat": 4
+ },
+ {
+  "ticket_id": 230,
+  "created_at": "2024-08-09 11:01:00",
+  "customer_id": 194,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 17.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 231,
+  "created_at": "2024-12-21 04:38:00",
+  "customer_id": 134,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 54.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 232,
+  "created_at": "2023-09-04 10:01:00",
+  "customer_id": 278,
+  "category": "bug",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 233,
+  "created_at": "2024-10-21 20:19:00",
+  "customer_id": 374,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 28.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 234,
+  "created_at": "2024-07-07 01:19:00",
+  "customer_id": 249,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 37.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 235,
+  "created_at": "2024-10-28 21:13:00",
+  "customer_id": 130,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 57.6,
+  "csat": null
+ },
+ {
+  "ticket_id": 236,
+  "created_at": "2023-11-28 02:44:00",
+  "customer_id": 106,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 1.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 237,
+  "created_at": "2024-07-23 05:34:00",
+  "customer_id": 341,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 69.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 238,
+  "created_at": "2024-10-18 06:12:00",
+  "customer_id": 50,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 56.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 239,
+  "created_at": "2023-11-01 19:28:00",
+  "customer_id": 35,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 31.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 240,
+  "created_at": "2024-07-21 09:06:00",
+  "customer_id": 387,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 66.6,
+  "csat": 3
+ },
+ {
+  "ticket_id": 241,
+  "created_at": "2024-09-08 10:30:00",
+  "customer_id": 157,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 44.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 242,
+  "created_at": "2024-11-03 19:39:00",
+  "customer_id": 279,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 67.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 243,
+  "created_at": "2024-12-28 02:44:00",
+  "customer_id": 371,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 22.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 244,
+  "created_at": "2024-05-25 07:14:00",
+  "customer_id": 308,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 65.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 245,
+  "created_at": "2024-09-26 14:42:00",
+  "customer_id": 373,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 54.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 246,
+  "created_at": "2024-10-15 08:27:00",
+  "customer_id": 39,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 17.3,
+  "csat": 3
+ },
+ {
+  "ticket_id": 247,
+  "created_at": "2024-12-01 17:01:00",
+  "customer_id": 410,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 68.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 248,
+  "created_at": "2024-10-22 03:21:00",
+  "customer_id": 185,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 71.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 249,
+  "created_at": "2024-06-18 10:17:00",
+  "customer_id": 247,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 25.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 250,
+  "created_at": "2024-12-28 20:49:00",
+  "customer_id": 311,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 62.9,
+  "csat": 4
+ },
+ {
+  "ticket_id": 251,
+  "created_at": "2024-09-06 07:36:00",
+  "customer_id": 289,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 31.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 252,
+  "created_at": "2024-11-11 09:31:00",
+  "customer_id": 375,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 59.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 253,
+  "created_at": "2024-07-28 13:27:00",
+  "customer_id": 329,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 58.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 254,
+  "created_at": "2024-02-06 15:12:00",
+  "customer_id": 212,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 66.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 255,
+  "created_at": "2024-12-12 08:02:00",
+  "customer_id": 199,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 68.4,
+  "csat": 1
+ },
+ {
+  "ticket_id": 256,
+  "created_at": "2024-02-17 13:42:00",
+  "customer_id": 143,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 7.4,
+  "csat": 3
+ },
+ {
+  "ticket_id": 257,
+  "created_at": "2023-09-17 23:27:00",
+  "customer_id": 175,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 2.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 258,
+  "created_at": "2024-06-28 00:16:00",
+  "customer_id": 257,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 30.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 259,
+  "created_at": "2024-07-20 10:10:00",
+  "customer_id": 54,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 19.1,
+  "csat": null
+ },
+ {
+  "ticket_id": 260,
+  "created_at": "2024-09-22 05:42:00",
+  "customer_id": 158,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 23.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 261,
+  "created_at": "2024-03-18 16:35:00",
+  "customer_id": 369,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 45.1,
+  "csat": 1
+ },
+ {
+  "ticket_id": 262,
+  "created_at": "2024-02-16 19:53:00",
+  "customer_id": 404,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 54.8,
+  "csat": null
+ },
+ {
+  "ticket_id": 263,
+  "created_at": "2023-08-20 14:52:00",
+  "customer_id": 381,
+  "category": "outage",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 264,
+  "created_at": "2024-08-19 09:59:00",
+  "customer_id": 314,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 62.5,
+  "csat": null
+ },
+ {
+  "ticket_id": 265,
+  "created_at": "2024-03-14 16:11:00",
+  "customer_id": 194,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 55.2,
+  "csat": 3
+ },
+ {
+  "ticket_id": 266,
+  "created_at": "2024-02-10 15:24:00",
+  "customer_id": 131,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 19.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 267,
+  "created_at": "2023-08-16 15:06:00",
+  "customer_id": 367,
+  "category": "outage",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 54.9,
+  "csat": 3
+ },
+ {
+  "ticket_id": 268,
+  "created_at": "2023-12-04 20:30:00",
+  "customer_id": 26,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 67.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 269,
+  "created_at": "2024-04-07 17:07:00",
+  "customer_id": 133,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 9.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 270,
+  "created_at": "2024-03-17 03:11:00",
+  "customer_id": 7,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 68.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 271,
+  "created_at": "2024-10-13 06:18:00",
+  "customer_id": 150,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 52.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 272,
+  "created_at": "2024-06-15 10:24:00",
+  "customer_id": 386,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 29.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 273,
+  "created_at": "2024-09-28 22:42:00",
+  "customer_id": 288,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 24.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 274,
+  "created_at": "2024-12-26 19:35:00",
+  "customer_id": 175,
+  "category": "integration",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 275,
+  "created_at": "2023-12-08 21:45:00",
+  "customer_id": 342,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 67.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 276,
+  "created_at": "2024-05-07 07:18:00",
+  "customer_id": 105,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 26.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 277,
+  "created_at": "2023-08-07 11:24:00",
+  "customer_id": 408,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 67.3,
+  "csat": 1
+ },
+ {
+  "ticket_id": 278,
+  "created_at": "2024-02-28 14:44:00",
+  "customer_id": 204,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 50.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 279,
+  "created_at": "2024-10-17 18:33:00",
+  "customer_id": 11,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 40.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 280,
+  "created_at": "2024-03-03 03:07:00",
+  "customer_id": 91,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 36.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 281,
+  "created_at": "2023-12-28 02:27:00",
+  "customer_id": 25,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 42.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 282,
+  "created_at": "2024-12-17 05:18:00",
+  "customer_id": 293,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 67.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 283,
+  "created_at": "2024-03-28 05:45:00",
+  "customer_id": 148,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 63.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 284,
+  "created_at": "2024-11-14 09:07:00",
+  "customer_id": 308,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 68.6,
+  "csat": null
+ },
+ {
+  "ticket_id": 285,
+  "created_at": "2024-12-01 17:15:00",
+  "customer_id": 19,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 69.6,
+  "csat": 2
+ },
+ {
+  "ticket_id": 286,
+  "created_at": "2024-11-25 06:49:00",
+  "customer_id": 95,
+  "category": "integration",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 287,
+  "created_at": "2024-08-19 10:45:00",
+  "customer_id": 276,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 69.3,
+  "csat": 3
+ },
+ {
+  "ticket_id": 288,
+  "created_at": "2024-06-27 21:56:00",
+  "customer_id": 264,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 7.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 289,
+  "created_at": "2024-09-28 14:40:00",
+  "customer_id": 220,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 51.8,
+  "csat": 4
+ },
+ {
+  "ticket_id": 290,
+  "created_at": "2023-11-02 21:38:00",
+  "customer_id": 158,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 37.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 291,
+  "created_at": "2023-12-27 09:55:00",
+  "customer_id": 92,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 9.1,
+  "csat": 1
+ },
+ {
+  "ticket_id": 292,
+  "created_at": "2023-10-01 09:23:00",
+  "customer_id": 223,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 70.5,
+  "csat": 3
+ },
+ {
+  "ticket_id": 293,
+  "created_at": "2024-04-05 00:21:00",
+  "customer_id": 271,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 11.2,
+  "csat": 3
+ },
+ {
+  "ticket_id": 294,
+  "created_at": "2023-10-04 22:04:00",
+  "customer_id": 92,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 23.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 295,
+  "created_at": "2024-07-11 18:50:00",
+  "customer_id": 68,
+  "category": "outage",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 27.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 296,
+  "created_at": "2024-05-03 21:07:00",
+  "customer_id": 152,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 42.8,
+  "csat": 3
+ },
+ {
+  "ticket_id": 297,
+  "created_at": "2024-03-10 02:51:00",
+  "customer_id": 48,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 29.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 298,
+  "created_at": "2023-09-22 13:59:00",
+  "customer_id": 198,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 9.2,
+  "csat": 3
+ },
+ {
+  "ticket_id": 299,
+  "created_at": "2024-10-06 03:50:00",
+  "customer_id": 353,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 46.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 300,
+  "created_at": "2024-12-22 05:44:00",
+  "customer_id": 365,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 47.8,
+  "csat": 4
+ },
+ {
+  "ticket_id": 301,
+  "created_at": "2024-06-07 22:45:00",
+  "customer_id": 309,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 61.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 302,
+  "created_at": "2024-10-15 12:41:00",
+  "customer_id": 81,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 23.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 303,
+  "created_at": "2024-08-07 14:22:00",
+  "customer_id": 109,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 68.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 304,
+  "created_at": "2023-12-24 05:19:00",
+  "customer_id": 55,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 70.3,
+  "csat": 2
+ },
+ {
+  "ticket_id": 305,
+  "created_at": "2024-11-28 02:10:00",
+  "customer_id": 86,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 22.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 306,
+  "created_at": "2024-10-07 05:01:00",
+  "customer_id": 251,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 18.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 307,
+  "created_at": "2023-10-21 13:58:00",
+  "customer_id": 410,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 69.8,
+  "csat": 3
+ },
+ {
+  "ticket_id": 308,
+  "created_at": "2024-12-04 21:43:00",
+  "customer_id": 360,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 32.5,
+  "csat": 3
+ },
+ {
+  "ticket_id": 309,
+  "created_at": "2024-09-28 18:03:00",
+  "customer_id": 273,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 63.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 310,
+  "created_at": "2024-11-20 02:04:00",
+  "customer_id": 103,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 4.1,
+  "csat": 2
+ },
+ {
+  "ticket_id": 311,
+  "created_at": "2023-08-27 02:27:00",
+  "customer_id": 319,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 46.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 312,
+  "created_at": "2023-12-04 10:55:00",
+  "customer_id": 396,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 38.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 313,
+  "created_at": "2024-08-02 15:48:00",
+  "customer_id": 341,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 48.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 314,
+  "created_at": "2024-09-27 22:22:00",
+  "customer_id": 61,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 46.1,
+  "csat": null
+ },
+ {
+  "ticket_id": 315,
+  "created_at": "2024-05-16 12:54:00",
+  "customer_id": 365,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 68.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 316,
+  "created_at": "2024-06-28 23:18:00",
+  "customer_id": 46,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 26.4,
+  "csat": 3
+ },
+ {
+  "ticket_id": 317,
+  "created_at": "2024-01-23 08:30:00",
+  "customer_id": 2,
+  "category": "outage",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 59.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 318,
+  "created_at": "2024-11-17 10:58:00",
+  "customer_id": 44,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 58.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 319,
+  "created_at": "2023-09-03 04:20:00",
+  "customer_id": 338,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 320,
+  "created_at": "2024-05-06 23:13:00",
+  "customer_id": 373,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 32.5,
+  "csat": null
+ },
+ {
+  "ticket_id": 321,
+  "created_at": "2024-10-03 01:05:00",
+  "customer_id": 333,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 15.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 322,
+  "created_at": "2024-12-25 04:40:00",
+  "customer_id": 206,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 69.9,
+  "csat": 4
+ },
+ {
+  "ticket_id": 323,
+  "created_at": "2023-10-15 05:54:00",
+  "customer_id": 59,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 17.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 324,
+  "created_at": "2024-12-22 13:19:00",
+  "customer_id": 153,
+  "category": "integration",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 325,
+  "created_at": "2023-08-01 15:18:00",
+  "customer_id": 65,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 65.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 326,
+  "created_at": "2024-10-14 15:37:00",
+  "customer_id": 334,
+  "category": "bug",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 327,
+  "created_at": "2024-05-25 08:23:00",
+  "customer_id": 398,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 328,
+  "created_at": "2024-07-10 11:23:00",
+  "customer_id": 201,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 8.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 329,
+  "created_at": "2024-10-01 14:44:00",
+  "customer_id": 268,
+  "category": "bug",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 330,
+  "created_at": "2023-11-24 22:38:00",
+  "customer_id": 241,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 54.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 331,
+  "created_at": "2024-02-28 11:35:00",
+  "customer_id": 298,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 39.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 332,
+  "created_at": "2024-11-10 19:46:00",
+  "customer_id": 206,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 12.2,
+  "csat": 3
+ },
+ {
+  "ticket_id": 333,
+  "created_at": "2024-11-05 04:56:00",
+  "customer_id": 185,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 1.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 334,
+  "created_at": "2024-11-22 19:02:00",
+  "customer_id": 305,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 57.2,
+  "csat": 1
+ },
+ {
+  "ticket_id": 335,
+  "created_at": "2024-01-25 08:25:00",
+  "customer_id": 293,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 60.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 336,
+  "created_at": "2024-12-16 21:11:00",
+  "customer_id": 177,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 11.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 337,
+  "created_at": "2023-09-14 06:56:00",
+  "customer_id": 351,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 22.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 338,
+  "created_at": "2024-10-09 06:14:00",
+  "customer_id": 387,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 339,
+  "created_at": "2024-03-07 17:41:00",
+  "customer_id": 80,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 34.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 340,
+  "created_at": "2024-11-19 13:42:00",
+  "customer_id": 30,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 41.1,
+  "csat": null
+ },
+ {
+  "ticket_id": 341,
+  "created_at": "2024-04-10 05:03:00",
+  "customer_id": 31,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 42.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 342,
+  "created_at": "2023-09-28 23:20:00",
+  "customer_id": 15,
+  "category": "outage",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 10.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 343,
+  "created_at": "2024-12-05 13:59:00",
+  "customer_id": 140,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 46.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 344,
+  "created_at": "2024-12-11 15:36:00",
+  "customer_id": 285,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 15.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 345,
+  "created_at": "2023-08-10 11:29:00",
+  "customer_id": 199,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 39.8,
+  "csat": 3
+ },
+ {
+  "ticket_id": 346,
+  "created_at": "2024-07-10 11:29:00",
+  "customer_id": 318,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 22.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 347,
+  "created_at": "2024-03-18 17:34:00",
+  "customer_id": 349,
+  "category": "integration",
+  "priority": "high",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 348,
+  "created_at": "2023-11-11 22:26:00",
+  "customer_id": 103,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 64.3,
+  "csat": 3
+ },
+ {
+  "ticket_id": 349,
+  "created_at": "2023-07-19 13:09:00",
+  "customer_id": 291,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 48.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 350,
+  "created_at": "2024-07-12 01:35:00",
+  "customer_id": 66,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 55.5,
+  "csat": null
+ },
+ {
+  "ticket_id": 351,
+  "created_at": "2024-02-15 23:11:00",
+  "customer_id": 3,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 12.6,
+  "csat": 3
+ },
+ {
+  "ticket_id": 352,
+  "created_at": "2024-12-19 18:48:00",
+  "customer_id": 290,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 9.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 353,
+  "created_at": "2024-12-28 22:50:00",
+  "customer_id": 44,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 70.1,
+  "csat": null
+ },
+ {
+  "ticket_id": 354,
+  "created_at": "2024-06-07 17:03:00",
+  "customer_id": 395,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 12.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 355,
+  "created_at": "2024-11-25 08:28:00",
+  "customer_id": 350,
+  "category": "bug",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 356,
+  "created_at": "2024-09-17 21:12:00",
+  "customer_id": 34,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 56.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 357,
+  "created_at": "2023-11-04 16:22:00",
+  "customer_id": 143,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 57.9,
+  "csat": 4
+ },
+ {
+  "ticket_id": 358,
+  "created_at": "2024-07-28 18:01:00",
+  "customer_id": 209,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 24.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 359,
+  "created_at": "2024-02-27 17:39:00",
+  "customer_id": 408,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 2.5,
+  "csat": null
+ },
+ {
+  "ticket_id": 360,
+  "created_at": "2024-01-26 10:17:00",
+  "customer_id": 322,
+  "category": "bug",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 361,
+  "created_at": "2024-06-27 23:31:00",
+  "customer_id": 118,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 17.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 362,
+  "created_at": "2024-10-21 02:42:00",
+  "customer_id": 412,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 41.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 363,
+  "created_at": "2024-11-09 14:48:00",
+  "customer_id": 65,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 38.2,
+  "csat": 2
+ },
+ {
+  "ticket_id": 364,
+  "created_at": "2024-07-10 08:06:00",
+  "customer_id": 124,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 69.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 365,
+  "created_at": "2024-01-28 13:18:00",
+  "customer_id": 108,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 61.9,
+  "csat": 4
+ },
+ {
+  "ticket_id": 366,
+  "created_at": "2024-12-08 17:28:00",
+  "customer_id": 255,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 54.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 367,
+  "created_at": "2024-03-27 21:21:00",
+  "customer_id": 123,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 43.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 368,
+  "created_at": "2024-01-05 23:51:00",
+  "customer_id": 354,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 9.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 369,
+  "created_at": "2024-09-22 22:41:00",
+  "customer_id": 245,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 37.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 370,
+  "created_at": "2024-07-02 02:33:00",
+  "customer_id": 302,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 64.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 371,
+  "created_at": "2024-06-18 17:47:00",
+  "customer_id": 56,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 29.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 372,
+  "created_at": "2024-10-19 05:54:00",
+  "customer_id": 94,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 17.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 373,
+  "created_at": "2024-12-08 00:53:00",
+  "customer_id": 162,
+  "category": "how-to",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 374,
+  "created_at": "2024-09-01 15:56:00",
+  "customer_id": 253,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 43.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 375,
+  "created_at": "2024-09-10 11:01:00",
+  "customer_id": 382,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 17.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 376,
+  "created_at": "2023-10-22 13:19:00",
+  "customer_id": 5,
+  "category": "bug",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 377,
+  "created_at": "2023-10-18 04:02:00",
+  "customer_id": 289,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 41.8,
+  "csat": 3
+ },
+ {
+  "ticket_id": 378,
+  "created_at": "2024-11-22 14:16:00",
+  "customer_id": 368,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 43.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 379,
+  "created_at": "2023-12-15 04:22:00",
+  "customer_id": 298,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 33.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 380,
+  "created_at": "2024-01-20 22:04:00",
+  "customer_id": 298,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 8.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 381,
+  "created_at": "2024-05-12 09:41:00",
+  "customer_id": 73,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 15.7,
+  "csat": 1
+ },
+ {
+  "ticket_id": 382,
+  "created_at": "2024-05-06 05:43:00",
+  "customer_id": 179,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 13.8,
+  "csat": 4
+ },
+ {
+  "ticket_id": 383,
+  "created_at": "2024-12-26 16:15:00",
+  "customer_id": 80,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 68.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 384,
+  "created_at": "2024-09-14 16:19:00",
+  "customer_id": 143,
+  "category": "outage",
+  "priority": "low",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 385,
+  "created_at": "2024-08-28 15:58:00",
+  "customer_id": 31,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 69.6,
+  "csat": null
+ },
+ {
+  "ticket_id": 386,
+  "created_at": "2023-11-28 14:09:00",
+  "customer_id": 191,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 65.7,
+  "csat": 3
+ },
+ {
+  "ticket_id": 387,
+  "created_at": "2023-09-18 13:47:00",
+  "customer_id": 264,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 66.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 388,
+  "created_at": "2024-02-25 16:59:00",
+  "customer_id": 193,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 37.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 389,
+  "created_at": "2024-12-12 18:42:00",
+  "customer_id": 6,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 71.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 390,
+  "created_at": "2023-07-18 07:39:00",
+  "customer_id": 61,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 23.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 391,
+  "created_at": "2023-11-01 08:22:00",
+  "customer_id": 202,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 32.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 392,
+  "created_at": "2024-03-19 09:39:00",
+  "customer_id": 202,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 44.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 393,
+  "created_at": "2024-05-24 16:40:00",
+  "customer_id": 134,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 394,
+  "created_at": "2023-09-20 13:22:00",
+  "customer_id": 85,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 56.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 395,
+  "created_at": "2024-02-08 03:09:00",
+  "customer_id": 300,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 38.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 396,
+  "created_at": "2023-08-08 13:25:00",
+  "customer_id": 289,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 49.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 397,
+  "created_at": "2024-01-10 14:24:00",
+  "customer_id": 295,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 10.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 398,
+  "created_at": "2024-12-21 22:08:00",
+  "customer_id": 374,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 10.3,
+  "csat": 1
+ },
+ {
+  "ticket_id": 399,
+  "created_at": "2024-12-19 05:53:00",
+  "customer_id": 415,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 71.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 400,
+  "created_at": "2024-12-28 20:20:00",
+  "customer_id": 12,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 23.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 401,
+  "created_at": "2024-08-21 05:55:00",
+  "customer_id": 354,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 59.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 402,
+  "created_at": "2024-03-23 19:01:00",
+  "customer_id": 63,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 18.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 403,
+  "created_at": "2024-04-16 01:11:00",
+  "customer_id": 296,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 67.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 404,
+  "created_at": "2024-08-14 19:40:00",
+  "customer_id": 313,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 4.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 405,
+  "created_at": "2024-03-15 19:21:00",
+  "customer_id": 102,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 47.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 406,
+  "created_at": "2024-07-05 14:28:00",
+  "customer_id": 389,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 9.4,
+  "csat": 4
+ },
+ {
+  "ticket_id": 407,
+  "created_at": "2023-10-06 19:32:00",
+  "customer_id": 46,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 11.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 408,
+  "created_at": "2024-01-28 16:02:00",
+  "customer_id": 94,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 14.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 409,
+  "created_at": "2024-10-25 03:21:00",
+  "customer_id": 78,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 21.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 410,
+  "created_at": "2024-10-23 09:43:00",
+  "customer_id": 346,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 16.9,
+  "csat": 2
+ },
+ {
+  "ticket_id": 411,
+  "created_at": "2024-12-18 02:22:00",
+  "customer_id": 395,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 39.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 412,
+  "created_at": "2024-05-14 10:02:00",
+  "customer_id": 336,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 61.4,
+  "csat": 3
+ },
+ {
+  "ticket_id": 413,
+  "created_at": "2024-01-02 12:36:00",
+  "customer_id": 259,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 21.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 414,
+  "created_at": "2023-11-28 00:14:00",
+  "customer_id": 270,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 42.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 415,
+  "created_at": "2024-10-03 17:16:00",
+  "customer_id": 362,
+  "category": "billing",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 416,
+  "created_at": "2024-04-26 17:36:00",
+  "customer_id": 68,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 23.8,
+  "csat": null
+ },
+ {
+  "ticket_id": 417,
+  "created_at": "2024-02-16 22:51:00",
+  "customer_id": 187,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 7.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 418,
+  "created_at": "2024-04-28 17:29:00",
+  "customer_id": 204,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 45.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 419,
+  "created_at": "2024-04-21 23:57:00",
+  "customer_id": 92,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 6.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 420,
+  "created_at": "2024-10-09 13:35:00",
+  "customer_id": 394,
+  "category": "integration",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 421,
+  "created_at": "2024-09-28 06:10:00",
+  "customer_id": 348,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 63.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 422,
+  "created_at": "2024-01-17 09:44:00",
+  "customer_id": 244,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 10.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 423,
+  "created_at": "2024-10-22 23:09:00",
+  "customer_id": 236,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 52.9,
+  "csat": 3
+ },
+ {
+  "ticket_id": 424,
+  "created_at": "2024-12-14 11:59:00",
+  "customer_id": 397,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 71.8,
+  "csat": 4
+ },
+ {
+  "ticket_id": 425,
+  "created_at": "2024-03-20 16:02:00",
+  "customer_id": 187,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 71.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 426,
+  "created_at": "2024-03-22 17:33:00",
+  "customer_id": 2,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 3.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 427,
+  "created_at": "2024-11-14 17:00:00",
+  "customer_id": 190,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 27.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 428,
+  "created_at": "2024-11-04 19:02:00",
+  "customer_id": 230,
+  "category": "billing",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 429,
+  "created_at": "2024-06-16 15:17:00",
+  "customer_id": 343,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 52.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 430,
+  "created_at": "2024-03-28 07:00:00",
+  "customer_id": 117,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 66.6,
+  "csat": null
+ },
+ {
+  "ticket_id": 431,
+  "created_at": "2024-06-24 07:06:00",
+  "customer_id": 168,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 20.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 432,
+  "created_at": "2024-10-08 17:13:00",
+  "customer_id": 119,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 46.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 433,
+  "created_at": "2023-12-28 02:36:00",
+  "customer_id": 189,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 29.1,
+  "csat": 1
+ },
+ {
+  "ticket_id": 434,
+  "created_at": "2023-11-11 07:44:00",
+  "customer_id": 415,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 44.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 435,
+  "created_at": "2024-04-11 20:18:00",
+  "customer_id": 387,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 34.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 436,
+  "created_at": "2024-07-28 15:39:00",
+  "customer_id": 81,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 35.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 437,
+  "created_at": "2024-08-02 05:16:00",
+  "customer_id": 105,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 25.6,
+  "csat": 2
+ },
+ {
+  "ticket_id": 438,
+  "created_at": "2024-07-24 03:12:00",
+  "customer_id": 144,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 71.5,
+  "csat": null
+ },
+ {
+  "ticket_id": 439,
+  "created_at": "2024-07-28 12:34:00",
+  "customer_id": 328,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 14.8,
+  "csat": 2
+ },
+ {
+  "ticket_id": 440,
+  "created_at": "2024-12-02 05:31:00",
+  "customer_id": 136,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 59.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 441,
+  "created_at": "2023-11-13 02:56:00",
+  "customer_id": 365,
+  "category": "outage",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 442,
+  "created_at": "2024-12-26 17:22:00",
+  "customer_id": 36,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 66.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 443,
+  "created_at": "2024-05-08 17:01:00",
+  "customer_id": 12,
+  "category": "bug",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 444,
+  "created_at": "2024-11-22 11:00:00",
+  "customer_id": 209,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 19.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 445,
+  "created_at": "2024-10-26 13:01:00",
+  "customer_id": 411,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 11.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 446,
+  "created_at": "2024-01-15 08:00:00",
+  "customer_id": 163,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 12.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 447,
+  "created_at": "2024-03-25 04:21:00",
+  "customer_id": 15,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 4.5,
+  "csat": 3
+ },
+ {
+  "ticket_id": 448,
+  "created_at": "2024-07-07 00:18:00",
+  "customer_id": 313,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 51.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 449,
+  "created_at": "2024-02-08 23:18:00",
+  "customer_id": 62,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 22.2,
+  "csat": 1
+ },
+ {
+  "ticket_id": 450,
+  "created_at": "2024-12-22 07:18:00",
+  "customer_id": 367,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 46.8,
+  "csat": null
+ },
+ {
+  "ticket_id": 451,
+  "created_at": "2024-11-01 08:32:00",
+  "customer_id": 8,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 34.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 452,
+  "created_at": "2024-02-14 02:52:00",
+  "customer_id": 253,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 30.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 453,
+  "created_at": "2024-09-20 10:30:00",
+  "customer_id": 308,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 46.2,
+  "csat": 3
+ },
+ {
+  "ticket_id": 454,
+  "created_at": "2024-08-25 04:07:00",
+  "customer_id": 181,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 45.9,
+  "csat": 2
+ },
+ {
+  "ticket_id": 455,
+  "created_at": "2024-07-10 01:05:00",
+  "customer_id": 25,
+  "category": "billing",
+  "priority": "high",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 456,
+  "created_at": "2024-12-21 18:47:00",
+  "customer_id": 140,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 17.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 457,
+  "created_at": "2024-07-28 10:27:00",
+  "customer_id": 240,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 54.8,
+  "csat": 3
+ },
+ {
+  "ticket_id": 458,
+  "created_at": "2023-08-28 22:21:00",
+  "customer_id": 146,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 63.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 459,
+  "created_at": "2024-07-14 10:16:00",
+  "customer_id": 25,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 54.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 460,
+  "created_at": "2024-03-22 18:40:00",
+  "customer_id": 13,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 1.1,
+  "csat": 2
+ },
+ {
+  "ticket_id": 461,
+  "created_at": "2024-03-26 23:24:00",
+  "customer_id": 149,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 23.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 462,
+  "created_at": "2024-06-20 11:18:00",
+  "customer_id": 309,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 41.1,
+  "csat": 2
+ },
+ {
+  "ticket_id": 463,
+  "created_at": "2024-07-18 17:35:00",
+  "customer_id": 388,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 23.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 464,
+  "created_at": "2024-11-23 07:43:00",
+  "customer_id": 387,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 32.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 465,
+  "created_at": "2023-12-12 03:55:00",
+  "customer_id": 249,
+  "category": "integration",
+  "priority": "low",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 466,
+  "created_at": "2024-02-10 13:10:00",
+  "customer_id": 115,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 66.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 467,
+  "created_at": "2023-08-23 03:47:00",
+  "customer_id": 98,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 14.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 468,
+  "created_at": "2024-12-14 23:09:00",
+  "customer_id": 412,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 28.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 469,
+  "created_at": "2024-03-21 13:59:00",
+  "customer_id": 267,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 1.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 470,
+  "created_at": "2024-09-12 18:00:00",
+  "customer_id": 150,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 19.7,
+  "csat": 3
+ },
+ {
+  "ticket_id": 471,
+  "created_at": "2023-10-28 09:28:00",
+  "customer_id": 331,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 27.8,
+  "csat": 3
+ },
+ {
+  "ticket_id": 472,
+  "created_at": "2023-11-10 15:21:00",
+  "customer_id": 146,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 36.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 473,
+  "created_at": "2024-11-12 08:19:00",
+  "customer_id": 386,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 52.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 474,
+  "created_at": "2024-03-08 09:10:00",
+  "customer_id": 219,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 30.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 475,
+  "created_at": "2024-09-09 05:41:00",
+  "customer_id": 227,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 8.3,
+  "csat": 3
+ },
+ {
+  "ticket_id": 476,
+  "created_at": "2024-03-27 18:33:00",
+  "customer_id": 395,
+  "category": "outage",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 477,
+  "created_at": "2023-10-21 16:49:00",
+  "customer_id": 43,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 28.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 478,
+  "created_at": "2023-12-11 12:24:00",
+  "customer_id": 236,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 20.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 479,
+  "created_at": "2024-03-09 23:25:00",
+  "customer_id": 109,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 59.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 480,
+  "created_at": "2024-12-26 01:12:00",
+  "customer_id": 338,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 63.8,
+  "csat": null
+ },
+ {
+  "ticket_id": 481,
+  "created_at": "2024-12-27 03:17:00",
+  "customer_id": 45,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 30.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 482,
+  "created_at": "2024-11-23 19:08:00",
+  "customer_id": 303,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 11.9,
+  "csat": 4
+ },
+ {
+  "ticket_id": 483,
+  "created_at": "2024-08-06 09:47:00",
+  "customer_id": 268,
+  "category": "billing",
+  "priority": "high",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 484,
+  "created_at": "2024-04-08 10:36:00",
+  "customer_id": 22,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 37.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 485,
+  "created_at": "2023-08-11 10:28:00",
+  "customer_id": 363,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 5.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 486,
+  "created_at": "2024-09-27 00:06:00",
+  "customer_id": 230,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 39.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 487,
+  "created_at": "2024-10-13 17:07:00",
+  "customer_id": 140,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 34.4,
+  "csat": 3
+ },
+ {
+  "ticket_id": 488,
+  "created_at": "2024-07-10 14:48:00",
+  "customer_id": 130,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 36.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 489,
+  "created_at": "2024-11-25 18:49:00",
+  "customer_id": 186,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 38.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 490,
+  "created_at": "2024-12-27 21:33:00",
+  "customer_id": 35,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 5.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 491,
+  "created_at": "2024-08-01 09:10:00",
+  "customer_id": 85,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 46.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 492,
+  "created_at": "2024-08-11 09:02:00",
+  "customer_id": 251,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 16.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 493,
+  "created_at": "2023-09-23 12:32:00",
+  "customer_id": 86,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 46.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 494,
+  "created_at": "2024-11-27 20:54:00",
+  "customer_id": 145,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 48.7,
+  "csat": 3
+ },
+ {
+  "ticket_id": 495,
+  "created_at": "2024-08-26 22:55:00",
+  "customer_id": 229,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 14.6,
+  "csat": 1
+ },
+ {
+  "ticket_id": 496,
+  "created_at": "2024-06-23 11:58:00",
+  "customer_id": 299,
+  "category": "billing",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 497,
+  "created_at": "2024-05-27 05:14:00",
+  "customer_id": 289,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 18.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 498,
+  "created_at": "2024-03-28 14:48:00",
+  "customer_id": 132,
+  "category": "outage",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 499,
+  "created_at": "2024-12-23 10:54:00",
+  "customer_id": 200,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 44.8,
+  "csat": 4
+ },
+ {
+  "ticket_id": 500,
+  "created_at": "2023-08-15 20:51:00",
+  "customer_id": 119,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 50.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 501,
+  "created_at": "2024-07-28 03:46:00",
+  "customer_id": 378,
+  "category": "outage",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 502,
+  "created_at": "2024-02-24 11:18:00",
+  "customer_id": 382,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 12.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 503,
+  "created_at": "2023-10-14 20:19:00",
+  "customer_id": 270,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 0.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 504,
+  "created_at": "2024-09-26 16:27:00",
+  "customer_id": 216,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 12.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 505,
+  "created_at": "2024-02-20 04:28:00",
+  "customer_id": 201,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 69.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 506,
+  "created_at": "2024-01-18 08:57:00",
+  "customer_id": 214,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 71.5,
+  "csat": 2
+ },
+ {
+  "ticket_id": 507,
+  "created_at": "2024-09-07 10:27:00",
+  "customer_id": 298,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 53.3,
+  "csat": 3
+ },
+ {
+  "ticket_id": 508,
+  "created_at": "2024-10-07 10:47:00",
+  "customer_id": 242,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 509,
+  "created_at": "2024-07-04 05:03:00",
+  "customer_id": 64,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 510,
+  "created_at": "2024-03-28 02:34:00",
+  "customer_id": 96,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 11.2,
+  "csat": 3
+ },
+ {
+  "ticket_id": 511,
+  "created_at": "2024-08-05 00:20:00",
+  "customer_id": 111,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 22.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 512,
+  "created_at": "2024-11-03 04:22:00",
+  "customer_id": 8,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 19.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 513,
+  "created_at": "2023-11-15 07:53:00",
+  "customer_id": 165,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 34.0,
+  "csat": 1
+ },
+ {
+  "ticket_id": 514,
+  "created_at": "2024-07-10 18:04:00",
+  "customer_id": 264,
+  "category": "billing",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 515,
+  "created_at": "2024-12-09 10:23:00",
+  "customer_id": 231,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 35.8,
+  "csat": null
+ },
+ {
+  "ticket_id": 516,
+  "created_at": "2024-12-05 05:58:00",
+  "customer_id": 196,
+  "category": "how-to",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 517,
+  "created_at": "2024-12-22 15:22:00",
+  "customer_id": 174,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 57.5,
+  "csat": null
+ },
+ {
+  "ticket_id": 518,
+  "created_at": "2024-02-15 19:37:00",
+  "customer_id": 107,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 70.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 519,
+  "created_at": "2024-12-18 13:12:00",
+  "customer_id": 78,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 61.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 520,
+  "created_at": "2024-01-13 19:37:00",
+  "customer_id": 397,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 56.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 521,
+  "created_at": "2024-07-03 11:56:00",
+  "customer_id": 278,
+  "category": "bug",
+  "priority": "high",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 522,
+  "created_at": "2024-12-18 20:17:00",
+  "customer_id": 39,
+  "category": "billing",
+  "priority": "high",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 523,
+  "created_at": "2024-11-09 05:04:00",
+  "customer_id": 111,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 33.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 524,
+  "created_at": "2023-11-08 08:51:00",
+  "customer_id": 98,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 71.9,
+  "csat": 3
+ },
+ {
+  "ticket_id": 525,
+  "created_at": "2024-03-04 14:01:00",
+  "customer_id": 216,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 44.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 526,
+  "created_at": "2024-11-17 14:51:00",
+  "customer_id": 351,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 48.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 527,
+  "created_at": "2024-10-02 11:35:00",
+  "customer_id": 371,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 10.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 528,
+  "created_at": "2024-05-07 15:34:00",
+  "customer_id": 326,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 68.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 529,
+  "created_at": "2024-12-10 20:38:00",
+  "customer_id": 62,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 69.5,
+  "csat": null
+ },
+ {
+  "ticket_id": 530,
+  "created_at": "2024-01-10 15:55:00",
+  "customer_id": 271,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 6.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 531,
+  "created_at": "2024-04-11 13:49:00",
+  "customer_id": 19,
+  "category": "integration",
+  "priority": "low",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 532,
+  "created_at": "2024-02-13 01:15:00",
+  "customer_id": 73,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 61.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 533,
+  "created_at": "2024-12-08 20:03:00",
+  "customer_id": 167,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 71.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 534,
+  "created_at": "2024-10-08 09:29:00",
+  "customer_id": 61,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 27.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 535,
+  "created_at": "2024-10-06 08:22:00",
+  "customer_id": 248,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 53.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 536,
+  "created_at": "2024-08-25 22:52:00",
+  "customer_id": 52,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 40.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 537,
+  "created_at": "2024-07-04 19:21:00",
+  "customer_id": 230,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 18.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 538,
+  "created_at": "2023-09-28 21:23:00",
+  "customer_id": 28,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 44.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 539,
+  "created_at": "2024-07-08 14:56:00",
+  "customer_id": 203,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 45.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 540,
+  "created_at": "2024-05-09 11:20:00",
+  "customer_id": 106,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 15.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 541,
+  "created_at": "2023-11-01 08:03:00",
+  "customer_id": 361,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 47.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 542,
+  "created_at": "2024-11-24 03:00:00",
+  "customer_id": 134,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 18.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 543,
+  "created_at": "2024-01-13 23:35:00",
+  "customer_id": 153,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 9.0,
+  "csat": 1
+ },
+ {
+  "ticket_id": 544,
+  "created_at": "2023-10-28 03:58:00",
+  "customer_id": 70,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 49.8,
+  "csat": null
+ },
+ {
+  "ticket_id": 545,
+  "created_at": "2023-08-22 21:28:00",
+  "customer_id": 223,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 61.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 546,
+  "created_at": "2023-08-22 05:35:00",
+  "customer_id": 57,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 28.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 547,
+  "created_at": "2024-04-16 02:40:00",
+  "customer_id": 357,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 23.6,
+  "csat": null
+ },
+ {
+  "ticket_id": 548,
+  "created_at": "2023-08-28 23:30:00",
+  "customer_id": 374,
+  "category": "bug",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 549,
+  "created_at": "2024-11-16 04:23:00",
+  "customer_id": 228,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 12.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 550,
+  "created_at": "2024-09-22 09:01:00",
+  "customer_id": 286,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 28.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 551,
+  "created_at": "2023-10-16 21:04:00",
+  "customer_id": 193,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 39.6,
+  "csat": null
+ },
+ {
+  "ticket_id": 552,
+  "created_at": "2024-05-19 21:28:00",
+  "customer_id": 190,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 17.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 553,
+  "created_at": "2024-03-01 23:15:00",
+  "customer_id": 369,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 28.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 554,
+  "created_at": "2023-09-04 18:21:00",
+  "customer_id": 271,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 21.0,
+  "csat": 1
+ },
+ {
+  "ticket_id": 555,
+  "created_at": "2024-11-18 01:23:00",
+  "customer_id": 72,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 32.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 556,
+  "created_at": "2023-09-24 08:34:00",
+  "customer_id": 298,
+  "category": "bug",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 557,
+  "created_at": "2023-09-26 13:41:00",
+  "customer_id": 274,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 13.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 558,
+  "created_at": "2024-09-13 03:28:00",
+  "customer_id": 17,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 41.6,
+  "csat": 3
+ },
+ {
+  "ticket_id": 559,
+  "created_at": "2024-06-07 01:29:00",
+  "customer_id": 379,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 56.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 560,
+  "created_at": "2024-03-15 23:37:00",
+  "customer_id": 234,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 7.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 561,
+  "created_at": "2024-04-02 23:13:00",
+  "customer_id": 415,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 21.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 562,
+  "created_at": "2024-12-04 04:28:00",
+  "customer_id": 360,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 7.4,
+  "csat": 3
+ },
+ {
+  "ticket_id": 563,
+  "created_at": "2024-03-18 01:13:00",
+  "customer_id": 197,
+  "category": "integration",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 564,
+  "created_at": "2023-07-18 06:55:00",
+  "customer_id": 186,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 56.9,
+  "csat": 3
+ },
+ {
+  "ticket_id": 565,
+  "created_at": "2024-12-11 13:06:00",
+  "customer_id": 72,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 17.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 566,
+  "created_at": "2023-12-09 10:43:00",
+  "customer_id": 415,
+  "category": "outage",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 22.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 567,
+  "created_at": "2024-12-13 04:11:00",
+  "customer_id": 342,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 65.1,
+  "csat": 2
+ },
+ {
+  "ticket_id": 568,
+  "created_at": "2024-03-22 02:14:00",
+  "customer_id": 267,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 32.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 569,
+  "created_at": "2024-03-15 13:08:00",
+  "customer_id": 72,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 60.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 570,
+  "created_at": "2024-07-14 07:15:00",
+  "customer_id": 150,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 54.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 571,
+  "created_at": "2024-10-18 18:19:00",
+  "customer_id": 107,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 57.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 572,
+  "created_at": "2024-10-23 17:12:00",
+  "customer_id": 340,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 61.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 573,
+  "created_at": "2024-10-23 22:23:00",
+  "customer_id": 114,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 51.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 574,
+  "created_at": "2024-08-19 11:14:00",
+  "customer_id": 369,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 46.4,
+  "csat": 4
+ },
+ {
+  "ticket_id": 575,
+  "created_at": "2024-08-16 19:10:00",
+  "customer_id": 160,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 70.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 576,
+  "created_at": "2024-03-28 18:18:00",
+  "customer_id": 134,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 45.3,
+  "csat": 3
+ },
+ {
+  "ticket_id": 577,
+  "created_at": "2024-12-03 19:23:00",
+  "customer_id": 44,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 52.5,
+  "csat": 3
+ },
+ {
+  "ticket_id": 578,
+  "created_at": "2024-09-08 03:16:00",
+  "customer_id": 169,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 58.8,
+  "csat": 3
+ },
+ {
+  "ticket_id": 579,
+  "created_at": "2024-09-06 09:38:00",
+  "customer_id": 41,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 5.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 580,
+  "created_at": "2024-09-09 19:39:00",
+  "customer_id": 400,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 12.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 581,
+  "created_at": "2024-09-26 14:33:00",
+  "customer_id": 188,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 63.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 582,
+  "created_at": "2024-06-11 21:10:00",
+  "customer_id": 165,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 53.9,
+  "csat": 4
+ },
+ {
+  "ticket_id": 583,
+  "created_at": "2023-12-22 17:28:00",
+  "customer_id": 134,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 65.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 584,
+  "created_at": "2024-05-16 07:57:00",
+  "customer_id": 248,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 55.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 585,
+  "created_at": "2024-12-01 22:19:00",
+  "customer_id": 201,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 7.1,
+  "csat": 2
+ },
+ {
+  "ticket_id": 586,
+  "created_at": "2024-03-06 01:22:00",
+  "customer_id": 84,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 54.5,
+  "csat": null
+ },
+ {
+  "ticket_id": 587,
+  "created_at": "2023-12-09 08:30:00",
+  "customer_id": 374,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 31.6,
+  "csat": 3
+ },
+ {
+  "ticket_id": 588,
+  "created_at": "2024-10-08 19:04:00",
+  "customer_id": 23,
+  "category": "integration",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 589,
+  "created_at": "2024-04-15 01:13:00",
+  "customer_id": 334,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 53.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 590,
+  "created_at": "2024-12-02 03:56:00",
+  "customer_id": 40,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 50.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 591,
+  "created_at": "2024-11-23 20:57:00",
+  "customer_id": 231,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 44.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 592,
+  "created_at": "2024-03-07 08:42:00",
+  "customer_id": 101,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 63.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 593,
+  "created_at": "2024-06-18 11:20:00",
+  "customer_id": 291,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 48.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 594,
+  "created_at": "2024-04-24 04:09:00",
+  "customer_id": 116,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 30.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 595,
+  "created_at": "2024-12-09 10:23:00",
+  "customer_id": 281,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 68.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 596,
+  "created_at": "2024-02-09 00:38:00",
+  "customer_id": 340,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 62.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 597,
+  "created_at": "2023-08-19 05:12:00",
+  "customer_id": 22,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 38.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 598,
+  "created_at": "2024-12-13 10:09:00",
+  "customer_id": 277,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 66.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 599,
+  "created_at": "2024-01-22 17:38:00",
+  "customer_id": 204,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 44.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 600,
+  "created_at": "2024-12-03 00:03:00",
+  "customer_id": 371,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 56.0,
+  "csat": 1
+ },
+ {
+  "ticket_id": 601,
+  "created_at": "2024-04-02 21:02:00",
+  "customer_id": 111,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 36.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 602,
+  "created_at": "2023-12-02 15:11:00",
+  "customer_id": 112,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 68.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 603,
+  "created_at": "2024-07-24 21:07:00",
+  "customer_id": 331,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 52.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 604,
+  "created_at": "2024-02-24 11:58:00",
+  "customer_id": 323,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 39.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 605,
+  "created_at": "2024-04-15 09:58:00",
+  "customer_id": 315,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 66.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 606,
+  "created_at": "2024-03-04 20:17:00",
+  "customer_id": 278,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 35.6,
+  "csat": null
+ },
+ {
+  "ticket_id": 607,
+  "created_at": "2024-12-24 19:41:00",
+  "customer_id": 190,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 34.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 608,
+  "created_at": "2024-04-17 15:04:00",
+  "customer_id": 196,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 23.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 609,
+  "created_at": "2023-09-15 13:55:00",
+  "customer_id": 404,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 20.1,
+  "csat": 3
+ },
+ {
+  "ticket_id": 610,
+  "created_at": "2023-12-24 13:20:00",
+  "customer_id": 46,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 66.5,
+  "csat": null
+ },
+ {
+  "ticket_id": 611,
+  "created_at": "2024-04-20 17:06:00",
+  "customer_id": 327,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 16.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 612,
+  "created_at": "2024-08-06 04:37:00",
+  "customer_id": 342,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 31.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 613,
+  "created_at": "2024-09-28 19:03:00",
+  "customer_id": 58,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 30.9,
+  "csat": 2
+ },
+ {
+  "ticket_id": 614,
+  "created_at": "2024-06-25 20:24:00",
+  "customer_id": 356,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 50.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 615,
+  "created_at": "2023-07-28 07:40:00",
+  "customer_id": 192,
+  "category": "integration",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 616,
+  "created_at": "2024-02-22 16:50:00",
+  "customer_id": 319,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 35.6,
+  "csat": 1
+ },
+ {
+  "ticket_id": 617,
+  "created_at": "2024-05-10 09:43:00",
+  "customer_id": 324,
+  "category": "outage",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 618,
+  "created_at": "2024-11-07 12:17:00",
+  "customer_id": 264,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 64.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 619,
+  "created_at": "2024-02-06 01:45:00",
+  "customer_id": 335,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 8.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 620,
+  "created_at": "2024-11-14 04:56:00",
+  "customer_id": 221,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 7.9,
+  "csat": 3
+ },
+ {
+  "ticket_id": 621,
+  "created_at": "2024-06-02 06:05:00",
+  "customer_id": 34,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 56.1,
+  "csat": 3
+ },
+ {
+  "ticket_id": 622,
+  "created_at": "2024-09-07 09:24:00",
+  "customer_id": 100,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 30.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 623,
+  "created_at": "2024-05-12 20:49:00",
+  "customer_id": 162,
+  "category": "bug",
+  "priority": "high",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 624,
+  "created_at": "2024-10-07 18:15:00",
+  "customer_id": 300,
+  "category": "outage",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 47.7,
+  "csat": 1
+ },
+ {
+  "ticket_id": 625,
+  "created_at": "2023-09-25 14:29:00",
+  "customer_id": 269,
+  "category": "outage",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 28.4,
+  "csat": 2
+ },
+ {
+  "ticket_id": 626,
+  "created_at": "2023-07-03 18:26:00",
+  "customer_id": 385,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 13.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 627,
+  "created_at": "2023-10-15 03:58:00",
+  "customer_id": 328,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 3.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 628,
+  "created_at": "2024-07-09 12:36:00",
+  "customer_id": 415,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 33.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 629,
+  "created_at": "2024-05-02 11:39:00",
+  "customer_id": 141,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 14.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 630,
+  "created_at": "2024-10-16 01:51:00",
+  "customer_id": 167,
+  "category": "outage",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 53.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 631,
+  "created_at": "2023-10-27 17:15:00",
+  "customer_id": 113,
+  "category": "bug",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 632,
+  "created_at": "2024-09-27 21:54:00",
+  "customer_id": 308,
+  "category": "outage",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 35.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 633,
+  "created_at": "2024-07-15 05:42:00",
+  "customer_id": 384,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 15.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 634,
+  "created_at": "2023-12-04 15:37:00",
+  "customer_id": 87,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 37.4,
+  "csat": 4
+ },
+ {
+  "ticket_id": 635,
+  "created_at": "2024-01-11 04:14:00",
+  "customer_id": 395,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 13.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 636,
+  "created_at": "2024-04-19 04:31:00",
+  "customer_id": 120,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 12.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 637,
+  "created_at": "2023-11-24 01:51:00",
+  "customer_id": 3,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 24.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 638,
+  "created_at": "2024-07-19 10:49:00",
+  "customer_id": 326,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 63.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 639,
+  "created_at": "2024-10-08 01:54:00",
+  "customer_id": 302,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 65.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 640,
+  "created_at": "2024-11-17 06:21:00",
+  "customer_id": 264,
+  "category": "integration",
+  "priority": "high",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 641,
+  "created_at": "2023-12-27 14:39:00",
+  "customer_id": 44,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 62.4,
+  "csat": 3
+ },
+ {
+  "ticket_id": 642,
+  "created_at": "2024-09-28 08:46:00",
+  "customer_id": 91,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 53.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 643,
+  "created_at": "2023-08-21 03:32:00",
+  "customer_id": 305,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 23.8,
+  "csat": 4
+ },
+ {
+  "ticket_id": 644,
+  "created_at": "2024-11-01 21:54:00",
+  "customer_id": 88,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 7.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 645,
+  "created_at": "2024-12-20 20:52:00",
+  "customer_id": 315,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 51.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 646,
+  "created_at": "2024-04-28 22:48:00",
+  "customer_id": 76,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 56.5,
+  "csat": null
+ },
+ {
+  "ticket_id": 647,
+  "created_at": "2024-11-01 08:53:00",
+  "customer_id": 54,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 61.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 648,
+  "created_at": "2024-05-05 15:56:00",
+  "customer_id": 309,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 48.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 649,
+  "created_at": "2024-10-26 13:10:00",
+  "customer_id": 228,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 15.5,
+  "csat": 3
+ },
+ {
+  "ticket_id": 650,
+  "created_at": "2024-12-08 16:51:00",
+  "customer_id": 86,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 19.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 651,
+  "created_at": "2024-12-26 10:38:00",
+  "customer_id": 328,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 43.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 652,
+  "created_at": "2024-06-05 13:29:00",
+  "customer_id": 88,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 51.6,
+  "csat": 3
+ },
+ {
+  "ticket_id": 653,
+  "created_at": "2024-07-26 16:01:00",
+  "customer_id": 413,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 67.8,
+  "csat": null
+ },
+ {
+  "ticket_id": 654,
+  "created_at": "2023-12-07 17:48:00",
+  "customer_id": 396,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 1.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 655,
+  "created_at": "2024-08-24 06:30:00",
+  "customer_id": 259,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 18.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 656,
+  "created_at": "2024-11-03 18:51:00",
+  "customer_id": 253,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 62.8,
+  "csat": 2
+ },
+ {
+  "ticket_id": 657,
+  "created_at": "2024-03-13 03:56:00",
+  "customer_id": 146,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 32.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 658,
+  "created_at": "2024-11-28 16:54:00",
+  "customer_id": 21,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 57.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 659,
+  "created_at": "2024-11-05 02:10:00",
+  "customer_id": 299,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 46.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 660,
+  "created_at": "2024-09-06 14:40:00",
+  "customer_id": 196,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 44.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 661,
+  "created_at": "2024-10-20 13:38:00",
+  "customer_id": 298,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 21.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 662,
+  "created_at": "2024-10-04 13:17:00",
+  "customer_id": 229,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 69.8,
+  "csat": 3
+ },
+ {
+  "ticket_id": 663,
+  "created_at": "2024-09-15 15:36:00",
+  "customer_id": 172,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 38.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 664,
+  "created_at": "2024-09-28 12:20:00",
+  "customer_id": 315,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 68.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 665,
+  "created_at": "2024-10-01 23:19:00",
+  "customer_id": 386,
+  "category": "outage",
+  "priority": "urgent",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 666,
+  "created_at": "2024-08-28 13:28:00",
+  "customer_id": 119,
+  "category": "outage",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 667,
+  "created_at": "2023-12-19 20:58:00",
+  "customer_id": 49,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 54.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 668,
+  "created_at": "2024-06-10 09:14:00",
+  "customer_id": 36,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 25.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 669,
+  "created_at": "2024-12-19 02:40:00",
+  "customer_id": 63,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 4.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 670,
+  "created_at": "2024-12-05 15:38:00",
+  "customer_id": 80,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 66.5,
+  "csat": null
+ },
+ {
+  "ticket_id": 671,
+  "created_at": "2024-11-04 03:37:00",
+  "customer_id": 278,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 29.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 672,
+  "created_at": "2024-10-08 16:09:00",
+  "customer_id": 108,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 20.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 673,
+  "created_at": "2024-11-19 00:24:00",
+  "customer_id": 113,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 12.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 674,
+  "created_at": "2024-10-28 03:21:00",
+  "customer_id": 316,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 56.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 675,
+  "created_at": "2024-01-08 02:40:00",
+  "customer_id": 191,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 37.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 676,
+  "created_at": "2024-06-21 17:27:00",
+  "customer_id": 178,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 29.2,
+  "csat": 2
+ },
+ {
+  "ticket_id": 677,
+  "created_at": "2024-07-28 22:36:00",
+  "customer_id": 41,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 9.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 678,
+  "created_at": "2023-10-26 15:52:00",
+  "customer_id": 143,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 34.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 679,
+  "created_at": "2024-02-06 03:25:00",
+  "customer_id": 91,
+  "category": "outage",
+  "priority": "low",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 680,
+  "created_at": "2024-10-26 06:02:00",
+  "customer_id": 22,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 28.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 681,
+  "created_at": "2024-07-15 17:16:00",
+  "customer_id": 415,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 64.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 682,
+  "created_at": "2024-01-18 13:11:00",
+  "customer_id": 260,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 15.8,
+  "csat": null
+ },
+ {
+  "ticket_id": 683,
+  "created_at": "2024-08-13 20:43:00",
+  "customer_id": 305,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 52.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 684,
+  "created_at": "2024-10-28 08:59:00",
+  "customer_id": 17,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 25.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 685,
+  "created_at": "2024-12-27 16:47:00",
+  "customer_id": 396,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 66.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 686,
+  "created_at": "2024-08-21 08:01:00",
+  "customer_id": 403,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 19.8,
+  "csat": 3
+ },
+ {
+  "ticket_id": 687,
+  "created_at": "2024-09-16 20:49:00",
+  "customer_id": 163,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 36.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 688,
+  "created_at": "2024-08-18 00:58:00",
+  "customer_id": 250,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 58.3,
+  "csat": 3
+ },
+ {
+  "ticket_id": 689,
+  "created_at": "2024-11-11 00:55:00",
+  "customer_id": 316,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 67.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 690,
+  "created_at": "2024-09-28 05:56:00",
+  "customer_id": 186,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 54.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 691,
+  "created_at": "2024-06-07 00:49:00",
+  "customer_id": 137,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 13.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 692,
+  "created_at": "2024-10-26 00:10:00",
+  "customer_id": 180,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 58.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 693,
+  "created_at": "2024-12-16 03:56:00",
+  "customer_id": 305,
+  "category": "outage",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 18.6,
+  "csat": 3
+ },
+ {
+  "ticket_id": 694,
+  "created_at": "2024-06-08 02:42:00",
+  "customer_id": 211,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 43.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 695,
+  "created_at": "2024-09-17 16:06:00",
+  "customer_id": 414,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 29.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 696,
+  "created_at": "2024-08-19 23:21:00",
+  "customer_id": 231,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 12.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 697,
+  "created_at": "2023-10-20 11:47:00",
+  "customer_id": 385,
+  "category": "billing",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 698,
+  "created_at": "2024-12-05 11:42:00",
+  "customer_id": 187,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 12.4,
+  "csat": 4
+ },
+ {
+  "ticket_id": 699,
+  "created_at": "2024-11-11 02:52:00",
+  "customer_id": 385,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 18.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 700,
+  "created_at": "2024-09-19 12:21:00",
+  "customer_id": 271,
+  "category": "outage",
+  "priority": "high",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 701,
+  "created_at": "2023-12-28 08:49:00",
+  "customer_id": 13,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 23.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 702,
+  "created_at": "2024-02-23 01:12:00",
+  "customer_id": 310,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 26.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 703,
+  "created_at": "2024-11-26 00:00:00",
+  "customer_id": 395,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 38.8,
+  "csat": 4
+ },
+ {
+  "ticket_id": 704,
+  "created_at": "2024-10-13 20:43:00",
+  "customer_id": 24,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 49.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 705,
+  "created_at": "2023-09-28 15:20:00",
+  "customer_id": 311,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 1.3,
+  "csat": 2
+ },
+ {
+  "ticket_id": 706,
+  "created_at": "2024-05-04 14:13:00",
+  "customer_id": 414,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 7.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 707,
+  "created_at": "2024-05-02 22:12:00",
+  "customer_id": 404,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 58.3,
+  "csat": 3
+ },
+ {
+  "ticket_id": 708,
+  "created_at": "2023-11-26 22:12:00",
+  "customer_id": 109,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 10.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 709,
+  "created_at": "2024-10-23 14:37:00",
+  "customer_id": 405,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 65.0,
+  "csat": 4
+ },
+ {
+  "ticket_id": 710,
+  "created_at": "2024-11-22 10:19:00",
+  "customer_id": 335,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 62.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 711,
+  "created_at": "2024-05-15 15:26:00",
+  "customer_id": 134,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 26.3,
+  "csat": 5
+ },
+ {
+  "ticket_id": 712,
+  "created_at": "2024-05-28 11:30:00",
+  "customer_id": 414,
+  "category": "bug",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 71.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 713,
+  "created_at": "2024-11-05 09:35:00",
+  "customer_id": 281,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 39.5,
+  "csat": 3
+ },
+ {
+  "ticket_id": 714,
+  "created_at": "2023-07-28 21:46:00",
+  "customer_id": 265,
+  "category": "bug",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 715,
+  "created_at": "2024-08-21 07:11:00",
+  "customer_id": 257,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 58.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 716,
+  "created_at": "2023-10-02 09:37:00",
+  "customer_id": 12,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 64.2,
+  "csat": 2
+ },
+ {
+  "ticket_id": 717,
+  "created_at": "2024-11-18 01:38:00",
+  "customer_id": 298,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 13.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 718,
+  "created_at": "2023-09-20 09:29:00",
+  "customer_id": 249,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 34.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 719,
+  "created_at": "2024-11-07 02:07:00",
+  "customer_id": 375,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 63.1,
+  "csat": null
+ },
+ {
+  "ticket_id": 720,
+  "created_at": "2024-11-16 15:06:00",
+  "customer_id": 192,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 32.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 721,
+  "created_at": "2024-05-08 20:45:00",
+  "customer_id": 127,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 22.8,
+  "csat": 5
+ },
+ {
+  "ticket_id": 722,
+  "created_at": "2023-07-28 14:50:00",
+  "customer_id": 193,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 29.2,
+  "csat": 2
+ },
+ {
+  "ticket_id": 723,
+  "created_at": "2024-02-22 23:18:00",
+  "customer_id": 346,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 36.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 724,
+  "created_at": "2024-06-27 23:07:00",
+  "customer_id": 151,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 53.9,
+  "csat": 3
+ },
+ {
+  "ticket_id": 725,
+  "created_at": "2024-10-28 08:58:00",
+  "customer_id": 328,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 70.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 726,
+  "created_at": "2024-10-28 15:29:00",
+  "customer_id": 85,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 22.7,
+  "csat": 4
+ },
+ {
+  "ticket_id": 727,
+  "created_at": "2024-03-11 06:22:00",
+  "customer_id": 235,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 36.3,
+  "csat": 2
+ },
+ {
+  "ticket_id": 728,
+  "created_at": "2024-10-26 17:59:00",
+  "customer_id": 53,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 18.9,
+  "csat": 5
+ },
+ {
+  "ticket_id": 729,
+  "created_at": "2024-12-18 15:18:00",
+  "customer_id": 167,
+  "category": "outage",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 730,
+  "created_at": "2024-04-20 23:48:00",
+  "customer_id": 412,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 8.4,
+  "csat": 5
+ },
+ {
+  "ticket_id": 731,
+  "created_at": "2024-11-05 22:29:00",
+  "customer_id": 353,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 27.0,
+  "csat": 1
+ },
+ {
+  "ticket_id": 732,
+  "created_at": "2024-11-01 22:20:00",
+  "customer_id": 416,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 55.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 733,
+  "created_at": "2024-03-21 04:10:00",
+  "customer_id": 258,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 69.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 734,
+  "created_at": "2024-11-27 23:32:00",
+  "customer_id": 250,
+  "category": "integration",
+  "priority": "low",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 735,
+  "created_at": "2023-08-18 13:43:00",
+  "customer_id": 157,
+  "category": "integration",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 736,
+  "created_at": "2024-10-18 16:24:00",
+  "customer_id": 147,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 33.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 737,
+  "created_at": "2024-03-19 12:23:00",
+  "customer_id": 72,
+  "category": "bug",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 738,
+  "created_at": "2024-08-22 20:43:00",
+  "customer_id": 32,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 70.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 739,
+  "created_at": "2024-06-10 05:58:00",
+  "customer_id": 321,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 67.2,
+  "csat": 1
+ },
+ {
+  "ticket_id": 740,
+  "created_at": "2024-05-04 20:57:00",
+  "customer_id": 243,
+  "category": "bug",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 27.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 741,
+  "created_at": "2024-12-19 15:04:00",
+  "customer_id": 316,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 49.8,
+  "csat": null
+ },
+ {
+  "ticket_id": 742,
+  "created_at": "2024-06-28 23:26:00",
+  "customer_id": 201,
+  "category": "outage",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 42.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 743,
+  "created_at": "2023-11-09 06:58:00",
+  "customer_id": 149,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 65.5,
+  "csat": 1
+ },
+ {
+  "ticket_id": 744,
+  "created_at": "2024-12-10 02:02:00",
+  "customer_id": 147,
+  "category": "how-to",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 45.6,
+  "csat": 4
+ },
+ {
+  "ticket_id": 745,
+  "created_at": "2024-04-15 18:39:00",
+  "customer_id": 296,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 4.9,
+  "csat": 4
+ },
+ {
+  "ticket_id": 746,
+  "created_at": "2024-07-28 16:40:00",
+  "customer_id": 112,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 42.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 747,
+  "created_at": "2023-08-03 16:23:00",
+  "customer_id": 149,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 57.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 748,
+  "created_at": "2024-08-01 18:24:00",
+  "customer_id": 350,
+  "category": "billing",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 36.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 749,
+  "created_at": "2024-08-10 05:47:00",
+  "customer_id": 360,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 16.2,
+  "csat": 4
+ },
+ {
+  "ticket_id": 750,
+  "created_at": "2024-02-28 10:04:00",
+  "customer_id": 316,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 8.5,
+  "csat": 2
+ },
+ {
+  "ticket_id": 751,
+  "created_at": "2024-12-06 18:20:00",
+  "customer_id": 292,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 31.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 752,
+  "created_at": "2024-03-14 03:05:00",
+  "customer_id": 305,
+  "category": "integration",
+  "priority": "urgent",
+  "status": "resolved",
+  "resolution_hours": 46.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 753,
+  "created_at": "2024-04-13 16:13:00",
+  "customer_id": 302,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 12.9,
+  "csat": 3
+ },
+ {
+  "ticket_id": 754,
+  "created_at": "2024-07-18 05:47:00",
+  "customer_id": 225,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 66.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 755,
+  "created_at": "2024-10-25 04:55:00",
+  "customer_id": 390,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 756,
+  "created_at": "2024-12-07 18:09:00",
+  "customer_id": 50,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 19.8,
+  "csat": 2
+ },
+ {
+  "ticket_id": 757,
+  "created_at": "2024-10-07 08:15:00",
+  "customer_id": 241,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 36.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 758,
+  "created_at": "2024-12-22 07:41:00",
+  "customer_id": 62,
+  "category": "integration",
+  "priority": "medium",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 759,
+  "created_at": "2024-10-07 04:05:00",
+  "customer_id": 147,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 40.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 760,
+  "created_at": "2024-07-16 14:48:00",
+  "customer_id": 229,
+  "category": "integration",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 761,
+  "created_at": "2024-04-26 06:21:00",
+  "customer_id": 129,
+  "category": "outage",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 2.5,
+  "csat": 1
+ },
+ {
+  "ticket_id": 762,
+  "created_at": "2024-06-08 20:30:00",
+  "customer_id": 333,
+  "category": "billing",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 53.2,
+  "csat": 5
+ },
+ {
+  "ticket_id": 763,
+  "created_at": "2023-09-12 03:08:00",
+  "customer_id": 402,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 18.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 764,
+  "created_at": "2023-08-28 02:40:00",
+  "customer_id": 140,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 765,
+  "created_at": "2023-09-05 07:29:00",
+  "customer_id": 67,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 46.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 766,
+  "created_at": "2023-11-25 08:36:00",
+  "customer_id": 102,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 63.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 767,
+  "created_at": "2023-09-02 00:20:00",
+  "customer_id": 126,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 51.7,
+  "csat": 3
+ },
+ {
+  "ticket_id": 768,
+  "created_at": "2023-12-23 20:10:00",
+  "customer_id": 273,
+  "category": "bug",
+  "priority": "low",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 769,
+  "created_at": "2024-10-13 22:18:00",
+  "customer_id": 416,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 33.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 770,
+  "created_at": "2024-11-18 06:06:00",
+  "customer_id": 285,
+  "category": "integration",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 58.2,
+  "csat": 3
+ },
+ {
+  "ticket_id": 771,
+  "created_at": "2024-06-08 06:32:00",
+  "customer_id": 205,
+  "category": "outage",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 13.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 772,
+  "created_at": "2024-10-09 15:19:00",
+  "customer_id": 251,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 21.4,
+  "csat": null
+ },
+ {
+  "ticket_id": 773,
+  "created_at": "2024-04-20 14:14:00",
+  "customer_id": 206,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 33.5,
+  "csat": 4
+ },
+ {
+  "ticket_id": 774,
+  "created_at": "2024-04-10 01:19:00",
+  "customer_id": 7,
+  "category": "how-to",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 46.3,
+  "csat": 4
+ },
+ {
+  "ticket_id": 775,
+  "created_at": "2023-10-28 09:25:00",
+  "customer_id": 394,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 31.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 776,
+  "created_at": "2024-04-11 09:17:00",
+  "customer_id": 15,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 51.3,
+  "csat": null
+ },
+ {
+  "ticket_id": 777,
+  "created_at": "2024-12-05 07:29:00",
+  "customer_id": 15,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 6.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 778,
+  "created_at": "2024-09-13 05:15:00",
+  "customer_id": 314,
+  "category": "billing",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 41.1,
+  "csat": 4
+ },
+ {
+  "ticket_id": 779,
+  "created_at": "2023-12-13 01:00:00",
+  "customer_id": 339,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 17.0,
+  "csat": null
+ },
+ {
+  "ticket_id": 780,
+  "created_at": "2024-07-02 05:10:00",
+  "customer_id": 287,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 18.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 781,
+  "created_at": "2024-03-09 03:00:00",
+  "customer_id": 311,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 42.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 782,
+  "created_at": "2024-07-17 04:52:00",
+  "customer_id": 334,
+  "category": "outage",
+  "priority": "low",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 783,
+  "created_at": "2024-11-20 13:51:00",
+  "customer_id": 216,
+  "category": "bug",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 19.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 784,
+  "created_at": "2024-10-23 14:35:00",
+  "customer_id": 158,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 1.5,
+  "csat": 3
+ },
+ {
+  "ticket_id": 785,
+  "created_at": "2023-11-21 22:03:00",
+  "customer_id": 60,
+  "category": "billing",
+  "priority": "urgent",
+  "status": "escalated",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 786,
+  "created_at": "2024-02-12 13:17:00",
+  "customer_id": 324,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 45.6,
+  "csat": 5
+ },
+ {
+  "ticket_id": 787,
+  "created_at": "2024-05-22 19:45:00",
+  "customer_id": 136,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 40.0,
+  "csat": 3
+ },
+ {
+  "ticket_id": 788,
+  "created_at": "2024-09-04 22:09:00",
+  "customer_id": 345,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 13.0,
+  "csat": 5
+ },
+ {
+  "ticket_id": 789,
+  "created_at": "2024-12-14 07:31:00",
+  "customer_id": 263,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 15.3,
+  "csat": 3
+ },
+ {
+  "ticket_id": 790,
+  "created_at": "2024-04-10 23:24:00",
+  "customer_id": 120,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 51.6,
+  "csat": null
+ },
+ {
+  "ticket_id": 791,
+  "created_at": "2024-11-04 09:27:00",
+  "customer_id": 132,
+  "category": "integration",
+  "priority": "low",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 792,
+  "created_at": "2023-12-01 15:37:00",
+  "customer_id": 230,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 28.2,
+  "csat": null
+ },
+ {
+  "ticket_id": 793,
+  "created_at": "2024-08-26 23:25:00",
+  "customer_id": 339,
+  "category": "integration",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 62.7,
+  "csat": 5
+ },
+ {
+  "ticket_id": 794,
+  "created_at": "2024-05-16 11:34:00",
+  "customer_id": 52,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 10.7,
+  "csat": null
+ },
+ {
+  "ticket_id": 795,
+  "created_at": "2024-10-24 23:36:00",
+  "customer_id": 13,
+  "category": "outage",
+  "priority": "high",
+  "status": "open",
+  "resolution_hours": null,
+  "csat": null
+ },
+ {
+  "ticket_id": 796,
+  "created_at": "2024-03-06 18:14:00",
+  "customer_id": 200,
+  "category": "how-to",
+  "priority": "high",
+  "status": "resolved",
+  "resolution_hours": 57.5,
+  "csat": 5
+ },
+ {
+  "ticket_id": 797,
+  "created_at": "2024-06-28 13:49:00",
+  "customer_id": 42,
+  "category": "how-to",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 41.1,
+  "csat": 5
+ },
+ {
+  "ticket_id": 798,
+  "created_at": "2024-07-12 14:34:00",
+  "customer_id": 378,
+  "category": "outage",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 63.9,
+  "csat": null
+ },
+ {
+  "ticket_id": 799,
+  "created_at": "2024-11-09 17:46:00",
+  "customer_id": 388,
+  "category": "integration",
+  "priority": "medium",
+  "status": "resolved",
+  "resolution_hours": 63.4,
+  "csat": 3
+ },
+ {
+  "ticket_id": 800,
+  "created_at": "2024-04-13 04:39:00",
+  "customer_id": 79,
+  "category": "bug",
+  "priority": "low",
+  "status": "resolved",
+  "resolution_hours": 4.3,
+  "csat": 5
+ }
+]

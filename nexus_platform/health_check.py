@@ -90,6 +90,9 @@ def _check_wrong_answer_feedback(traces_by_id: dict, feedback: list) -> list:
                                 "expect": "verified numeric answer with provenance"},
             ))
         elif tr is None and fb.get("trace_id"):
+            # The trace may simply predate the analysis window.
+            if store.get_trace(fb["company"], fb["trace_id"]) is not None:
+                continue
             out.append(_finding(
                 "feedback_orphan_trace", "needs_admin", "low",
                 "Feedback references a trace that no longer exists.",
@@ -220,8 +223,12 @@ def _check_misrouting(traces: list) -> list:
         q = tr["question"]
         if p.get("access_decision") != "allowed":
             continue
-        if route in ("rag_agent", "llm_planner", "rag_only"):
-            if not _INSIGHT_RE.search(" " + q.lower() + " ") and parse_intent(q) is not None:
+        # llm_planner is excluded: repeated-question "Analyze with AI" and
+        # insight questions deliberately send parseable questions there.
+        if route in ("rag_agent", "rag_only"):
+            if (not _INSIGHT_RE.search(" " + q.lower() + " ")
+                    and not _DOC_TERMS_RE.search(" " + q.lower() + " ")
+                    and parse_intent(q) is not None):
                 out.append(_finding(
                     "llm_answered_deterministic_question", "needs_routing_fix", "medium",
                     f"“{q[:80]}” went to {route} but parses as a deterministic "
