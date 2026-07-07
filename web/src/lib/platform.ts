@@ -202,7 +202,7 @@ export const submitFeedback = (payload: {
     body: JSON.stringify(payload),
   });
 
-export const adminFeedback = (filters?: { employee?: string; status?: string }) => {
+export const adminFeedback = (filters?: { employee?: string; status?: string; category?: string }) => {
   const qs = new URLSearchParams(
     Object.entries(filters || {}).filter(([, v]) => v) as [string, string][]
   ).toString();

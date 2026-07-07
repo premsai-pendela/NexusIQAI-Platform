@@ -31,7 +31,11 @@ export default function PlatformLogin() {
   const doLogin = async (e?: string, p?: string) => {
     const em = e ?? email;
     const pw = p ?? password;
-    if (!em || !pw || busy) return;
+    if (busy) return;
+    if (!em.trim() || !pw.trim()) {
+      setError("Enter your work email and password to access the workspace.");
+      return;
+    }
     setBusy(true);
     setError(null);
     try {

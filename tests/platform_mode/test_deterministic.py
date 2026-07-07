@@ -101,6 +101,19 @@ def test_period_range_bar_graph_becomes_quarter_series():
     assert len(out["rows"]) == 4
 
 
+def test_selected_quarters_line_chart_does_not_collapse_to_first_quarter():
+    intent = parse_intent("line chart of total revenue of q2 and q4 in 2024")
+    assert intent.metric == "revenue"
+    assert intent.output == "line"
+    out = execute(ctx_for("analyst@acmecloud.test"), intent)
+    assert out["template_id"] == "revenue_by_selected_period"
+    assert out["chart"]["type"] == "line"
+    assert out["chart"]["x"] == "period"
+    assert [r["period"] for r in out["rows"]] == ["Q2 2024", "Q4 2024"]
+    assert "$1,364,306.55" in out["answer"]
+    assert "$2,495,120.54" in out["answer"]
+
+
 def test_company_isolation_different_numbers():
     a = execute(ctx_for("analyst@acmecloud.test"), parse_intent("revenue in Q3 2024"))
     m = execute(ctx_for("finance@medcore.test"), parse_intent("revenue in Q3 2024"))
@@ -152,6 +165,20 @@ def test_five_turn_followup_flow_without_llm(no_llm):
         trace = store.get_trace("acmecloud", r["platform"]["trace_id"])
         assert trace["payload"]["llm_skipped"] is True
         assert trace["payload"]["route"] == "deterministic_sql_template"
+
+
+def test_selected_quarter_correction_followup_without_llm(no_llm):
+    ctx = ctx_for("analyst@acmecloud.test")
+    s = session()
+    qs.run_query(ctx, "line chart of total revenue of q2 to q4 in 2024", s)
+
+    r = qs.run_query(ctx, "sorry I mean q2 and q4?", s)
+
+    assert r["platform"]["llm_skipped"]
+    assert r["platform"]["followup_rewritten"]
+    assert r["platform"]["chart"]["type"] == "line"
+    assert r["platform"]["chart"]["x"] == "period"
+    assert [row["period"] for row in r["platform"]["chart"]["data"]] == ["Q2 2024", "Q4 2024"]
 
 
 def test_denied_followup_never_widens_access(no_llm):

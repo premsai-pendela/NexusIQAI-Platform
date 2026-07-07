@@ -62,4 +62,11 @@ bug so period ranges render a quarterly series, added Ask Analyst recent
 analysis restore in localStorage, and changed "report this answer" to ask
 for a user comment while attaching the trace automatically for Admin review.
 
+Second polish pass (2026-07-07): fixed disjoint period selections like
+"Q2 and Q4" so Ask Analyst returns both selected periods with the requested
+line/bar/table chart instead of collapsing to Q2; correction follow-ups such
+as "sorry I mean Q2 and Q4" stay deterministic. Login now warns on empty
+email/password. Admin Review now has New reviews, New complaints, Reviewed,
+and Resolved queues, plus a "mark new" undo for accidental review clicks.
+
 DO NOT PUSH to GitHub without Prem's explicit go-ahead.

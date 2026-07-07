@@ -16,6 +16,7 @@ import {
    date, expandable to the full access/routing/evidence record. */
 
 type TraceDetail = Awaited<ReturnType<typeof fetchTraceDetail>>;
+type FeedbackTab = "new-reviews" | "new-complaints" | "reviewed" | "resolved";
 
 function StatusChip({ status }: { status: string }) {
   const map: Record<string, { bg: string; fg: string }> = {
@@ -72,6 +73,7 @@ function TraceCard({ detail, onClose }: { detail: TraceDetail; onClose: () => vo
 
 export default function AdminReviewPage() {
   const [feedback, setFeedback] = useState<FeedbackItem[]>([]);
+  const [feedbackTab, setFeedbackTab] = useState<FeedbackTab>("new-reviews");
   const [traces, setTraces] = useState<TraceSummary[]>([]);
   const [employees, setEmployees] = useState<{ email: string; name: string; role: string }[]>([]);
   const [empFilter, setEmpFilter] = useState("");
@@ -102,6 +104,25 @@ export default function AdminReviewPage() {
   const openTraceById = (id: string) =>
     fetchTraceDetail(id).then(setOpenTrace).catch((e) => setErr(e.message));
 
+  const isReview = (f: FeedbackItem) => f.category === "wrong-answer";
+  const visibleFeedback = feedback.filter((f) => {
+    if (feedbackTab === "new-reviews") return f.status === "new" && isReview(f);
+    if (feedbackTab === "new-complaints") return f.status === "new" && !isReview(f);
+    return f.status === feedbackTab;
+  });
+  const tabCounts: Record<FeedbackTab, number> = {
+    "new-reviews": feedback.filter((f) => f.status === "new" && isReview(f)).length,
+    "new-complaints": feedback.filter((f) => f.status === "new" && !isReview(f)).length,
+    reviewed: feedback.filter((f) => f.status === "reviewed").length,
+    resolved: feedback.filter((f) => f.status === "resolved").length,
+  };
+  const tabs: { id: FeedbackTab; label: string }[] = [
+    { id: "new-reviews", label: "New reviews" },
+    { id: "new-complaints", label: "New complaints" },
+    { id: "reviewed", label: "Reviewed" },
+    { id: "resolved", label: "Resolved" },
+  ];
+
   return (
     <PlatformShell
       botGreeting={(p) =>
@@ -121,9 +142,29 @@ export default function AdminReviewPage() {
             {/* Feedback queue */}
             <div>
               <div className="label" style={{ marginBottom: 8 }}>EMPLOYEE FEEDBACK · {feedback.length}</div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 6, marginBottom: 10 }}>
+                {tabs.map((tab) => (
+                  <button key={tab.id} onClick={() => setFeedbackTab(tab.id)}
+                    style={{
+                      border: "1px solid var(--hairline)",
+                      borderRadius: 8,
+                      padding: "7px 9px",
+                      background: feedbackTab === tab.id ? "var(--accent-tint)" : "var(--surface-soft)",
+                      color: feedbackTab === tab.id ? "var(--accent)" : "var(--muted)",
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      fontSize: 11.5,
+                    }}>
+                    <span>{tab.label}</span>
+                    <span className="mono" style={{ fontSize: 10 }}>{tabCounts[tab.id]}</span>
+                  </button>
+                ))}
+              </div>
               <div style={{ display: "grid", gap: 8 }}>
-                {feedback.length === 0 && <div style={{ fontSize: 12.5, color: "var(--muted)" }}>No feedback yet.</div>}
-                {feedback.map((f) => (
+                {visibleFeedback.length === 0 && <div style={{ fontSize: 12.5, color: "var(--muted)" }}>No items in this queue.</div>}
+                {visibleFeedback.map((f) => (
                   <div key={f.id} className="card" style={{ background: "var(--surface-card)", padding: "11px 13px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
                       <span className="chip chip-neutral">{f.category}</span>
@@ -142,7 +183,10 @@ export default function AdminReviewPage() {
                         </button>
                       )}
                       <span style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
-                        {f.status !== "reviewed" && (
+                        {f.status === "reviewed" && (
+                          <button onClick={() => triage(f.id, "new")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 10.5, color: "var(--muted)", padding: 0 }}>mark new</button>
+                        )}
+                        {f.status !== "reviewed" && f.status !== "resolved" && (
                           <button onClick={() => triage(f.id, "reviewed")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 10.5, color: "var(--muted)", padding: 0 }}>mark reviewed</button>
                         )}
                         {f.status !== "resolved" && (

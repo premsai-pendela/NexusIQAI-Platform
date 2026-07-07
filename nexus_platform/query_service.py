@@ -95,6 +95,8 @@ def _finish_deterministic(ctx: AccessContext, question: str, session_id: str,
             parts.append(f"by {intent.group_by}")
         if intent.period:
             parts.append(f"for {intent.period[0]}")
+        if intent.selected_periods:
+            parts.append("for " + " and ".join(p[0] for p in intent.selected_periods))
         if intent.compare:
             parts.append(f"vs {intent.compare[0]}")
         resolved = " ".join(p for p in parts if p).capitalize()
@@ -115,6 +117,7 @@ def _finish_deterministic(ctx: AccessContext, question: str, session_id: str,
             "metric": intent.metric,
             "period": list(intent.period) if intent.period else None,
             "compare": list(intent.compare) if intent.compare else None,
+            "selected_periods": [list(p) for p in intent.selected_periods] if intent.selected_periods else None,
             "group_by": intent.group_by,
             "top_n": intent.top_n,
             "output": intent.output,

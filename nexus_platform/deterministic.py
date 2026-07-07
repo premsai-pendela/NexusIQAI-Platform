@@ -267,6 +267,7 @@ class Intent:
     metric: Optional[str] = None
     period: Optional[tuple] = None       # (label, start, end)
     compare: Optional[tuple] = None
+    selected_periods: Optional[list[tuple]] = None
     group_by: Optional[str] = None
     top_n: Optional[int] = None
     top_dir: str = "desc"
@@ -285,6 +286,8 @@ class Intent:
             for k in ("period", "compare"):
                 if d.get(k):
                     d[k] = tuple(d[k])
+            if d.get("selected_periods"):
+                d["selected_periods"] = [tuple(p) for p in d["selected_periods"]]
             return Intent(**d)
         except Exception:
             return None
@@ -328,14 +331,24 @@ def parse_intent(question: str, prev: Optional[Intent] = None) -> Optional[Inten
     intent.metric = best[1]
 
     periods = _find_periods(q)
+    explicit_periods = [p for p in periods if p != _YEAR]
     is_comparison = bool(re.search(r"\bcompare\b|\bvs\.?\b|\bversus\b|\bdifference between\b", q))
     is_period_range = bool(
-        len(periods) >= 2
+        len(explicit_periods) >= 2
         and re.search(r"\b(q[1-4]|january|february|march|april|may|june|july|august|september|october|november|december)\b\s*(to|through|thru|-|until)\s*\b(q[1-4]|january|february|march|april|may|june|july|august|september|october|november|december)\b", q)
+    )
+    is_period_selection = bool(
+        len(explicit_periods) >= 2
+        and not is_period_range
+        and not is_comparison
+        and re.search(r"\b(q[1-4]|january|february|march|april|may|june|july|august|september|october|november|december)\b\s*(,|and|&)\s*\b(q[1-4]|january|february|march|april|may|june|july|august|september|october|november|december)\b", q)
     )
     if periods:
         intent.period = periods[0]
-        if is_period_range and not is_comparison:
+        if is_period_selection:
+            intent.period = None
+            intent.selected_periods = explicit_periods
+        elif is_period_range and not is_comparison:
             # "revenue from Q1 to Q4 as a bar graph" means a time-series,
             # not the Q1 scalar. Preserve the full-year window and group by
             # the natural period grain for the mentioned range.
@@ -385,6 +398,12 @@ def parse_intent(question: str, prev: Optional[Intent] = None) -> Optional[Inten
                 merged.period = tuple(prev.period)
                 merged.compare = periods[0]
                 merged.followup_kind = "compare_add"
+            elif is_period_selection:
+                merged.period = None
+                merged.compare = None
+                merged.selected_periods = explicit_periods
+                merged.output = intent.output if intent.output != "auto" else prev.output
+                merged.followup_kind = "period_swap"
             else:
                 merged.followup_kind = "period_swap"
             return merged
@@ -413,14 +432,30 @@ def _period_where(mdef: MetricDef, period: Optional[tuple]) -> str:
     return f"{mdef.date_col} >= '{start}' AND {mdef.date_col} < '{end}'"
 
 
+def _where_clause(mdef: MetricDef, period: Optional[tuple]) -> str:
+    wheres = [w for w in (mdef.base_where, _period_where(mdef, period)) if w]
+    return f" WHERE {' AND '.join(wheres)}" if wheres else ""
+
+
 def build_sql(intent: Intent) -> Optional[tuple[str, tuple[str, ...], str]]:
     """(sql, tables_required, template_id) or None if unsupported combo."""
     mdef = METRICS.get(intent.metric or "")
     if mdef is None:
         return None
     base_table = mdef.tables[0]
-    wheres = [w for w in (mdef.base_where, _period_where(mdef, intent.period)) if w]
-    where = f" WHERE {' AND '.join(wheres)}" if wheres else ""
+    where = _where_clause(mdef, intent.period)
+
+    if intent.selected_periods:
+        if not mdef.date_col:
+            return None
+        selects = []
+        for period in intent.selected_periods:
+            label, _, _ = period
+            selects.append(
+                f"SELECT '{label}' AS period, {mdef.value_sql} AS value "
+                f"FROM {mdef.base_from}{_where_clause(mdef, period)}"
+            )
+        return " UNION ALL ".join(selects), mdef.tables, f"{intent.metric}_by_selected_period"
 
     if intent.group_by in ("month", "quarter"):
         if not mdef.date_col:
@@ -479,6 +514,8 @@ _METRIC_LABELS = {
 
 
 def _period_label(intent: Intent) -> str:
+    if intent.selected_periods:
+        return " and ".join(p[0] for p in intent.selected_periods)
     return intent.period[0] if intent.period else "FY 2024"
 
 
@@ -524,7 +561,19 @@ def execute(ctx: AccessContext, intent: Intent) -> Optional[dict]:
     company = ctx.company.name
 
     chart = None
-    if intent.compare and compare_rows is not None:
+    if intent.selected_periods:
+        answer = (f"{company} {label} for {period_label}: "
+                  f"{', '.join(f'{r['period']} {_fmt(r.get('value'), mdef.unit)}' for r in rows)}.")
+        chart_type = "line" if intent.output == "line" else "bar"
+        if intent.output == "table":
+            chart_type = "table"
+        chart = {
+            "type": chart_type,
+            "title": f"{label} — {period_label}",
+            "x": "period", "y": "value",
+            "data": rows, "download": {"csv": True},
+        }
+    elif intent.compare and compare_rows is not None:
         v1 = rows[0]["value"] if rows else None
         v2 = compare_rows[0]["value"] if compare_rows else None
         cmp_label = intent.compare[0]
