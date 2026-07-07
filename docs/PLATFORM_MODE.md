@@ -87,8 +87,23 @@ Every chart and dashboard block downloads as **CSV** (client-side),
 **XLSX** (server-side via openpyxl, styled workbook), or **PNG** (SVG →
 canvas). Dashboards expose their exact SQL under "show the N queries".
 
+## Deterministic analyst layer
+
+`nexus_platform/deterministic.py` answers 15 business-metric families
+(revenue, orders, AOV, customers, MRR, invoices, overdue, tickets, CSAT,
+resolution time, headcount, terminations, attrition) with template SQL and
+no LLM: intent parser → role check → per-company SQLite → deterministic
+answer + chart. Periods (quarters/months/FY2024), groupings (region, product,
+category, segment, plan, department, priority, status, month, quarter),
+comparisons, and top/bottom-N are supported. Follow-ups ("what about Q4?",
+"compare that with Q3", "show that as a bar chart", "by region") merge with
+the intent stored in session memory — policy re-applied every turn. Traces
+record `route: deterministic_sql_template` and `llm_skipped: true`.
+
 ## Model routing
 
-Gemini Flash → Groq Llama 3.3 70B → NVIDIA NIM (deepseek-v4-flash,
-streaming client) → local Ollama. Quota tracker cooldowns move traffic down
-the chain automatically; dashboards bypass LLMs entirely.
+Deterministic templates first (no model), then Gemini Flash → Groq Llama 3.3
+70B → NVIDIA NIM (deepseek-v4-flash, streaming client) → local Ollama for
+open questions. Quota tracker cooldowns move traffic down the chain
+automatically; dashboards bypass LLMs entirely. LLM-path traces record
+`model_used` and any `provider_failures`.

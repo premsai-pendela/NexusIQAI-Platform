@@ -49,7 +49,12 @@ All gitignored. Regenerate demo data with
 
 ## Status
 
-See `~/Dev/NexusIQAI-Website/ACTIVE_HANDOFF.md` → Milestones. Platform
-C1-C11 complete; C12 (polish/deploy) in progress.
+Final showcase pass COMPLETE (2026-07-07). 347 tests green, lint/build
+green, 7/7 live smoke, trace audit clean, browser QA done. Deterministic
+analyst layer answers 15 metric families with zero LLM calls; session
+memory resolves follow-ups deterministically; exports carry provenance.
+See `docs/NEXUSIQAI_FULL_BUILD_REPORT.md` and
+`docs/RECRUITER_PROOF_SUMMARY.md`. Milestone history:
+`~/Dev/NexusIQAI-Website/ACTIVE_HANDOFF.md`.
 
 DO NOT PUSH to GitHub without Prem's explicit go-ahead.

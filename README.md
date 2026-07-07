@@ -37,7 +37,8 @@ data analyst platform built on the same agent stack:
 > when data changes and review their own company's feedback and traces.
 
 - **Try it**: `uvicorn api.main:app --port 8000` + `cd web && npx next start` → [http://localhost:3000/platform](http://localhost:3000/platform)
-- **Docs & architecture**: [docs/PLATFORM_MODE.md](docs/PLATFORM_MODE.md)
+- **Deterministic analyst layer**: 15 business-metric families (revenue, orders, invoices, tickets, HR) answer from role-checked template SQL with **zero LLM calls** — follow-ups like "what about Q4?" and "compare that with Q3" resolve from stored session intent; the demo survives total provider exhaustion, and traces record `llm_skipped: true`
+- **Docs & architecture**: [docs/PLATFORM_MODE.md](docs/PLATFORM_MODE.md) · [full build report](docs/NEXUSIQAI_FULL_BUILD_REPORT.md) · [recruiter proof summary](docs/RECRUITER_PROOF_SUMMARY.md)
 - **Boundary enforcement**: SQL prompt subset → sqlglot AST table allowlist → ChromaDB department filters (vector/hybrid/BM25) → response-level citation filter
 - **Dashboards & exports**: "give me a dashboard" builds a role-filtered KPI/chart board from deterministic SQL (no LLM); every chart downloads as CSV/XLSX/PNG
 - **Model routing**: Gemini → Groq → NVIDIA NIM → local Ollama with quota-tracker cooldowns
