@@ -225,6 +225,8 @@ class RAGAgent:
             "include": ["documents", "metadatas"],
         }
         context_filter = getattr(self.data_context, "rag_metadata_filter", None)
+        if not isinstance(context_filter, dict):
+            context_filter = None
         if context_filter:
             get_params["where"] = context_filter
         all_docs = self.collection.get(**get_params)
@@ -349,6 +351,8 @@ class RAGAgent:
         # Platform mode: the role's evidence boundary is baked into the data
         # context and always applied — callers cannot widen it per-request.
         context_filter = getattr(self.data_context, "rag_metadata_filter", None)
+        if not isinstance(context_filter, dict):
+            context_filter = None
         if context_filter and metadata_filter:
             metadata_filter = {"$and": [context_filter, metadata_filter]}
         elif context_filter:
@@ -1716,6 +1720,8 @@ ANSWER:"""
         }
         # Platform mode: role evidence boundary applies to hybrid search too.
         hybrid_context_filter = getattr(self.data_context, "rag_metadata_filter", None)
+        if not isinstance(hybrid_context_filter, dict):
+            hybrid_context_filter = None
         if hybrid_context_filter:
             hybrid_query_params["where"] = hybrid_context_filter
         vector_results = self.collection.query(**hybrid_query_params)

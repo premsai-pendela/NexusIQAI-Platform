@@ -1,8 +1,18 @@
 "use client";
-import { useEffect, useState, ReactNode } from "react";
+import { useEffect, useMemo, useSyncExternalStore, ReactNode } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Mascot from "./Mascot";
-import { Profile, getProfile, getToken, logout } from "@/lib/platform";
+import { Profile, logout } from "@/lib/platform";
+
+/* Session state via useSyncExternalStore: server snapshot is empty (page
+   renders nothing during prerender), client snapshot reads localStorage. */
+function subscribeStorage(cb: () => void) {
+  window.addEventListener("storage", cb);
+  return () => window.removeEventListener("storage", cb);
+}
+const readToken = () => localStorage.getItem("nexusiq_platform_token") ?? "";
+const readProfile = () => localStorage.getItem("nexusiq_platform_profile") ?? "";
+const empty = () => "";
 
 /* Shared chrome for platform pages: workspace nav, role chip, page-aware
    Nexus bot. Redirects to login when no session exists. */
@@ -26,19 +36,18 @@ export default function PlatformShell({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [checked, setChecked] = useState(false);
+  const token = useSyncExternalStore(subscribeStorage, readToken, empty);
+  const profileJson = useSyncExternalStore(subscribeStorage, readProfile, empty);
+  const profile = useMemo<Profile | null>(
+    () => (profileJson ? (JSON.parse(profileJson) as Profile) : null),
+    [profileJson]
+  );
 
   useEffect(() => {
-    if (!getToken()) {
-      router.replace("/platform");
-      return;
-    }
-    setProfile(getProfile());
-    setChecked(true);
-  }, [router]);
+    if (!token) router.replace("/platform");
+  }, [token, router]);
 
-  if (!checked || !profile) return null;
+  if (!token || !profile) return null;
 
   const links = [...NAV, ...(profile.is_admin ? ADMIN_NAV : [])];
 

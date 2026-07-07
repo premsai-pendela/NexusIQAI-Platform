@@ -101,16 +101,18 @@ class FusionAgent:
         """Describe sources available to the agent."""
         # Platform company workspaces describe their own role-scoped sources;
         # the live demo description below must never leak into them.
-        if self.data_context.allowed_tables is not None:
+        # (getattr: contract tests build bare instances via __new__.)
+        ctx = getattr(self, "data_context", None)
+        if ctx is not None and isinstance(getattr(ctx, "allowed_tables", None), (tuple, list)):
             web_line = (
                 "**Web** - not available in this company workspace; never route to web."
-                if not self.data_context.allow_web else
+                if not ctx.allow_web else
                 "**Web** - live competitor pricing; use only for market pricing."
             )
-            return f"""**SQL** - {self.data_context.sql_scope}. Use for revenue,
+            return f"""**SQL** - {ctx.sql_scope}. Use for revenue,
 counts, rankings, trends, growth rates, and quarterly breakdowns from those tables.
 
-**RAG** - {self.data_context.document_scope}. Use for policy, definitions,
+**RAG** - {ctx.document_scope}. Use for policy, definitions,
 targets, and narrative explanations; combine with SQL to validate quarterly totals.
 
 {web_line}

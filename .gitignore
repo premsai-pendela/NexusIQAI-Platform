@@ -61,3 +61,7 @@ Thumbs.db
 node_modules/
 .next/
 .DS_Store
+
+# Platform runtime artifacts — regenerate via nexus_platform.brain_builder
+data/platform.db
+data/demo_companies/*/brain/

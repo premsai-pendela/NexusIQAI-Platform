@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Mascot from "@/components/Mascot";
 import { getToken, login } from "@/lib/platform";
@@ -51,7 +52,7 @@ export default function PlatformLogin() {
           <span className="breadcrumb">PLATFORM · EMPLOYEE LOGIN</span>
         </div>
         <div className="doors">
-          <a href="/">← NexusIQ home</a>
+          <Link href="/">← NexusIQ home</Link>
         </div>
       </nav>
 

@@ -396,7 +396,8 @@ class SQLAgent:
     def _create_sql_prompt(self, question: str) -> str:
         """Create prompt for SQL generation"""
 
-        if self.engine.dialect.name == "sqlite":
+        engine = getattr(self, "engine", None)
+        if engine is not None and engine.dialect.name == "sqlite":
             return self._create_sqlite_prompt(question)
 
         prompt_template = """You are an expert PostgreSQL query generator.
@@ -567,9 +568,10 @@ SQL QUERY:"""
 
         # Platform mode: enforce the role's table allowlist at the AST level.
         # Even if the LLM generates SQL against a restricted table, it is
-        # rejected here before execution.
-        allowed = self.data_context.allowed_tables
-        if allowed is not None:
+        # rejected here before execution. (getattr: contract tests build bare
+        # instances via __new__ without a data context.)
+        allowed = getattr(getattr(self, "data_context", None), "allowed_tables", None)
+        if isinstance(allowed, (tuple, list)):
             allowed_set = {t.lower() for t in allowed}
             cte_names = {
                 cte.alias_or_name.lower()
