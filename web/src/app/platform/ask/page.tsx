@@ -127,6 +127,7 @@ function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile
   const [reportComment, setReportComment] = useState("");
   const [reportBusy, setReportBusy] = useState(false);
   const refused = meta.refused;
+  const hasClarification = !!meta.clarification;
   const sql = p.evidence?.sql;
   const docs = p.evidence?.documents || [];
 
@@ -154,7 +155,7 @@ function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile
         <span style={{ fontWeight: 500, fontSize: 13 }}>Nexus</span>
         {refused ? (
           <span className="pill" style={{ marginLeft: "auto", background: "#FCF3DC", color: "#8A5B10" }}>access boundary</span>
-        ) : meta.route === "clarification" ? (
+        ) : hasClarification ? (
           <span className="pill" style={{ marginLeft: "auto", background: "#EDF2FA", color: "#3D5A80" }}>needs one detail</span>
         ) : meta.route === "repeat_question_choice" ? (
           <span className="pill" style={{ marginLeft: "auto", background: "#EDF2FA", color: "#3D5A80" }}>asked before</span>
@@ -187,7 +188,7 @@ function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{p.answer}</ReactMarkdown>
       </div>
 
-      {refused && (
+      {refused && !hasClarification && (
         <div style={{ marginTop: 10 }}>
           <div className="label" style={{ marginBottom: 6 }}>WITHIN YOUR ACCESS INSTEAD</div>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
@@ -201,7 +202,7 @@ function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile
         </div>
       )}
 
-      {meta.route === "clarification" && meta.clarification && (
+      {hasClarification && meta.clarification && (
         <div style={{ marginTop: 10 }}>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {meta.clarification.choices.map((choice) => (

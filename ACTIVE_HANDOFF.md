@@ -86,4 +86,15 @@ as "sorry I mean Q2 and Q4" stay deterministic. Login now warns on empty
 email/password. Admin Review now has New reviews, New complaints, Reviewed,
 and Resolved queues, plus a "mark new" undo for accidental review clicks.
 
+Third polish pass (2026-07-07): added cross-company name clarification before
+any dashboard, repeat, SQL, RAG, or LLM route. If an AcmeCloud user asks for
+MedCore/FinPilot data by name, Ask Analyst now returns
+`cross_company_scope_clarification`, records a denied/no-data-read trace, and
+offers the current-company version instead of silently answering with the
+current tenant's data. Ask UI now renders clarification choices for any
+payload with `platform.clarification`, including access-boundary
+clarifications. Verification: red test reproduced the prior MedCore-as-Acme
+answer; fixed test passed; `pytest tests/platform_mode -q` 154 passed;
+`pytest tests/ -q` 427 passed + 41 subtests; `npm run lint`; `npm run build`.
+
 DO NOT PUSH to GitHub without Prem's explicit go-ahead.

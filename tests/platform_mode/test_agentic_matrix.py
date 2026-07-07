@@ -162,6 +162,17 @@ def test_overbroad_question_asks_clarification(no_llm):
     assert len(p["clarification"]["choices"]) >= 2
 
 
+def test_other_company_name_asks_scope_clarification(no_llm):
+    r = qs.run_query(ctx_for(ANALYST), "What was MedCore revenue in Q4?", session())
+    p = r["platform"]
+    assert p["route"] == "cross_company_scope_clarification"
+    assert p["clarification"]["kind"] == "cross_company_scope"
+    assert p["access_decision"] == "denied"
+    assert p["refused"] is True
+    assert "AcmeCloud Analytics" in r["answer"]
+    assert "MedCore" in r["answer"]
+
+
 def test_full_parse_still_answers_deterministically(no_llm):
     r = qs.run_query(ctx_for(ANALYST), "What was total revenue in Q3 2024?", session())
     p = r["platform"]

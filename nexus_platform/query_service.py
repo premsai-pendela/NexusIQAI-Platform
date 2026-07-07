@@ -25,6 +25,7 @@ from nexus_platform.contexts import get_company_fusion_agent
 from nexus_platform.dashboard import build_dashboard, wants_dashboard
 from nexus_platform.deterministic import Intent, execute as deterministic_execute, parse_intent
 from nexus_platform.orchestrator import RouteDecision, decide_route
+from nexus_platform.registry import Company, get_registry
 
 # One lock per (company, role) agent — history seeding must not interleave.
 _agent_locks: dict[str, threading.Lock] = {}
@@ -293,6 +294,40 @@ def _normalize_question(q: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]+", " ", q.lower())).strip()
 
 
+def _company_aliases(company: Company) -> list[str]:
+    aliases = {company.slug, company.name.lower()}
+    domain_root = company.domain.split(".", 1)[0].lower()
+    aliases.add(domain_root)
+    name_words = re.findall(r"[a-z0-9]+", company.name.lower())
+    if name_words:
+        aliases.add(name_words[0])
+    return sorted((a for a in aliases if len(a) >= 4), key=len, reverse=True)
+
+
+def _mentioned_other_companies(question: str, ctx: AccessContext) -> list[Company]:
+    normalized = f" {_normalize_question(question)} "
+    mentioned: list[Company] = []
+    for company in get_registry().companies.values():
+        if company.slug == ctx.company.slug:
+            continue
+        for alias in _company_aliases(company):
+            pattern = rf" {re.escape(_normalize_question(alias))} "
+            if re.search(pattern, normalized):
+                mentioned.append(company)
+                break
+    return mentioned
+
+
+def _replace_company_mentions(question: str, mentioned: list[Company],
+                              current_name: str) -> str:
+    rewritten = question
+    for company in mentioned:
+        for alias in _company_aliases(company):
+            rewritten = re.sub(rf"\b{re.escape(alias)}\b", current_name,
+                               rewritten, flags=re.IGNORECASE)
+    return rewritten
+
+
 def _find_repeat(turns: list, question: str) -> Optional[dict]:
     """Latest prior turn in this session that answered the same question."""
     norm = _normalize_question(question)
@@ -380,6 +415,80 @@ def _finish_clarification(ctx: AccessContext, question: str, session_id: str,
             "role": ctx.employee.role,
             "company": ctx.company.name,
             "route": "clarification",
+            "clarification": clar,
+            "llm_skipped": True,
+            "model_used": None,
+        },
+    }
+
+
+def _finish_cross_company_scope(ctx: AccessContext, question: str,
+                                session_id: str, mentioned: list[Company]) -> dict:
+    """Named another demo company: clarify/refuse before reading any data."""
+    started = time.time()
+    names = ", ".join(c.name for c in mentioned)
+    current_version = _replace_company_mentions(question, mentioned, ctx.company.name)
+    choices = [current_version]
+    if not wants_dashboard(question):
+        choices.append(f"Give me a {ctx.company.name} dashboard")
+    choices = [c for i, c in enumerate(choices) if c and c not in choices[:i]][:3]
+    question_back = (
+        f"I can only access {ctx.company.name} from your current session. "
+        f"You mentioned {names}. I can answer the {ctx.company.name} version, "
+        f"or you can sign into a {names} account."
+    )
+    clar = {
+        "kind": "cross_company_scope",
+        "question": question_back,
+        "choices": choices,
+        "mentioned_companies": [c.name for c in mentioned],
+        "current_company": ctx.company.name,
+    }
+    trace_payload = {
+        **_base_trace(ctx, question, session_id, 0),
+        "access_decision": "denied",
+        "denied_reason": f"requested another company workspace: {names}",
+        "route": "cross_company_scope_clarification",
+        "clarification_kind": "cross_company_scope",
+        "clarification_choices": choices,
+        "mentioned_companies": [c.slug for c in mentioned],
+        "route_reason": "question named a different company workspace",
+        "llm_skipped": True,
+        "model_used": None,
+        "confidence": "N/A",
+        "sql": None,
+        "chart_generated": False,
+        "chart_type": None,
+        "latency_s": round(time.time() - started, 3),
+    }
+    trace_id = store.save_trace(ctx.company.slug, ctx.employee.email,
+                                ctx.employee.role, question, "denied",
+                                trace_payload)
+    store.save_turn(ctx.company.slug, ctx.employee.email, session_id,
+                    question, question, question_back[:500],
+                    "cross_company_scope_clarification", None, True,
+                    route="cross_company_scope_clarification",
+                    trace_id=trace_id)
+    reason = "Tenant scope clarification — no other-company data was read."
+    return {
+        "answer": question_back,
+        "confidence": "N/A",
+        "confidence_reason": reason,
+        "validation": {"confidence": "N/A", "confidence_reason": reason},
+        "source_type": "cross_company_scope_clarification",
+        "sources": [],
+        "sql_result": None,
+        "platform": {
+            "trace_id": trace_id,
+            "resolved_question": question,
+            "followup_rewritten": False,
+            "access_decision": "denied",
+            "refused": True,
+            "chart": None,
+            "dashboard": None,
+            "role": ctx.employee.role,
+            "company": ctx.company.name,
+            "route": "cross_company_scope_clarification",
             "clarification": clar,
             "llm_skipped": True,
             "model_used": None,
@@ -546,6 +655,10 @@ def run_query(ctx: AccessContext, question: str, session_id: str,
     employee = ctx.employee.email
     role = ctx.employee.role
     prefs = store.get_prefs(company, employee)
+
+    mentioned = _mentioned_other_companies(question, ctx)
+    if mentioned:
+        return _finish_cross_company_scope(ctx, question, session_id, mentioned)
 
     # Dashboard requests are deterministic role-filtered SQL — no LLM, no
     # follow-up rewrite needed, instant.
