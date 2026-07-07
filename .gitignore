@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv311/
+nexusiq_env/
+env/
+ENV/
+
+# Environment
+.env
+.env.local
+
+# Data
+data/synthetic/*.csv
+# Versioned enterprise expansion extracts are generated locally, validated,
+# then loaded to Supabase staging by an explicit later workflow.
+data/expansion/
+# New-period pilot documents are generated from isolated staging SQL and are
+# kept outside the production-aligned PDF archive until evaluation approves them.
+data/pdfs_staging/
+# Pilot document indexing is evaluated in an isolated local Chroma collection.
+data/chroma_staging/
+# ChromaDB stores the local PDF retrieval index; relational sales facts come
+# from the configured Supabase PostgreSQL DATABASE_URL only.
+data/chroma_db/
+data/chroma_db_local/
+data/sales.db
+data/nexusiq.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Runtime data (auto-generated)
+data/web_cache.json
+data/quota_tracker.json
+data/llm_task_ledger.jsonl
+data/query_traces.jsonl
+data/harness_tasks.jsonl
+
+# Test reports (auto-generated)
+.gstack/
+eval-reports/
+traces/
+
+# OS
+.DS_Store
+Thumbs.db

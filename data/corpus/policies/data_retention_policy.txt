@@ -1,0 +1,50 @@
+---
+title: Data Retention and Access Policy
+doc_type: policy
+as_of: 2024-12-01
+---
+
+DATA RETENTION AND ACCESS POLICY
+
+Effective December 1, 2024. Owner: Data Governance Council. Applies to all
+NexusIQ operational and analytical data stores.
+
+RETENTION SCHEDULE
+
+Transactional records (sales_transactions, returns): retained 7 years to
+satisfy financial audit requirements, then archived to cold storage for a
+further 3 years before deletion.
+
+Customer account records: retained while the account is active plus 3
+years after closure, unless a deletion request is received under an
+applicable privacy regulation, in which case deletion completes within 30
+days and is logged in the privacy register.
+
+Support tickets: retained 3 years from closure. Tickets attached to an
+open corrective action (such as CAPA-2024-091) are retained until the
+corrective action closes, regardless of age.
+
+Analytical extracts and BI caches: retained 13 months, covering
+year-over-year comparison, then purged on the monthly maintenance window.
+
+ACCESS TIERS
+
+Tier A (Finance, Data Governance): full row-level access to transactional
+and returns data, including refund amounts.
+
+Tier B (Operations, Support leadership): transactional access with
+customer identifiers pseudonymized outside an active ticket context.
+
+Tier C (General analytics users): aggregate access only through the
+governed metrics layer; no row-level export.
+
+Access reviews run quarterly. Dormant accounts are disabled after 90 days
+without login. All access changes are logged in the audit trail with actor,
+approver, and timestamp.
+
+EXCEPTIONS
+
+Exceptions require Data Governance Council approval, an expiry date not
+exceeding 12 months, and quarterly re-attestation. Emergency access during
+an incident may be granted for 72 hours by the on-call data platform lead
+and is reviewed at the next council meeting.

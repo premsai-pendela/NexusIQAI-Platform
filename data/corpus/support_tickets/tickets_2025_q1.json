@@ -1,0 +1,117 @@
+{
+  "doc_type": "support_tickets",
+  "as_of": "2025-03-31",
+  "description": "NexusIQ customer support ticket export, Q1 2025. One record per ticket. Fields: ticket_id, opened, status, priority, category, product, subject, summary, resolution.",
+  "tickets": [
+    {
+      "ticket_id": "T-2025-0114",
+      "opened": "2025-01-06",
+      "status": "resolved",
+      "priority": "high",
+      "category": "Electronics",
+      "product": "Tablet",
+      "subject": "Tablet screen rotation broken out of the box",
+      "summary": "Customer reports auto-rotate not working on a new tablet. Matches the accelerometer calibration defect documented in the September 2024 supplier corrective action.",
+      "resolution": "Replaced under defective/DOA window. Unit serial logged against supplier corrective action CAPA-2024-091."
+    },
+    {
+      "ticket_id": "T-2025-0162",
+      "opened": "2025-01-11",
+      "status": "resolved",
+      "priority": "normal",
+      "category": "Clothing",
+      "product": "Jeans",
+      "subject": "Jeans two sizes smaller than labeled",
+      "summary": "Size/fit complaint consistent with the FY 2024 pattern where fit issues drive 44% of clothing returns. Customer within the 60-day clothing window.",
+      "resolution": "Exchange processed. Pointed customer to the sizing guide updated October 2024."
+    },
+    {
+      "ticket_id": "T-2025-0201",
+      "opened": "2025-01-19",
+      "status": "resolved",
+      "priority": "high",
+      "category": "Billing",
+      "product": "Phone",
+      "subject": "Refund not received after 6 days",
+      "summary": "Refund initiated but gateway settlement exceeded the 48-hour internal target. Root cause: holiday-volume backlog in the payments queue.",
+      "resolution": "Refund confirmed on day 7. Goodwill store credit of $25 issued under the January backlog remediation memo."
+    },
+    {
+      "ticket_id": "T-2025-0233",
+      "opened": "2025-01-27",
+      "status": "closed",
+      "priority": "low",
+      "category": "Account",
+      "product": null,
+      "subject": "Gold member asked about receipt-free returns",
+      "summary": "Customer at Gold tier wanted to confirm returns without a physical receipt. Confirmed account lookup is available at Gold tier and above.",
+      "resolution": "Explained policy; no action required."
+    },
+    {
+      "ticket_id": "T-2025-0290",
+      "opened": "2025-02-04",
+      "status": "resolved",
+      "priority": "urgent",
+      "category": "Electronics",
+      "product": "Laptop",
+      "subject": "Laptop dead on arrival, fan spins then shuts down",
+      "summary": "DOA claim within the 90-day defective window. Second DOA from the same distribution lot flagged by Risk Operations for pattern review.",
+      "resolution": "Advance replacement shipped. Lot number escalated to vendor quality via Apex Electronics agreement clause 7.2."
+    },
+    {
+      "ticket_id": "T-2025-0311",
+      "opened": "2025-02-09",
+      "status": "resolved",
+      "priority": "normal",
+      "category": "Home",
+      "product": "Bedding",
+      "subject": "Bedding color does not match listing photos",
+      "summary": "Not-as-described complaint. Listing photos for this SKU were updated in Q3 2024 but the cached marketplace listing still showed old images.",
+      "resolution": "Full refund; marketplace cache purge requested. Listing team notified."
+    },
+    {
+      "ticket_id": "T-2025-0348",
+      "opened": "2025-02-16",
+      "status": "escalated",
+      "priority": "high",
+      "category": "Billing",
+      "product": "Kitchen",
+      "subject": "Return pending 12 business days without update",
+      "summary": "Return exceeded the 10-business-day pending threshold and auto-escalated to Tier 2 per the Customer Escalation Policy.",
+      "resolution": "In Tier 2 queue; inspection backlog cited. Awaiting warehouse confirmation."
+    },
+    {
+      "ticket_id": "T-2025-0365",
+      "opened": "2025-02-21",
+      "status": "resolved",
+      "priority": "normal",
+      "category": "Electronics",
+      "product": "Phone",
+      "subject": "Asking whether the 35-day window applies",
+      "summary": "Platinum member purchased a phone on February 1 and asked about the return window. Policy v3 extends Electronics to 35 days for Gold and Platinum effective March 1, 2025; purchase predates v3 so the 30-day window applied.",
+      "resolution": "Explained effective dates. Customer returned the phone on day 27, within window either way."
+    },
+    {
+      "ticket_id": "T-2025-0402",
+      "opened": "2025-03-03",
+      "status": "resolved",
+      "priority": "low",
+      "category": "Sports",
+      "product": "Yoga Mat",
+      "subject": "Wrong item shipped: received resistance bands",
+      "summary": "Pick error at the West regional warehouse. Wrong-item-shipped returns bypass the restocking fee by policy.",
+      "resolution": "Correct item shipped with expedited carrier; return label issued at no cost."
+    },
+    {
+      "ticket_id": "T-2025-0431",
+      "opened": "2025-03-12",
+      "status": "closed",
+      "priority": "normal",
+      "category": "Account",
+      "product": null,
+      "subject": "Flagged for too many returns, disputes fraud hold",
+      "summary": "Account exceeded three returns in 90 days, triggering the automatic Risk Operations review defined in the returns policy. Customer disputed the temporary hold.",
+      "resolution": "Manual review cleared the account; two of the returns were the documented tablet calibration defect and were excluded from the fraud counter."
+    }
+  ]
+}

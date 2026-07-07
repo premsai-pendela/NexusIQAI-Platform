@@ -1,0 +1,456 @@
+"""
+NexusIQ AI — Data Inventory
+Maps what data exists in SQL, RAG, and Web sources
+"""
+
+from datetime import datetime
+
+# ═══════════════════════════════════════════════════════
+#  SQL DATABASE INVENTORY
+# ═══════════════════════════════════════════════════════
+
+SQL_INVENTORY = {
+    "date_range": {
+        "start": datetime(2024, 1, 1),
+        "end": datetime(2024, 12, 31),
+        "quarters": {
+            "Q1": ("2024-01-01", "2024-03-31"),
+            "Q2": ("2024-04-01", "2024-06-30"),
+            "Q3": ("2024-07-01", "2024-09-30"),
+            "Q4": ("2024-10-01", "2024-12-31"),
+        },
+        "note": "All transaction data is 2024 only"
+    },
+    
+    "tables": {
+        "sales_transactions": {
+            "columns": [
+                "transaction_date", "region", "store_id", 
+                "product_category", "product_name", "quantity",
+                "unit_price", "total_amount", "customer_id", "payment_method"
+            ],
+            "row_count": 100000,
+            "can_answer": [
+                "revenue", "sales", "transactions", "quantity",
+                "products", "regions", "stores", "payment methods",
+                "trends", "rankings", "aggregations", "daily/monthly data"
+            ]
+        },
+        "customers": {
+            "columns": ["customer_id", "name", "email", "region", "signup_date", "total_purchases"],
+            "row_count": 0,
+            "can_answer": [],
+            "note": "Schema exists in Supabase, but no dimension records are currently populated."
+        },
+        "inventory": {
+            "columns": ["store_id", "product_name", "stock_level", "reorder_point", "last_restocked"],
+            "row_count": 0,
+            "can_answer": [],
+            "note": "Schema exists in Supabase, but no inventory records are currently populated."
+        }
+    },
+    
+    "regions": ["East", "West", "North", "South", "Central"],
+    "categories": ["Electronics", "Clothing", "Food", "Home", "Sports"],
+    "payment_methods": ["Credit Card", "Debit Card", "Cash", "Digital Wallet"],
+    
+    "cannot_answer": [
+        "Future data (2025+)",
+        "Historical data (pre-2024)",
+        "Policies", "Strategies", "Plans",
+        "Competitor data", "Industry trends",
+        "Employee information", "Contracts"
+    ]
+}
+
+# ═══════════════════════════════════════════════════════
+#  RAG DOCUMENT INVENTORY
+# ═══════════════════════════════════════════════════════
+
+RAG_INVENTORY = {
+    "total_documents": 15,
+    "categories": {
+        "products_operations": {
+            "count": 3,
+            "files": [
+                "01_Returns_Refunds_Policy.pdf",
+                "02_Inventory_Reorder_SOP.pdf",
+                "03_Customer_Escalation_Policy.pdf",
+            ],
+            "can_answer": [
+                "return policies", "refund timelines", "return windows by category",
+                "inventory reorder points", "reorder thresholds", "stock level SOPs",
+                "stores below reorder point", "restocking procedures",
+                "customer escalation", "complaint handling",
+            ]
+        },
+        "financial": {
+            "count": 6,
+            "files": [
+                "04_Q4_2024_Revenue_Performance_Memo.pdf",
+                "05_Q3_2024_Revenue_Performance_Memo.pdf",
+                "06_Electronics_Category_Deep_Dive.pdf",
+                "07_Regional_Performance_Analysis.pdf",
+                "08_Payment_Method_Adoption_Report.pdf",
+                "13_2024_Annual_Business_Review.pdf",
+            ],
+            "can_answer": [
+                "quarterly revenue (reported numbers)", "Q3 Q4 performance",
+                "electronics category revenue", "regional performance",
+                "payment method adoption", "digital wallet trends",
+                "annual business review", "CLV", "customer lifetime value",
+            ],
+            "date_coverage": "FY 2024"
+        },
+        "inventory_operations": {
+            "count": 1,
+            "files": ["02_Inventory_Reorder_SOP.pdf"],
+            "can_answer": [
+                "reorder points", "reorder thresholds", "stores below reorder point",
+                "stock shortage policy", "inventory SOP", "restocking guidelines",
+            ]
+        },
+        "operational_digests": {
+            "count": 2,
+            "files": [
+                "09_Weekly_Operations_Digest_Week48.pdf",
+                "10_Weekly_Operations_Digest_Week12.pdf",
+            ],
+            "can_answer": [
+                "black friday", "holiday week sales", "week 48", "week 12",
+                "weekly operations", "seasonal demand"
+            ]
+        },
+        "risk_supply_chain": {
+            "count": 3,
+            "files": [
+                "11_Seasonal_Demand_Incident_Report.pdf",
+                "12_Inventory_Shortage_Root_Cause_Analysis.pdf",
+                "15_Supply_Chain_Risk_Assessment.pdf",
+            ],
+            "can_answer": [
+                "vendor risk", "supply chain", "TechSource", "inventory shortage",
+                "seasonal demand incident", "root cause analysis", "supplier disruption",
+            ]
+        },
+        "customer_analytics": {
+            "count": 1,
+            "files": ["14_Customer_Lifetime_Value_Study.pdf"],
+            "can_answer": [
+                "customer lifetime value", "CLV", "customer value",
+                "customer retention", "customer segments",
+            ]
+        },
+    },
+
+    "cannot_answer": [
+        "Real-time transaction data",
+        "Granular daily/store-level data",
+        "Current competitor pricing (uses web scraping)",
+        "Data not in the 15 PDFs"
+    ]
+}
+
+# ═══════════════════════════════════════════════════════
+#  WEB SCRAPING INVENTORY
+# ═══════════════════════════════════════════════════════
+
+WEB_INVENTORY = {
+    "categories": {
+        "electronics": {
+            "sources": ["Newegg (BeautifulSoup)", "Goal Zero (Shopify API)"],
+            "can_answer": ["electronics prices", "portable power stations", "gaming gear"]
+        },
+        "home": {
+            "sources": ["IKEA (JSON API)"],
+            "can_answer": ["furniture prices", "home goods", "decor"]
+        },
+        "sports": {
+            "sources": ["Campmor (Shopify API)"],
+            "can_answer": ["camping gear", "outdoor equipment", "sports gear"]
+        },
+        "food": {
+            "sources": ["Swanson Vitamins (Shopify API)", "NativePath (Shopify API)"],
+            "can_answer": ["supplements", "vitamins", "health products"]
+        },
+        "clothing": {
+            "sources": ["Taylor Stitch (Shopify API)", "Chubbies (Shopify API)", "Finisterre (Shopify API)"],
+            "can_answer": ["clothing prices", "discounted apparel", "outdoor clothing"]
+        }
+    },
+    
+    "cache_ttl": "24 hours fresh; cached data may be disclosed for up to 7 days if live refresh fails",
+    "sample_fallback": "Disabled by default; opt in with WEB_ALLOW_SAMPLE_FALLBACK=true",
+    
+    "cannot_answer": [
+        "Historical competitor pricing",
+        "Our own pricing (use SQL)",
+        "Non-competitor data"
+    ]
+}
+
+# ═══════════════════════════════════════════════════════
+#  CROSS-VALIDATION MAP
+# ═══════════════════════════════════════════════════════
+
+CROSS_VALIDATION_MAP = {
+    # Topics that can be validated across SQL + RAG
+    "validatable": {
+        "Q1_2024_revenue": {
+            "sql": "SUM(total_amount) WHERE transaction_date Q1 2024",
+            "rag": "06_Q1_2024_Financial_Report.pdf"
+        },
+        "Q2_2024_revenue": {
+            "sql": "SUM(total_amount) WHERE transaction_date Q2 2024",
+            "rag": "07_Q2_2024_Financial_Report.pdf"
+        },
+        "Q3_2024_revenue": {
+            "sql": "SUM(total_amount) WHERE transaction_date Q3 2024",
+            "rag": "02_Q3_2024_Financial_Report.pdf"
+        },
+        "Q4_2024_revenue": {
+            "sql": "SUM(total_amount) WHERE transaction_date Q4 2024",
+            "rag": "01_Q4_2024_Financial_Report.pdf"
+        },
+        "electronics_revenue": {
+            "sql": "SUM(total_amount) WHERE product_category = 'Electronics'",
+            "rag": "Category reports in quarterly PDFs"
+        },
+        "digital_wallet_adoption": {
+            "sql": "COUNT(*) WHERE payment_method = 'Digital Wallet'",
+            "rag": "Digital_Wallet_Initiative.pdf + Quarterly reports"
+        }
+    },
+    
+    # Topics that exist in only one source
+    "sql_only": [
+        "daily/monthly granular data",
+        "store-level data",
+        "transaction details",
+        "customer records"
+    ],
+    
+    "rag_only": [
+        "policies",
+        "strategic plans",
+        "contracts",
+        "future projections"
+    ],
+    
+    "web_only": [
+        "live competitor pricing"
+    ]
+}
+
+
+# ═══════════════════════════════════════════════════════
+#  HELPER FUNCTIONS
+# ═══════════════════════════════════════════════════════
+
+def can_sql_answer(question: str) -> dict:
+    """
+    Check if SQL database can answer this question
+    
+    Returns:
+        {
+            "can_answer": bool,
+            "confidence": "high" | "medium" | "low",
+            "reason": str,
+            "suggested_query": str (optional)
+        }
+    """
+    question_lower = question.lower()
+    
+    # Check for SQL-answerable patterns
+    sql_patterns = [
+        "revenue", "sales", "transactions", "quantity", "top", "best",
+        "region", "category", "product", "payment", "store", "customer",
+        "total", "count", "average", "sum", "monthly", "daily",
+        # Analytical patterns computable from transaction data
+        "quarter", "quarterly", "growth", "rate", "trend", "increase",
+        "decrease", "change", "compare", "highest", "lowest", "ranking",
+        # Store/region/performance patterns — clearly SQL territory
+        "store_id", "store", "performance", "performing", "best", "worst"
+    ]
+    
+    has_sql_pattern = any(p in question_lower for p in sql_patterns)
+
+    # Columns/concepts the transactions table simply does not have — these
+    # live in the document corpus (warehouse CSV, glossary, policies).
+    sql_negative_patterns = [
+        "sku", "sell-through", "sell through", "units on hand", "on hand",
+        "reorder point", "reorder review", "warehouse inventory",
+        "data dictionary", "glossary", "retention policy", "vendor agreement",
+        "fill rate", "support ticket",
+    ]
+    if any(p in question_lower for p in sql_negative_patterns):
+        return {
+            "can_answer": False,
+            "confidence": "none",
+            "reason": "Question references document-corpus concepts (SKU/inventory/policy) absent from the transactions table",
+        }
+
+    # Check for date ranges
+    has_valid_date = any(q in question_lower for q in ["2024", "q1", "q2", "q3", "q4"])
+    has_invalid_date = any(year in question_lower for year in ["2020", "2021", "2022", "2023", "2025"])
+    
+    if has_invalid_date:
+        return {
+            "can_answer": False,
+            "confidence": "none",
+            "reason": f"SQL only has 2024 data. Question asks for data outside this range.",
+            "date_range_available": "2024-01-01 to 2024-12-31"
+        }
+    
+    if has_sql_pattern:
+        return {
+            "can_answer": True,
+            "confidence": "high",
+            "reason": "Question asks for quantitative data available in transactions table"
+        }
+    
+    return {
+        "can_answer": False,
+        "confidence": "low",
+        "reason": "Question doesn't match SQL data patterns"
+    }
+
+
+def can_rag_answer(question: str) -> dict:
+    """Check if RAG documents can answer this question"""
+    question_lower = question.lower()
+    
+    # Check for RAG-answerable patterns
+    rag_patterns = {
+        "products_operations": ["policy", "return", "refund", "conditions"],
+        "inventory_operations": [
+            "inventory", "reorder", "reorder point", "stock level", "stock",
+            "shortage", "sop", "threshold", "supply chain", "operational",
+            "restocking", "out of stock", "low stock",
+        ],
+        "vendor_supply": [
+            "vendor", "supplier", "supply", "techsource", "procurement",
+            "sourcing", "lead time", "disruption",
+        ],
+        "strategic_plans": ["plan", "strategy", "initiative", "roadmap", "expansion"],
+        "financial": ["q1", "q2", "q3", "q4", "quarter", "performance", "report", "outperform",
+                      "revenue", "annual", "clv", "lifetime value", "customer value"],
+        "seasonal": ["black friday", "holiday", "seasonal", "week 48", "week 12", "week"],
+        "hr_compliance": ["compliance", "regulation", "guideline", "legal"],
+        # Multi-format corpus (data/corpus): warehouse CSV, glossary md,
+        # tickets JSON, contracts txt, newsletter html, policies.
+        "corpus_operations": [
+            "sku", "sell-through", "sell through", "units on hand", "on hand",
+            "warehouse", "data dictionary", "glossary", "retention policy",
+            "vendor agreement", "apex", "fill rate", "support ticket",
+            "tickets", "newsletter", "store credit", "gold member",
+            "loyalty tier", "policy v3",
+        ],
+    }
+    
+    for category, keywords in rag_patterns.items():
+        if any(kw in question_lower for kw in keywords):
+            return {
+                "can_answer": True,
+                "confidence": "high",
+                "reason": f"Question asks about {category} information in documents",
+                "likely_documents": RAG_INVENTORY["categories"].get(category, {}).get("files", [])
+            }
+    
+    return {
+        "can_answer": False,
+        "confidence": "low",
+        "reason": "Question doesn't match document topics"
+    }
+
+
+def can_web_answer(question: str) -> dict:
+    """Check if web scraping can answer this question"""
+    question_lower = question.lower()
+    
+    competitor_categories = {
+        "newegg": "electronics",
+        "goal zero": "electronics",
+        "ikea": "home",
+        "taylor stitch": "clothing",
+        "chubbies": "clothing",
+        "finisterre": "clothing",
+        "swanson": "food",
+        "nativepath": "food",
+        "campmor": "sports",
+    }
+    competitor_keywords = ["competitor", "market", "pricing", "walmart", *competitor_categories]
+    category_keywords = list(WEB_INVENTORY["categories"].keys())
+    
+    has_competitor = any(kw in question_lower for kw in competitor_keywords)
+    has_category = any(cat in question_lower for cat in category_keywords)
+    has_product_pricing_intent = any(
+        term in question_lower
+        for term in (
+            "price",
+            "pricing",
+            "discount",
+            "original price",
+            "cheapest",
+            "most expensive",
+            "lowest-priced",
+            "highest-priced",
+        )
+    ) or (
+        "product" in question_lower
+        and any(
+            term in question_lower
+            for term in ("available", "show", "list", "how many", "number of", "count")
+        )
+    )
+    
+    if has_competitor or (has_category and has_product_pricing_intent):
+        suggested_category = next((cat for cat in category_keywords if cat in question_lower), None)
+        if suggested_category is None:
+            suggested_category = next(
+                (category for competitor, category in competitor_categories.items() if competitor in question_lower),
+                "electronics",
+            )
+        return {
+            "can_answer": True,
+            "confidence": "high",
+            "reason": "Question asks for competitor/market pricing data",
+            "suggested_category": suggested_category,
+        }
+    
+    return {
+        "can_answer": False,
+        "confidence": "low",
+        "reason": "Question doesn't ask for competitor data"
+    }
+
+
+def should_cross_validate(question: str) -> dict:
+    """
+    Determine if question should use cross-validation (SQL + RAG)
+    
+    Returns:
+        {
+            "should_validate": bool,
+            "reason": str,
+            "validation_topic": str
+        }
+    """
+    question_lower = question.lower()
+    
+    # Check if question matches validatable topics
+    for topic, sources in CROSS_VALIDATION_MAP["validatable"].items():
+        topic_keywords = topic.lower().replace("_", " ").split()
+        if all(kw in question_lower for kw in topic_keywords):
+            return {
+                "should_validate": True,
+                "reason": f"Both SQL and RAG have data for {topic}",
+                "validation_topic": topic,
+                "sql_source": sources["sql"],
+                "rag_source": sources["rag"]
+            }
+    
+    return {
+        "should_validate": False,
+        "reason": "No overlapping data in SQL and RAG for this question"
+    }

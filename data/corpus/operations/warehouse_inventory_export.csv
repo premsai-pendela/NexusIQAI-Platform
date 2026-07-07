@@ -1,0 +1,17 @@
+sku,product_name,category,warehouse_region,units_on_hand,reorder_point,units_on_order,last_receipt_date,sell_through_rate_pct,status
+ELEC-1001,Laptop,Electronics,West,412,150,200,2025-02-18,82.4,ok
+ELEC-1002,Tablet,Electronics,West,268,120,0,2025-01-29,79.1,ok
+ELEC-1003,Phone,Electronics,East,384,140,150,2025-02-21,84.0,ok
+ELEC-1004,Monitor,Electronics,North,199,80,0,2025-02-10,71.3,ok
+ELEC-1005,Headphones,Electronics,South,505,160,0,2025-02-14,68.9,ok
+CLTH-2001,Jeans,Clothing,East,731,250,300,2025-02-24,66.2,ok
+CLTH-2002,T-Shirt,Clothing,South,948,300,0,2025-02-19,61.5,ok
+CLTH-2003,Jacket,Clothing,North,287,120,180,2025-02-06,88.7,reorder_review
+HOME-3001,Bedding,Home,North,342,140,0,2025-02-11,73.8,ok
+HOME-3002,Kitchen,Home,West,296,130,120,2025-02-25,80.2,ok
+HOME-3003,Decor,Home,South,451,150,0,2025-01-31,58.4,ok
+SPRT-4001,Yoga Mat,Sports,West,389,120,0,2025-02-17,64.7,ok
+SPRT-4002,Dumbbells,Sports,East,214,100,90,2025-02-20,86.1,reorder_review
+SPRT-4003,Running Shoes,Sports,South,367,140,0,2025-02-13,75.9,ok
+FOOD-5001,Coffee,Food,North,822,300,400,2025-02-26,90.3,reorder_review
+FOOD-5002,Snacks,Food,East,1104,350,0,2025-02-22,77.6,ok
