@@ -25,6 +25,15 @@ class DataContext:
     chroma_directory: Optional[Path] = None
     chroma_collection: str = "nexusiq_docs"
     allow_web: bool = True
+    # Platform-mode fields. When database_url is set, SQL agents connect to
+    # this per-company database instead of the global settings.database_url.
+    # allowed_tables / rag_metadata_filter bake a role's evidence boundary
+    # into the agent instance so it cannot be widened per-request.
+    database_url: Optional[str] = None
+    allowed_tables: Optional[tuple[str, ...]] = None
+    rag_metadata_filter: Optional[dict] = None
+    company: Optional[str] = None
+    role: Optional[str] = None
 
     @property
     def is_pilot(self) -> bool:
@@ -44,6 +53,22 @@ LIVE_CONTEXT = DataContext(
 )
 
 
+# Registry of platform (company/role) contexts, keyed by context key.
+# Registered at startup by platform.contexts.register_company_contexts().
+_REGISTERED_CONTEXTS: dict[str, DataContext] = {}
+
+
+def register_data_context(ctx: DataContext) -> None:
+    """Register a platform data context so keyed agent factories can find it."""
+    if ctx.key == LIVE_CONTEXT_KEY:
+        raise ValueError("Cannot overwrite the live context")
+    _REGISTERED_CONTEXTS[ctx.key] = ctx
+
+
 def get_data_context(key: str = LIVE_CONTEXT_KEY) -> DataContext:
-    """Return the live data context (only supported context)."""
-    return LIVE_CONTEXT
+    """Return the live context or a registered platform context."""
+    if key == LIVE_CONTEXT_KEY:
+        return LIVE_CONTEXT
+    if key in _REGISTERED_CONTEXTS:
+        return _REGISTERED_CONTEXTS[key]
+    raise KeyError(f"Unknown data context: {key!r}")

@@ -141,8 +141,9 @@ class SQLAgent:
         self.tracker = get_tracker()
         self.llm_gateway = get_llm_gateway()
         
-        # Database connection
-        self.engine = create_engine(settings.database_url)
+        # Database connection — platform contexts carry their own per-company
+        # database; the live context uses the global configured database.
+        self.engine = create_engine(data_context.database_url or settings.database_url)
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
         self.session.rollback()  # Clear any leftover transactions
@@ -155,6 +156,8 @@ class SQLAgent:
     
     def _get_schema_info(self) -> str:
         """Dynamically discover schema from database, falling back to hardcoded string."""
+        if self.engine.dialect.name == "sqlite":
+            return self._get_sqlite_schema_info()
         try:
             discovery_sql = """
             SELECT
@@ -194,6 +197,35 @@ class SQLAgent:
         except Exception as e:
             print(f"Schema discovery failed: {e}, using fallback")
             return self._get_schema_fallback()
+
+    def _get_sqlite_schema_info(self) -> str:
+        """Schema discovery for per-company SQLite databases (platform mode).
+
+        Only tables in data_context.allowed_tables are described, so a role's
+        SQL generation prompt never sees restricted tables.
+        """
+        rows = self.session.execute(text(
+            "SELECT name FROM sqlite_master WHERE type='table' "
+            "AND name NOT LIKE 'sqlite_%' ORDER BY name"
+        )).fetchall()
+        allowed = self.data_context.allowed_tables
+        tables = [r[0] for r in rows if allowed is None or r[0] in allowed]
+
+        schema_lines = ["I am using SQLite. Here are the available tables and columns:\n"]
+        for table in tables:
+            schema_lines.append(f"\nTABLE: {table}")
+            cols = self.session.execute(text(f'PRAGMA table_info("{table}")')).fetchall()
+            for col in cols:
+                # PRAGMA table_info: (cid, name, type, notnull, dflt_value, pk)
+                nullable_str = " NOT NULL" if col[3] else ""
+                schema_lines.append(f"  • {col[1]} ({col[2]}{nullable_str})")
+
+        if self.data_context.date_guidance:
+            schema_lines.append(f"\n⚠️ {self.data_context.date_guidance}")
+        schema_lines.append(
+            "\nUse SQLite syntax (strftime for dates, no INTERVAL, no ILIKE)."
+        )
+        return "\n".join(schema_lines)
 
     def _get_schema_fallback(self) -> str:
         """Hardcoded schema — used when INFORMATION_SCHEMA discovery fails."""
@@ -363,7 +395,10 @@ class SQLAgent:
     
     def _create_sql_prompt(self, question: str) -> str:
         """Create prompt for SQL generation"""
-        
+
+        if self.engine.dialect.name == "sqlite":
+            return self._create_sqlite_prompt(question)
+
         prompt_template = """You are an expert PostgreSQL query generator.
 
 {schema}
@@ -406,8 +441,45 @@ SQL QUERY:"""
             table_name=self.data_context.sql_table,
         )
 
-    
-    
+    def _create_sqlite_prompt(self, question: str) -> str:
+        """SQL generation prompt for per-company SQLite workspaces (platform mode).
+
+        The live business-context layer is company-agnostic, so platform
+        contexts use the company's own business rules instead.
+        """
+        self._last_business_context = {"block": "", "ids": [], "chars": 0}
+        business_rules = """BUSINESS RULES for this company workspace:
+- Revenue = SUM(total_amount) on orders WHERE status = 'completed'.
+  Refunded and pending orders are NEVER revenue.
+- MRR = SUM(mrr) on customers.
+- Overdue invoices have status = 'overdue'.
+- Resolution time = resolution_hours on resolved support tickets.
+- Attrition = employees with a non-null termination_date."""
+
+        return f"""You are an expert SQLite query generator.
+
+{self.schema_context}
+
+{business_rules}
+
+USER QUESTION: {question}
+
+RULES:
+1. Generate ONLY valid SQLite SQL — no PostgreSQL syntax.
+2. NEVER use ::numeric casts, ILIKE, INTERVAL, EXTRACT, or DATE_TRUNC.
+3. Dates are ISO text: filter with comparisons like
+   order_date >= '2024-07-01' AND order_date < '2024-10-01',
+   or strftime('%Y-%m', order_date) for month grouping.
+4. ROUND(expr, 2) works directly in SQLite.
+5. Use NULLIF(denominator, 0) to avoid division by zero.
+6. NEVER use DELETE, DROP, UPDATE, INSERT.
+7. Add ORDER BY and LIMIT for rankings.
+8. Only use the tables listed in the schema above.
+9. Return ONLY the SQL query, no explanations.
+
+SQL QUERY:"""
+
+
     @staticmethod
     def _legacy_validate_query(sql_query: str) -> tuple[bool, str]:
         """Conservative text fallback used only when sqlglot is unavailable."""
@@ -492,6 +564,21 @@ SQL QUERY:"""
         statement = statements[0]
         if not self._is_read_only_expression(statement):
             return False, "Only SELECT or WITH queries allowed"
+
+        # Platform mode: enforce the role's table allowlist at the AST level.
+        # Even if the LLM generates SQL against a restricted table, it is
+        # rejected here before execution.
+        allowed = self.data_context.allowed_tables
+        if allowed is not None:
+            allowed_set = {t.lower() for t in allowed}
+            cte_names = {
+                cte.alias_or_name.lower()
+                for cte in statement.find_all(exp.CTE)
+            }
+            for table in statement.find_all(exp.Table):
+                name = table.name.lower()
+                if name and name not in allowed_set and name not in cte_names:
+                    return False, f"ACCESS_DENIED_TABLE:{table.name}"
 
         return True, ""
     

@@ -1,0 +1,17 @@
+{
+  "built_at": "2026-07-07T06:03:10.463224+00:00",
+  "hashes": {
+    "company.db": "4667d339cc8e2543b18086daf9bf98c1ddd82826852289998a52bff908eaa6a0",
+    "docs/finance/billing_policy.md": "7676f276a3ea75049b4e089f7b47d90bc5b76e6ad73cfc389e94434059b4037d",
+    "docs/finance/q4_finance_summary.md": "c2d65455f53213dba61dc43f6ac48379ec4ce23779217b4654582f8a25f1b065",
+    "docs/general/business_glossary.md": "ed8b96f3e6807b1f706a9fb5a80c0b94c3b059cd01039e306796496e9fc5f20e",
+    "docs/general/company_overview.md": "6a26a5e85dd1cac5dd7cbb4aa0610e273839491b207122ec9f4caaf0759528c8",
+    "docs/general/data_dictionary.md": "ebf772c58bc4e637f3748629183f362ee124a29f0962bd30ae9241be55d3d7a1",
+    "docs/hr/compliance_training.md": "ce9b8cc3879f590bc93ba4f2896dbcac8af7b1ef659b22e85408233e4c444571",
+    "docs/hr/hr_policy_handbook.md": "f79cb530e9ab0acfbaca99f89af1dead6043ce3478b907106a9f2c671fc86fd8",
+    "docs/ops/operations_runbook.md": "45caf3c81f1a1bfc8f1dc25065d564bfcb125230ef3c1bf8717b8be97e5aeddf",
+    "docs/product/product_catalog.md": "fdb74ae720c66a66f8ae9def42db166f74f0739cbd6d6cfd92e6ba8743337838",
+    "docs/support/support_playbook.md": "546c25347c75aebe5e20f5205b4eeed5b7a679c47abe927f4a3c448d3fd8877c",
+    "sources.json": "8fb6b5549557a37cc04d44bb48b3ebf8ee2e5f26da3761d13cd69c92e74970bb"
+  }
+}

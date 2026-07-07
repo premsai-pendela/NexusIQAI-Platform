@@ -1,0 +1,100 @@
+{
+  "Admin": {
+    "tables": [
+      "orders",
+      "customers",
+      "products",
+      "invoices",
+      "support_tickets",
+      "employees_hr"
+    ],
+    "departments": [
+      "general",
+      "finance",
+      "hr",
+      "support",
+      "product",
+      "ops"
+    ]
+  },
+  "CEO": {
+    "tables": [
+      "orders",
+      "customers",
+      "products",
+      "invoices",
+      "support_tickets",
+      "employees_hr"
+    ],
+    "departments": [
+      "general",
+      "finance",
+      "hr",
+      "support",
+      "product",
+      "ops"
+    ]
+  },
+  "Analyst": {
+    "tables": [
+      "orders",
+      "customers",
+      "products",
+      "invoices",
+      "support_tickets"
+    ],
+    "departments": [
+      "general",
+      "finance",
+      "product",
+      "support"
+    ]
+  },
+  "Finance": {
+    "tables": [
+      "invoices",
+      "orders",
+      "customers",
+      "products"
+    ],
+    "departments": [
+      "general",
+      "finance",
+      "product"
+    ]
+  },
+  "HR": {
+    "tables": [
+      "employees_hr"
+    ],
+    "departments": [
+      "general",
+      "hr"
+    ]
+  },
+  "Support": {
+    "tables": [
+      "support_tickets",
+      "customers",
+      "products"
+    ],
+    "departments": [
+      "general",
+      "support",
+      "product"
+    ]
+  },
+  "Ops": {
+    "tables": [
+      "orders",
+      "products",
+      "support_tickets"
+    ],
+    "departments": [
+      "general",
+      "ops",
+      "product",
+      "support"
+    ]
+  }
+}

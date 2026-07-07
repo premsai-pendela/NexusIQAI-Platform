@@ -1,0 +1,238 @@
+"""NexusIQAI Platform Mode routes — multi-company, role-aware analyst API.
+
+Every data route depends on AccessContext resolved from the session token.
+Company and role always come from the server-side registry; no client-sent
+company/role value is ever trusted.
+"""
+
+import asyncio
+import json
+import time
+import uuid
+from typing import Optional
+
+from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel, Field
+
+from api.serializers import build_answer_payload
+from nexus_platform import store
+from nexus_platform.auth import (AccessContext, create_token,
+                                 get_access_context, require_admin)
+from nexus_platform.brain_builder import brain_status, build_brain
+from nexus_platform.contexts import brain_dir
+from nexus_platform.registry import get_registry
+
+router = APIRouter(prefix="/platform")
+
+_QUERY_TIMEOUT = 90
+
+
+# ── Schemas ─────────────────────────────────────────────────────────────
+
+class LoginRequest(BaseModel):
+    email: str = Field(..., max_length=120)
+    password: str = Field(..., max_length=120)
+
+
+class PlatformQueryRequest(BaseModel):
+    question: str = Field(..., min_length=3, max_length=500)
+    session_id: str = Field(..., min_length=4, max_length=64)
+
+
+class FeedbackRequest(BaseModel):
+    category: str = Field(..., max_length=40)
+    message: str = Field(..., min_length=3, max_length=2000)
+    page: Optional[str] = Field(None, max_length=120)
+    trace_id: Optional[str] = Field(None, max_length=40)
+
+
+class FeedbackStatusRequest(BaseModel):
+    status: str = Field(..., pattern="^(new|reviewed|resolved)$")
+
+
+def _profile(ctx: AccessContext) -> dict:
+    return {
+        "email": ctx.employee.email,
+        "name": ctx.employee.name,
+        "title": ctx.employee.title,
+        "role": ctx.employee.role,
+        "is_admin": ctx.is_admin,
+        "company": {
+            "slug": ctx.company.slug,
+            "name": ctx.company.name,
+            "industry": ctx.company.industry,
+            "description": ctx.company.description,
+        },
+        "access": {
+            "summary": ctx.policy.summary,
+            "denied_summary": ctx.policy.denied_summary,
+            "tables": list(ctx.policy.allowed_tables),
+            "departments": list(ctx.policy.allowed_departments),
+            "read_only": True,
+        },
+    }
+
+
+# ── Auth ────────────────────────────────────────────────────────────────
+
+@router.post("/login")
+def login(req: LoginRequest):
+    employee = get_registry().authenticate(req.email, req.password)
+    if employee is None:
+        raise HTTPException(status_code=401, detail="Invalid work email or password")
+    token = create_token(employee.email)
+    from nexus_platform.access_policy import get_policy
+    registry = get_registry()
+    ctx = AccessContext(employee=employee,
+                        company=registry.get_company(employee.company_slug),
+                        policy=get_policy(employee.role))
+    return {"token": token, "profile": _profile(ctx)}
+
+
+@router.get("/me")
+def me(ctx: AccessContext = Depends(get_access_context)):
+    return _profile(ctx)
+
+
+# ── Workspace / brain ───────────────────────────────────────────────────
+
+@router.get("/workspace")
+def workspace(ctx: AccessContext = Depends(get_access_context)):
+    status = brain_status(ctx.company.slug)
+    if not ctx.is_admin:
+        # Employees see readiness only — not rebuild internals or changed files
+        status = {"status": "ready" if status["status"] != "not_built" else "not_built",
+                  "built_at": status.get("built_at")}
+    schema = {}
+    catalog_path = brain_dir(ctx.company.slug) / "schema_catalog.json"
+    if catalog_path.exists():
+        full = json.loads(catalog_path.read_text())
+        schema = {t: v for t, v in full.items() if t in ctx.policy.allowed_tables}
+    docs = []
+    inventory_path = brain_dir(ctx.company.slug) / "doc_inventory.json"
+    if inventory_path.exists():
+        docs = [d for d in json.loads(inventory_path.read_text())
+                if d.get("department") in ctx.policy.allowed_departments]
+    return {
+        "profile": _profile(ctx),
+        "brain": status,
+        "tables": schema,
+        "documents": docs,
+    }
+
+
+@router.post("/brain/rebuild")
+def rebuild_brain(ctx: AccessContext = Depends(get_access_context)):
+    require_admin(ctx)
+    log = build_brain(ctx.company.slug)
+    # Rebuilt indexes are picked up by RAG agents via the ingestion version file.
+    return {"status": "ok", "build_log": log}
+
+
+@router.get("/brain/status")
+def get_brain_status(ctx: AccessContext = Depends(get_access_context)):
+    require_admin(ctx)
+    return brain_status(ctx.company.slug)
+
+
+# ── Query ───────────────────────────────────────────────────────────────
+
+@router.post("/query")
+async def platform_query(req: PlatformQueryRequest,
+                         ctx: AccessContext = Depends(get_access_context)):
+    from nexus_platform.query_service import run_query
+    request_id = str(uuid.uuid4())[:8]
+    start = time.time()
+    loop = asyncio.get_event_loop()
+    try:
+        result = await asyncio.wait_for(
+            loop.run_in_executor(None, lambda: run_query(ctx, req.question, req.session_id)),
+            timeout=_QUERY_TIMEOUT,
+        )
+    except asyncio.TimeoutError:
+        raise HTTPException(status_code=504, detail="Query timed out")
+
+    payload = build_answer_payload(result)
+    platform_meta = result.get("platform") or {}
+    sources = []
+    for s in result.get("sources") or []:
+        if isinstance(s, dict):
+            sources.append({
+                "type": s.get("type", "rag"),
+                "content": str(s.get("content", s.get("document", "")))[:500],
+                "filename": s.get("filename") or s.get("source"),
+            })
+    return {
+        **payload,
+        "sources": sources,
+        "platform": platform_meta,
+        "latency_ms": (time.time() - start) * 1000,
+        "request_id": request_id,
+    }
+
+
+@router.get("/history")
+def history(ctx: AccessContext = Depends(get_access_context)):
+    """The caller's own recent question history (their memory, their company)."""
+    return {"turns": store.employee_history(ctx.company.slug, ctx.employee.email, limit=30)}
+
+
+# ── Feedback ────────────────────────────────────────────────────────────
+
+@router.post("/feedback")
+def submit_feedback(req: FeedbackRequest,
+                    ctx: AccessContext = Depends(get_access_context)):
+    fid = store.save_feedback(ctx.company.slug, ctx.employee.email,
+                              ctx.employee.role, req.category, req.message,
+                              req.page, req.trace_id)
+    return {"status": "ok", "feedback_id": fid}
+
+
+@router.get("/admin/feedback")
+def review_feedback(employee: Optional[str] = None, status: Optional[str] = None,
+                    category: Optional[str] = None,
+                    ctx: AccessContext = Depends(get_access_context)):
+    require_admin(ctx)
+    return {"feedback": store.list_feedback(ctx.company.slug, employee=employee,
+                                            status=status, category=category)}
+
+
+@router.patch("/admin/feedback/{feedback_id}")
+def set_feedback_status(feedback_id: str, req: FeedbackStatusRequest,
+                        ctx: AccessContext = Depends(get_access_context)):
+    require_admin(ctx)
+    if not store.update_feedback_status(ctx.company.slug, feedback_id, req.status):
+        raise HTTPException(status_code=404, detail="Feedback not found in your company workspace")
+    return {"status": "ok"}
+
+
+# ── Trace review (Admin/CEO, same company only) ─────────────────────────
+
+@router.get("/admin/traces")
+def review_traces(employee: Optional[str] = None, date_from: Optional[str] = None,
+                  date_to: Optional[str] = None,
+                  ctx: AccessContext = Depends(get_access_context)):
+    require_admin(ctx)
+    return {"traces": store.list_traces(ctx.company.slug, employee=employee,
+                                        date_from=date_from, date_to=date_to)}
+
+
+@router.get("/traces/{trace_id}")
+def get_trace(trace_id: str, ctx: AccessContext = Depends(get_access_context)):
+    """Company-scoped trace detail. Employees may open only their own traces;
+    Admin/CEO may open any trace in their company."""
+    trace = store.get_trace(ctx.company.slug, trace_id)
+    if trace is None:
+        raise HTTPException(status_code=404, detail="Trace not found in your company workspace")
+    if not ctx.is_admin and trace["employee"] != ctx.employee.email:
+        raise HTTPException(status_code=403, detail="You can only view your own traces")
+    return trace
+
+
+@router.get("/admin/employees")
+def company_employees(ctx: AccessContext = Depends(get_access_context)):
+    require_admin(ctx)
+    return {"employees": [
+        {"email": e.email, "name": e.name, "role": e.role, "title": e.title}
+        for e in get_registry().company_employees(ctx.company.slug)
+    ]}

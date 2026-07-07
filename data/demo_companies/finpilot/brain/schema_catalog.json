@@ -1,0 +1,247 @@
+{
+  "products": {
+    "columns": [
+      {
+        "name": "product_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "name",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "category",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "list_price",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "launched",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 6
+  },
+  "customers": {
+    "columns": [
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "name",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "segment",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "region",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "signup_date",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "plan",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "mrr",
+        "type": "REAL",
+        "not_null": true
+      }
+    ],
+    "row_count": 260
+  },
+  "orders": {
+    "columns": [
+      {
+        "name": "order_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "order_date",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "product_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "region",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "quantity",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "unit_price",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "total_amount",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 5200
+  },
+  "invoices": {
+    "columns": [
+      {
+        "name": "invoice_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "issue_date",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "due_date",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "amount",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "paid_date",
+        "type": "TEXT",
+        "not_null": false
+      }
+    ],
+    "row_count": 2081
+  },
+  "support_tickets": {
+    "columns": [
+      {
+        "name": "ticket_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "created_at",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "category",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "priority",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "resolution_hours",
+        "type": "REAL",
+        "not_null": false
+      },
+      {
+        "name": "csat",
+        "type": "INTEGER",
+        "not_null": false
+      }
+    ],
+    "row_count": 1300
+  },
+  "employees_hr": {
+    "columns": [
+      {
+        "name": "emp_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "department",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "role_title",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "region",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "hire_date",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "termination_date",
+        "type": "TEXT",
+        "not_null": false
+      },
+      {
+        "name": "salary_band",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 132
+  }
+}

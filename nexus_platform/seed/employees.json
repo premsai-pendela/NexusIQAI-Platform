@@ -1,0 +1,36 @@
+{
+  "companies": [
+    {
+      "slug": "acmecloud",
+      "name": "AcmeCloud Analytics",
+      "domain": "acmecloud.test",
+      "industry": "B2B SaaS Analytics",
+      "description": "Mid-size B2B SaaS analytics company selling dashboard and data-pipeline subscriptions to product and marketing teams."
+    },
+    {
+      "slug": "medcore",
+      "name": "MedCore Systems",
+      "domain": "medcore.test",
+      "industry": "Healthcare Operations",
+      "description": "Med-tech workflow company providing scheduling, claims, and compliance tooling to outpatient clinics."
+    },
+    {
+      "slug": "finpilot",
+      "name": "FinPilot Ops",
+      "domain": "finpilot.test",
+      "industry": "Fintech Payments",
+      "description": "Payments-operations company handling merchant onboarding, transaction monitoring, and settlement reporting."
+    }
+  ],
+  "employees": [
+    {"email": "admin@acmecloud.test",   "name": "Avery Stone",   "company_slug": "acmecloud", "role": "Admin",   "password": "demo-admin-2026",   "title": "VP of Data (Admin)"},
+    {"email": "analyst@acmecloud.test", "name": "Jordan Lee",    "company_slug": "acmecloud", "role": "Analyst", "password": "demo-analyst-2026", "title": "Senior Business Analyst"},
+    {"email": "hr@acmecloud.test",      "name": "Sam Rivera",    "company_slug": "acmecloud", "role": "HR",      "password": "demo-hr-2026",      "title": "People Operations Lead"},
+    {"email": "ceo@medcore.test",       "name": "Dana Whitfield","company_slug": "medcore",   "role": "CEO",     "password": "demo-ceo-2026",     "title": "Chief Executive Officer"},
+    {"email": "finance@medcore.test",   "name": "Priya Natesan", "company_slug": "medcore",   "role": "Finance", "password": "demo-finance-2026", "title": "Finance Controller"},
+    {"email": "support@medcore.test",   "name": "Miguel Torres", "company_slug": "medcore",   "role": "Support", "password": "demo-support-2026", "title": "Support Operations Manager"},
+    {"email": "admin@finpilot.test",    "name": "Casey Morgan",  "company_slug": "finpilot",  "role": "Admin",   "password": "demo-admin-2026",   "title": "Head of Platform (Admin)"},
+    {"email": "ops@finpilot.test",      "name": "Riley Chen",    "company_slug": "finpilot",  "role": "Ops",     "password": "demo-ops-2026",     "title": "Operations Analyst"},
+    {"email": "analyst@finpilot.test",  "name": "Noor Haddad",   "company_slug": "finpilot",  "role": "Analyst", "password": "demo-analyst-2026", "title": "Risk & Revenue Analyst"}
+  ]
+}

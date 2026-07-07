@@ -1,0 +1,35 @@
+{
+  "company": "medcore",
+  "built_at": "2026-07-07T06:03:10.463287+00:00",
+  "duration_s": 0.15,
+  "steps": [
+    {
+      "step": "scan files",
+      "detail": "12 source files hashed",
+      "at": "2026-07-07T06:03:10.312152+00:00"
+    },
+    {
+      "step": "profile structured data",
+      "detail": {
+        "products": 5,
+        "customers": 160,
+        "orders": 3000,
+        "invoices": 1343,
+        "support_tickets": 750,
+        "employees_hr": 124
+      },
+      "at": "2026-07-07T06:03:10.312595+00:00"
+    },
+    {
+      "step": "build RAG index",
+      "detail": "14 chunks in brain_medcore",
+      "at": "2026-07-07T06:03:10.463144+00:00"
+    },
+    {
+      "step": "run access-policy checks",
+      "detail": "7 role policies mapped",
+      "at": "2026-07-07T06:03:10.463221+00:00"
+    }
+  ],
+  "status": "workspace ready"
+}

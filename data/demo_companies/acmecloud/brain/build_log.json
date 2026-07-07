@@ -1,0 +1,35 @@
+{
+  "company": "acmecloud",
+  "built_at": "2026-07-07T06:03:10.310701+00:00",
+  "duration_s": 8.87,
+  "steps": [
+    {
+      "step": "scan files",
+      "detail": "12 source files hashed",
+      "at": "2026-07-07T06:03:01.440426+00:00"
+    },
+    {
+      "step": "profile structured data",
+      "detail": {
+        "products": 6,
+        "customers": 220,
+        "orders": 4200,
+        "invoices": 1886,
+        "support_tickets": 1050,
+        "employees_hr": 140
+      },
+      "at": "2026-07-07T06:03:01.441229+00:00"
+    },
+    {
+      "step": "build RAG index",
+      "detail": "14 chunks in brain_acmecloud",
+      "at": "2026-07-07T06:03:10.310546+00:00"
+    },
+    {
+      "step": "run access-policy checks",
+      "detail": "7 role policies mapped",
+      "at": "2026-07-07T06:03:10.310632+00:00"
+    }
+  ],
+  "status": "workspace ready"
+}

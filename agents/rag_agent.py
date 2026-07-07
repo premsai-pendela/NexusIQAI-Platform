@@ -49,6 +49,16 @@ logger = logging.getLogger(__name__)
 # Initialize quota tracker
 quota_tracker = get_tracker()
 
+# Shared embedding model — one copy serves every RAG agent instance
+_shared_embedding_model = None
+
+
+def _get_shared_embedding_model():
+    global _shared_embedding_model
+    if _shared_embedding_model is None:
+        _shared_embedding_model = SentenceTransformer('all-MiniLM-L6-v2', device='cpu')
+    return _shared_embedding_model
+
 
 class RAGAgent:
     """
@@ -124,9 +134,11 @@ class RAGAgent:
         self.data_context = data_context
         self.collection_name = data_context.chroma_collection
         
-        # Initialize embedding model (same as setup)
+        # Initialize embedding model (same as setup). Shared across agent
+        # instances — platform mode creates one agent per company/role and
+        # the model itself holds no per-context state.
         logger.info("Loading embedding model...")
-        self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2', device='cpu')
+        self.embedding_model = _get_shared_embedding_model()
         
         # Initialize ChromaDB
         chroma_dir = Path(data_context.chroma_directory or settings.chroma_persist_directory)
@@ -205,12 +217,19 @@ class RAGAgent:
         
         logger.info("Building BM25 index for hybrid search...")
         
-        # Get all documents from ChromaDB
-        all_docs = self.collection.get(
-            limit=self.collection.count(),
-            include=["documents", "metadatas"]
-        )
-        
+        # Get all documents from ChromaDB. Platform mode: the role's evidence
+        # boundary also applies here so restricted chunks never enter the
+        # keyword index.
+        get_params = {
+            "limit": self.collection.count(),
+            "include": ["documents", "metadatas"],
+        }
+        context_filter = getattr(self.data_context, "rag_metadata_filter", None)
+        if context_filter:
+            get_params["where"] = context_filter
+        all_docs = self.collection.get(**get_params)
+        self._collection_count_at_build = self.collection.count()
+
         self.bm25_documents = all_docs['documents']
         self.bm25_metadatas = all_docs['metadatas']
         self.bm25_ids = all_docs['ids']
@@ -240,10 +259,11 @@ class RAGAgent:
     def _ensure_bm25_fresh(self) -> None:
         """Auto-refresh BM25 if ChromaDB doc count or ingestion version has changed."""
         chroma_count = self.collection.count()
+        count_at_build = getattr(self, "_collection_count_at_build", len(self.bm25_documents))
         current_version = self._read_ingestion_version()
-        if chroma_count != len(self.bm25_documents) or current_version != self._ingestion_version:
+        if chroma_count != count_at_build or current_version != self._ingestion_version:
             logger.info(
-                f"BM25 stale (docs: {len(self.bm25_documents)}→{chroma_count}, "
+                f"BM25 stale (docs: {count_at_build}→{chroma_count}, "
                 f"version: {self._ingestion_version}→{current_version}) — refreshing"
             )
             self._init_bm25_index()
@@ -326,6 +346,13 @@ class RAGAgent:
         }
         
         # ✅ Add metadata filter if provided
+        # Platform mode: the role's evidence boundary is baked into the data
+        # context and always applied — callers cannot widen it per-request.
+        context_filter = getattr(self.data_context, "rag_metadata_filter", None)
+        if context_filter and metadata_filter:
+            metadata_filter = {"$and": [context_filter, metadata_filter]}
+        elif context_filter:
+            metadata_filter = context_filter
         if metadata_filter:
             query_params["where"] = metadata_filter
             logger.info(f"  Applied metadata filter: {metadata_filter}")
@@ -359,6 +386,8 @@ class RAGAgent:
                 'text': doc,
                 'filename': metadata.get('filename', 'Unknown'),
                 'category': metadata.get('category', 'Unknown'),
+                'department': metadata.get('department'),
+                'source': metadata.get('source'),
                 'page': page_info,
                 'chunk_id': metadata.get('chunk_id', i),
                 'similarity': round(similarity, 3)
@@ -674,6 +703,7 @@ ANSWER:"""
                 sources.append({
                     'filename': filename,
                     'page': page,
+                    'department': chunk.get('department'),
                     'similarity': chunk.get('similarity'),
                     'rerank_score': chunk.get('rerank_score'),
                     'relevance_score': chunk.get('rerank_score', chunk.get('similarity')),
@@ -687,6 +717,7 @@ ANSWER:"""
                 sources.append({
                     'filename': chunk['filename'],
                     'page': chunk['page'],
+                    'department': chunk.get('department'),
                     'similarity': chunk['similarity'],
                     'rerank_score': chunk.get('rerank_score'),
                     'relevance_score': chunk.get('rerank_score', chunk.get('similarity')),
@@ -1679,10 +1710,15 @@ ANSWER:"""
             normalize_embeddings=True
         )
         
-        vector_results = self.collection.query(
-            query_embeddings=[query_embedding.tolist()],
-            n_results=min(n_results * 3, len(self.bm25_documents))  # Get more for merging
-        )
+        hybrid_query_params = {
+            "query_embeddings": [query_embedding.tolist()],
+            "n_results": min(n_results * 3, len(self.bm25_documents)),  # Get more for merging
+        }
+        # Platform mode: role evidence boundary applies to hybrid search too.
+        hybrid_context_filter = getattr(self.data_context, "rag_metadata_filter", None)
+        if hybrid_context_filter:
+            hybrid_query_params["where"] = hybrid_context_filter
+        vector_results = self.collection.query(**hybrid_query_params)
         
         # Build vector score map
         vector_scores = {}
@@ -1730,6 +1766,8 @@ ANSWER:"""
                     'text': self.bm25_documents[idx],
                     'filename': metadata.get('filename', 'Unknown'),
                     'category': metadata.get('category', 'Unknown'),
+                    'department': metadata.get('department'),
+                    'source': metadata.get('source'),
                     'page': page_info,
                     'chunk_id': metadata.get('chunk_id', idx),
                     'similarity': round(hybrid_score, 3),

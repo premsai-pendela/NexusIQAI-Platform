@@ -1,0 +1,59 @@
+{
+  "company": "acmecloud",
+  "generated_at": "2026-07-07T02:02:06.994437",
+  "synthetic": true,
+  "structured": {
+    "engine": "sqlite",
+    "path": "company.db",
+    "tables": {
+      "products": 6,
+      "customers": 220,
+      "orders": 4200,
+      "invoices": 1886,
+      "support_tickets": 1050,
+      "employees_hr": 140
+    }
+  },
+  "documents": [
+    {
+      "path": "docs/general/company_overview.md",
+      "department": "general"
+    },
+    {
+      "path": "docs/general/business_glossary.md",
+      "department": "general"
+    },
+    {
+      "path": "docs/general/data_dictionary.md",
+      "department": "general"
+    },
+    {
+      "path": "docs/finance/billing_policy.md",
+      "department": "finance"
+    },
+    {
+      "path": "docs/finance/q4_finance_summary.md",
+      "department": "finance"
+    },
+    {
+      "path": "docs/hr/hr_policy_handbook.md",
+      "department": "hr"
+    },
+    {
+      "path": "docs/hr/compliance_training.md",
+      "department": "hr"
+    },
+    {
+      "path": "docs/support/support_playbook.md",
+      "department": "support"
+    },
+    {
+      "path": "docs/product/product_catalog.md",
+      "department": "product"
+    },
+    {
+      "path": "docs/ops/operations_runbook.md",
+      "department": "ops"
+    }
+  ]
+}
