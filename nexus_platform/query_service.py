@@ -9,6 +9,7 @@ wording, citation re-filtering, chart specs, and the saved product trace.
 
 from __future__ import annotations
 
+import json
 import threading
 import time
 from collections import Counter
@@ -20,6 +21,7 @@ from nexus_platform.auth import AccessContext
 from nexus_platform.charts import build_chart_spec, wants_chart
 from nexus_platform.contexts import get_company_fusion_agent
 from nexus_platform.dashboard import build_dashboard, wants_dashboard
+from nexus_platform.deterministic import Intent, execute as deterministic_execute, parse_intent
 
 # One lock per (company, role) agent — history seeding must not interleave.
 _agent_locks: dict[str, threading.Lock] = {}
@@ -67,6 +69,124 @@ def _update_prefs(ctx: AccessContext, question: str, chart_spec: Optional[dict])
     if topic_words:
         store.set_pref(ctx.company.slug, ctx.employee.email,
                        "recent_topic", topic_words[0])
+
+
+def _finish_deterministic(ctx: AccessContext, question: str, session_id: str,
+                          intent: Intent, det: dict, memory_turns: int) -> dict:
+    """Package a deterministic template answer: trace, memory, response."""
+    started = time.time()
+    company, employee, role = ctx.company.slug, ctx.employee.email, ctx.employee.role
+
+    refused = bool(det["denied"])
+    if refused:
+        denied_area = ", ".join(det["denied_tables"])
+        answer = refusal_message(role, ctx.company.name,
+                                 detail=f"the '{denied_area}' data area is outside your role")
+        decision = "denied"
+    else:
+        answer = det["answer"]
+        decision = "allowed"
+
+    resolved = question if not intent.followup_kind else f"[{intent.followup_kind}] {question}"
+    trace_payload = {
+        "employee": employee,
+        "employee_name": ctx.employee.name,
+        "company": company,
+        "company_name": ctx.company.name,
+        "role": role,
+        "session_id": session_id,
+        "question": question,
+        "resolved_question": resolved,
+        "followup_rewritten": intent.followup_kind is not None,
+        "memory_turns_used": memory_turns,
+        "intent": {
+            "metric": intent.metric,
+            "period": list(intent.period) if intent.period else None,
+            "compare": list(intent.compare) if intent.compare else None,
+            "group_by": intent.group_by,
+            "top_n": intent.top_n,
+            "output": intent.output,
+            "followup_kind": intent.followup_kind,
+        },
+        "access_policy": {
+            "allowed_tables": list(ctx.policy.allowed_tables),
+            "allowed_departments": list(ctx.policy.allowed_departments),
+        },
+        "access_decision": decision,
+        "denied_reason": (f"tables outside role: {det['denied_tables']}" if refused else None),
+        "route": "deterministic_sql_template",
+        "template_id": det["template_id"],
+        "llm_skipped": True,
+        "model_used": None,
+        "confidence": "HIGH",
+        "sql": det["sql"],
+        "tables_touched": det["tables"],
+        "citations": [],
+        "chart_generated": det["chart"] is not None and not refused,
+        "chart_type": (det["chart"] or {}).get("type"),
+        "latency_s": round(time.time() - started, 3),
+    }
+    trace_id = store.save_trace(company, employee, role, question, decision, trace_payload)
+    # Intent is stored even for refused turns: a follow-up like "what about
+    # Q4?" then re-resolves against the same denied metric and is refused
+    # deterministically again — policy is re-applied on every turn, so stored
+    # intent can never widen access.
+    store.save_turn(company, employee, session_id, question, resolved,
+                    answer[:500], "deterministic_sql_template",
+                    (det["chart"] or {}).get("type"), refused,
+                    intent_json=intent.to_json(),
+                    sql=det["sql"], route="deterministic_sql_template",
+                    tables_json=json.dumps(det["tables"]))
+
+    followups: list[str] = []
+    if not refused:
+        if intent.period and intent.period[0].startswith("Q"):
+            other = "Q4" if not intent.period[0].startswith("Q4") else "Q1"
+            followups.append(f"What about {other}?")
+        if not intent.group_by:
+            grouped_hint = {"headcount": "by department", "terminations": "by department",
+                            "tickets": "by priority", "csat": "by category"}
+            followups.append(grouped_hint.get(intent.metric, "by region"))
+        if not intent.compare and intent.period:
+            followups.append("Compare that with Q3" if not intent.period[0].startswith("Q3")
+                             else "Compare that with Q2")
+        if (det["chart"] or {}).get("type") == "kpi":
+            followups.append("Show monthly trend")
+
+    return {
+        "answer": answer,
+        "confidence": "HIGH",
+        "confidence_reason": ("Access policy refusal — no restricted data was read."
+                              if refused else
+                              "Deterministic SQL template over your company workspace — no LLM in the loop."),
+        "validation": {
+            "confidence": "HIGH",
+            "confidence_reason": ("Access policy refusal — no restricted data was read."
+                                  if refused else
+                                  "Deterministic SQL template — no LLM in the loop."),
+        },
+        "source_type": "deterministic_sql_template",
+        "sources": [],
+        "sql_result": (None if refused else {
+            "success": True, "query": det["sql"],
+            "row_count": len(det["rows"]), "results": det["rows"][:5],
+        }),
+        "platform": {
+            "trace_id": trace_id,
+            "resolved_question": resolved,
+            "followup_rewritten": intent.followup_kind is not None,
+            "access_decision": decision,
+            "refused": refused,
+            "chart": None if refused else det["chart"],
+            "dashboard": None,
+            "role": role,
+            "company": ctx.company.name,
+            "route": "deterministic_sql_template",
+            "llm_skipped": True,
+            "model_used": None,
+            "followups": followups[:3],
+        },
+    }
 
 
 def _run_dashboard(ctx: AccessContext, question: str, session_id: str) -> dict:
@@ -153,9 +273,25 @@ def run_query(ctx: AccessContext, question: str, session_id: str) -> dict:
     if wants_dashboard(question):
         return _run_dashboard(ctx, question, session_id)
 
+    turns = store.recent_turns(company, employee, session_id, limit=10)
+
+    # Deterministic analyst layer: common business-analytics families answer
+    # from template SQL with the LLM skipped entirely. Follow-ups merge with
+    # the previous deterministic intent stored in session memory.
+    prev_intent = None
+    for t in reversed(turns):
+        if t.get("intent_json"):
+            prev_intent = Intent.from_json(t["intent_json"])
+            break
+    intent = parse_intent(question, prev_intent)
+    if intent is not None:
+        det = deterministic_execute(ctx, intent)
+        if det is not None:
+            return _finish_deterministic(ctx, question, session_id, intent,
+                                         det, memory_turns=len(turns))
+
     key = f"company:{company}:{role.lower()}"
     agent = get_company_fusion_agent(company, role)
-    turns = store.recent_turns(company, employee, session_id, limit=10)
 
     with _lock_for(key):
         # Seed this employee's session history into the shared role agent,
@@ -230,6 +366,13 @@ def run_query(ctx: AccessContext, question: str, session_id: str) -> dict:
         "access_decision": access_decision,
         "denied_reason": denied_reason,
         "route": result.get("source_type"),
+        "llm_skipped": False,
+        "model_used": result.get("model_used") or None,
+        "provider_failures": [
+            {"model": m.get("model"), "error": str(m.get("error"))[:120]}
+            for m in (result.get("models_tried") or [])
+            if isinstance(m, dict) and "FAILED" in str(m.get("status", ""))
+        ][:5],
         "confidence": result.get("confidence"),
         "sql": (result.get("sql_result") or {}).get("query"),
         "citations": [
@@ -259,5 +402,8 @@ def run_query(ctx: AccessContext, question: str, session_id: str) -> dict:
         "chart": chart_spec,
         "role": role,
         "company": ctx.company.name,
+        "route": result.get("source_type"),
+        "llm_skipped": False,
+        "model_used": result.get("model_used") or None,
     }
     return result

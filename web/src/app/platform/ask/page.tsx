@@ -124,8 +124,15 @@ function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile
         {refused ? (
           <span className="pill" style={{ marginLeft: "auto", background: "#FCF3DC", color: "#8A5B10" }}>access boundary</span>
         ) : (
-          <span className="pill" style={{ marginLeft: "auto" }}>
-            {p.confidence && p.confidence !== "UNKNOWN" ? `${p.confidence} confidence` : (p.route || "answered").replace(/_/g, " ")}
+          <span style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
+            {meta.llm_skipped && (
+              <span className="pill" style={{ background: "var(--accent-tint)", color: "var(--accent)" }}>
+                deterministic · no LLM
+              </span>
+            )}
+            <span className="pill">
+              {p.confidence && p.confidence !== "UNKNOWN" ? `${p.confidence} confidence` : (p.route || "answered").replace(/_/g, " ")}
+            </span>
           </span>
         )}
       </div>
@@ -154,8 +161,25 @@ function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile
         </div>
       )}
 
-      {meta.dashboard && !refused && <DashboardView spec={meta.dashboard} />}
-      {meta.chart && !refused && <ChartView spec={meta.chart} />}
+      {meta.dashboard && !refused && (
+        <DashboardView spec={meta.dashboard}
+          exportMeta={{ question: meta.resolved_question, trace_id: meta.trace_id }} />
+      )}
+      {meta.chart && !refused && (
+        <ChartView spec={meta.chart}
+          exportMeta={{ question: meta.resolved_question, trace_id: meta.trace_id }} />
+      )}
+
+      {!refused && (meta.followups || []).length > 0 && (
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 10 }}>
+          {(meta.followups || []).map((f) => (
+            <button key={f} onClick={() => onAsk(f)}
+              style={{ fontFamily: "var(--font-sans), sans-serif", fontSize: 11.5, padding: "5px 11px", borderRadius: 16, border: "1px solid var(--hairline)", background: "transparent", color: "var(--accent)", cursor: "pointer" }}>
+              {f} →
+            </button>
+          ))}
+        </div>
+      )}
 
       {!refused && (sql?.query || docs.length > 0) && (
         <Accordion title={`Evidence · ${(sql?.query ? 1 : 0) + docs.length} source${(sql?.query ? 1 : 0) + docs.length === 1 ? "" : "s"}`}>
@@ -192,6 +216,14 @@ function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile
             {meta.role}
             <span className="mono" style={{ fontSize: 10, color: "var(--muted-soft)", marginLeft: 12 }}>WORKSPACE </span>
             {meta.company}
+          </div>
+          <div style={{ marginTop: 3 }}>
+            <span className="mono" style={{ fontSize: 10, color: "var(--muted-soft)" }}>ROUTE </span>
+            <span className="mono" style={{ fontSize: 10.5 }}>{(meta.route || p.route || "—").replace(/_/g, " ")}</span>
+            <span className="mono" style={{ fontSize: 10, color: "var(--muted-soft)", marginLeft: 12 }}>MODEL </span>
+            <span className="mono" style={{ fontSize: 10.5 }}>
+              {meta.llm_skipped ? "none — template SQL" : meta.model_used || "engine default"}
+            </span>
           </div>
           <div style={{ marginTop: 4 }}>
             Queryable areas for your role: <span className="mono" style={{ fontSize: 10.5 }}>{profile.access.tables.join(", ") || "none"}</span>

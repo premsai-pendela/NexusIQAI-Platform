@@ -53,6 +53,10 @@ export type PlatformMeta = {
   dashboard?: DashboardSpec | null;
   role: string;
   company: string;
+  route?: string | null;
+  llm_skipped?: boolean;
+  model_used?: string | null;
+  followups?: string[];
 };
 
 export type PlatformAnswer = {
@@ -230,7 +234,11 @@ export const adminEmployees = () =>
     "/platform/admin/employees"
   );
 
-export async function exportXlsx(title: string, rows: Record<string, unknown>[]) {
+export async function exportXlsx(
+  title: string,
+  rows: Record<string, unknown>[],
+  meta?: { question?: string; trace_id?: string }
+) {
   const token = getToken();
   const res = await fetch(`${API_BASE}/platform/export/xlsx`, {
     method: "POST",
@@ -238,7 +246,7 @@ export async function exportXlsx(title: string, rows: Record<string, unknown>[])
       "Content-Type": "application/json",
       ...(token ? { "X-NexusIQ-Session": token } : {}),
     },
-    body: JSON.stringify({ title, rows }),
+    body: JSON.stringify({ title, rows, ...meta }),
   });
   if (!res.ok) throw new Error(`XLSX export failed (${res.status})`);
   const blob = await res.blob();

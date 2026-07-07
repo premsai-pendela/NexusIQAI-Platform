@@ -12,7 +12,10 @@ function fmt(v: number | string): string {
   return String(v);
 }
 
-export default function DashboardView({ spec }: { spec: DashboardSpec }) {
+export default function DashboardView({ spec, exportMeta }: {
+  spec: DashboardSpec;
+  exportMeta?: { question?: string; trace_id?: string };
+}) {
   const [showSql, setShowSql] = useState(false);
   return (
     <div style={{ marginTop: 12 }}>
@@ -28,7 +31,7 @@ export default function DashboardView({ spec }: { spec: DashboardSpec }) {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
         {spec.charts.map((c) => (
           <div key={c.title}>
-            <ChartView spec={c} />
+            <ChartView spec={c} exportMeta={exportMeta} />
           </div>
         ))}
       </div>

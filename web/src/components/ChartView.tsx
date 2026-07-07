@@ -37,7 +37,10 @@ function download(name: string, blob: Blob) {
   URL.revokeObjectURL(url);
 }
 
-export default function ChartView({ spec }: { spec: ChartSpec }) {
+export default function ChartView({ spec, exportMeta }: {
+  spec: ChartSpec;
+  exportMeta?: { question?: string; trace_id?: string };
+}) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [xlsxBusy, setXlsxBusy] = useState(false);
   const slug = spec.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
@@ -48,7 +51,7 @@ export default function ChartView({ spec }: { spec: ChartSpec }) {
   const downloadXlsx = async () => {
     setXlsxBusy(true);
     try {
-      await exportXlsx(spec.title, spec.data);
+      await exportXlsx(spec.title, spec.data, exportMeta);
     } finally {
       setXlsxBusy(false);
     }

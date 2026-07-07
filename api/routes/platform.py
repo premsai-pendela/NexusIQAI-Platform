@@ -53,6 +53,8 @@ class FeedbackStatusRequest(BaseModel):
 class XlsxExportRequest(BaseModel):
     title: str = Field(..., min_length=1, max_length=80)
     rows: list[dict] = Field(..., min_length=1, max_length=5000)
+    question: Optional[str] = Field(None, max_length=500)
+    trace_id: Optional[str] = Field(None, max_length=40)
 
 
 def _profile(ctx: AccessContext) -> dict:
@@ -191,6 +193,8 @@ def export_xlsx(req: XlsxExportRequest,
     from openpyxl import Workbook
     from openpyxl.styles import Font
 
+    from datetime import datetime, timezone
+
     wb = Workbook()
     ws = wb.active
     ws.title = "Data"
@@ -205,6 +209,23 @@ def export_xlsx(req: XlsxExportRequest,
     for idx, col in enumerate(cols, start=1):
         width = max(len(str(col)), *(len(str(r.get(col, ""))) for r in req.rows[:200]))
         ws.column_dimensions[ws.cell(row=2, column=idx).column_letter].width = min(width + 2, 40)
+
+    # Provenance sheet: who exported what, under which access scope
+    meta = wb.create_sheet("Provenance")
+    meta.column_dimensions["A"].width = 18
+    meta.column_dimensions["B"].width = 70
+    for label, value in [
+        ("question", req.question or req.title),
+        ("company", ctx.company.name),
+        ("employee", ctx.employee.email),
+        ("role", ctx.employee.role),
+        ("access scope", ", ".join(ctx.policy.allowed_tables) or "none"),
+        ("trace id", req.trace_id or "—"),
+        ("exported at", datetime.now(timezone.utc).isoformat()),
+        ("note", "Role-filtered workspace data — same rows shown in the NexusIQAI UI."),
+    ]:
+        meta.append([label, value])
+        meta.cell(row=meta.max_row, column=1).font = Font(bold=True)
 
     buf = io.BytesIO()
     wb.save(buf)

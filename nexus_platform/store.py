@@ -74,6 +74,15 @@ CREATE INDEX IF NOT EXISTS idx_traces_employee ON traces (company, employee, ts)
 """
 
 
+# Columns added after first release — applied via ALTER for existing DBs.
+_MIGRATIONS = [
+    ("memory_turns", "intent_json", "TEXT"),
+    ("memory_turns", "sql", "TEXT"),
+    ("memory_turns", "route", "TEXT"),
+    ("memory_turns", "tables_json", "TEXT"),
+]
+
+
 def _get_conn() -> sqlite3.Connection:
     global _conn
     if _conn is None:
@@ -81,6 +90,11 @@ def _get_conn() -> sqlite3.Connection:
         _conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
         _conn.row_factory = sqlite3.Row
         _conn.executescript(_SCHEMA)
+        for table, column, ctype in _MIGRATIONS:
+            cols = {r[1] for r in _conn.execute(f'PRAGMA table_info("{table}")').fetchall()}
+            if column not in cols:
+                _conn.execute(f'ALTER TABLE {table} ADD COLUMN "{column}" {ctype}')
+        _conn.commit()
     return _conn
 
 
@@ -92,16 +106,19 @@ def _now() -> str:
 
 def save_turn(company: str, employee: str, session_id: str, question: str,
               resolved_question: str, answer_summary: str, source_type: str,
-              chart_type: Optional[str], refused: bool) -> None:
+              chart_type: Optional[str], refused: bool,
+              intent_json: Optional[str] = None, sql: Optional[str] = None,
+              route: Optional[str] = None, tables_json: Optional[str] = None) -> None:
     with _lock:
         conn = _get_conn()
         conn.execute(
             "INSERT INTO memory_turns (company, employee, session_id, ts, question, "
-            "resolved_question, answer_summary, source_type, chart_type, refused) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?)",
+            "resolved_question, answer_summary, source_type, chart_type, refused, "
+            "intent_json, sql, route, tables_json) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             (company, employee, session_id, _now(), question, resolved_question,
              answer_summary[:500] if answer_summary else "", source_type,
-             chart_type, int(refused)),
+             chart_type, int(refused), intent_json, sql, route, tables_json),
         )
         conn.commit()
 
