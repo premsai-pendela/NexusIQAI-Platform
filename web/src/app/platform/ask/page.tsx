@@ -6,9 +6,13 @@ import PlatformShell from "@/components/PlatformShell";
 import ChartView from "@/components/ChartView";
 import DashboardView from "@/components/DashboardView";
 import {
+  createSessionId,
+  getProfile,
+  getSessionId,
   PlatformAnswer,
   Profile,
   platformQuery,
+  setSessionId,
   submitFeedback,
 } from "@/lib/platform";
 
@@ -97,23 +101,50 @@ type Node =
   | { id: number; type: "answer"; payload: PlatformAnswer }
   | { id: number; type: "error"; message: string };
 
+const historyKey = (email: string) => `nexusiq_platform_chat_history_${email}`;
+
+type SavedChat = {
+  sessionId: string;
+  title: string;
+  updatedAt: string;
+  messages: Node[];
+};
+
+const safeParseChats = (raw: string | null): SavedChat[] => {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.slice(0, 3) : [];
+  } catch {
+    return [];
+  }
+};
+
 function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile; onAsk: (q: string) => void }) {
   const meta = p.platform;
   const [reported, setReported] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportComment, setReportComment] = useState("");
+  const [reportBusy, setReportBusy] = useState(false);
   const refused = meta.refused;
   const sql = p.evidence?.sql;
   const docs = p.evidence?.documents || [];
 
   const report = async () => {
+    if (reportComment.trim().length < 6 || reportBusy) return;
+    setReportBusy(true);
     try {
       await submitFeedback({
         category: refused ? "access-request" : "wrong-answer",
-        message: `Flagged from Ask Analyst: "${meta.resolved_question}"`,
+        message: `${refused ? "Access request" : "Reported answer"} from Ask Analyst.\nQuestion: "${meta.resolved_question}"\nComment: ${reportComment.trim()}`,
         page: "ask",
         trace_id: meta.trace_id,
       });
       setReported(true);
-    } catch { /* non-blocking */ }
+      setReportOpen(false);
+    } catch { /* non-blocking */ } finally {
+      setReportBusy(false);
+    }
   };
 
   return (
@@ -238,11 +269,32 @@ function AnswerCard({ p, profile, onAsk }: { p: PlatformAnswer; profile: Profile
         {reported ? (
           <span className="mono" style={{ fontSize: 10, color: "var(--success-text)" }}>✓ sent to your Admin with this trace attached</span>
         ) : (
-          <button onClick={report} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "var(--font-mono), monospace", fontSize: 10, color: "var(--muted-soft)" }}>
+          <button onClick={() => setReportOpen((v) => !v)} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "var(--font-mono), monospace", fontSize: 10, color: "var(--muted-soft)" }}>
             {refused ? "⚑ request access to this data" : "⚑ report this answer"}
           </button>
         )}
       </div>
+      {reportOpen && !reported && (
+        <div style={{ marginTop: 8, border: "1px solid var(--hairline)", borderRadius: 8, padding: "9px 10px", background: "var(--surface-soft)" }}>
+          <div className="label" style={{ marginBottom: 6 }}>
+            {refused ? "WHY DO YOU NEED ACCESS?" : "WHAT LOOKED WRONG?"}
+          </div>
+          <textarea
+            value={reportComment}
+            onChange={(e) => setReportComment(e.target.value)}
+            rows={3}
+            placeholder={refused ? "Tell your Admin why this data would help your work..." : "Explain what seems wrong or confusing so your Admin can inspect the trace..."}
+            style={{ width: "100%", resize: "vertical", border: "1px solid var(--hairline-mid)", borderRadius: 7, background: "var(--surface-card)", color: "var(--ink)", fontFamily: "var(--font-sans), sans-serif", fontSize: 12, lineHeight: 1.5, padding: "8px 9px", outline: "none" }}
+          />
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 7 }}>
+            <span className="mono" style={{ fontSize: 9.5, color: "var(--muted-soft)" }}>trace {meta.trace_id} attached automatically</span>
+            <button onClick={report} disabled={reportBusy || reportComment.trim().length < 6}
+              style={{ marginLeft: "auto", border: "none", borderRadius: 14, padding: "5px 10px", background: "var(--accent)", color: "var(--on-accent)", fontSize: 11, cursor: "pointer", opacity: reportBusy || reportComment.trim().length < 6 ? 0.55 : 1 }}>
+              {reportBusy ? "Sending..." : "Send to Admin"}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -251,12 +303,63 @@ export default function AskAnalystPage() {
   const [msgs, setMsgs] = useState<Node[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [session, setSession] = useState("");
+  const [savedChats, setSavedChats] = useState<SavedChat[]>([]);
   const idc = useRef(1);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const profile = getProfile();
+    if (!profile) return;
+    const current = getSessionId();
+    setSession(current);
+    const chats = safeParseChats(localStorage.getItem(historyKey(profile.email)));
+    setSavedChats(chats);
+    const existing = chats.find((c) => c.sessionId === current);
+    if (existing?.messages?.length) {
+      setMsgs(existing.messages);
+      const maxId = Math.max(...existing.messages.map((m) => m.id), 0);
+      idc.current = maxId + 1;
+    }
+  }, []);
+
+  useEffect(() => {
     if (msgs.length) endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [msgs]);
+
+  useEffect(() => {
+    const profile = getProfile();
+    if (!profile || !session || msgs.length === 0) return;
+    const firstUser = msgs.find((m): m is Extract<Node, { type: "user" }> => m.type === "user");
+    const title = firstUser?.text.slice(0, 54) || "Untitled analysis";
+    const nextChat: SavedChat = {
+      sessionId: session,
+      title,
+      updatedAt: new Date().toISOString(),
+      messages: msgs.filter((m) => m.type !== "thinking"),
+    };
+    const others = savedChats.filter((c) => c.sessionId !== session);
+    const next = [nextChat, ...others].slice(0, 3);
+    localStorage.setItem(historyKey(profile.email), JSON.stringify(next));
+    setSavedChats(next);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [msgs, session]);
+
+  const loadChat = (chat: SavedChat) => {
+    setSessionId(chat.sessionId);
+    setSession(chat.sessionId);
+    setMsgs(chat.messages || []);
+    const maxId = Math.max(...(chat.messages || []).map((m) => m.id), 0);
+    idc.current = maxId + 1;
+  };
+
+  const newChat = () => {
+    const id = createSessionId();
+    setSessionId(id);
+    setSession(id);
+    setMsgs([]);
+    idc.current = 1;
+  };
 
   const ask = async (question?: string) => {
     const q = (question ?? input).trim();
@@ -293,6 +396,19 @@ export default function AskAnalystPage() {
         const starters = STARTERS[profile.role] || STARTERS.Analyst;
         return (
           <div style={{ padding: "16px 0 90px", maxWidth: 760, marginLeft: "auto", marginRight: "auto" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", margin: "0 0 10px" }}>
+              <span className="label">RECENT ANALYSES</span>
+              {savedChats.slice(0, 3).map((chat) => (
+                <button key={chat.sessionId} onClick={() => loadChat(chat)}
+                  style={{ maxWidth: 190, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: "var(--font-sans), sans-serif", fontSize: 11.5, padding: "5px 10px", borderRadius: 16, border: "1px solid var(--hairline)", background: chat.sessionId === session ? "var(--accent-tint)" : "var(--surface-soft)", color: "var(--accent)", cursor: "pointer" }}>
+                  {chat.title}
+                </button>
+              ))}
+              <button onClick={newChat}
+                style={{ marginLeft: "auto", fontFamily: "var(--font-sans), sans-serif", fontSize: 11.5, padding: "5px 10px", borderRadius: 16, border: "1px solid var(--hairline-mid)", background: "transparent", color: "var(--muted)", cursor: "pointer" }}>
+                New analysis
+              </button>
+            </div>
             {msgs.length === 0 && (
               <div style={{ textAlign: "center", padding: "34px 0 22px" }}>
                 <h1 className="serif" style={{ fontSize: 26, margin: "0 0 6px" }}>

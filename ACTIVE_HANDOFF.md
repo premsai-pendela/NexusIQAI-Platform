@@ -57,4 +57,9 @@ See `docs/NEXUSIQAI_FULL_BUILD_REPORT.md` and
 `docs/RECRUITER_PROOF_SUMMARY.md`. Milestone history:
 `~/Dev/NexusIQAI-Website/ACTIVE_HANDOFF.md`.
 
+Post-final polish (2026-07-07): fixed the "Q1 to Q4 bar graph" parsing
+bug so period ranges render a quarterly series, added Ask Analyst recent
+analysis restore in localStorage, and changed "report this answer" to ask
+for a user comment while attaching the trace automatically for Admin review.
+
 DO NOT PUSH to GitHub without Prem's explicit go-ahead.

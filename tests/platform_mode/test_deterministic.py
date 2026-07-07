@@ -89,6 +89,18 @@ def test_q3_revenue_matches_ground_truth():
     assert out["template_id"] == "revenue_total"
 
 
+def test_period_range_bar_graph_becomes_quarter_series():
+    intent = parse_intent("mark on bar graph the total revenue of q1 to q4 in 2024")
+    assert intent.metric == "revenue"
+    assert intent.group_by == "quarter"
+    assert intent.output == "bar"
+    out = execute(ctx_for("analyst@acmecloud.test"), intent)
+    assert out["template_id"] == "revenue_by_quarter"
+    assert out["chart"]["type"] == "bar"
+    assert out["chart"]["x"] == "quarter"
+    assert len(out["rows"]) == 4
+
+
 def test_company_isolation_different_numbers():
     a = execute(ctx_for("analyst@acmecloud.test"), parse_intent("revenue in Q3 2024"))
     m = execute(ctx_for("finance@medcore.test"), parse_intent("revenue in Q3 2024"))

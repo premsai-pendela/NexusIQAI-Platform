@@ -329,9 +329,19 @@ def parse_intent(question: str, prev: Optional[Intent] = None) -> Optional[Inten
 
     periods = _find_periods(q)
     is_comparison = bool(re.search(r"\bcompare\b|\bvs\.?\b|\bversus\b|\bdifference between\b", q))
+    is_period_range = bool(
+        len(periods) >= 2
+        and re.search(r"\b(q[1-4]|january|february|march|april|may|june|july|august|september|october|november|december)\b\s*(to|through|thru|-|until)\s*\b(q[1-4]|january|february|march|april|may|june|july|august|september|october|november|december)\b", q)
+    )
     if periods:
         intent.period = periods[0]
-        if len(periods) >= 2 and is_comparison:
+        if is_period_range and not is_comparison:
+            # "revenue from Q1 to Q4 as a bar graph" means a time-series,
+            # not the Q1 scalar. Preserve the full-year window and group by
+            # the natural period grain for the mentioned range.
+            intent.period = _YEAR
+            intent.group_by = "quarter" if periods[0][0].startswith("Q") else "month"
+        elif len(periods) >= 2 and is_comparison:
             intent.compare = periods[1]
 
     for key, pattern in _GROUP_PATTERNS:

@@ -126,6 +126,14 @@ export function getSessionId(): string {
   return s;
 }
 
+export function setSessionId(sessionId: string) {
+  localStorage.setItem(SESSION_KEY, sessionId);
+}
+
+export function createSessionId(): string {
+  return `web-${Math.random().toString(36).slice(2, 10)}-${Date.now().toString(36)}`;
+}
+
 export function logout() {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(PROFILE_KEY);
