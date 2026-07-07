@@ -15,6 +15,8 @@ import time
 from collections import Counter
 from typing import Optional
 
+import re
+
 from nexus_platform import store
 from nexus_platform.access_policy import classify_restricted_intent, refusal_message
 from nexus_platform.auth import AccessContext
@@ -22,6 +24,7 @@ from nexus_platform.charts import build_chart_spec, wants_chart
 from nexus_platform.contexts import get_company_fusion_agent
 from nexus_platform.dashboard import build_dashboard, wants_dashboard
 from nexus_platform.deterministic import Intent, execute as deterministic_execute, parse_intent
+from nexus_platform.orchestrator import RouteDecision, decide_route
 
 # One lock per (company, role) agent — history seeding must not interleave.
 _agent_locks: dict[str, threading.Lock] = {}
@@ -129,7 +132,8 @@ def _finish_deterministic(ctx: AccessContext, question: str, session_id: str,
         },
         "access_decision": decision,
         "denied_reason": (f"tables outside role: {det['denied_tables']}" if refused else None),
-        "route": "deterministic_sql_template",
+        "route": "access_refusal" if refused else "deterministic_sql_template",
+        "engine_route": "deterministic_sql_template",
         "template_id": det["template_id"],
         "llm_skipped": True,
         "model_used": None,
@@ -151,7 +155,9 @@ def _finish_deterministic(ctx: AccessContext, question: str, session_id: str,
                     (det["chart"] or {}).get("type"), refused,
                     intent_json=intent.to_json(),
                     sql=det["sql"], route="deterministic_sql_template",
-                    tables_json=json.dumps(det["tables"]))
+                    tables_json=json.dumps(det["tables"]),
+                    trace_id=trace_id,
+                    chart_json=(json.dumps(det["chart"]) if det["chart"] and not refused else None))
 
     followups: list[str] = []
     if not refused:
@@ -196,7 +202,7 @@ def _finish_deterministic(ctx: AccessContext, question: str, session_id: str,
             "dashboard": None,
             "role": role,
             "company": ctx.company.name,
-            "route": "deterministic_sql_template",
+            "route": "access_refusal" if refused else "deterministic_sql_template",
             "llm_skipped": True,
             "model_used": None,
             "followups": followups[:3],
@@ -275,7 +281,263 @@ def _run_dashboard(ctx: AccessContext, question: str, session_id: str) -> dict:
     }
 
 
-def run_query(ctx: AccessContext, question: str, session_id: str) -> dict:
+_ANSWERED_ROUTES = ("deterministic_sql_template", "sql_agent", "rag_agent",
+                    "sql_plus_rag", "llm_planner", "sql_only", "rag_only",
+                    "sql_rag", "all", "comparison")
+
+
+def _normalize_question(q: str) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]+", " ", q.lower())).strip()
+
+
+def _find_repeat(turns: list, question: str) -> Optional[dict]:
+    """Latest prior turn in this session that answered the same question."""
+    norm = _normalize_question(question)
+    if not norm:
+        return None
+    for t in reversed(turns):
+        if t.get("refused"):
+            continue
+        route = (t.get("route") or t.get("source_type") or "")
+        if route not in _ANSWERED_ROUTES:
+            continue
+        if _normalize_question(t.get("question") or "") == norm:
+            return t
+    return None
+
+
+def _base_trace(ctx: AccessContext, question: str, session_id: str,
+                memory_turns: int) -> dict:
+    return {
+        "employee": ctx.employee.email,
+        "employee_name": ctx.employee.name,
+        "company": ctx.company.slug,
+        "company_name": ctx.company.name,
+        "role": ctx.employee.role,
+        "session_id": session_id,
+        "question": question,
+        "resolved_question": question,
+        "followup_rewritten": False,
+        "memory_turns_used": memory_turns,
+        "access_policy": {
+            "allowed_tables": list(ctx.policy.allowed_tables),
+            "allowed_departments": list(ctx.policy.allowed_departments),
+        },
+        "citations": [],
+    }
+
+
+def _finish_clarification(ctx: AccessContext, question: str, session_id: str,
+                          decision: RouteDecision, memory_turns: int) -> dict:
+    """Ask one short question back instead of guessing. No data is read."""
+    started = time.time()
+    clar = decision.clarification.to_payload()
+    answer = clar["question"]
+
+    trace_payload = {
+        **_base_trace(ctx, question, session_id, memory_turns),
+        "access_decision": "allowed",
+        "denied_reason": None,
+        "route": "clarification",
+        "clarification_kind": clar["kind"],
+        "clarification_choices": clar["choices"],
+        "route_reason": decision.reason,
+        "llm_skipped": True,
+        "model_used": None,
+        "confidence": "N/A",
+        "sql": None,
+        "chart_generated": False,
+        "chart_type": None,
+        "latency_s": round(time.time() - started, 3),
+    }
+    trace_id = store.save_trace(ctx.company.slug, ctx.employee.email,
+                                ctx.employee.role, question, "allowed",
+                                trace_payload)
+    store.save_turn(ctx.company.slug, ctx.employee.email, session_id,
+                    question, question, answer[:500], "clarification",
+                    None, False, route="clarification", trace_id=trace_id)
+
+    reason = "The question was ambiguous — asking for one detail beats a confidently wrong answer."
+    return {
+        "answer": answer,
+        "confidence": "N/A",
+        "confidence_reason": reason,
+        "validation": {"confidence": "N/A", "confidence_reason": reason},
+        "source_type": "clarification",
+        "sources": [],
+        "sql_result": None,
+        "platform": {
+            "trace_id": trace_id,
+            "resolved_question": question,
+            "followup_rewritten": False,
+            "access_decision": "allowed",
+            "refused": False,
+            "chart": None,
+            "dashboard": None,
+            "role": ctx.employee.role,
+            "company": ctx.company.name,
+            "route": "clarification",
+            "clarification": clar,
+            "llm_skipped": True,
+            "model_used": None,
+            "followups": clar["choices"],
+        },
+    }
+
+
+def _finish_repeat_choice(ctx: AccessContext, question: str, session_id: str,
+                          prior: dict, memory_turns: int) -> dict:
+    """Same question again in one session → offer choices, don't silently redo."""
+    started = time.time()
+    prior_ts = prior.get("ts")
+    answer = ("You asked this earlier in this session. Want the previous "
+              "answer, a fresh recomputation from current data, or an AI "
+              "reinterpretation of the question?")
+    repeat_payload = {
+        "options": ["use_previous", "rerun", "analyze_with_ai"],
+        "previous": {
+            "trace_id": prior.get("trace_id"),
+            "ts": prior_ts,
+            "answer": prior.get("answer_summary"),
+            "route": prior.get("route") or prior.get("source_type"),
+        },
+    }
+    trace_payload = {
+        **_base_trace(ctx, question, session_id, memory_turns),
+        "access_decision": "allowed",
+        "denied_reason": None,
+        "route": "repeat_question_choice",
+        "previous_trace_id": prior.get("trace_id"),
+        "llm_skipped": True,
+        "model_used": None,
+        "confidence": "N/A",
+        "sql": None,
+        "chart_generated": False,
+        "chart_type": None,
+        "latency_s": round(time.time() - started, 3),
+    }
+    trace_id = store.save_trace(ctx.company.slug, ctx.employee.email,
+                                ctx.employee.role, question, "allowed",
+                                trace_payload)
+    store.save_turn(ctx.company.slug, ctx.employee.email, session_id,
+                    question, question, answer[:500], "repeat_question_choice",
+                    None, False, route="repeat_question_choice", trace_id=trace_id)
+
+    reason = "Repeated question — waiting for your choice instead of silently re-answering."
+    return {
+        "answer": answer,
+        "confidence": "N/A",
+        "confidence_reason": reason,
+        "validation": {"confidence": "N/A", "confidence_reason": reason},
+        "source_type": "repeat_question_choice",
+        "sources": [],
+        "sql_result": None,
+        "platform": {
+            "trace_id": trace_id,
+            "resolved_question": question,
+            "followup_rewritten": False,
+            "access_decision": "allowed",
+            "refused": False,
+            "chart": None,
+            "dashboard": None,
+            "role": ctx.employee.role,
+            "company": ctx.company.name,
+            "route": "repeat_question_choice",
+            "repeat": repeat_payload,
+            "llm_skipped": True,
+            "model_used": None,
+        },
+    }
+
+
+def _finish_use_previous(ctx: AccessContext, question: str, session_id: str,
+                         prior: dict, memory_turns: int) -> dict:
+    """Return the prior answer with its provenance — zero recomputation."""
+    started = time.time()
+    answer = prior.get("answer_summary") or ""
+    chart = None
+    if prior.get("chart_json"):
+        try:
+            chart = json.loads(prior["chart_json"])
+        except (ValueError, TypeError):
+            chart = None
+    trace_payload = {
+        **_base_trace(ctx, question, session_id, memory_turns),
+        "access_decision": "allowed",
+        "denied_reason": None,
+        "route": "repeat_used_previous",
+        "previous_trace_id": prior.get("trace_id"),
+        "llm_skipped": True,
+        "model_used": None,
+        "confidence": "HIGH",
+        "sql": prior.get("sql"),
+        "chart_generated": chart is not None,
+        "chart_type": (chart or {}).get("type"),
+        "latency_s": round(time.time() - started, 3),
+    }
+    trace_id = store.save_trace(ctx.company.slug, ctx.employee.email,
+                                ctx.employee.role, question, "allowed",
+                                trace_payload)
+    store.save_turn(ctx.company.slug, ctx.employee.email, session_id,
+                    question, question, answer[:500], "repeat_used_previous",
+                    (chart or {}).get("type"), False,
+                    route="repeat_used_previous", trace_id=trace_id)
+
+    reason = (f"Reused your previous answer from this session "
+              f"(trace {prior.get('trace_id')}) — data was not recomputed.")
+    return {
+        "answer": answer,
+        "confidence": "HIGH",
+        "confidence_reason": reason,
+        "validation": {"confidence": "HIGH", "confidence_reason": reason},
+        "source_type": "repeat_used_previous",
+        "sources": [],
+        "sql_result": None,
+        "platform": {
+            "trace_id": trace_id,
+            "resolved_question": question,
+            "followup_rewritten": False,
+            "access_decision": "allowed",
+            "refused": False,
+            "chart": chart,
+            "dashboard": None,
+            "role": ctx.employee.role,
+            "company": ctx.company.name,
+            "route": "repeat_used_previous",
+            "previous_trace_id": prior.get("trace_id"),
+            "previous_ts": prior.get("ts"),
+            "llm_skipped": True,
+            "model_used": None,
+        },
+    }
+
+
+_PLANNER_FRAMING = (
+    "\n\nAnswer like a careful data analyst: state what happened using only "
+    "numbers from the data sources, the likely drivers, what evidence "
+    "supports them, what remains uncertain, and one recommended follow-up "
+    "analysis. Never invent numbers."
+)
+
+_ROUTE_LABELS = {
+    "sql_only": "sql_agent",
+    "rag_only": "rag_agent",
+    "sql_rag": "sql_plus_rag",
+    "all": "sql_plus_rag",
+    "comparison": "rag_agent",
+    "web_only": "web_agent",
+    "no_data": "no_data",
+    "access_refusal": "access_refusal",
+}
+
+
+def _degraded_suggestions(ctx: AccessContext) -> list:
+    from nexus_platform.orchestrator import role_metric_choices
+    return role_metric_choices(ctx.policy)
+
+
+def run_query(ctx: AccessContext, question: str, session_id: str,
+              repeat_action: Optional[str] = None) -> dict:
     """Execute one analyst query inside the caller's access boundary."""
     started = time.time()
     company = ctx.company.slug
@@ -290,20 +552,40 @@ def run_query(ctx: AccessContext, question: str, session_id: str) -> dict:
 
     turns = store.recent_turns(company, employee, session_id, limit=10)
 
-    # Deterministic analyst layer: common business-analytics families answer
-    # from template SQL with the LLM skipped entirely. Follow-ups merge with
-    # the previous deterministic intent stored in session memory.
     prev_intent = None
     for t in reversed(turns):
         if t.get("intent_json"):
             prev_intent = Intent.from_json(t["intent_json"])
             break
-    intent = parse_intent(question, prev_intent)
-    if intent is not None:
-        det = deterministic_execute(ctx, intent)
+
+    # Repeated question → choice card (or the chosen action).
+    prior = _find_repeat(turns, question)
+    if prior is not None:
+        if repeat_action is None:
+            return _finish_repeat_choice(ctx, question, session_id, prior, len(turns))
+        if repeat_action == "use_previous":
+            return _finish_use_previous(ctx, question, session_id, prior, len(turns))
+        # "rerun" falls through to normal routing; "analyze_with_ai" is
+        # handled by the route decision below.
+
+    decision = decide_route(question, ctx.policy, prev_intent, repeat_action)
+
+    if decision.route == "clarification":
+        return _finish_clarification(ctx, question, session_id, decision, len(turns))
+
+    if decision.route == "deterministic_sql":
+        det = deterministic_execute(ctx, decision.intent)
         if det is not None:
-            return _finish_deterministic(ctx, question, session_id, intent,
-                                         det, memory_turns=len(turns))
+            return _finish_deterministic(ctx, question, session_id,
+                                         decision.intent, det,
+                                         memory_turns=len(turns))
+        decision = RouteDecision(route="agent",
+                                 reason="deterministic combo unsupported; engine routes")
+
+    # ── LLM engine path (SQL agent / RAG agent / planner) ────────────────
+    force_source = decision.force_source
+    if decision.route == "llm_planner":
+        force_source = force_source or "sql_rag"
 
     key = f"company:{company}:{role.lower()}"
     agent = get_company_fusion_agent(company, role)
@@ -319,7 +601,14 @@ def run_query(ctx: AccessContext, question: str, session_id: str) -> dict:
             resolved = agent._resolve_question(question)
             denied_intent = classify_restricted_intent(resolved, ctx.policy)
             if denied_intent is None:
-                result = agent.query(resolved)
+                engine_question = resolved
+                if decision.insight:
+                    engine_question = resolved + _PLANNER_FRAMING
+                try:
+                    result = agent.query(engine_question, force_source=force_source)
+                except TypeError:
+                    # Engine stand-ins without force_source keep working.
+                    result = agent.query(engine_question)
             else:
                 # Clearly restricted — refuse before any retrieval happens.
                 result = {"answer": "", "sources": [], "source_type": "access_refusal"}
@@ -354,13 +643,45 @@ def run_query(ctx: AccessContext, question: str, session_id: str) -> dict:
         result["sources"] = []
         sources = []
 
+    # Provider exhaustion / engine failure → honest degraded mode, never a
+    # raw error or a made-up answer.
+    degraded = (not refused
+                and (str(result.get("source_type") or "") == "error"
+                     or (not str(result.get("answer") or "").strip()
+                         and result.get("error"))))
+    if degraded:
+        suggestions = _degraded_suggestions(ctx)
+        result["answer"] = (
+            "The reasoning models are unavailable right now, so I can't "
+            "analyze this question yet. Deterministic analytics still work — "
+            "try one of these, or ask me again in a few minutes: "
+            + "; ".join(f"“{s}”" for s in suggestions[:3]) + "."
+        )
+        result["confidence"] = "LOW"
+        result["confidence_reason"] = "All model providers failed; no analysis was performed."
+        result["validation"] = {"confidence": "LOW",
+                                "confidence_reason": result["confidence_reason"]}
+        result["sql_result"] = None
+        result["sources"] = []
+        sources = []
+
     chart_spec = None
-    if not refused:
+    if not refused and not degraded:
         preferred = prefs.get("preferred_chart_type")
         if wants_chart(question) or preferred:
             chart_spec = build_chart_spec(resolved, result.get("sql_result"),
                                           preferred_type=preferred)
         _update_prefs(ctx, resolved, chart_spec if wants_chart(question) else None)
+
+    if refused:
+        route_label = "access_refusal"
+    elif degraded:
+        route_label = "degraded_mode"
+    elif decision.route in ("llm_planner", "sql_plus_rag"):
+        route_label = decision.route
+    else:
+        engine_type = str(result.get("source_type") or "")
+        route_label = _ROUTE_LABELS.get(engine_type, engine_type or "unknown")
 
     access_decision = "denied" if refused else "allowed"
     trace_payload = {
@@ -380,7 +701,9 @@ def run_query(ctx: AccessContext, question: str, session_id: str) -> dict:
         },
         "access_decision": access_decision,
         "denied_reason": denied_reason,
-        "route": result.get("source_type"),
+        "route": route_label,
+        "engine_route": result.get("source_type"),
+        "route_reason": decision.reason,
         "llm_skipped": False,
         "model_used": result.get("model_used") or None,
         "provider_failures": [
@@ -406,7 +729,9 @@ def run_query(ctx: AccessContext, question: str, session_id: str) -> dict:
     answer_text = str(result.get("answer") or "")
     store.save_turn(company, employee, session_id, question, resolved,
                     answer_text[:500], str(result.get("source_type") or ""),
-                    (chart_spec or {}).get("type"), refused)
+                    (chart_spec or {}).get("type"), refused,
+                    route=route_label, trace_id=trace_id,
+                    chart_json=(json.dumps(chart_spec) if chart_spec else None))
 
     result["platform"] = {
         "trace_id": trace_id,
@@ -417,8 +742,12 @@ def run_query(ctx: AccessContext, question: str, session_id: str) -> dict:
         "chart": chart_spec,
         "role": role,
         "company": ctx.company.name,
-        "route": result.get("source_type"),
+        "route": route_label,
+        "engine_route": result.get("source_type"),
         "llm_skipped": False,
         "model_used": result.get("model_used") or None,
     }
+    if degraded:
+        result["platform"]["degraded"] = True
+        result["platform"]["followups"] = _degraded_suggestions(ctx)[:3]
     return result

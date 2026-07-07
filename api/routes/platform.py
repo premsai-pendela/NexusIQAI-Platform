@@ -37,6 +37,8 @@ class LoginRequest(BaseModel):
 class PlatformQueryRequest(BaseModel):
     question: str = Field(..., min_length=3, max_length=500)
     session_id: str = Field(..., min_length=4, max_length=64)
+    repeat_action: Optional[str] = Field(
+        None, pattern="^(use_previous|rerun|analyze_with_ai)$")
 
 
 class FeedbackRequest(BaseModel):
@@ -153,7 +155,9 @@ async def platform_query(req: PlatformQueryRequest,
     loop = asyncio.get_event_loop()
     try:
         result = await asyncio.wait_for(
-            loop.run_in_executor(None, lambda: run_query(ctx, req.question, req.session_id)),
+            loop.run_in_executor(None, lambda: run_query(
+                ctx, req.question, req.session_id,
+                repeat_action=req.repeat_action)),
             timeout=_QUERY_TIMEOUT,
         )
     except asyncio.TimeoutError:

@@ -80,6 +80,8 @@ _MIGRATIONS = [
     ("memory_turns", "sql", "TEXT"),
     ("memory_turns", "route", "TEXT"),
     ("memory_turns", "tables_json", "TEXT"),
+    ("memory_turns", "trace_id", "TEXT"),
+    ("memory_turns", "chart_json", "TEXT"),
 ]
 
 
@@ -108,17 +110,19 @@ def save_turn(company: str, employee: str, session_id: str, question: str,
               resolved_question: str, answer_summary: str, source_type: str,
               chart_type: Optional[str], refused: bool,
               intent_json: Optional[str] = None, sql: Optional[str] = None,
-              route: Optional[str] = None, tables_json: Optional[str] = None) -> None:
+              route: Optional[str] = None, tables_json: Optional[str] = None,
+              trace_id: Optional[str] = None, chart_json: Optional[str] = None) -> None:
     with _lock:
         conn = _get_conn()
         conn.execute(
             "INSERT INTO memory_turns (company, employee, session_id, ts, question, "
             "resolved_question, answer_summary, source_type, chart_type, refused, "
-            "intent_json, sql, route, tables_json) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            "intent_json, sql, route, tables_json, trace_id, chart_json) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             (company, employee, session_id, _now(), question, resolved_question,
              answer_summary[:500] if answer_summary else "", source_type,
-             chart_type, int(refused), intent_json, sql, route, tables_json),
+             chart_type, int(refused), intent_json, sql, route, tables_json,
+             trace_id, chart_json),
         )
         conn.commit()
 

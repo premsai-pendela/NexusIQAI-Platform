@@ -368,6 +368,44 @@ class LLMGateway:
 
             return NvidiaClient()
 
+        if model_type == "cerebras":
+            if not settings.cerebras_api_key:
+                raise RuntimeError("Cerebras API key not configured")
+
+            import requests
+
+            class CerebrasClient:
+                """OpenAI-compatible Cerebras Inference chat client.
+
+                Kept SDK-free like the NVIDIA tier; hard timeouts so a
+                saturated endpoint fails over to the next model quickly.
+                """
+
+                def invoke(self, prompt: str) -> str:
+                    resp = requests.post(
+                        "https://api.cerebras.ai/v1/chat/completions",
+                        headers={
+                            "Authorization": f"Bearer {settings.cerebras_api_key}",
+                            "Content-Type": "application/json",
+                        },
+                        json={
+                            "model": model_name,
+                            "messages": [{"role": "user", "content": prompt}],
+                            "temperature": temperature,
+                            "max_tokens": 2048,
+                        },
+                        timeout=(10, settings.cerebras_timeout),
+                    )
+                    resp.raise_for_status()
+                    data = resp.json()
+                    choices = data.get("choices") or []
+                    content = (choices[0].get("message") or {}).get("content") if choices else None
+                    if not content:
+                        raise RuntimeError("Cerebras returned no content")
+                    return content
+
+            return CerebrasClient()
+
         if model_type == "ollama":
             import ollama
 
@@ -587,6 +625,37 @@ class LLMGateway:
             "models_tried": models_tried,
             "error": "All LLM models failed",
         }
+
+
+def cerebras_tier(reasoning: bool = False) -> list:
+    """The Cerebras fallback tier, or [] when no key is configured."""
+    if not settings.cerebras_api_key:
+        return []
+    name = (settings.cerebras_reasoning_model if reasoning
+            else settings.cerebras_fast_model)
+    return [{
+        "name": name,
+        "type": "cerebras",
+        "description": f"Cerebras {name}",
+        "quota": "Cerebras free tier",
+        "priority_reason": "Last cloud fallback before local Ollama",
+    }]
+
+
+def insert_cerebras_fallback(models: Iterable[Dict[str, Any]],
+                             reasoning: bool = False) -> list:
+    """Insert the Cerebras tier as the last CLOUD fallback (before Ollama).
+
+    No-op (a copy) when CEREBRAS_API_KEY is unset, so environments without
+    the key keep their exact current fallback order.
+    """
+    out = list(models)
+    tier = cerebras_tier(reasoning)
+    if not tier or any(m.get("type") == "cerebras" for m in out):
+        return out
+    idx = next((i for i, m in enumerate(out) if m.get("type") == "ollama"),
+               len(out))
+    return out[:idx] + tier + out[idx:]
 
 
 _gateway_instance: Optional[LLMGateway] = None

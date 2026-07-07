@@ -191,7 +191,7 @@ def test_admin_traces_denied_for_employee(client, acme_analyst):
 def test_query_uses_server_side_context(client, acme_analyst, monkeypatch):
     captured = {}
 
-    def fake_run_query(ctx, question, session_id):
+    def fake_run_query(ctx, question, session_id, repeat_action=None):
         captured["company"] = ctx.company.slug
         captured["role"] = ctx.employee.role
         return {"answer": "42", "confidence": "HIGH", "source_type": "sql_only",

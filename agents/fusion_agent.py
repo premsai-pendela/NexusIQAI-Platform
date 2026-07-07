@@ -317,7 +317,8 @@ Cross-validation rules:
                 "type": "nvidia",
                 "description": "NVIDIA NIM (cloud fallback)",
             })
-        return models
+        from utils.llm_gateway import insert_cerebras_fallback
+        return insert_cerebras_fallback(models)
 
     @staticmethod
     def _valid_routing_response(content: str) -> bool:

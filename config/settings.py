@@ -26,6 +26,14 @@ class Settings(BaseSettings):
     # popular llama-70b NIM endpoint is saturated
     nvidia_model: str = "deepseek-ai/deepseek-v4-flash"
     nvidia_fast_model: str = "deepseek-ai/deepseek-v4-flash"
+
+    # Cerebras Inference (api.cerebras.ai) — OpenAI-compatible last fallback
+    # tier. Two-tier setup: a small fast model for routing/rewrites and a
+    # larger reasoning model for synthesis; both overridable via env.
+    cerebras_api_key: str = ""
+    cerebras_fast_model: str = "llama3.1-8b"
+    cerebras_reasoning_model: str = "llama-3.3-70b"
+    cerebras_timeout: int = 30
     
     # Model names
     groq_model: str = "llama-3.3-70b-versatile"

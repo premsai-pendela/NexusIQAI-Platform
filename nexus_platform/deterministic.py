@@ -302,6 +302,8 @@ _FOLLOWUP_STARTS = ("what about", "how about", "and ", "now ", "same for",
 
 
 def _parse_output(q: str) -> str:
+    if re.search(r"\bpie\s*(chart|graph)?\b", q):
+        return "pie"
     if re.search(r"\bline (chart|graph)\b|\btrend\b", q):
         return "line"
     if re.search(r"\bbar (chart|graph)\b", q):
@@ -313,6 +315,87 @@ def _parse_output(q: str) -> str:
     return "auto"
 
 
+# Tokens that look like a quarter but aren't one ("a4", "q7") — a typo the
+# analyst must not guess through.
+_MALFORMED_PERIOD_RE = re.compile(r"\b([a-pr-z][1-4]|q[05-9])\b")
+
+_PERIOD_WORD = r"(q[1-4]|january|february|march|april|may|june|july|august|september|october|november|december)"
+_RANGE_RE = re.compile(rf"\b{_PERIOD_WORD}\b\s*(?:to|through|thru|-|until)\s*\b{_PERIOD_WORD}\b")
+_SELECTION_RE = re.compile(rf"\b{_PERIOD_WORD}\b\s*(?:,|and|&)\s*\b{_PERIOD_WORD}\b")
+
+
+def _period_index(period: tuple) -> int:
+    """Orderable index for adjacency checks: quarters 1-4, months 11-22."""
+    label = period[0]
+    if label.startswith("Q"):
+        return int(label[1])
+    month = label.split()[0].lower()
+    return 10 + _MONTHS.get(month, 0)
+
+
+@dataclass
+class Features:
+    """Everything the parser could read from the question — used by both the
+    intent builder and the orchestrator's clarification gate."""
+    metric: Optional[str] = None
+    periods: list = field(default_factory=list)
+    explicit_periods: list = field(default_factory=list)
+    is_comparison: bool = False
+    is_range: bool = False
+    is_selection: bool = False
+    has_only: bool = False
+    range_marker: bool = False
+    selection_marker: bool = False
+    group_by: Optional[str] = None
+    top_n: Optional[int] = None
+    top_dir: str = "desc"
+    output: str = "auto"
+    malformed_tokens: list = field(default_factory=list)
+
+
+def extract_features(question: str) -> Features:
+    q = " " + question.lower().strip().rstrip("?.!") + " "
+    f = Features()
+
+    best: tuple[int, Optional[str]] = (0, None)
+    for name, mdef in METRICS.items():
+        for kw in mdef.keywords:
+            if kw in q and len(kw) > best[0]:
+                best = (len(kw), name)
+    f.metric = best[1]
+
+    f.periods = _find_periods(q)
+    f.explicit_periods = [p for p in f.periods if p != _YEAR]
+    f.is_comparison = bool(re.search(r"\bcompare\b|\bvs\.?\b|\bversus\b|\bdifference between\b", q))
+    f.range_marker = bool(_RANGE_RE.search(q))
+    f.selection_marker = bool(_SELECTION_RE.search(q))
+    f.has_only = bool(re.search(r"\bonly\b|\bjust\b", q))
+    f.is_range = len(f.explicit_periods) >= 2 and f.range_marker
+    f.is_selection = (len(f.explicit_periods) >= 2 and not f.is_range
+                      and not f.is_comparison and f.selection_marker)
+    f.malformed_tokens = [m.group(1) for m in _MALFORMED_PERIOD_RE.finditer(q)]
+
+    for key, pattern in _GROUP_PATTERNS:
+        if re.search(pattern, q):
+            f.group_by = key
+            break
+
+    m = re.search(r"\b(top|best|highest|largest|bottom|worst|lowest)\s*(\d+)?\b", q)
+    if m:
+        f.top_n = int(m.group(2)) if m.group(2) else 5
+        f.top_dir = "asc" if m.group(1) in ("bottom", "worst", "lowest") else "desc"
+
+    f.output = _parse_output(q)
+    return f
+
+
+def _range_span(explicit_periods: list) -> tuple[str, str, str]:
+    """The window from the first to the last mentioned period, e.g. Q2–Q4."""
+    ordered = sorted(explicit_periods, key=lambda p: p[1])
+    first, last = ordered[0], ordered[-1]
+    return (f"{first[0].split()[0]}–{last[0]}", first[1], last[2])
+
+
 def parse_intent(question: str, prev: Optional[Intent] = None) -> Optional[Intent]:
     """Parse a question into an Intent; merge with prev for follow-ups.
 
@@ -320,54 +403,28 @@ def parse_intent(question: str, prev: Optional[Intent] = None) -> Optional[Inten
     """
     q = " " + question.lower().strip().rstrip("?.!") + " "
 
-    intent = Intent()
+    f = extract_features(question)
+    intent = Intent(metric=f.metric, group_by=f.group_by,
+                    top_n=f.top_n, top_dir=f.top_dir, output=f.output)
 
-    # metric (longest keyword match wins so "overdue invoices" beats "invoices")
-    best: tuple[int, Optional[str]] = (0, None)
-    for name, mdef in METRICS.items():
-        for kw in mdef.keywords:
-            if kw in q and len(kw) > best[0]:
-                best = (len(kw), name)
-    intent.metric = best[1]
-
-    periods = _find_periods(q)
-    explicit_periods = [p for p in periods if p != _YEAR]
-    is_comparison = bool(re.search(r"\bcompare\b|\bvs\.?\b|\bversus\b|\bdifference between\b", q))
-    is_period_range = bool(
-        len(explicit_periods) >= 2
-        and re.search(r"\b(q[1-4]|january|february|march|april|may|june|july|august|september|october|november|december)\b\s*(to|through|thru|-|until)\s*\b(q[1-4]|january|february|march|april|may|june|july|august|september|october|november|december)\b", q)
-    )
-    is_period_selection = bool(
-        len(explicit_periods) >= 2
-        and not is_period_range
-        and not is_comparison
-        and re.search(r"\b(q[1-4]|january|february|march|april|may|june|july|august|september|october|november|december)\b\s*(,|and|&)\s*\b(q[1-4]|january|february|march|april|may|june|july|august|september|october|november|december)\b", q)
-    )
+    periods = f.periods
+    explicit_periods = f.explicit_periods
+    is_comparison = f.is_comparison
+    is_period_selection = f.is_selection
     if periods:
         intent.period = periods[0]
         if is_period_selection:
             intent.period = None
             intent.selected_periods = explicit_periods
-        elif is_period_range and not is_comparison:
-            # "revenue from Q1 to Q4 as a bar graph" means a time-series,
-            # not the Q1 scalar. Preserve the full-year window and group by
-            # the natural period grain for the mentioned range.
-            intent.period = _YEAR
-            intent.group_by = "quarter" if periods[0][0].startswith("Q") else "month"
+        elif f.is_range and not is_comparison:
+            # "revenue from Q2 through Q4" means the Q2..Q4 time-series —
+            # exactly the mentioned window, grouped by its natural grain.
+            intent.period = _range_span(explicit_periods)
+            if intent.group_by not in ("month", "quarter"):
+                intent.group_by = ("quarter" if explicit_periods[0][0].startswith("Q")
+                                   else "month")
         elif len(periods) >= 2 and is_comparison:
             intent.compare = periods[1]
-
-    for key, pattern in _GROUP_PATTERNS:
-        if re.search(pattern, q):
-            intent.group_by = key
-            break
-
-    m = re.search(r"\b(top|best|highest|largest|bottom|worst|lowest)\s*(\d+)?\b", q)
-    if m:
-        intent.top_n = int(m.group(2)) if m.group(2) else 5
-        intent.top_dir = "asc" if m.group(1) in ("bottom", "worst", "lowest") else "desc"
-
-    intent.output = _parse_output(q)
 
     # ── follow-up resolution against the previous deterministic turn ────
     words = q.split()
@@ -621,6 +678,10 @@ def execute(ctx: AccessContext, intent: Intent) -> Optional[dict]:
             chart_type = intent.output
         if intent.output == "table":
             chart_type = "table"
+        if intent.output == "pie" and intent.group_by not in ("month", "quarter"):
+            # Pie only for categorical breakdowns; time series stay line/bar
+            # (the orchestrator clarifies pie-over-time before we get here).
+            chart_type = "pie"
         chart = {
             "type": chart_type,
             "title": f"{label} by {intent.group_by}"
