@@ -6,24 +6,35 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
 from api.models.schemas import HealthResponse
-from agents._singleton import get_fusion_agent, get_sql_agent, get_rag_agent, get_web_agent
+from nexus_platform.contexts import get_company_fusion_agent
+from nexus_platform.registry import get_registry
 from observability.langfuse_adapter import get_langfuse_observer
 
 router = APIRouter()
 
 _START_TIME = time.time()
 
+# Health checks exercise one real company workspace end to end (SQL + RAG +
+# web + fusion). Any registered company/Admin pair works; acmecloud is just
+# the first one seeded.
+_PROBE_COMPANY = "acmecloud"
+_PROBE_ROLE = "Admin"
+
+
+def _probe_agent():
+    return get_company_fusion_agent(_PROBE_COMPANY, _PROBE_ROLE)
+
 
 def _chroma_chunk_count() -> int:
     try:
-        return get_rag_agent().collection.count()
+        return _probe_agent().rag_agent.collection.count()
     except Exception:
         return -1
 
 
 def _cache_entry_count() -> int:
     try:
-        return len(get_fusion_agent()._query_cache)
+        return len(_probe_agent()._query_cache)
     except Exception:
         return -1
 
@@ -49,38 +60,48 @@ async def health():
     agents_status = {}
     degraded = False
 
-    # DB check
+    if get_registry().get_company(_PROBE_COMPANY) is None:
+        return JSONResponse(
+            content=HealthResponse(
+                status="degraded",
+                agents={"registry": f"company '{_PROBE_COMPANY}' not seeded"},
+                production_features=_production_features(),
+                chroma_chunks=-1,
+                cache_entries=-1,
+                uptime_seconds=round(time.time() - _START_TIME, 1),
+                timestamp=datetime.now(timezone.utc).isoformat(),
+            ).model_dump(),
+            status_code=503,
+        )
+
     try:
-        agent = get_sql_agent()
-        agent.session.execute(text("SELECT 1"))
-        agents_status["sql"] = "online"
+        agent = _probe_agent()
     except Exception as e:
-        agents_status["sql"] = f"degraded: {str(e)[:60]}"
+        agent = None
         degraded = True
-
-    # RAG / ChromaDB check
-    try:
-        count = get_rag_agent().collection.count()
-        agents_status["rag"] = "online"
-    except Exception as e:
-        agents_status["rag"] = f"degraded: {str(e)[:60]}"
-        degraded = True
-        count = -1
-
-    # Web agent check (lightweight)
-    try:
-        _ = get_web_agent()
-        agents_status["web"] = "online"
-    except Exception as e:
-        agents_status["web"] = f"degraded: {str(e)[:60]}"
-
-    # Fusion
-    try:
-        _ = get_fusion_agent()
-        agents_status["fusion"] = "online"
-    except Exception as e:
         agents_status["fusion"] = f"degraded: {str(e)[:60]}"
-        degraded = True
+
+    if agent is not None:
+        # SQL
+        try:
+            agent.sql_agent.session.execute(text("SELECT 1"))
+            agents_status["sql"] = "online"
+        except Exception as e:
+            agents_status["sql"] = f"degraded: {str(e)[:60]}"
+            degraded = True
+
+        # RAG / ChromaDB
+        try:
+            agent.rag_agent.collection.count()
+            agents_status["rag"] = "online"
+        except Exception as e:
+            agents_status["rag"] = f"degraded: {str(e)[:60]}"
+            degraded = True
+
+        # Web (company workspaces don't mix in live web data — presence check only)
+        agents_status["web"] = "disabled (company workspace scope)"
+
+        agents_status["fusion"] = "online"
 
     chroma_chunks = _chroma_chunk_count()
     cache_entries = _cache_entry_count()
@@ -96,30 +117,3 @@ async def health():
     )
     http_status = 503 if degraded else 200
     return JSONResponse(content=response.model_dump(), status_code=http_status)
-
-
-@router.get("/agents/status")
-async def agents_status():
-    status = {}
-    for name, getter in [("sql", get_sql_agent), ("rag", get_rag_agent),
-                          ("web", get_web_agent), ("fusion", get_fusion_agent)]:
-        try:
-            getter()
-            status[name] = {"status": "online"}
-        except Exception as e:
-            status[name] = {"status": "degraded", "error": str(e)[:80]}
-    return status
-
-
-@router.get("/metrics")
-async def metrics():
-    try:
-        quota_status = get_sql_agent().tracker.get_status_report()
-    except Exception:
-        quota_status = {}
-    return {
-        "queries_in_cache": _cache_entry_count(),
-        "quota_status": quota_status,
-        "chroma_chunk_count": _chroma_chunk_count(),
-        "server_uptime_seconds": round(time.time() - _START_TIME, 1),
-    }

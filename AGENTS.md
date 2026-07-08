@@ -1,4 +1,4 @@
-# CLAUDE.md — NexusIQ Build Mode
+# AGENTS.md — NexusIQ Build Mode
 
 ## Mission
 
@@ -78,13 +78,11 @@ Every new tool needs a clear purpose, a command/example, and at least one verifi
 
 There are three separate NexusIQ tracks. Do not merge them.
 
-1. Old cloud-deployed NexusIQ (Streamlit + FastAPI on AWS EC2): lives at `~/Dev/NexusIQ-AI`. Reference only — not touched from this workspace.
-2. Recruiter-proof surface (Streamlit-free, Next.js frontend): lives at `~/Dev/NexusIQ-recruiter-proof`. Separate workspace, not part of this repo.
-3. This workspace, NexusIQAI — **Platform Mode only**. As of 2026-07-08 the legacy single-tenant demo (Streamlit UI, `/api/v1/query`, the single 52-doc corpus) was removed from this repo entirely; an identical copy stays intact in `~/Dev/NexusIQ-recruiter-proof`. This repo now contains only the multi-company Platform Mode product (`nexus_platform/`, `web/src/app/platform/*`, `data/demo_companies/`) and is mid-migration from local-only to AWS cloud (ECR/Fargate/RDS/Bedrock, no Streamlit anywhere in the deploy path). See `~/Dev/interview/aws_learning_notes.md` for the live migration log.
+1. Current cloud-deployed NexusIQ: the existing Streamlit/live project.
+2. Current recruiter-proof Wave 2: this local recruiter-facing upgrade workspace.
+3. Future service-provider / multi-tenant NexusIQ: a separate future project folder under `/Users/nagapremsaipendela/Dev`, not part of this current Wave 2 unless Prem explicitly starts it.
 
-Future service-provider / multi-tenant NexusIQ: a separate future project folder under `/Users/nagapremsaipendela/Dev`, not part of this workspace unless Prem explicitly starts it.
-
-For this workspace, focus on making Platform Mode cloud-deployed, smooth, visually impressive, technically defensible, and honest. Do not turn it into the full multi-tenant/connect-any-database service-provider project.
+For this current Wave 2, focus on making the existing NexusIQ recruiter-proof, smooth, visually impressive, technically defensible, and honest. Do not turn Wave 2 into the full multi-tenant/connect-any-database service-provider project.
 
 Future separate service-provider direction:
 
@@ -95,7 +93,7 @@ Future separate service-provider direction:
 
 Do not limit future thinking to only "ontology" and "business context." Real enterprise AI/data platforms may need semantic layer, metrics layer, business glossary, data catalog, metadata extraction, entity resolution, lineage, provenance, data contracts, data quality checks, source freshness, access-control awareness, knowledge graph, feedback loops, and audit trails.
 
-For this workspace, use those ideas only if they directly strengthen Platform Mode without expanding scope into the separate multi-tenant platform.
+For Wave 2, use those ideas only if they directly strengthen the existing demo without expanding scope into the separate multi-tenant platform.
 
 Do not claim real multi-tenant production unless actually implemented. It is acceptable to build a truthful demo/architecture slice that points toward this future.
 

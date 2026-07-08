@@ -628,8 +628,9 @@ def execute(ctx: AccessContext, intent: Intent) -> Optional[dict]:
 
     chart = None
     if intent.selected_periods:
+        parts = [f"{r['period']} {_fmt(r.get('value'), mdef.unit)}" for r in rows]
         answer = (f"{company} {label} for {period_label}: "
-                  f"{', '.join(f'{r['period']} {_fmt(r.get('value'), mdef.unit)}' for r in rows)}.")
+                  f"{', '.join(parts)}.")
         chart_type = "line" if intent.output == "line" else "bar"
         if intent.output == "table":
             chart_type = "table"

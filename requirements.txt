@@ -2,9 +2,6 @@
 # Python 3.11+
 
 # Core
-# components.v2 is used for JavaScript-backed navigation scrolling.
-streamlit>=1.51.0
-streamlit-lottie>=0.0.5
 python-dotenv>=1.0.0
 
 # LLM Providers

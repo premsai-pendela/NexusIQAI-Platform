@@ -25,11 +25,17 @@ resuming; this file covers repo-local facts only.
 
 ## What this repo contains
 
-- Legacy NexusIQ recruiter-proof app (live demo surface): `/` pages, live
-  Supabase + 52-doc Chroma corpus, `/api/v1/query`.
-- **Platform Mode** (the new product): `nexus_platform/`,
+- **Platform Mode** (the only product surface now): `nexus_platform/`,
   `api/routes/platform.py`, `web/src/app/platform/*`,
   `data/demo_companies/`. See `docs/PLATFORM_MODE.md` for architecture.
+
+**2026-07-08 — Legacy single-tenant demo retired.** The old recruiter-proof
+surface (Streamlit UI, `/api/v1/query`, `/ask` `/context` `/how`
+`/reliability` pages, the 52-doc single corpus) was deleted from this repo
+ahead of the AWS cloud migration — an identical copy still lives in
+`~/Dev/NexusIQ-recruiter-proof`, untouched. This repo is Platform Mode only
+from here on. See `~/Dev/interview/aws_learning_notes.md` for the full
+cleanup + migration log.
 
 ## Run
 

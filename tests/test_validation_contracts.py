@@ -35,15 +35,6 @@ from observability.inspect_traces import format_trace_summary, get_trace_diagnos
 from observability.inspect_llm_usage import format_usage_report, summarize_usage
 from observability.tracer import get_tracer, summarize_agent_result
 from run_tests import parse_queries, routing_matches
-from ui.fusion_chat import (
-    _format_answer_method,
-    _format_fusion_answer_method,
-    _routing_status_text,
-    escape_streamlit_math,
-    find_previous_answer,
-    normalize_repeat_question,
-    previous_answer_message,
-)
 from utils.llm_gateway import LLMGateway, llm_call_context
 from utils.validators import validate_question
 
@@ -780,16 +771,6 @@ class FoundationObservabilityTests(unittest.TestCase):
 
 
 class RoutingAndInputTests(unittest.TestCase):
-    def test_streamlit_markdown_escapes_currency_math(self):
-        text = "**$31,710,925.89** across **5,899 transactions**, while **$31,700,000.00**"
-
-        escaped = escape_streamlit_math(text)
-
-        self.assertEqual(
-            escaped,
-            "**\\$31,710,925.89** across **5,899 transactions**, while **\\$31,700,000.00**",
-        )
-
     def test_routing_matcher_accepts_equivalent_fusion_labels(self):
         self.assertTrue(routing_matches("rag_sql", "sql_rag"))
         self.assertTrue(routing_matches("sql_rag_web", "all"))
@@ -808,43 +789,6 @@ class RoutingAndInputTests(unittest.TestCase):
 
         self.assertTrue(result["valid"])
         self.assertFalse(result["auto_corrected"])
-
-    def test_repeat_lookup_matches_same_question_and_source_filter(self):
-        now = datetime.now()
-        history = [
-            {
-                "question": "What was Q4 revenue?",
-                "answer": "Prior answer",
-                "source_filter": "Auto",
-                "timestamp": now,
-            }
-        ]
-
-        self.assertIsNotNone(find_previous_answer(history, "  what was q4 revenue?  ", "Auto"))
-        self.assertIsNone(find_previous_answer(history, "What was Q4 revenue?", "SQL Only"))
-
-    def test_repeat_lookup_matches_reordered_sql_pdf_question(self):
-        now = datetime.now()
-        history = [
-            {
-                "question": "Validate Q4 Electronics revenue across SQL and PDF reports.",
-                "answer": "Prior answer",
-                "source_filter": "Auto",
-                "timestamp": now,
-            }
-        ]
-
-        self.assertEqual(
-            normalize_repeat_question("Validate Q4 Electronics revenue across SQL and PDF reports."),
-            normalize_repeat_question("Validate Q4 Electronics revenue across PDF and sql reports."),
-        )
-        self.assertIsNotNone(
-            find_previous_answer(
-                history,
-                "Validate Q4 Electronics revenue across PDF and sql reports.",
-                "Auto",
-            )
-        )
 
     def test_question_resolution_does_not_rewrite_self_contained_policy_question(self):
         class ExplodingClient:
@@ -1594,24 +1538,6 @@ class RoutingAndInputTests(unittest.TestCase):
         self.assertNotIn("scraper_statuses", prompt)
         self.assertNotIn("timestamp", prompt)
 
-    def test_previous_answer_message_marks_answer_as_cache_result(self):
-        previous = {
-            "answer": "Prior answer",
-            "source_type": "sql_rag",
-            "timestamp": datetime.now(),
-            "answer_generation_mode": "deterministic_validated",
-            "answer_generation_reason": "high_confidence_cross_source_validation",
-        }
-
-        msg = previous_answer_message(previous, "msg-1")
-
-        self.assertEqual(msg["role"], "assistant")
-        self.assertTrue(msg["from_cache"])
-        self.assertEqual(msg["cache_label"], "previous_answer")
-        self.assertEqual(msg["query_time"], 0.0)
-        self.assertEqual(msg["answer_generation_mode"], "deterministic_validated")
-
-
 class OfflineEvalHarnessTests(unittest.TestCase):
     def test_offline_eval_fixture_suite_passes(self):
         report = OfflineEvaluationHarness().run()
@@ -1831,29 +1757,6 @@ class GoldenEvalTests(unittest.TestCase):
 
 
 class ObservabilityTests(unittest.TestCase):
-    def test_answer_method_display_is_short_and_explains_provenance(self):
-        method, detail = _format_answer_method("Web: Deterministic calculation")
-        self.assertEqual(method, "Calculated")
-        self.assertIn("no answer LLM used", detail)
-
-        method, detail = _format_answer_method("Web: Groq Llama 3.3 70B")
-        self.assertEqual(method, "LLM")
-        self.assertIn("Groq Llama 3.3 70B", detail)
-
-    def test_router_status_distinguishes_manual_rule_and_llm_routing(self):
-        self.assertIn("Manual source selection", _routing_status_text("n/a"))
-        self.assertIn("Router LLM not needed", _routing_status_text("Rules-based Web routing"))
-        self.assertEqual(_routing_status_text("Gemini Flash"), "Router LLM: Gemini Flash")
-
-    def test_fusion_answer_method_distinguishes_deterministic_and_llm_finalization(self):
-        method, detail = _format_fusion_answer_method("RAG: Groq", "deterministic_degraded")
-        self.assertEqual(method, "Source")
-        self.assertIn("skipped final synthesis", detail)
-
-        method, detail = _format_fusion_answer_method("SQL: Groq; RAG: Groq", "llm_synthesis", "Gemini Flash")
-        self.assertEqual(method, "LLM")
-        self.assertIn("Gemini Flash", detail)
-
     def test_no_data_does_not_treat_router_as_answer_model(self):
         agent = FusionAgent.__new__(FusionAgent)
         self.assertEqual(

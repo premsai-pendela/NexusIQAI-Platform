@@ -8,8 +8,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 
-from api.routes import health, agents, query, meta, trace, learning, context_map, platform
-from agents._singleton import get_fusion_agent
+from api.routes import health, trace, learning, platform
 from nexus_platform.contexts import register_company_contexts
 
 START_TIME = time.time()
@@ -19,9 +18,6 @@ START_TIME = time.time()
 async def lifespan(app: FastAPI):
     print("NexusIQ API: registering platform company contexts...")
     register_company_contexts()
-    if os.getenv("NEXUSIQ_PREWARM_LIVE", "true").strip().lower() in {"1", "true", "yes"}:
-        print("NexusIQ API: pre-warming agents...")
-        get_fusion_agent()
     print("NexusIQ API: ready. Docs at /docs")
     yield
 
@@ -47,12 +43,8 @@ app.add_middleware(
 )
 
 app.include_router(health.router, prefix="/api/v1", tags=["health"])
-app.include_router(agents.router, prefix="/api/v1", tags=["agents"])
-app.include_router(query.router, prefix="/api/v1", tags=["query"])
-app.include_router(meta.router, prefix="/api/v1", tags=["meta"])
 app.include_router(trace.router, prefix="/api/v1", tags=["trace"])
 app.include_router(learning.router, prefix="/api/v1", tags=["learning"])
-app.include_router(context_map.router, prefix="/api/v1", tags=["context"])
 app.include_router(platform.router, prefix="/api/v1", tags=["platform"])
 
 
