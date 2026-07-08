@@ -369,9 +369,12 @@ class SQLAgent:
             models_to_try = [gemini_pro_config] + models_to_try
             logger.info("🟢 Gemini Pro ENABLED - trying first")
 
-        from utils.llm_gateway import insert_cerebras_fallback
-        return insert_cerebras_fallback(models_to_try,
-                                        reasoning=(complexity == "complex"))
+        from utils.llm_gateway import insert_bedrock_fallback, insert_cerebras_fallback
+        reasoning = complexity == "complex"
+        return insert_bedrock_fallback(
+            insert_cerebras_fallback(models_to_try, reasoning=reasoning),
+            reasoning=reasoning,
+        )
 
 
     def _invoke_with_fallback(

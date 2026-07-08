@@ -1,5 +1,18 @@
 # ACTIVE HANDOFF — NexusIQAI Platform
 
+**2026-07-08 — Live on AWS.** Backend: ECS Fargate (`nexusiq-cluster` /
+`nexusiq-api-service`) behind an ALB at `https://api.nexusiq-ai.com` (ACM
+cert, ARM64 task def `nexusiq-api:2`). Frontend: Next.js SSR on Amplify at
+`https://master.d3dp95aawguyfq.amplifyapp.com`, auto-deploys on push to
+`master` of the new public repo
+[github.com/premsai-pendela/NexusIQAI-Platform](https://github.com/premsai-pendela/NexusIQAI-Platform).
+Login → real company workspace → real SQL/RAG query verified end-to-end
+through both live URLs. Old EC2 (`nexusiq-ai.com` root domain, `NexusIQ-AI`
+repo) is untouched and still live — not yet cut over or decommissioned.
+Full build/fix log: `~/Dev/interview/aws_learning_notes.md`. Still open:
+migrate `DATABASE_URL` off Supabase to RDS, add Bedrock as a fallback LLM
+tier, cut the root domain over from EC2 once ready, then decommission EC2.
+
 **2026-07-07 — Agentic Analyst Final Run complete.** Ask Analyst now routes
 every question explicitly (clarification gate, repeat-question choices,
 deterministic/SQL/RAG/mixed/planner, honest refusals and degraded mode, all

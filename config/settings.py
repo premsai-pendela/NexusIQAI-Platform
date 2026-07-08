@@ -27,7 +27,18 @@ class Settings(BaseSettings):
     cerebras_fast_model: str = "gemma-4-31b"
     cerebras_reasoning_model: str = "gpt-oss-120b"
     cerebras_timeout: int = 30
-    
+
+    # AWS Bedrock — AWS-native managed LLM API, last cloud fallback tier
+    # (after Cerebras, before local Ollama). Uses the ECS task role's IAM
+    # credentials via boto3, not an API key. Set BEDROCK_ENABLED=1 to turn
+    # it on (off by default so environments without a Bedrock-enabled task
+    # role keep their current fallback order).
+    bedrock_enabled: bool = False
+    bedrock_region: str = "us-east-1"
+    bedrock_fast_model: str = "anthropic.claude-3-5-haiku-20241022-v1:0"
+    bedrock_reasoning_model: str = "anthropic.claude-3-5-haiku-20241022-v1:0"
+    bedrock_timeout: int = 30
+
     # Model names
     groq_model: str = "llama-3.3-70b-versatile"
     gemini_pro_model: str = "gemini-2.5-pro"

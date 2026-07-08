@@ -406,6 +406,41 @@ class LLMGateway:
 
             return CerebrasClient()
 
+        if model_type == "bedrock":
+            if not settings.bedrock_enabled:
+                raise RuntimeError("Bedrock is not enabled (BEDROCK_ENABLED=0)")
+
+            import boto3
+
+            class BedrockClient:
+                """AWS Bedrock chat client via the Converse API.
+
+                Credentials come from the ECS task role (boto3 default
+                credential chain), not an API key — same IAM identity the
+                task already uses for Secrets Manager/S3.
+                """
+
+                def invoke(self, prompt: str) -> str:
+                    from botocore.config import Config as BotoConfig
+
+                    client = boto3.client(
+                        "bedrock-runtime",
+                        region_name=settings.bedrock_region,
+                        config=BotoConfig(connect_timeout=10, read_timeout=settings.bedrock_timeout),
+                    )
+                    resp = client.converse(
+                        modelId=model_name,
+                        messages=[{"role": "user", "content": [{"text": prompt}]}],
+                        inferenceConfig={"temperature": temperature, "maxTokens": 2048},
+                    )
+                    content = resp.get("output", {}).get("message", {}).get("content", [])
+                    text = "".join(block.get("text", "") for block in content)
+                    if not text:
+                        raise RuntimeError("Bedrock returned no content")
+                    return text
+
+            return BedrockClient()
+
         if model_type == "ollama":
             import ollama
 
@@ -653,6 +688,38 @@ def insert_cerebras_fallback(models: Iterable[Dict[str, Any]],
     out = list(models)
     tier = cerebras_tier(reasoning)
     if not tier or any(m.get("type") == "cerebras" for m in out):
+        return out
+    idx = next((i for i, m in enumerate(out) if m.get("type") == "ollama"),
+               len(out))
+    return out[:idx] + tier + out[idx:]
+
+
+def bedrock_tier(reasoning: bool = False) -> list:
+    """The Bedrock fallback tier, or [] when not enabled."""
+    if not settings.bedrock_enabled:
+        return []
+    name = settings.bedrock_reasoning_model if reasoning else settings.bedrock_fast_model
+    return [{
+        "name": name,
+        "type": "bedrock",
+        "description": f"AWS Bedrock {name}",
+        "quota": "AWS Bedrock (IAM task role)",
+        "priority_reason": "AWS-native last cloud fallback before local Ollama",
+    }]
+
+
+def insert_bedrock_fallback(models: Iterable[Dict[str, Any]],
+                            reasoning: bool = False) -> list:
+    """Insert the Bedrock tier as the last CLOUD fallback (before Ollama).
+
+    Mirrors insert_cerebras_fallback. Calling this after
+    insert_cerebras_fallback lands Bedrock right before Ollama and after
+    Cerebras. No-op when BEDROCK_ENABLED is unset, so existing environments
+    keep their exact current fallback order.
+    """
+    out = list(models)
+    tier = bedrock_tier(reasoning)
+    if not tier or any(m.get("type") == "bedrock" for m in out):
         return out
     idx = next((i for i, m in enumerate(out) if m.get("type") == "ollama"),
                len(out))

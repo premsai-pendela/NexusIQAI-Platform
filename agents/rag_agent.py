@@ -198,9 +198,12 @@ class RAGAgent:
                 "quota": "50/day (free tier)",
                 "priority_reason": "Highest intelligence",
             })
-        from utils.llm_gateway import insert_cerebras_fallback
-        return insert_cerebras_fallback(models_to_try,
-                                        reasoning=(complexity == "complex"))
+        from utils.llm_gateway import insert_bedrock_fallback, insert_cerebras_fallback
+        reasoning = complexity == "complex"
+        return insert_bedrock_fallback(
+            insert_cerebras_fallback(models_to_try, reasoning=reasoning),
+            reasoning=reasoning,
+        )
 
     def _reasoning_models(self) -> List[Dict]:
         """Return document reasoning models with Gemini-first ordering."""
@@ -217,8 +220,11 @@ class RAGAgent:
                 "type": "groq",
                 "description": "Groq Llama 3.3 70B",
             })
-        from utils.llm_gateway import insert_cerebras_fallback
-        return insert_cerebras_fallback(models, reasoning=True)
+        from utils.llm_gateway import insert_bedrock_fallback, insert_cerebras_fallback
+        return insert_bedrock_fallback(
+            insert_cerebras_fallback(models, reasoning=True),
+            reasoning=True,
+        )
 
     @staticmethod
     def _valid_json_response(content: str) -> bool:

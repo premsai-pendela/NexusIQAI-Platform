@@ -516,7 +516,7 @@ def _executive_summary(report: dict) -> tuple[Optional[str], str]:
     reasoning model is affordable here; failure degrades honestly."""
     try:
         from config.settings import settings
-        from utils.llm_gateway import get_llm_gateway, insert_cerebras_fallback
+        from utils.llm_gateway import get_llm_gateway, insert_bedrock_fallback, insert_cerebras_fallback
         from utils.quota_tracker import quota_tracker
 
         models = []
@@ -529,7 +529,7 @@ def _executive_summary(report: dict) -> tuple[Optional[str], str]:
         if settings.nvidia_api_key:
             models.append({"name": settings.nvidia_model, "type": "nvidia",
                            "description": "NVIDIA NIM"})
-        models = insert_cerebras_fallback(models, reasoning=True)
+        models = insert_bedrock_fallback(insert_cerebras_fallback(models, reasoning=True), reasoning=True)
         if not models:
             return None, "no_providers_configured"
 
