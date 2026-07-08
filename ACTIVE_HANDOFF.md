@@ -1,8 +1,33 @@
 # ACTIVE HANDOFF — NexusIQAI Platform
 
+**2026-07-08 (later) — RDS + Bedrock live, task def revision 3.** All 3
+companies (acmecloud, medcore, finpilot) fully migrated to AWS RDS Postgres
+(`nexusiq-platform-db`, one schema per company, ~468k rows total —
+`NEXUSIQ_PLATFORM_PG_URL` secret wired into the task def). AWS Bedrock added
+as a 5th LLM fallback tier (`BEDROCK_ENABLED=true` in prod, gated off by
+default elsewhere) — IAM policy attached to `nexusiq-ecs-task-role`, code
+path unit-tested, and confirmed reachable in principle (never organically
+triggered in a live call since Groq/Gemini answer first, which is correct
+fallback behavior). RDS locked back down after population: not publicly
+accessible, no stray IP rules, only the ECS task security group can reach
+port 5432. Live-verified with a real deterministic SQL query executed
+against RDS (support ticket count) and a real RAG/LLM query (billing policy
+question, answered by Groq → Gemini).
+
+Also this session: retired `mcp_server/` (built for the dead single-tenant
+demo, would have misrepresented current data — real Platform-Mode-aware MCP
+is future work), rewrote the project README (Platform Mode as the primary
+product, Mermaid architecture diagram, real screenshots, honest
+limitations), rewrote the personal profile README and portfolio site
+(`premsai-pendela.github.io` — was serving the *unmodified default Jekyll
+theme* with placeholder Lorem-ipsum text; replaced with a real one-page
+site), and produced a verified resume at `~/Dev/resume-2026-07-08/`
+(resume.html + resume.pdf, one page, every claim checked against what's
+actually live).
+
 **2026-07-08 — Live on AWS.** Backend: ECS Fargate (`nexusiq-cluster` /
 `nexusiq-api-service`) behind an ALB at `https://api.nexusiq-ai.com` (ACM
-cert, ARM64 task def `nexusiq-api:2`). Frontend: Next.js SSR on Amplify at
+cert, ARM64 task def). Frontend: Next.js SSR on Amplify at
 `https://master.d3dp95aawguyfq.amplifyapp.com`, auto-deploys on push to
 `master` of the new public repo
 [github.com/premsai-pendela/NexusIQAI-Platform](https://github.com/premsai-pendela/NexusIQAI-Platform).
@@ -10,8 +35,8 @@ Login → real company workspace → real SQL/RAG query verified end-to-end
 through both live URLs. Old EC2 (`nexusiq-ai.com` root domain, `NexusIQ-AI`
 repo) is untouched and still live — not yet cut over or decommissioned.
 Full build/fix log: `~/Dev/interview/aws_learning_notes.md`. Still open:
-migrate `DATABASE_URL` off Supabase to RDS, add Bedrock as a fallback LLM
-tier, cut the root domain over from EC2 once ready, then decommission EC2.
+cut the root domain over from EC2 once ready, then decommission EC2;
+CloudFormation IaC capture of the final architecture.
 
 **2026-07-07 — Agentic Analyst Final Run complete.** Ask Analyst now routes
 every question explicitly (clarification gate, repeat-question choices,
