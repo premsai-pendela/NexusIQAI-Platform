@@ -15,6 +15,8 @@
 [![AWS](https://img.shields.io/badge/AWS-ECS_Fargate-FF9900?style=flat-square&logo=amazonaws&logoColor=white)](https://aws.amazon.com)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
+**[🚀 Live Demo](https://nexusiq-ai.com/platform)** — demo accounts listed on the login page
+
 [What It Is](#what-it-is) · [Architecture](#architecture) · [Access Control](#role-based-access-four-layers-deep) · [Deterministic Layer](#deterministic-analyst-layer-zero-llm-calls) · [Screenshots](#screenshots) · [Tech Stack](#tech-stack) · [Run Locally](#run-locally) · [Testing](#testing--verification) · [Limitations](#honest-limitations) · [Roadmap](docs/FUTURE_IMPROVEMENTS.md)
 
 </div>
