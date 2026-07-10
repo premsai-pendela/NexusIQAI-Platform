@@ -53,6 +53,52 @@ _TABLE_HINT_RE = re.compile(
     r"|\bheadcount\b|\bemployee|\bmrr\b|\bcsat\b"
 )
 
+# Scalar-metric ask shape ("what is our X …") for the unknown-metric gate.
+_SCALAR_ASK_RE = re.compile(
+    r"(?:what(?:'s| is| was)|show me|how much is)\s+(?:our|the|my)\s+"
+    r"([a-z][a-z0-9 _-]{1,40}?)"
+    r"(?=\s+(?:for|in|this|last|over|during|by|per|right now)\b|\s*$)"
+)
+
+# Generic measurement suffixes carry no information about *which* metric is
+# meant — they are ignored when checking the term against the vocabulary.
+_METRIC_SUFFIXES = frozenset(("score", "rate", "ratio", "margin", "index",
+                              "value", "number", "numbers", "figure",
+                              "figures", "metric", "metrics"))
+
+_metric_vocab_cache: frozenset | None = None
+
+
+def _metric_vocabulary() -> frozenset:
+    """Every word the workspace's metrics, tables, and topic maps know.
+
+    A metric term with no overlap here is one the workspace does not define
+    — the SQL path must not invent semantics for it (see the unknown-metric
+    clarification below).
+    """
+    global _metric_vocab_cache
+    if _metric_vocab_cache is None:
+        from nexus_platform.access_policy import (DEPARTMENT_TOPICS,
+                                                  TABLE_AREAS, TABLE_TOPICS)
+        from nexus_platform.deterministic import METRICS, _GROUP_PATTERNS
+        words: set[str] = set()
+        for mdef in METRICS.values():
+            for kw in mdef.keywords:
+                words.update(kw.split())
+        for label in _METRIC_LABELS.values():
+            words.update(label.lower().split())
+        for area, tables in TABLE_AREAS.items():
+            words.add(area)
+            for t in tables:
+                words.add(t)
+                words.update(t.split("_"))
+        for topics in (*TABLE_TOPICS.values(), *DEPARTMENT_TOPICS.values()):
+            for topic in topics:
+                words.update(topic.split())
+        words.update(key for key, _ in _GROUP_PATTERNS)
+        _metric_vocab_cache = frozenset(w for w in words if len(w) > 2)
+    return _metric_vocab_cache
+
 
 @dataclass
 class Clarification:
@@ -238,6 +284,34 @@ def find_clarification(question: str, f: Features, policy: RolePolicy,
             question=("Happy to go further — what would make it better?"),
             choices=choices,
         )
+
+    # 8. Unknown business metric ("What is our NPS score for 2024?"). The
+    # workspace does not define it anywhere the parser knows, so a confident
+    # answer could only be fabricated — the SQL agent has been observed
+    # inventing an NPS formula over the 1-5 CSAT scale and answering "-1"
+    # (health-check campaign camp_c305c02583, trace tr_63dee96201). Honest
+    # move: say it isn't tracked, offer the role's real metrics plus an
+    # explicit documents path. Conservative: any recognized metric word,
+    # insight cue, or document cue → not our case, keep routing.
+    if (f.metric is None and f.group_by is None and f.top_n is None
+            and not _INSIGHT_RE.search(q) and not _DOC_TERMS_RE.search(q)
+            and len(q.split()) <= 12):
+        m = _SCALAR_ASK_RE.search(q)
+        if m:
+            term = m.group(1).strip()
+            tokens = [t for t in re.findall(r"[a-z0-9]+", term)
+                      if t not in _METRIC_SUFFIXES and len(t) > 1]
+            if tokens and len(tokens) <= 4 and not any(
+                    t in _metric_vocabulary() for t in tokens):
+                return Clarification(
+                    kind="unknown_metric",
+                    question=(f"\u201c{term}\u201d isn\u2019t a metric tracked in your "
+                              "workspace data, so I can\u2019t compute it without "
+                              "guessing. I can answer one of these instead, or "
+                              "check your documents:"),
+                    choices=(role_metric_choices(policy)[:2]
+                             + [f"What do our documents say about {term}?"]),
+                )
 
     return None
 
