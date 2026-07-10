@@ -1,5 +1,53 @@
 # ACTIVE HANDOFF — NexusIQAI Platform
 
+## INITIATIVE: Self-Improving Health Check Agent (2026-07-10, in progress)
+
+Mission brief: `docs/platform improvements/CONTEXT.md` (+ model-routing rules
+in `docs/platform improvements/CLAUDE.md`). Design journal:
+`docs/platform improvements/ARCHITECTURE_LOG.md` (guardrails at top — read
+those before resuming). Runs autonomously; Prem unavailable during the run.
+
+- **Objective:** turn `nexus_platform/health_check.py` into a closed loop —
+  simulate adversarial employee traffic → classify answers → diagnose real
+  findings → fix on a branch with before/after evidence → open a PR on
+  `premsai-pendela/NexusIQAI-Platform` (never merge). Six-item goal checklist
+  in CONTEXT.md §"The final goal".
+- **Branch/worktree:** main checkout on `master` (uncommitted doc edits were
+  already present before this initiative — untouched). Fix branches will be
+  created in a separate git worktree, named `autofix/<fingerprint>`.
+- **Completed milestones:**
+  - Step 0 orientation (docs + code + live product). Bug #1 reproduced live
+    as AcmeCloud Analyst: repeat → "Analyze with AI" → refusal naming
+    nonexistent table `sales_transactions`; live trace `tr_79a32d53e8`.
+    Correct-refusal contrast case verified as HR (denial names real table
+    `orders`).
+  - Step 0.5 guardrails + initial architecture plan written
+    (ARCHITECTURE_LOG.md), reconciled with
+    `SELF_IMPROVING_HEALTH_CHECK_AGENT_PLAN.md` — adopted with 7 documented
+    deviations/decisions (difficulty-tier axis, adversarial families,
+    continuous phases, PR-target repo, provisional gold set, CLI trigger,
+    agent operational memory).
+  - GitHub access verified: `gh auth status` → fine-grained PAT active as
+    premsai-pendela (GH_TOKEN env). Token value never written anywhere.
+- **Next unfinished milestone:** research pass (question-pattern grounding +
+  weak-model loop prior art), then Phase 0 store plumbing (source column,
+  simulated_query_log, health_findings tables).
+- **Resume command:** re-read `docs/platform improvements/CONTEXT.md`,
+  `ARCHITECTURE_LOG.md` guardrails, then continue from "Next unfinished
+  milestone" above. Tests: `.venv/bin/python -m pytest tests/platform_mode/ -q`.
+- **Tests already run this initiative:** none yet (baseline capture comes
+  with Phase 0).
+- **Needs Prem (non-blocking, flagged per plan):** classifier gold-set
+  labels are provisional (labeled by construction/agent, not human) — please
+  review `tests/platform_mode/fixtures/classifier_gold/` when it exists.
+- **Known failures / repair notes:** none yet.
+
+Historical note: the "DO NOT PUSH to GitHub" line at the bottom of this file
+predates this initiative; CONTEXT.md §"GitHub access" explicitly authorizes
+pushing this initiative's own fix branches and opening PRs (never merging).
+Nothing else gets pushed.
+
+
 **2026-07-08 (later) — RDS + Bedrock live, task def revision 3.** All 3
 companies (acmecloud, medcore, finpilot) fully migrated to AWS RDS Postgres
 (`nexusiq-platform-db`, one schema per company, ~468k rows total —
@@ -47,7 +95,7 @@ PostgreSQL-scale (35 tables, ~468k rows, 3 company schemas, 18 months) with
 SQLite mirrors for offline tests; 390 generated employees + 15k historical
 traces back the scale story; a 100-concurrent load test passes with zero LLM
 calls; Cerebras is wired as the last cloud fallback tier. Full evidence:
-`docs/AGENTIC_ANALYST_FINAL_RUN_REPORT.md`.
+`docs/Current NexusIQ docs/AGENTIC_ANALYST_FINAL_RUN_REPORT.md`.
 
 Regenerate scale artifacts (reproducible): `python -m
 nexus_platform.scale.generator` (+ optional NEXUSIQ_PLATFORM_PG_URL),
@@ -65,7 +113,7 @@ resuming; this file covers repo-local facts only.
 
 - **Platform Mode** (the only product surface now): `nexus_platform/`,
   `api/routes/platform.py`, `web/src/app/platform/*`,
-  `data/demo_companies/`. See `docs/PLATFORM_MODE.md` for architecture.
+  `data/demo_companies/`. See `docs/Current NexusIQ docs/PLATFORM_MODE.md` for architecture.
 
 **2026-07-08 — Legacy single-tenant demo retired.** The old recruiter-proof
 surface (Streamlit UI, `/api/v1/query`, `/ask` `/context` `/how`
@@ -114,8 +162,8 @@ Final showcase pass COMPLETE (2026-07-07). 347 tests green, lint/build
 green, 7/7 live smoke, trace audit clean, browser QA done. Deterministic
 analyst layer answers 15 metric families with zero LLM calls; session
 memory resolves follow-ups deterministically; exports carry provenance.
-See `docs/NEXUSIQAI_FULL_BUILD_REPORT.md` and
-`docs/RECRUITER_PROOF_SUMMARY.md`. Milestone history:
+See `docs/Current NexusIQ docs/NEXUSIQAI_FULL_BUILD_REPORT.md` and
+`docs/Current NexusIQ docs/RECRUITER_PROOF_SUMMARY.md`. Milestone history:
 `~/Dev/NexusIQAI-Website/ACTIVE_HANDOFF.md`.
 
 Post-final polish (2026-07-07): fixed the "Q1 to Q4 bar graph" parsing

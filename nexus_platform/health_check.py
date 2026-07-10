@@ -426,11 +426,15 @@ def _check_volume_and_load(traces: list) -> tuple[list, dict]:
 
 def run_health_check(company: str, requested_by: str = "admin",
                      window_days: int = 30, llm_summary: bool = False,
-                     save: bool = True) -> dict:
+                     save: bool = True, source: Optional[str] = "real") -> dict:
     """Analyze the company's traces + feedback and produce a recommendations
-    report. Deterministic core; optional LLM executive summary on top."""
+    report. Deterministic core; optional LLM executive summary on top.
+
+    Reads real traffic only by default; simulated-campaign review must opt
+    in with source="simulated" (never mixed into the default report)."""
     date_from = (datetime.now(timezone.utc) - timedelta(days=window_days)).isoformat()
-    traces = store.list_traces_with_payload(company, date_from=date_from)
+    traces = store.list_traces_with_payload(company, date_from=date_from,
+                                            source=source)
     feedback = store.list_feedback(company)
     traces_by_id = {t["id"]: t for t in traces}
 
