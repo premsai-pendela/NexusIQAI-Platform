@@ -43,18 +43,48 @@ those before resuming). Runs autonomously; Prem unavailable during the run.
     access_decision=allowed), false findings dismissed with notes, lesson
     persisted. Real discovery kept: typo'd metric words bypass the
     malformed-period gate and get confident garbage (finding recorded).
-- **Next unfinished milestone:** full LLM campaign vs AcmeCloud
-  (`camp_c1014c02ce`, in flight) must surface a real `exceptional` finding
-  (bug #1's ghost-table shape expected); then diagnose → branch → fix →
-  before/after evidence → PR.
+  - Campaign `camp_c305c02583` (118 turns) surfaced a REAL exceptional
+    finding unprompted: SQL agent fabricated an NPS formula over the 1–5
+    CSAT scale and answered "Nps score: -1" for a metric that exists
+    nowhere (trace `tr_63dee96201`). Goal item 2 met.
+  - Fix built on branch `autofix/unknown-metric-honesty` (worktree
+    `../NexusIQAI-autofix`, base master@94892ad): unknown-metric honesty
+    gate in `orchestrator.find_clarification` + 6 regression tests.
+    Eval gate PASS — before: suite 154 green / repro 3 failed; after:
+    suite 154 green, zero new failures / repro 5 passed. Evidence JSON in
+    session scratchpad; summary in PR body + ARCHITECTURE_LOG Entry 6.
+    Branch **pushed to origin**. Goal item 3 met.
+- **Next unfinished milestone (NEEDS PREM — one command):** open the PR.
+  The harness permission layer correctly requires publish consent from
+  Prem in chat (authorization in CONTEXT.md wasn't enough). Either tell
+  the agent "open the PR" in a session, or run:
+  `cd ~/Dev/NexusIQAI-autofix && gh pr create --base master --title
+  "Unknown-metric honesty gate: stop the SQL agent fabricating untracked
+  metrics (found by the Health Check simulation loop)" --body-file
+  pr_body.md` (PR body text: ARCHITECTURE_LOG Entry 5/6 has the content;
+  a ready file is in the session scratchpad as `pr_body.md` — copy it
+  next to the worktree first if running by hand).
+  After the PR exists: review + merge is yours alone; the loop never
+  merges.
 - **Resume command:** re-read `docs/platform improvements/CONTEXT.md` +
-  `ARCHITECTURE_LOG.md` guardrails; check campaign:
-  `.venv/bin/python scripts/run_sim_campaign.py --company acmecloud`
-  (add `--no-llm` for a free rerun). Tests:
-  `.venv/bin/python -m pytest tests/platform_mode/ -q`.
-- **Tests already run this initiative:** platform suite 154→159→178 green
-  at each phase; classifier gold set green; two live campaigns
-  (`camp_f688345b32` no-LLM, `camp_c1014c02ce` full — see health_reports).
+  `ARCHITECTURE_LOG.md` guardrails; then finish the PR step above. Tests:
+  `.venv/bin/python -m pytest tests/platform_mode/ -q` (dev branch: 185
+  green). Campaigns: `.venv/bin/python scripts/run_sim_campaign.py
+  --company acmecloud [--no-llm|--dry-run]`.
+- **Tests already run this initiative:** platform suite 154→159→178→185
+  green at each phase; classifier gold set (39 cases) green; three live
+  campaigns vs AcmeCloud (`camp_f688345b32` shakeout, `camp_c1014c02ce`,
+  `camp_c305c02583` — reports in health_reports: hc_0973390b75,
+  hc_03599fe819, hc_9db69d4870); before/after eval gate on the fix branch.
+- **Also real but not this PR:** bug #1 (ghost-table denial mislabel,
+  FUTURE_IMPROVEMENTS #1) did not reproduce in 3 campaigns (stochastic
+  LLM trigger; every analyze-with-AI turn generated valid SQL locally).
+  Its specified fix + mocked repro is designed (ARCHITECTURE_LOG Entry 4
+  decision tree) and can be a second PR on request. Two more recorded
+  product-quality findings awaiting later fixes: typo'd metric words
+  bypass the malformed-period gate (confident A4-paper garbage answer,
+  camp_f688345b32), and the deterministic parser silently drops the
+  out-of-role half of mixed two-part questions.
 - **Needs Prem (non-blocking, flagged per plan):** classifier gold-set
   labels are provisional (labeled by construction/agent, not human) — please
   review `tests/platform_mode/fixtures/classifier_gold/` when it exists.
