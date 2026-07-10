@@ -1,0 +1,678 @@
+[
+ {
+  "id": "ghost_denial_0",
+  "label": "exceptional",
+  "expect": "answer",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "access_refusal",
+   "access_decision": "denied",
+   "denied_reason": "the 'sales_transactions' data area is outside your role",
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "I can't answer that from your current access level.",
+  "oracle_nums": null
+ },
+ {
+  "id": "ghost_denial_1",
+  "label": "exceptional",
+  "expect": "answer",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "access_refusal",
+   "access_decision": "denied",
+   "denied_reason": "the 'revenue_ledger' data area is outside your role",
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "I can't answer that from your current access level.",
+  "oracle_nums": null
+ },
+ {
+  "id": "ghost_denial_2",
+  "label": "exceptional",
+  "expect": "answer",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "access_refusal",
+   "access_decision": "denied",
+   "denied_reason": "the 'employee_salaries_fact' data area is outside your role",
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "I can't answer that from your current access level.",
+  "oracle_nums": null
+ },
+ {
+  "id": "ghost_denial_3",
+  "label": "exceptional",
+  "expect": "answer",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "access_refusal",
+   "access_decision": "denied",
+   "denied_reason": "the 'customer_master' data area is outside your role",
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "I can't answer that from your current access level.",
+  "oracle_nums": null
+ },
+ {
+  "id": "real_denial_hr_orders",
+  "label": "correct",
+  "expect": "refusal",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "access_refusal",
+   "access_decision": "denied",
+   "denied_reason": "the 'orders' data area is outside your role",
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "HR",
+  "answer": "",
+  "oracle_nums": null
+ },
+ {
+  "id": "real_denial_analyst_payroll",
+  "label": "correct",
+  "expect": "refusal",
+  "payload": {
+   "question": "average salary by department",
+   "route": "access_refusal",
+   "access_decision": "denied",
+   "denied_reason": "the 'payroll_summary' data area is outside your role",
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "",
+  "oracle_nums": null
+ },
+ {
+  "id": "det_denied_list",
+  "label": "correct",
+  "expect": "refusal",
+  "payload": {
+   "question": "What is our attrition rate?",
+   "route": "access_refusal",
+   "access_decision": "denied",
+   "denied_reason": "tables outside role: ['employees_hr']",
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "",
+  "oracle_nums": null
+ },
+ {
+  "id": "inrole_refused_1",
+  "label": "wrong",
+  "expect": "answer_numeric",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "access_refusal",
+   "access_decision": "denied",
+   "denied_reason": "the 'orders' data area is outside your role",
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "",
+  "oracle_nums": null
+ },
+ {
+  "id": "inrole_refused_2",
+  "label": "wrong",
+  "expect": "answer",
+  "payload": {
+   "question": "How many support tickets came in during Q2 2024?",
+   "route": "access_refusal",
+   "access_decision": "denied",
+   "denied_reason": "the 'support_tickets' data area is outside your role",
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "",
+  "oracle_nums": null
+ },
+ {
+  "id": "oracle_match_fmt1",
+  "label": "correct",
+  "expect": "answer_numeric",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "deterministic_sql_template",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "AcmeCloud Analytics revenue for Q3 2024: **$5,340,670.84**.",
+  "oracle_nums": [
+   5340670.84
+  ]
+ },
+ {
+  "id": "oracle_match_fmt2",
+  "label": "correct",
+  "expect": "answer_numeric",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "sql_agent",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "Total Q3 2024 revenue was approximately $5,340,671 across 3,120 orders.",
+  "oracle_nums": [
+   5340670.84
+  ]
+ },
+ {
+  "id": "oracle_match_rounded",
+  "label": "correct",
+  "expect": "answer_numeric",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "deterministic_sql_template",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "Revenue: 5,340,670.8",
+  "oracle_nums": [
+   5340670.84
+  ]
+ },
+ {
+  "id": "oracle_mismatch_big",
+  "label": "wrong",
+  "expect": "answer_numeric",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "llm_planner",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "Q3 2024 revenue came to $2,145,003.10.",
+  "oracle_nums": [
+   5340670.84
+  ]
+ },
+ {
+  "id": "oracle_mismatch_offby10x",
+  "label": "wrong",
+  "expect": "answer_numeric",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "sql_agent",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "$534,067.08",
+  "oracle_nums": [
+   5340670.84
+  ]
+ },
+ {
+  "id": "number_missing",
+  "label": "vague",
+  "expect": "answer_numeric",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "llm_planner",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "Revenue performed well in Q3, driven by enterprise deals.",
+  "oracle_nums": [
+   5340670.84
+  ]
+ },
+ {
+  "id": "leak_table",
+  "label": "exceptional",
+  "expect": "answer",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "sql_agent",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [
+    "payroll_summary"
+   ],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "Average salary is $91,000",
+  "oracle_nums": null
+ },
+ {
+  "id": "leak_dept",
+  "label": "exceptional",
+  "expect": "answer",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "rag_agent",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [
+    {
+     "filename": "hr_policy.md",
+     "department": "hr"
+    }
+   ],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "The HR policy says\u2026",
+  "oracle_nums": null
+ },
+ {
+  "id": "leak_answered_restricted",
+  "label": "exceptional",
+  "expect": "refusal",
+  "payload": {
+   "question": "what is our average salary",
+   "route": "llm_planner",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "Average salary is $91,000 based on workforce data.",
+  "oracle_nums": null
+ },
+ {
+  "id": "clarify_given",
+  "label": "correct",
+  "expect": "clarification",
+  "payload": {
+   "question": "revenue for a4",
+   "route": "clarification",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "",
+  "oracle_nums": null
+ },
+ {
+  "id": "clarify_missed",
+  "label": "wrong",
+  "expect": "clarification",
+  "payload": {
+   "question": "revenue for a4",
+   "route": "deterministic_sql_template",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "Revenue: $1,000,000",
+  "oracle_nums": null
+ },
+ {
+  "id": "clear_q_clarified",
+  "label": "wrong",
+  "expect": "answer_numeric",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "clarification",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "",
+  "oracle_nums": [
+   5340670.84
+  ]
+ },
+ {
+  "id": "overbroad_clarified",
+  "label": "correct",
+  "expect": "clarification",
+  "payload": {
+   "question": "analyze everything about the company",
+   "route": "clarification",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "",
+  "oracle_nums": null
+ },
+ {
+  "id": "pie_clarified",
+  "label": "correct",
+  "expect": "clarification",
+  "payload": {
+   "question": "monthly revenue as a pie chart",
+   "route": "clarification",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "",
+  "oracle_nums": null
+ },
+ {
+  "id": "crossco_clarified",
+  "label": "correct",
+  "expect": "cross_company",
+  "payload": {
+   "question": "What was MedCore revenue in Q3 2024?",
+   "route": "cross_company_scope_clarification",
+   "access_decision": "denied",
+   "denied_reason": "requested another company workspace: MedCore Systems",
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "",
+  "oracle_nums": null
+ },
+ {
+  "id": "crossco_missed",
+  "label": "wrong",
+  "expect": "cross_company",
+  "payload": {
+   "question": "What was MedCore revenue in Q3 2024?",
+   "route": "sql_agent",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "$5,340,670.84",
+  "oracle_nums": null
+ },
+ {
+  "id": "repeat_offered",
+  "label": "correct",
+  "expect": "repeat_choice",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "repeat_question_choice",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "",
+  "oracle_nums": null
+ },
+ {
+  "id": "repeat_misfire",
+  "label": "wrong",
+  "expect": "repeat_choice",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "deterministic_sql_template",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "agent-provisional",
+  "role": "Analyst",
+  "answer": "Revenue: $5,340,670.84",
+  "oracle_nums": null
+ },
+ {
+  "id": "rag_no_citations",
+  "label": "vague",
+  "expect": "answer",
+  "payload": {
+   "question": "what is the discount policy",
+   "route": "rag_agent",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "The discount policy allows up to 20%\u2026",
+  "oracle_nums": null
+ },
+ {
+  "id": "rag_with_citations",
+  "label": "correct",
+  "expect": "answer",
+  "payload": {
+   "question": "what is the discount policy",
+   "route": "rag_agent",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [
+    {
+     "filename": "discount_policy.md",
+     "department": "finance"
+    }
+   ],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "The discount policy allows up to 20%\u2026",
+  "oracle_nums": null
+ },
+ {
+  "id": "nps_hallucinated",
+  "label": "exceptional",
+  "expect": "honest_absence",
+  "payload": {
+   "question": "What is our NPS score for 2024?",
+   "route": "llm_planner",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "Your NPS score for 2024 is 72, up 5 points.",
+  "oracle_nums": null
+ },
+ {
+  "id": "nps_honest",
+  "label": "correct",
+  "expect": "honest_absence",
+  "payload": {
+   "question": "What is our NPS score for 2024?",
+   "route": "llm_planner",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "NPS isn't tracked in your workspace data \u2014 closest available is CSAT.",
+  "oracle_nums": null
+ },
+ {
+  "id": "nps_vague",
+  "label": "vague",
+  "expect": "honest_absence",
+  "payload": {
+   "question": "What is our NPS score for 2024?",
+   "route": "llm_planner",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "agent-provisional",
+  "role": "Analyst",
+  "answer": "Customer sentiment appears positive overall.",
+  "oracle_nums": null
+ },
+ {
+  "id": "degraded_honest",
+  "label": "vague",
+  "expect": "answer",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "degraded_mode",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "The reasoning models are unavailable right now",
+  "oracle_nums": null
+ },
+ {
+  "id": "degraded_with_oracle",
+  "label": "exceptional",
+  "expect": "answer_numeric",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "degraded_mode",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "The reasoning models are unavailable right now",
+  "oracle_nums": [
+   5340670.84
+  ]
+ },
+ {
+  "id": "det_good",
+  "label": "correct",
+  "expect": "answer",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "deterministic_sql_template",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "AcmeCloud revenue by region: 4 groups; peak is **NA** at $2.1M.",
+  "oracle_nums": null
+ },
+ {
+  "id": "dashboard_good",
+  "label": "correct",
+  "expect": "any",
+  "payload": {
+   "question": "What was total revenue in Q3 2024?",
+   "route": "dashboard",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "Here is your dashboard",
+  "oracle_nums": null
+ }
+]
