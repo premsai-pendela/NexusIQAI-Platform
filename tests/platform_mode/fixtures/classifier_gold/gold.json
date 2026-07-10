@@ -714,5 +714,24 @@
   "role": "Analyst",
   "answer": "12.8%",
   "oracle_nums": null
+ },
+ {
+  "id": "nps_gated_honestly",
+  "label": "correct",
+  "expect": "honest_absence",
+  "payload": {
+   "question": "What is our NPS score for 2024?",
+   "route": "clarification",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "clarification_kind": "unknown_metric",
+   "citations": [],
+   "tables_touched": [],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Admin",
+  "answer": "\u201cnps score\u201d isn\u2019t a metric tracked in your workspace data",
+  "oracle_nums": null
  }
 ]

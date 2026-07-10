@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import re
 import subprocess
+import sys
 import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -33,7 +34,7 @@ _FAILCOUNT_RE = re.compile(r"(\d+) failed")
 
 
 def run_pytest(args: list[str], label: str, cwd: str | Path = ".") -> EvalRun:
-    cmd = ["python", "-m", "pytest", "-q", *args]
+    cmd = [sys.executable, "-m", "pytest", "-q", *args]
     started = time.time()
     proc = subprocess.run(cmd, cwd=str(cwd), capture_output=True, text=True,
                           timeout=1800)

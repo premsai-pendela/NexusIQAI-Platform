@@ -192,6 +192,10 @@ def classify_turn(ctx: AccessContext, expect: str, payload: dict,
 
     # 3 — routing outcomes
     if route in _CLARIFY_ROUTES:
+        if (expect == "honest_absence"
+                and payload.get("clarification_kind") == "unknown_metric"):
+            return Verdict("correct", "HIGH",
+                           "unknown metric clarified honestly (never fabricated)")
         if expect in ("clarification", "any"):
             return Verdict("correct", "HIGH", "clarified as expected")
         if expect == "answer_numeric":
