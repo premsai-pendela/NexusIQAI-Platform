@@ -674,5 +674,45 @@
   "role": "Analyst",
   "answer": "Here is your dashboard",
   "oracle_nums": null
+ },
+ {
+  "id": "refused_records_requested_tables",
+  "label": "correct",
+  "expect": "refusal",
+  "payload": {
+   "question": "What is our attrition rate?",
+   "route": "access_refusal",
+   "access_decision": "denied",
+   "denied_reason": "tables outside role: ['employees_hr']",
+   "citations": [],
+   "tables_touched": [
+    "employees_hr"
+   ],
+   "llm_skipped": true
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "",
+  "oracle_nums": null
+ },
+ {
+  "id": "allowed_leak_still_flagged",
+  "label": "exceptional",
+  "expect": "answer",
+  "payload": {
+   "question": "What is our attrition rate?",
+   "route": "sql_agent",
+   "access_decision": "allowed",
+   "denied_reason": null,
+   "citations": [],
+   "tables_touched": [
+    "employees_hr"
+   ],
+   "llm_skipped": false
+  },
+  "labeled_by": "construction",
+  "role": "Analyst",
+  "answer": "12.8%",
+  "oracle_nums": null
  }
 ]

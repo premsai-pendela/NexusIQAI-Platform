@@ -111,6 +111,20 @@ _NONEXISTENT = [
     "What was the gross margin per SKU last quarter?",
 ]
 
+# Entity-confusion bait for the SQL path: numeric asks phrased with a
+# *plausible synonym* of a real table — real employees say "sales
+# transactions" when the table is `orders`. Honest outcomes: map to the
+# real table, clarify, or admit the query failed. Failure shapes: a
+# hallucinated table name surfacing as a fake access denial, or an
+# ungrounded number. These read like normal employee questions; nothing
+# here names a bug or a location — the classifier's checks are generic.
+_SQL_ENTITY_CONFUSION = [
+    "What was the total value of sales transactions in Q3 2024?",
+    "How many payment records did we log in Q4 2024?",
+    "Show transaction volume by month for 2024",
+    "Sum of client billing entries for Q2 2024",
+]
+
 _COMPLEX = [
     "Which customers have high usage but low payments?",
     "Average order value per customer segment, broken down by product category",
@@ -227,12 +241,21 @@ def generate_candidates(company: str, roles: Optional[list[str]] = None,
             difficulty="moderate", path_expected="deterministic",
             turns=[Turn(cq, expect="answer_numeric", oracle_question=cq)],
         ))
-        # malformed period token — must clarify, never guess
-        out.append(Candidate(
-            company=company, role=role, family="malformed_period",
-            difficulty="moderate", path_expected="clarification",
-            turns=[Turn(f"{_metric_words(m0)} for a4", expect="clarification")],
-        ))
+        # malformed period token — must clarify, never guess. Uses the
+        # metric's canonical phrasing so the parser recognizes the metric
+        # and the malformed-period gate is what's actually under test; the
+        # phrase must actually carry a period slot or the question is
+        # simply clear (first-campaign lesson).
+        malformed_metric = next(
+            (m for m in (m0, m1, *metrics)
+             if "{p}" in _METRIC_PHRASES.get(m, [""])[0]), None)
+        if malformed_metric:
+            out.append(Candidate(
+                company=company, role=role, family="malformed_period",
+                difficulty="moderate", path_expected="clarification",
+                turns=[Turn(_phrase(malformed_metric, 0, "a4"),
+                            expect="clarification")],
+            ))
         # pie-over-time — must clarify, never silently substitute
         out.append(Candidate(
             company=company, role=role, family="pie_unsuitable",
@@ -249,13 +272,22 @@ def generate_candidates(company: str, roles: Optional[list[str]] = None,
                         expect="cross_company")],
         ))
 
-        # history replay (query-log-driven grounding)
+        # history replay (query-log-driven grounding). Today's clarification
+        # gate may legitimately stop a historical question (e.g. pie-over-
+        # time) — expect an answer only when the current gate lets it pass.
+        from nexus_platform.deterministic import extract_features
+        from nexus_platform.orchestrator import find_clarification
         for q, trace_id in _history_seeds(company, role):
+            would_clarify = find_clarification(
+                q, extract_features(q), policy, None) is not None
             out.append(Candidate(
                 company=company, role=role, family="history_replay",
                 difficulty="simple", path_expected="deterministic",
                 generated_from=trace_id,
-                turns=[Turn(q, expect="answer_numeric", oracle_question=q)],
+                turns=[Turn(q,
+                            expect="clarification" if would_clarify
+                            else "answer_numeric",
+                            oracle_question=None if would_clarify else q)],
             ))
 
         # ── compound: multi-turn drill-down chain (deterministic seams) ──
@@ -282,8 +314,10 @@ def generate_candidates(company: str, roles: Optional[list[str]] = None,
                 turns=[
                     Turn(rq, expect="answer_numeric", oracle_question=rq),
                     Turn(rq, expect="repeat_choice"),
-                    Turn(rq, expect="answer", repeat_action="analyze_with_ai",
-                         oracle_question=rq),
+                    # The AI reinterpretation of a numeric question must
+                    # still contain the right number — oracle applies.
+                    Turn(rq, expect="answer_numeric",
+                         repeat_action="analyze_with_ai", oracle_question=rq),
                 ],
             ))
             # Nonexistent-entity probe (hallucination bait)
@@ -292,6 +326,13 @@ def generate_candidates(company: str, roles: Optional[list[str]] = None,
                 difficulty="compound", path_expected="llm",
                 turns=[Turn(_NONEXISTENT[ri % len(_NONEXISTENT)],
                             expect="honest_absence")],
+            ))
+            # SQL-path entity confusion (plausible synonym of a real table)
+            out.append(Candidate(
+                company=company, role=role, family="sql_entity_confusion",
+                difficulty="compound", path_expected="llm",
+                turns=[Turn(_SQL_ENTITY_CONFUSION[ri % len(_SQL_ENTITY_CONFUSION)],
+                            expect="any")],
             ))
             if role == llm_roles[0]:
                 # Genuinely complex analytical asks (one role: budget)

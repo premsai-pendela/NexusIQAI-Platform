@@ -29,14 +29,32 @@ those before resuming). Runs autonomously; Prem unavailable during the run.
     agent operational memory).
   - GitHub access verified: `gh auth status` → fine-grained PAT active as
     premsai-pendela (GH_TOKEN env). Token value never written anywhere.
-- **Next unfinished milestone:** research pass (question-pattern grounding +
-  weak-model loop prior art), then Phase 0 store plumbing (source column,
-  simulated_query_log, health_findings tables).
-- **Resume command:** re-read `docs/platform improvements/CONTEXT.md`,
-  `ARCHITECTURE_LOG.md` guardrails, then continue from "Next unfinished
-  milestone" above. Tests: `.venv/bin/python -m pytest tests/platform_mode/ -q`.
-- **Tests already run this initiative:** none yet (baseline capture comes
-  with Phase 0).
+  - Research pass done (BI question shapes; agent-memory failure modes —
+    LLM-rewritten memory rejected, cited in ARCHITECTURE_LOG Entry 2).
+  - Phase 0 done: `traces.source` tagging (contextvar), real-only read
+    defaults, `simulated_query_log` / `health_findings` /
+    `health_finding_events` / `sim_pattern_stats` / `agent_lessons` tables.
+  - Phase 1 done: `nexus_platform/sim/` (personas, question_gen,
+    classifier, runner) + `scripts/run_sim_campaign.py`. 86 candidates ×
+    14 families × 4 difficulty tiers; zero-LLM classifier with 38-case
+    provisional gold set. Suite 178 passed. Commits on `health-loop/dev`.
+  - Shakeout campaign `camp_f688345b32` (no-LLM, 98 turns) ran; classifier
+    false-positive found+fixed (leak check now gates on
+    access_decision=allowed), false findings dismissed with notes, lesson
+    persisted. Real discovery kept: typo'd metric words bypass the
+    malformed-period gate and get confident garbage (finding recorded).
+- **Next unfinished milestone:** full LLM campaign vs AcmeCloud
+  (`camp_c1014c02ce`, in flight) must surface a real `exceptional` finding
+  (bug #1's ghost-table shape expected); then diagnose → branch → fix →
+  before/after evidence → PR.
+- **Resume command:** re-read `docs/platform improvements/CONTEXT.md` +
+  `ARCHITECTURE_LOG.md` guardrails; check campaign:
+  `.venv/bin/python scripts/run_sim_campaign.py --company acmecloud`
+  (add `--no-llm` for a free rerun). Tests:
+  `.venv/bin/python -m pytest tests/platform_mode/ -q`.
+- **Tests already run this initiative:** platform suite 154→159→178 green
+  at each phase; classifier gold set green; two live campaigns
+  (`camp_f688345b32` no-LLM, `camp_c1014c02ce` full — see health_reports).
 - **Needs Prem (non-blocking, flagged per plan):** classifier gold-set
   labels are provisional (labeled by construction/agent, not human) — please
   review `tests/platform_mode/fixtures/classifier_gold/` when it exists.

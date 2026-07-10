@@ -372,3 +372,92 @@ storage system):
 What deliberately does *not* persist: narrative self-assessments without
 evidence links, and any lesson that would permanently disable a question
 family (deprioritize only — see over-generalization risk above).
+
+---
+
+## 2026-07-10 — Entry 3: Phase 0 + Phase 1 built; first campaign taught the classifier a lesson
+
+### Phase 0 (store plumbing) — done, 159→green
+
+Implemented per plan §4.1/§4.2 with one notable mechanism choice: **the
+simulator tags traces via a `contextvars` context manager**
+(`store.tagged_trace_source("simulated")`) that `save_trace` consults,
+instead of threading a `source` parameter through `run_query`'s seven
+trace-writing code paths. One change site, thread-safe, zero risk of a
+missed path; `query_service.py` needed no changes at all. Read helpers
+(`list_traces_with_payload`, `list_traces`) and `run_health_check` default
+to real-only with `COALESCE(source,'real')` so pre-migration rows count as
+real. Rejected alternative: a parallel simulated-traces table (plan already
+argued against it; double the read paths, easy to conflate).
+
+Working-branch note: all initiative work is committed on **`health-loop/dev`**,
+not master (guardrail: never touch master). The first commit also carried a
+pre-staged docs/ reorganization (renames into "Current NexusIQ docs" /
+"Historical NexusIQ", one deletion) that was already sitting in the git
+index before this initiative started — Prem's own staged-but-uncommitted
+work. Disk state was already what CONTEXT.md references; committing it
+verbatim preserved it. Nothing was altered or lost; master untouched.
+
+### Phase 1 (sim package) — done, 178→green
+
+- `personas.py` — AccessContext per (company, role), reusing curated demo
+  accounts, then the generated population, then a synthetic identity.
+  Simulated-ness lives in the trace `source` tag, never in the identity.
+- `question_gen.py` — deterministic generation (zero LLM): 14 attack
+  families × 7 roles × 4 difficulty tiers, ~86 candidates per company,
+  including verbatim replays of the company's own most-asked historical
+  questions (query-log grounding), multi-turn drill-down chains, the
+  repeat→Analyze-with-AI seam for budgeted roles, nonexistent-entity bait,
+  cross-company names, malformed periods, and in-role+out-of-role mixes.
+  Model-routing note: CONTEXT.md said the question-asking traffic should be
+  driven by a cheap model, not Fable — this implementation is cheaper still
+  (template banks, no model at all); the only LLM spend in a campaign is
+  the product's own answer pipeline on its normal fallback chain.
+- `classifier.py` — zero-LLM 4-outcome classifier (design justified in
+  Entry 2). The `exceptional` checks are generic, not bug-#1-specific: any
+  denial naming a table absent from `ALL_TABLES`, any structural evidence
+  leak, any degraded answer with a deterministic oracle available, any
+  ungrounded number for a nonexistent entity.
+- `runner.py` — throttle (8s after actual-LLM turns), shared quota tracker
+  check before predicted-LLM candidates, hard caps (40 est. calls / 100k
+  est. tokens, campaign finishes deterministics and reports "partial
+  coverage" at cap), per-family stats, episodic lesson at campaign end.
+- 36-case provisional gold set (34 by-construction, 2 agent-provisional
+  flagged for Prem), classifier unit tests, runner tests with a stubbed
+  pipeline. Full platform suite green at every step.
+
+### First campaign (no-LLM shakeout, `camp_f688345b32`) — the classifier's own first bug
+
+98 turns, 91 correct. Two lessons, both logged to the agent memory:
+
+1. **My classifier had a false-positive bug.** It flagged 4 "boundary
+   leaks" that were actually *correct refusals*: refused deterministic
+   traces record the **requested** tables in `tables_touched` (no SQL ever
+   ran), and the leak check didn't gate on `access_decision == "allowed"`.
+   Fixed; two gold cases added encoding exactly this; the 3 false findings
+   in `health_findings` were dismissed via `update_finding_status` with an
+   explanatory note (the resolution-memory doing its job on day one), and a
+   global lesson was persisted so future evidence-based checks start from
+   "gate on access_decision first."
+2. **An accidental real discovery.** My malformed-period candidates used
+   metric *labels* ("customers for a4") instead of parser keywords, so the
+   clarification gate never saw a metric and the question fell through to
+   the LLM engine — which answered confidently about *A4 paper* from HyDE
+   retrieval over the employee handbook. Two findings recorded
+   (`ambiguous_answered_confidently`). So: generator fixed to use canonical
+   phrasing (to test the gate as intended), **and** the discovered gap is
+   real signal — the malformed-period gate only protects questions whose
+   metric the parser recognizes; typo'd metric words get confident garbage
+   instead of a clarification. Kept in `health_findings` as a genuine
+   product finding for a later fix (not the first PR — bug #1 has a
+   confirmed live repro and a specified fix; this one needs design thought
+   about how broad the gate should be).
+
+Also observed: `--no-llm` skips *predicted*-LLM candidates, but 4
+deterministic/clarification-predicted candidates organically fell through
+to the live engine (that fallthrough is itself attack surface — worth
+keeping). The budget machinery correctly counted and throttled them.
+
+Next: full campaign vs AcmeCloud with LLM candidates (running as I write
+this), where the repeat→Analyze-with-AI seam gets its shot at reproducing
+bug #1 under the classifier's generic ghost-table check.
