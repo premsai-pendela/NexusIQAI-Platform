@@ -1071,6 +1071,51 @@ attempt 7 demonstrated the weaker one is game-able by accident.
   reasoning stages see. Resume remains the right tool when a run dies
   *before* its plan is implemented; not after.
 
+---
+
+## 2026-07-11 — Entry 10: Attempt 10 — the pipeline fixed the bug for real. Phase 1 complete.
+
+Attempt 10 ran **fresh** (no resume) against the branch carrying its own
+partial work, on Cerebras + Groq. Its reasoning saw the tree as it stood
+— helper present, gate present, bug still live — and planned exactly the
+completing change: two fall-through checks in `decide_route` for the
+`f.metric is None` case (a metric-label substring check, and a
+metric-noun pattern `\w+ (score|rate|percentage|ratio)`), returning an
+`unclear_metric` clarification with the role's real metrics as choices.
+Its regression test exercises the exact failing question through
+`decide_route` — deterministic, no LLM — and flipped fail→pass. Commit
+`5419b69` (rebased tip `9717695`), actor evidence in the commit message
+and session log `hf_73a86c38bc_20260711T*.json`.
+
+**Behavioral validation (mine, observe-and-verify):** the NPS question
+now routes to clarification; revenue/attrition still parse
+deterministically; why-questions still reach the planner; plain policy
+questions still reach RAG. Known imperfections, logged honestly and
+carried into the PR body: "policy on error rate monitoring"
+over-clarifies (no doc-terms guard), and "What is our LTV?" (no metric
+noun) still reaches the agent — the fabrication *class* is narrowed,
+not eliminated. Verdict: acceptable for a PR — the eval gate passed, the
+behavior verifiably changed for the finding's class, the residuals are
+exactly what Phase 2 traffic and Prem's review exist to judge. This is
+the honest reading of "expected, even, that the module's first drafts
+need iteration" (CONTEXT §2e).
+
+**Branch curation (deviation, logged):** the orphaned `data_exists` WIP
+commit — dead code with a latent crash the final fix never used — was
+dropped from the published branch by rebase (local-only branch, never
+pushed). Full history stays in the session logs and this file. Suite on
+the curated tip with brains present: **157 passed, 0 failed, 0 errors**;
+repro green; behavioral probes recorded in `eval_evidence.json`.
+
+**Scorecard for the whole Phase 1 fight (10 attempts):** the pipeline's
+*reasoning* was never the blocker — attempt 4 had the right architecture
+and attempt 10 shipped it. Every failure was infrastructure or my
+scaffolding: prompt sizes vs. free-tier ceilings, retry accounting,
+external process kills, a vacuous-repro hole, an apply footgun. Each got
+a committed, generic fix, which is the actual deliverable: a pipeline
+that can now do this to a finding it has never seen. Phase 2 tests
+exactly that claim.
+
 ### State going into attempt 8 (continuation, per Prem's instruction)
 
 The finding is reopened (`health_repair_validator` note on
