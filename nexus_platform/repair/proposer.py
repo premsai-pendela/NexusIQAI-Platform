@@ -32,7 +32,11 @@ from nexus_platform.repair.context_pack import EvidencePack
 
 MAX_LLM_CALLS_PER_ATTEMPT = 25
 DELAY_SECONDS = 8.0
-EXHAUSTION_WAIT_SECONDS = 150.0  # all providers cooling down: wait, retry
+EXHAUSTION_WAIT_SECONDS = 150.0  # fallback when the tracker can't say
+# Cooldowns observed live run up to ~60 min (Groq hourly quota, Cerebras
+# 429). One attempt may ride out at most this much total cooldown before
+# giving up — wall-clock is cheap for an unattended loop; quota is not.
+MAX_EXHAUSTION_WAIT_TOTAL = 4500.0
 MAX_PLAN_FILES = 4
 MAX_PLAN_STEPS = 6
 # Groq's free tier rejects requests over ~12k tokens outright (observed
@@ -134,10 +138,12 @@ class Proposer:
     calls_made: int = 0
     delay_seconds: float = DELAY_SECONDS
     exhaustion_wait: float = EXHAUSTION_WAIT_SECONDS
+    max_exhaustion_wait_total: float = MAX_EXHAUSTION_WAIT_TOTAL
     max_calls: int = MAX_LLM_CALLS_PER_ATTEMPT
     _code_context: str = ""
     _known_symbols: set = field(default_factory=set)
     _located_functions: list = field(default_factory=list)
+    _exhaustion_waited: float = 0.0
 
     def __post_init__(self):
         if self.llm is None:
@@ -183,7 +189,15 @@ class Proposer:
             if exhausted:
                 # Every provider is cooling down or over-limit — feedback
                 # is meaningless; waiting is the only thing that helps.
-                time.sleep(self.exhaustion_wait)
+                # Ask the shared tracker when the soonest provider comes
+                # back and wait for that, inside a total wall-clock budget.
+                wait = self._cooldown_wait()
+                if wait is None:
+                    raise StageFailed(
+                        f"stage {stage!r} starved: providers cooling down "
+                        f"beyond the {self.max_exhaustion_wait_total:.0f}s "
+                        "wait budget")
+                time.sleep(wait)
                 attempt_prompt = prompt
                 continue
             attempt_prompt = (
@@ -192,6 +206,36 @@ class Proposer:
                 "that fixes exactly that problem.")
         raise StageFailed(f"stage {stage!r} failed after {retries + 1} "
                           f"attempts: {last_reason}")
+
+    def _cooldown_wait(self) -> Optional[float]:
+        """Seconds to sleep until the soonest provider recovers, or None
+        when the attempt's total wait budget is spent. Uses the shared
+        tracker's own cooldown clocks rather than a blind fixed delay."""
+        if self._exhaustion_waited >= self.max_exhaustion_wait_total:
+            return None
+        if self.exhaustion_wait == 0:  # test/disabled mode: never sleep,
+            self._exhaustion_waited += 60.0  # but still bound the loop
+            return 0.0
+        wait = self.exhaustion_wait
+        try:
+            from utils.quota_tracker import quota_tracker
+            retry_ins = []
+            for state in quota_tracker.get_status_report().values():
+                raw = str(state.get("retry_in", "0")).rstrip("s")
+                try:
+                    retry_ins.append(float(raw))
+                except ValueError:
+                    continue
+            pending = [r for r in retry_ins if r > 0]
+            if pending:
+                wait = min(pending) + 15.0
+        except Exception:
+            pass
+        wait = max(30.0, min(wait,
+                             self.max_exhaustion_wait_total
+                             - self._exhaustion_waited))
+        self._exhaustion_waited += wait
+        return wait
 
     # ── L: localization ──────────────────────────────────────────────────
 
