@@ -494,14 +494,21 @@ class Proposer:
                 current = "\n".join(lines)
         style_example = ""
         if step["file"].startswith("tests/"):
-            style_example = ("\nAn existing test file from this codebase, "
-                             "as a style pattern:\n"
-                             + context_pack.test_style_example(
-                                 self.pack.repo_root) + "\n"
-                             "\nThe product code under test (read it before "
-                             "writing the test — use only APIs that "
-                             "actually exist in it):\n"
-                             + self._code_context[:24000] + "\n")
+            style_example = (
+                "\nTHE OBSERVED FAILURE THIS TEST MUST ENCODE — the test "
+                "must exercise the exact failing input below (the question "
+                "verbatim) through the product's behavior and assert the "
+                "honest expected outcome, not merely check that a helper "
+                "function exists:\n"
+                + self.pack.evidence_text()[:6000] + "\n"
+                "\nAn existing test file from this codebase, "
+                "as a style pattern:\n"
+                + context_pack.test_style_example(
+                    self.pack.repo_root) + "\n"
+                "\nThe product code under test (read it before "
+                "writing the test — use only APIs that "
+                "actually exist in it):\n"
+                + self._code_context[:20000] + "\n")
         prompt = (
             f"{_PREAMBLE}\n"
             "You are implementing ONE step of an approved plan. Change "

@@ -111,6 +111,20 @@ def _load_resume_seed(resume_session, finding_id: str) -> Optional[dict]:
     return None
 
 
+def _dirty_paths(worktree: Path) -> list[str]:
+    """Modified + untracked paths from `git status -z` — NUL-delimited so
+    no line-oriented stripping can mangle a leading-space status prefix
+    (that exact bug silently dropped a plan file from a commit once)."""
+    proc = subprocess.run(["git", "status", "--porcelain", "-z"],
+                          cwd=str(worktree), capture_output=True, text=True,
+                          timeout=60)
+    paths = []
+    for entry in proc.stdout.split("\0"):
+        if len(entry) > 3:
+            paths.append(entry[3:])
+    return paths
+
+
 def _pytest_tail(repo_root: Path, args: list[str]) -> str:
     """Re-run a failing pytest target to capture output for feedback. Kept
     separate from eval_gate so its EvalRun stays a clean record."""
@@ -188,9 +202,11 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
             understanding = seed["understanding"]
             hypothesis = seed["hypothesis"]
             plan, problem = _parse_plan(seed["plan"])
-            if problem or (worktree_dir / plan.test_file).exists():
-                raise StageFailed(f"resumed plan no longer valid: "
-                                  f"{problem or 'test file already exists'}")
+            if problem:
+                raise StageFailed(f"resumed plan no longer valid: {problem}")
+            # A resumed continuation may find its test file already on the
+            # branch from a prior round — the test steps then edit it
+            # rather than create it.
             proposer.log.append({
                 "ts": datetime.now(timezone.utc).isoformat(),
                 "stage": "resume", "attempt": 0, "model_used": None,
@@ -207,20 +223,18 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
         # ── the regression test first; it must fail pre-fix ───────────
         repro_args = [plan.test_file]
         repro_before = None
-        last_failing_run = None
         feedback = ""
+        failing_questions = [t.get("question") for t in pack.traces
+                             if t.get("question")]
         for regen_round in range(MAX_TEST_REGENERATIONS + 1):
             if regen_round:
-                # Regenerating: clear the previous draft first. Never at
-                # the end of a round — a soft-accepted repro must leave
-                # its test file on disk (attempt-4 lesson: deleting after
-                # the last round sent the fix rounds chasing a test file
-                # that no longer existed).
+                # Regenerating: clear the previous draft first, never at
+                # the end of a round (attempt-4 lesson: deleting after the
+                # last round left the fix rounds chasing a missing file).
                 for step in plan.test_steps:
                     target = worktree_dir / step["file"]
                     if target.exists():
                         target.unlink()
-                last_failing_run = None
             for step in plan.test_steps:
                 resp = proposer.implement_step(plan, step, feedback=feedback)
                 if resp.strip().startswith("REPLAN:"):
@@ -232,6 +246,24 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                     feedback = applied.reason
                     break
             else:
+                test_text = ""
+                test_path = worktree_dir / plan.test_file
+                if test_path.exists():
+                    test_text = test_path.read_text()
+                if failing_questions and not any(q in test_text
+                                                 for q in failing_questions):
+                    # Attempt-7 lesson: a repro that never exercises the
+                    # failing input lets a vacuous fix through the gate. A
+                    # helper-existence test is not a repro.
+                    feedback = (
+                        "your regression test never exercises the actual "
+                        "failing input from the trace. It must send the "
+                        "exact question "
+                        f"{failing_questions[0]!r} through the product's "
+                        "behavior (routing/orchestration), assert the "
+                        "honest expected outcome, and fail on today's "
+                        "code because of that assertion.")
+                    continue
                 run = eval_gate.run_pytest(repro_args, "repro_before",
                                            cwd=worktree_dir)
                 if run.exit_code != 0:
@@ -242,7 +274,6 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                     if run.exit_code == 1 and not _fails_for_wrong_reason(tail):
                         repro_before = run
                         break
-                    last_failing_run = run
                     feedback = (
                         "your regression test fails, but for the WRONG "
                         "reason — it crashes inside the test itself "
@@ -252,7 +283,6 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                         "Use only APIs that exist in the code shown to "
                         f"you. Test output:\n{tail}")
                 else:
-                    last_failing_run = None
                     feedback = (
                         "your regression test PASSED against the current, "
                         "still-buggy code — it does not encode the observed "
@@ -262,15 +292,12 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                         "today. Test output:\n"
                         f"{_pytest_tail(worktree_dir, repro_args)}")
         if repro_before is None:
-            # A crashing-but-failing test after every regeneration is a
-            # weaker repro than an asserting one, but the eval gate still
-            # requires it to flip fail→pass — accept with a note rather
-            # than discard the whole attempt. Its file is still on disk.
-            if last_failing_run is not None:
-                repro_before = last_failing_run
-            else:
-                raise StageFailed("could not produce a regression test "
-                                  "that fails on the un-fixed tree")
+            # No soft-accept: a repro that doesn't encode the behavioral
+            # failure is how a vacuous fix passed the gate once. Fail the
+            # attempt honestly instead.
+            raise StageFailed("could not produce a regression test that "
+                              "exercises the failing input and fails on "
+                              "the un-fixed tree")
 
         # ── code steps, one at a time ──────────────────────────────────
         for step in plan.code_steps:
@@ -351,10 +378,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
             # Commit what actually changed on disk, bounded by the plan's
             # allowlist — the authoritative record is the tree, not the
             # per-step bookkeeping.
-            status = pr._git(["status", "--porcelain"], worktree_dir)
-            dirty = [line[3:].strip() for line in status.splitlines()
-                     if line.strip()]
-            new_files = sorted(f for f in dirty
+            new_files = sorted(f for f in _dirty_paths(worktree_dir)
                                if f in plan.files_touched)
             outcome.files_changed = new_files
             outcome.commit = pr.commit_paths(

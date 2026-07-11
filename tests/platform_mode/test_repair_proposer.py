@@ -339,6 +339,40 @@ def test_resume_seed_reconstructs_from_stage_records(tmp_path):
     assert _load_resume_seed(p, "hf_other") is None
 
 
+def test_dirty_paths_survives_leading_space_status(tmp_path):
+    """`stdout.strip()` on line-oriented `git status` once mangled the
+    first ' M <path>' entry and silently dropped a file from a commit —
+    the -z parser must not."""
+    import subprocess
+    from nexus_platform.repair.runner import _dirty_paths
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    (tmp_path / "a_tracked.py").write_text("x = 1\n")
+    subprocess.run(["git", "add", "."], cwd=tmp_path, check=True)
+    subprocess.run(["git", "-c", "user.email=t@t", "-c", "user.name=t",
+                    "commit", "-qm", "init"], cwd=tmp_path, check=True)
+    (tmp_path / "a_tracked.py").write_text("x = 2\n")
+    (tmp_path / "b_untracked.py").write_text("y = 1\n")
+    paths = _dirty_paths(tmp_path)
+    assert "a_tracked.py" in paths
+    assert "b_untracked.py" in paths
+
+
+def test_test_step_prompt_carries_the_failing_question():
+    pack = _pack()
+    plan, _ = _parse_plan(GOOD_PLAN)
+    fake = FakeLLM([_block("tests/platform_mode/test_new_gate.py", "",
+                           "def test_x():\n    assert True")])
+    p = Proposer(pack=pack, llm=fake, delay_seconds=0)
+    p._code_context = "def decide_route(): ..."
+    p.implement_step(plan, plan.test_steps[0])
+    prompt = fake.prompts[0][1]
+    # The trace's failing question must be visible to the test writer —
+    # attempt-7 lesson: a writer that can't see the failure writes a
+    # helper-existence test instead of a repro.
+    assert "What is our X?" in prompt
+    assert "OBSERVED FAILURE" in prompt
+
+
 # ── model chain composition ──────────────────────────────────────────────
 
 def test_build_models_never_includes_ollama_or_frontier():
