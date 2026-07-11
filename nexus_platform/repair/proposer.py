@@ -321,7 +321,11 @@ class Proposer:
             f"{self.pack.evidence_text()}\n"
             f"Relevant source code:\n\n{self._code_context}\n\n"
             f"An earlier mechanism analysis concluded:\n{understanding}\n\n"
-            "Answer in exactly this format:\n"
+            "Answer with ONLY the three sections below, in this order, "
+            "nothing before them and nothing after. Do not think out loud "
+            "first — reasoning models that narrate run out of output space "
+            "before reaching the answer. Keep the whole reply under 250 "
+            "words.\n"
             "ROOT_CAUSE: <one or two sentences naming the missing or "
             "incorrect logic>\n"
             "LOCATION: <file path and function where a fix belongs — the "
@@ -351,7 +355,9 @@ class Proposer:
             "EXPECTED behavior break any legitimate behavior visible in "
             "the code? Reply with either 'VERDICT: AGREE' plus one sentence "
             "of why, or 'VERDICT: REVISE' followed by corrected "
-            "ROOT_CAUSE:/LOCATION:/EXPECTED: sections in the same format.\n")
+            "ROOT_CAUSE:/LOCATION:/EXPECTED: sections in the same format. "
+            "Output only that — no preamble, no narrated reasoning, under "
+            "250 words total.\n")
 
         def _validate_critique(resp: str) -> tuple[bool, str]:
             if "VERDICT:" not in resp:
@@ -393,7 +399,8 @@ class Proposer:
             "author.\n"
             "- Smallest change that fixes the CLASS of failure, not just "
             "this literal question.\n\n"
-            "Answer in exactly this format:\n"
+            "Answer with ONLY this format — no preamble, no narrated "
+            "reasoning, under 300 words total:\n"
             "PLAN:\n"
             "1. FILE: <path> — <one small, checkable step>\n"
             "2. FILE: <path> — <next step>\n"
