@@ -1040,6 +1040,37 @@ that replays the observed failure flipped." This is a materially stronger
 definition than CONTEXT.md §2e's before/after wording, adopted because
 attempt 7 demonstrated the weaker one is game-able by accident.
 
+### Attempts 8–9 and the shift to fresh planning (added later this day)
+
+- **Attempt 8** produced a genuinely behavioral test — it contained the
+  real question and even *built on the pipeline's own `data_exists`
+  WIP* — but called the live gateway inside the test and died on a
+  TypeError in that same WIP code (`result.get("response", "")` is
+  defenseless when the failure dict carries an explicit `response:
+  None`). Response: the test writer now sees every product file the
+  plan targets (the deterministic `decide_route` seam lived in a plan
+  target the localization pass had skipped), an explicit
+  deterministic-test requirement, and a style example chosen to
+  demonstrate monkeypatching.
+- **Attempt 9** ran against a nearly-dead chain (Groq hourly quota,
+  Gemini 504s, NIM congested→daily cap, only Cerebras answering: 3 real
+  responses in 20 calls). Cerebras twice copied the "(file does not
+  exist yet)" placeholder into its SEARCH block — its final test
+  contained the exact question and would have been accepted as a repro,
+  but that apply footgun killed it. Fixes: placeholder-SEARCH treated
+  as new-file creation (deterministic leniency for an observed repeated
+  stumble), and the no-file prompt now says outright that SEARCH must
+  be empty.
+- **Strategy shift, logged as a deviation:** resuming attempt 4's plan
+  had become incoherent — its steps are already implemented on the
+  branch, so the model was being asked to re-apply changes that exist,
+  and it kept anchoring on its own committed helper. Attempt 10 runs
+  **fresh** (full localize→plan against the current tree): the coherent
+  question now is "the gate exists but never fires for the failing
+  question — plan the completing change," which is exactly what fresh
+  reasoning stages see. Resume remains the right tool when a run dies
+  *before* its plan is implemented; not after.
+
 ### State going into attempt 8 (continuation, per Prem's instruction)
 
 The finding is reopened (`health_repair_validator` note on
