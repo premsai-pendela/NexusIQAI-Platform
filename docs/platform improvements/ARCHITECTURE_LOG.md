@@ -1116,6 +1116,32 @@ a committed, generic fix, which is the actual deliverable: a pipeline
 that can now do this to a finding it has never seen. Phase 2 tests
 exactly that claim.
 
+---
+
+## 2026-07-11 — Entry 11: Phase 2 begins — first round, one new finding, and proof the fix generalizes
+
+- **Checkpoint email #1 sent** (Phase 1 → Phase 2 transition, per
+  CONTEXT §2f.1).
+- **Phase 2 campaign round 1** (`camp_513292722a`, 103 turns, widened
+  `--llm-roles Analyst Admin Support Ops Finance`): one genuinely new
+  finding, different shape from Phase 1 — `numeric_mismatch_vs_oracle`
+  (`hf_aa3f564b71`, HIGH): the repeat→Analyze-with-AI seam answered
+  `[2024.0, 1.0]` for Q1-2024 revenue where the deterministic oracle
+  says 3,906,775.33 — the reinterpretation extracted the year and a
+  count instead of the metric. Honest caveat: the chain degraded
+  mid-campaign (Gemini 429'd) and **all 8 `very_hard_join` candidates
+  were skipped on provider cooldown** — so the very-very-hard tier has
+  not actually been exercised yet. A follow-up round runs as soon as a
+  major provider recovers; that re-run is quota-justified (it is the
+  mission's explicit Phase 2 requirement, not habit).
+- **The Phase 1 fix generalizes — measured, not asserted.** On the fix
+  branch, "customers for a4" (finding `hf_500c08e695`, the typo'd-metric
+  gate bypass from the *first* shakeout campaign — a question shape the
+  pipeline never saw while fixing NPS) now routes to an honest
+  clarification via the metric-label fall-through. The professor-bar
+  from the mission ("a method it can apply to a finding it hasn't seen")
+  — this is the first concrete instance of it holding.
+
 ### State going into attempt 8 (continuation, per Prem's instruction)
 
 The finding is reopened (`health_repair_validator` note on
