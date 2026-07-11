@@ -31,7 +31,7 @@ from nexus_platform.sim.personas import available_roles
 EXPECTATIONS = ("answer", "answer_numeric", "refusal", "clarification",
                 "repeat_choice", "cross_company", "honest_absence", "any")
 
-DIFFICULTIES = ("simple", "moderate", "complex", "compound")
+DIFFICULTIES = ("simple", "moderate", "complex", "compound", "very_hard")
 PATHS = ("deterministic", "llm", "seam", "clarification")
 
 
@@ -130,6 +130,50 @@ _COMPLEX = [
     "Average order value per customer segment, broken down by product category",
     "Churn rate by plan tier as a percentage trend over the last 4 quarters",
     "Why did support ticket volume spike in Q3 2024, and which category drove it?",
+]
+
+# ── very_hard: questions that structurally require joining 5–6+ of the
+# role's allowed tables in ONE ask (HEALTH_CHECK_AGENT_MISSION.md's precise
+# top-tier definition). Not several metrics side by side — one question
+# whose correct answer forces that many tables' data to relate to each
+# other, guaranteed off the deterministic template layer. Emitted only when
+# required_tables ⊆ the role's allowlist, so every question is answerable
+# in-role and any refusal/hallucination is a real finding, not an access
+# artifact. Phase-2 shapes are deliberately different from the round-1
+# families (no repeat seams, no nonexistent entities — these are legitimate
+# hard questions where the failure mode is wrong/fabricated multi-table
+# reasoning, not bait).
+_VERY_HARD: list[tuple[frozenset, str]] = [
+    (frozenset({"customers", "support_tickets", "orders", "order_items",
+                "subscriptions", "churn_events"}),
+     "For customers who filed a support ticket in {p}, how did their "
+     "average order value compare to customers who didn't, split by "
+     "subscription plan and whether they later churned?"),
+    (frozenset({"campaigns", "leads", "customers", "orders",
+                "subscriptions", "usage_events"}),
+     "Of the customers we acquired from campaign leads in 2024, what's "
+     "their total order revenue, how many still have an active "
+     "subscription, and how does their product usage compare to everyone "
+     "else's?"),
+    (frozenset({"support_tickets", "csat_responses", "escalations", "slas",
+                "customers", "products"}),
+     "Which product's tickets breached SLA most often in {p}, how many of "
+     "those breaches escalated, and what CSAT did those customers give "
+     "afterwards?"),
+    (frozenset({"orders", "order_items", "products", "refunds",
+                "credit_notes", "payments"}),
+     "For {p}, which product categories drove the most refunds and credit "
+     "notes relative to what customers actually paid, and how large were "
+     "the affected orders?"),
+    (frozenset({"invoices", "invoice_lines", "payments", "customers",
+                "subscriptions", "finance_reports"}),
+     "How much of what we invoiced in {p} is still unpaid, which "
+     "subscription customers owe the most, and does that total match the "
+     "finance report for the period?"),
+    (frozenset({"incidents", "escalations", "support_tickets", "slas",
+                "orders", "usage_events"}),
+     "Did the incidents in {p} drive ticket escalations or SLA breaches, "
+     "and did the affected customers' usage or ordering drop afterwards?"),
 ]
 
 
@@ -334,6 +378,18 @@ def generate_candidates(company: str, roles: Optional[list[str]] = None,
                 turns=[Turn(_SQL_ENTITY_CONFUSION[ri % len(_SQL_ENTITY_CONFUSION)],
                             expect="any")],
             ))
+            # very_hard multi-table joins — every template whose full table
+            # set is inside this role's allowlist (rotated for budget)
+            eligible_vh = [(tables, q) for tables, q in _VERY_HARD
+                           if tables <= set(policy.allowed_tables)]
+            for vi in range(min(2, len(eligible_vh))):
+                tables, vq = eligible_vh[(ri + vi) % len(eligible_vh)]
+                out.append(Candidate(
+                    company=company, role=role, family="very_hard_join",
+                    difficulty="very_hard", path_expected="llm",
+                    turns=[Turn(vq.format(p=_PERIODS[(ri + vi) % 4]),
+                                expect="any")],
+                ))
             if role == llm_roles[0]:
                 # Genuinely complex analytical asks (one role: budget)
                 for qc in _COMPLEX[:2]:

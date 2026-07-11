@@ -67,6 +67,7 @@ class EvidencePack:
     repo_root: Path
     candidate_files: list[str] = field(default_factory=list)
     manifest: str = ""
+    sim_rows: list[dict] = field(default_factory=list)
 
     def evidence_text(self) -> str:
         """The finding + trace evidence, formatted for a prompt."""
@@ -100,6 +101,12 @@ class EvidencePack:
                 lines.append(f"allowed_tables ({len(allowed)}): "
                              f"{', '.join(map(str, allowed))}")
             lines.append("")
+        for row in self.sim_rows:
+            lines.append(
+                f"Classifier verdict for trace {row.get('trace_id')}: "
+                f"{row.get('classification')} "
+                f"({row.get('classifier_confidence')}) — "
+                f"{row.get('classifier_reason')}")
         return "\n".join(lines)
 
 
@@ -117,6 +124,11 @@ def load_evidence(company: str, finding_id: str, repo_root: str | Path,
             traces.append(tr)
     pack = EvidencePack(finding=finding, traces=traces, company=company,
                         repo_root=Path(repo_root))
+    trace_ids = {t.get("id") for t in traces}
+    campaign = finding["payload"].get("campaign_id")
+    if campaign:
+        pack.sim_rows = [r for r in store.list_sim_queries(company, campaign)
+                         if r.get("trace_id") in trace_ids]
     pack.candidate_files = _candidate_files(pack)
     pack.manifest = build_manifest(pack.repo_root)
     return pack
