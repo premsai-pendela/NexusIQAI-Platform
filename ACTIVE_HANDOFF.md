@@ -74,22 +74,25 @@ those before resuming). Runs autonomously; Prem unavailable during the run.
   - **PR opening is pre-authorized in advance** (CONTEXT.md §GitHub
     access) — publish once at the true end via `repair/pr.py`, after
     Phase 2. Merging stays Prem-only, always.
-- **Next unfinished milestone:** Phase 1 validation — pipeline attempts
-  1–5 on finding `hf_73a86c38bc` (NPS fabrication) each failed for a
-  *different, fixed* reason (oversized prompts → provider starvation;
-  starved retries + narrating reasoning models; two external
-  background-task kills; my own runner deleting the test draft before
-  soft-accept). Pipeline reasoning itself is proven: attempt 4 (Cerebras)
-  independently planned a metric-existence gate before the SQL agent —
-  same architectural shape as the hand-written reference. Iterations
-  committed: prompt slicing, tracker-adaptive cooldown waits, format
-  discipline, exit-code-1 repro rule, stage-resume from prior session
-  logs (`--resume-from`). Attempt 6 will run detached (nohup) with
-  `--resume-from data/repair_sessions/hf_73a86c38bc_20260711T040705Z.json`
-  once a major provider exits cooldown. Then: email Prem (checkpoint 1)
-  → Phase 2 very-very-hard campaign (`--llm-roles Analyst Admin Support
-  Ops Finance`) → pipeline on new findings → publish via `repair/pr.py`
-  → email Prem (checkpoint 2).
+- **Next unfinished milestone:** Phase 1 validation on `hf_73a86c38bc`
+  (NPS fabrication), attempt 9 in flight (detached, resume from attempt
+  7's session). History: attempts 1–6 each died differently and each
+  produced a committed scaffolding fix (prompt slicing; adaptive
+  cooldown waits; format discipline; retry accounting; fresh-file test
+  rounds). **Attempt 7 completed the full loop and passed the eval gate
+  — but validation caught the fix was vacuous** (gate can't fire when
+  f.metric is None; repro was a helper-existence test admitted by the
+  since-removed soft-accept) → finding reopened, repro now must contain
+  the trace's question verbatim + fail on an assertion (exit 1).
+  Attempt 8 wrote a genuinely behavioral test but called the live
+  gateway and tripped a TypeError in the pipeline's own WIP code → test
+  writer now sees the plan's target files + deterministic-test
+  requirement + a monkeypatch-demonstrating style example. Branch
+  `healthfix/88bdc043` preserves all pipeline work (f9f897f + WIP
+  26fc1d6). Full narrative: ARCHITECTURE_LOG Entries 8–9. Then: email
+  Prem (checkpoint 1) → Phase 2 very-very-hard campaign (`--llm-roles
+  Analyst Admin Support Ops Finance`) → pipeline on new findings →
+  publish via `repair/pr.py` → email Prem (checkpoint 2).
 - **Resume command:** re-read `docs/platform improvements/
   HEALTH_CHECK_AGENT_MISSION.md` + `CONTEXT.md` + `ARCHITECTURE_LOG.md`
   guardrails; then `.venv/bin/python scripts/run_repair.py --company
