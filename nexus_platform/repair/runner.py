@@ -147,7 +147,18 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
         repro_before = None
         last_failing_run = None
         feedback = ""
-        for _ in range(MAX_TEST_REGENERATIONS + 1):
+        for regen_round in range(MAX_TEST_REGENERATIONS + 1):
+            if regen_round:
+                # Regenerating: clear the previous draft first. Never at
+                # the end of a round — a soft-accepted repro must leave
+                # its test file on disk (attempt-4 lesson: deleting after
+                # the last round sent the fix rounds chasing a test file
+                # that no longer existed).
+                for step in plan.test_steps:
+                    target = worktree_dir / step["file"]
+                    if target.exists():
+                        target.unlink()
+                last_failing_run = None
             for step in plan.test_steps:
                 resp = proposer.implement_step(plan, step, feedback=feedback)
                 if resp.strip().startswith("REPLAN:"):
@@ -163,7 +174,10 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                                            cwd=worktree_dir)
                 if run.exit_code != 0:
                     tail = _pytest_tail(worktree_dir, repro_args)
-                    if not _fails_for_wrong_reason(tail):
+                    # Only exit code 1 is "tests ran and failed"; 2/4/5
+                    # (interrupted / usage error / nothing collected) are
+                    # never a valid repro.
+                    if run.exit_code == 1 and not _fails_for_wrong_reason(tail):
                         repro_before = run
                         break
                     last_failing_run = run
@@ -185,16 +199,11 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                         "honest expected behavior and therefore fails "
                         "today. Test output:\n"
                         f"{_pytest_tail(worktree_dir, repro_args)}")
-                # Reset the test file so regeneration starts clean.
-                for step in plan.test_steps:
-                    target = worktree_dir / step["file"]
-                    if target.exists():
-                        target.unlink()
         if repro_before is None:
             # A crashing-but-failing test after every regeneration is a
             # weaker repro than an asserting one, but the eval gate still
             # requires it to flip fail→pass — accept with a note rather
-            # than discard the whole attempt.
+            # than discard the whole attempt. Its file is still on disk.
             if last_failing_run is not None:
                 repro_before = last_failing_run
             else:
