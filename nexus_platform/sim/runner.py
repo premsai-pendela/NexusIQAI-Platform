@@ -43,11 +43,18 @@ _EST_CALLS_PER_LLM_TURN = 3
 
 
 def _providers_available() -> bool:
+    """Any tier of the product's actual fallback chain counts — checking
+    only the head of the chain made a healthy Cerebras look like a dead
+    chain and skipped every LLM candidate (Phase-2 round-2 lesson)."""
     try:
         from config.settings import settings
         from utils.quota_tracker import quota_tracker
         names = [getattr(settings, "gemini_flash_model", None),
-                 getattr(settings, "groq_model", None)]
+                 getattr(settings, "groq_model", None),
+                 getattr(settings, "nvidia_model", None),
+                 getattr(settings, "cerebras_reasoning_model", None)
+                 or "gpt-oss-120b",
+                 getattr(settings, "bedrock_reasoning_model", None)]
         return any(quota_tracker.is_available(n)[0] for n in names if n)
     except Exception:
         return True  # tracker unavailable → run_query's own fallback decides
