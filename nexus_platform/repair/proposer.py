@@ -158,8 +158,9 @@ class Proposer:
         The validator returns (ok, reason); on failure the reason is
         appended to the prompt — an external correction signal."""
         attempt_prompt = prompt
-        last_reason = ""
-        for attempt in range(retries + 1):
+        feedback_left = retries
+        call_no = 0
+        while True:
             if self.calls_made >= self.max_calls:
                 raise BudgetExhausted(
                     f"repair attempt hit the {self.max_calls}-call budget "
@@ -167,6 +168,7 @@ class Proposer:
             if self.calls_made > 0:
                 time.sleep(self.delay_seconds)
             self.calls_made += 1
+            call_no += 1
             result = self.llm(prompt=attempt_prompt,
                               task=f"health_repair.{stage}",
                               validator=lambda c: bool(c and c.strip()))
@@ -178,19 +180,21 @@ class Proposer:
                 ok, reason = validator(response)
             self.log.append({
                 "ts": datetime.now(timezone.utc).isoformat(),
-                "stage": stage, "attempt": attempt,
+                "stage": stage, "attempt": call_no - 1,
                 "model_used": result.get("model_used"),
                 "prompt": attempt_prompt, "response": response,
                 "valid": ok, "validator_reason": reason,
             })
             if ok:
                 return response
-            last_reason = reason
             if exhausted:
                 # Every provider is cooling down or over-limit — feedback
-                # is meaningless; waiting is the only thing that helps.
-                # Ask the shared tracker when the soonest provider comes
-                # back and wait for that, inside a total wall-clock budget.
+                # is meaningless and this must NOT consume a feedback
+                # retry (attempt-6 lesson: a bounded for-loop quietly
+                # spent its retries on starved calls). Ask the shared
+                # tracker when the soonest provider recovers, wait that
+                # long, and try the same prompt again — bounded only by
+                # the wall-clock budget and the call cap.
                 wait = self._cooldown_wait()
                 if wait is None:
                     raise StageFailed(
@@ -198,14 +202,16 @@ class Proposer:
                         f"beyond the {self.max_exhaustion_wait_total:.0f}s "
                         "wait budget")
                 time.sleep(wait)
-                attempt_prompt = prompt
                 continue
+            if feedback_left == 0:
+                raise StageFailed(f"stage {stage!r} failed after "
+                                  f"{retries + 1} substantive attempts: "
+                                  f"{reason}")
+            feedback_left -= 1
             attempt_prompt = (
                 prompt + "\n\nYOUR PREVIOUS ANSWER WAS REJECTED for this "
                 f"concrete reason: {reason}\nProduce a corrected answer "
                 "that fixes exactly that problem.")
-        raise StageFailed(f"stage {stage!r} failed after {retries + 1} "
-                          f"attempts: {last_reason}")
 
     def _cooldown_wait(self) -> Optional[float]:
         """Seconds to sleep until the soonest provider recovers, or None
