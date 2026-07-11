@@ -95,7 +95,15 @@ def apply_edit(repo_root: Path, edit: Edit,
                            "instead of editing extra files", [])
     path = repo_root / rel
 
-    if not edit.search.strip():
+    search_text = edit.search
+    # Weak models copy the "(file does not exist yet)" placeholder (with
+    # or without its code fences) into SEARCH when creating a new file —
+    # observed twice from the same model. Treat that as an empty SEARCH.
+    placeholder = search_text.replace("`", "").strip()
+    if placeholder in ("", "(file does not exist yet)"):
+        search_text = ""
+
+    if not search_text.strip():
         if path.exists() and path.read_text().strip():
             return ApplyResult(False, f"empty SEARCH means create-new-file, "
                                f"but {rel} already exists and is not empty — "

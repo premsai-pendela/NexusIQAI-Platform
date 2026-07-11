@@ -470,8 +470,11 @@ class Proposer:
                        feedback: str = "") -> str:
         path = self.pack.repo_root / step["file"]
         slice_note = ""
-        if not path.exists():
-            current = "(file does not exist yet)"
+        new_file = not path.exists()
+        if new_file:
+            current = ("THIS FILE DOES NOT EXIST YET. To create it, your "
+                       "SEARCH section must be completely EMPTY — do not "
+                       "put this sentence or anything else inside SEARCH.")
         else:
             lines = path.read_text().splitlines()
             if (len(lines) > IMPLEMENT_SLICE_THRESHOLD_LINES

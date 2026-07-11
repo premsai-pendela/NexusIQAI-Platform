@@ -84,6 +84,18 @@ def test_apply_rolls_back_syntax_errors(tmp_path):
     assert target.read_text() == "a = 1\n"
 
 
+def test_apply_treats_placeholder_search_as_new_file(tmp_path):
+    (tmp_path / "tests/platform_mode").mkdir(parents=True)
+    result = apply_mod.apply_edit(
+        tmp_path,
+        apply_mod.Edit("tests/platform_mode/test_new.py",
+                       "```\n(file does not exist yet)\n```",
+                       "def test_x():\n    assert True"),
+        ["tests/platform_mode/test_new.py"])
+    assert result.ok, result.reason
+    assert "def test_x" in (tmp_path / "tests/platform_mode/test_new.py").read_text()
+
+
 def test_apply_new_file_requires_empty_search(tmp_path):
     (tmp_path / "tests/platform_mode").mkdir(parents=True)
     result = apply_mod.apply_edit(
