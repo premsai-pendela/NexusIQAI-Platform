@@ -1,0 +1,333 @@
+"""The repair pipeline's conductor: finding → worktree → staged fix → gate.
+
+This is stage-6 glue plus the deterministic control flow around the
+proposer's LLM stages. Sequencing matters and is enforced here, not asked
+of the model:
+
+1. Worktree branch off master; BEFORE suite baseline captured on the
+   untouched tree.
+2. The regression test is written FIRST and must FAIL on the untouched
+   tree (that failing run is the eval gate's repro_before). A test that
+   passes pre-fix is rejected and regenerated with that exact feedback.
+3. Code steps apply one at a time (syntax-checked each).
+4. The repro must now PASS; the full suite must show zero new failures
+   (eval_gate.gate). Pytest output is fed back verbatim on failure — the
+   external correction signal weak models can actually use.
+5. On a clean gate: local commit only. Publishing happens exactly once, at
+   the true end of the mission, via repair/pr.py (see CONTEXT.md §2g).
+
+No merge path exists anywhere in this package — see
+tests/platform_mode/test_repair_no_merge_path.py.
+"""
+
+from __future__ import annotations
+
+import json
+import subprocess
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Callable, Optional
+
+from nexus_platform import store
+from nexus_platform.repair import apply as apply_mod
+from nexus_platform.repair import context_pack, eval_gate, pr
+from nexus_platform.repair.proposer import (Plan, Proposer, StageFailed)
+
+SUITE_ARGS = ["tests/platform_mode/"]
+MAX_TEST_REGENERATIONS = 2
+MAX_FIX_ROUNDS = 2
+
+
+@dataclass
+class RepairOutcome:
+    finding_id: str
+    ok: bool
+    reason: str
+    branch: str = ""
+    worktree: str = ""
+    commit: str = ""
+    files_changed: list = field(default_factory=list)
+    session_log: str = ""
+    evidence_path: str = ""
+    plan: Optional[Plan] = None
+    llm_calls: int = 0
+    models_used: list = field(default_factory=list)
+
+
+def _pytest_tail(repo_root: Path, args: list[str]) -> str:
+    """Re-run a failing pytest target to capture output for feedback. Kept
+    separate from eval_gate so its EvalRun stays a clean record."""
+    import sys
+    proc = subprocess.run([sys.executable, "-m", "pytest", "-q", *args],
+                          cwd=str(repo_root), capture_output=True, text=True,
+                          timeout=1800)
+    out = (proc.stdout + proc.stderr)
+    return out[-3000:]
+
+
+def run_repair(company: str, finding_id: str, repo_root: str | Path,
+               worktree_dir: Optional[str | Path] = None,
+               llm: Optional[Callable] = None,
+               keep_worktree_on_failure: bool = True) -> RepairOutcome:
+    """Run the full pipeline for one finding. Returns an outcome either way;
+    raises only on infrastructure errors (bad finding id, git failure)."""
+    repo_root = Path(repo_root).resolve()
+    pack = context_pack.load_evidence(company, finding_id, repo_root)
+    fingerprint = pack.finding["fingerprint"][:8]
+    branch = f"healthfix/{fingerprint}"
+    if worktree_dir is None:
+        worktree_dir = repo_root.parent / f"NexusIQAI-healthfix-{fingerprint}"
+    worktree_dir = Path(worktree_dir)
+
+    outcome = RepairOutcome(finding_id=finding_id, ok=False, reason="",
+                            branch=branch, worktree=str(worktree_dir))
+
+    if not worktree_dir.exists():
+        pr.create_fix_worktree(repo_root, branch, worktree_dir, base="master")
+    # The proposer reasons about — and edits — the worktree, never the main
+    # checkout. Evidence still comes from the main checkout's store.
+    pack.repo_root = worktree_dir
+    pack.candidate_files = [f for f in pack.candidate_files
+                            if (worktree_dir / f).exists()]
+    pack.manifest = context_pack.build_manifest(worktree_dir)
+
+    proposer = Proposer(pack=pack, llm=llm)
+    log_dir = repo_root / "data" / "repair_sessions"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    session_path = log_dir / f"{finding_id}_{stamp}.json"
+    outcome.session_log = str(session_path)
+
+    def _save_session(extra: dict) -> None:
+        session_path.write_text(json.dumps({
+            "finding": finding_id, "company": company, "branch": branch,
+            "worktree": str(worktree_dir),
+            "llm_calls": proposer.calls_made,
+            "stages": proposer.log, **extra}, indent=2, default=str))
+
+    try:
+        # ── baseline on the untouched tree ────────────────────────────
+        before = eval_gate.run_pytest(SUITE_ARGS, "before", cwd=worktree_dir)
+
+        # ── LLM stages: localize → understand → hypothesize → plan ────
+        located = proposer.localize()
+        understanding = proposer.understand()
+        hypothesis = proposer.hypothesize(understanding)
+        plan = proposer.plan(hypothesis)
+        outcome.plan = plan
+
+        # ── the regression test first; it must fail pre-fix ───────────
+        repro_args = [plan.test_file]
+        repro_before = None
+        feedback = ""
+        for _ in range(MAX_TEST_REGENERATIONS + 1):
+            for step in plan.test_steps:
+                resp = proposer.implement_step(plan, step, feedback=feedback)
+                if resp.strip().startswith("REPLAN:"):
+                    raise StageFailed(f"model asked to re-plan during test "
+                                      f"step: {resp.strip()[:200]}")
+                applied = apply_mod.apply_all(worktree_dir, resp,
+                                              plan.files_touched)
+                if not applied.ok:
+                    feedback = applied.reason
+                    break
+            else:
+                run = eval_gate.run_pytest(repro_args, "repro_before",
+                                           cwd=worktree_dir)
+                if run.exit_code != 0:
+                    repro_before = run
+                    break
+                feedback = (
+                    "your regression test PASSED against the current, "
+                    "still-buggy code — it does not encode the observed "
+                    "failure. The trace shows the product's actual wrong "
+                    "behavior; write the test so it asserts the honest "
+                    "expected behavior and therefore fails today. Test "
+                    f"output:\n{_pytest_tail(worktree_dir, repro_args)}")
+                # Reset the test file so regeneration starts clean.
+                for step in plan.test_steps:
+                    target = worktree_dir / step["file"]
+                    if target.exists():
+                        target.unlink()
+        if repro_before is None:
+            raise StageFailed("could not produce a regression test that "
+                              "fails on the un-fixed tree")
+
+        # ── code steps, one at a time ──────────────────────────────────
+        for step in plan.code_steps:
+            feedback = ""
+            for _ in range(3):
+                resp = proposer.implement_step(plan, step, feedback=feedback)
+                if resp.strip().startswith("REPLAN:"):
+                    raise StageFailed(f"model asked to re-plan: "
+                                      f"{resp.strip()[:200]}")
+                applied = apply_mod.apply_all(worktree_dir, resp,
+                                              plan.files_touched)
+                if applied.ok:
+                    outcome.files_changed.extend(applied.files_changed)
+                    break
+                feedback = applied.reason
+            else:
+                raise StageFailed(f"step could not be applied after "
+                                  f"retries: {feedback}")
+
+        # ── the repro must now pass; regressions must be zero ─────────
+        repro_after = eval_gate.run_pytest(repro_args, "repro_after",
+                                           cwd=worktree_dir)
+        rounds = 0
+        while repro_after.exit_code != 0 and rounds < MAX_FIX_ROUNDS:
+            rounds += 1
+            fix_feedback = (
+                "the fix is applied but the regression test still fails. "
+                "Failing output:\n"
+                f"{_pytest_tail(worktree_dir, repro_args)}")
+            for step in plan.code_steps:
+                resp = proposer.implement_step(plan, step,
+                                               feedback=fix_feedback)
+                if resp.strip().startswith("REPLAN:"):
+                    raise StageFailed(f"model asked to re-plan mid-repair: "
+                                      f"{resp.strip()[:200]}")
+                applied = apply_mod.apply_all(worktree_dir, resp,
+                                              plan.files_touched)
+                if applied.ok:
+                    outcome.files_changed.extend(applied.files_changed)
+            repro_after = eval_gate.run_pytest(repro_args, "repro_after",
+                                               cwd=worktree_dir)
+
+        after = eval_gate.run_pytest(SUITE_ARGS, "after", cwd=worktree_dir)
+        passed, reason = eval_gate.gate(before, after, repro_before,
+                                        repro_after)
+
+        # ── advisory self-review, one revision round, then re-gate ─────
+        if passed:
+            diff = pr._git(["diff"], worktree_dir)
+            review = proposer.self_review(plan, diff[:20000])
+            if "REVISE" in review.split("VERDICT:", 1)[1][:20]:
+                applied = apply_mod.apply_all(worktree_dir, review,
+                                              plan.files_touched)
+                if applied.ok:
+                    repro_after = eval_gate.run_pytest(
+                        repro_args, "repro_after", cwd=worktree_dir)
+                    after = eval_gate.run_pytest(SUITE_ARGS, "after",
+                                                 cwd=worktree_dir)
+                    passed, reason = eval_gate.gate(before, after,
+                                                    repro_before, repro_after)
+
+        evidence_path = worktree_dir / "eval_evidence.json"
+        eval_gate.save_evidence(evidence_path,
+                                [before, repro_before, repro_after, after],
+                                (passed, reason))
+        outcome.evidence_path = str(evidence_path)
+        outcome.ok = passed
+        outcome.reason = reason
+        outcome.llm_calls = proposer.calls_made
+        outcome.models_used = sorted({e.get("model_used") for e in
+                                      proposer.log if e.get("model_used")})
+
+        if passed:
+            body = _pr_body(pack, plan, hypothesis, understanding,
+                            before, after, repro_before, repro_after,
+                            outcome)
+            (worktree_dir / "pr_body.md").write_text(body)
+            new_files = sorted(set(outcome.files_changed))
+            outcome.commit = pr.commit_paths(
+                worktree_dir, new_files,
+                _commit_message(pack, plan, outcome))
+            store.update_finding_status(
+                finding_id, "fixed", actor="health_repair_pipeline",
+                note=f"fix staged locally by the repair pipeline "
+                     f"(models: {', '.join(outcome.models_used)}); "
+                     f"publish pending mission end",
+                linked_branch=branch, linked_eval=str(evidence_path))
+            store.add_lesson(
+                scope="repair",
+                lesson=f"pipeline fixed {finding_id} "
+                       f"({pack.finding['payload'].get('kind')}) in "
+                       f"{proposer.calls_made} LLM calls; gate: {reason}",
+                evidence=[finding_id] + [t.get("id", "") for t in
+                                         pack.traces if t.get("id")],
+                campaign_id=pack.finding["payload"].get("campaign_id"))
+        else:
+            store.add_lesson(
+                scope="repair",
+                lesson=f"pipeline attempt on {finding_id} failed the gate: "
+                       f"{reason} (after {proposer.calls_made} LLM calls)",
+                evidence=[finding_id],
+                campaign_id=pack.finding["payload"].get("campaign_id"))
+
+        _save_session({"outcome": outcome.reason, "gate_passed": passed,
+                       "located": located, "understanding": understanding,
+                       "hypothesis": hypothesis,
+                       "plan": plan.raw if plan else None,
+                       "files_changed": outcome.files_changed,
+                       "commit": outcome.commit})
+        return outcome
+
+    except Exception as exc:
+        outcome.reason = f"{type(exc).__name__}: {exc}"
+        outcome.llm_calls = proposer.calls_made
+        _save_session({"outcome": outcome.reason, "gate_passed": False})
+        if not keep_worktree_on_failure:
+            subprocess.run(["git", "worktree", "remove", "--force",
+                            str(worktree_dir)], cwd=str(repo_root),
+                           capture_output=True)
+        return outcome
+
+
+def _commit_message(pack, plan: Plan, outcome: RepairOutcome) -> str:
+    kind = pack.finding["payload"].get("kind", "finding")
+    return (f"Fix {kind}: {pack.finding['summary'][:100]}\n\n"
+            f"Diagnosed, planned, and written by the Health Check Agent "
+            f"repair pipeline\nrunning on the product's shared free-tier "
+            f"LLM chain (models used: {', '.join(outcome.models_used)}).\n"
+            f"Finding: {pack.finding['id']}; evidence traces: "
+            f"{', '.join(t.get('id', '?') for t in pack.traces)}.\n"
+            f"Eval gate: {outcome.reason}")
+
+
+def _pr_body(pack, plan: Plan, hypothesis: str, understanding: str,
+             before, after, repro_before, repro_after,
+             outcome: RepairOutcome) -> str:
+    f = pack.finding
+    return f"""## What this fixes
+
+{f['summary']}
+
+Found unprompted by the Health Check Agent's simulation loop
+(campaign `{f['payload'].get('campaign_id')}`, finding `{f['id']}`,
+evidence trace(s): {', '.join(t.get('id', '?') for t in pack.traces)}).
+
+## Who did the work
+
+Every step of this fix — diagnosis, plan, regression test, and code —
+was produced by the Health Check Agent's own repair pipeline
+(`nexus_platform/repair/`), running on the product's shared free-tier
+LLM chain ({', '.join(outcome.models_used) or 'fallback chain'}),
+in {outcome.llm_calls} LLM calls. The full stage-by-stage session log
+(prompts, responses, validator verdicts) is preserved locally at
+`{outcome.session_log}`.
+
+## The pipeline's root-cause analysis
+
+{hypothesis.strip()}
+
+## The pipeline's plan
+
+{plan.raw}
+
+## Eval evidence (before → after)
+
+- BEFORE (untouched tree): suite {before.passed} passed / \
+{before.failed} failed; repro **{repro_before.failed or 'n'} failed** \
+(the bug is real and encoded).
+- AFTER (fix applied): suite {after.passed} passed, zero new failures; \
+repro **passed**.
+- Gate verdict: **{outcome.reason}**
+
+## Review
+
+A human (Prem) reviews and merges — this pipeline cannot merge and has no
+merge code path (structurally enforced by
+`tests/platform_mode/test_repair_no_merge_path.py`).
+"""

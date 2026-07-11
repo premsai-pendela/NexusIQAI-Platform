@@ -15,6 +15,7 @@ SCANNED = [
     ROOT / "nexus_platform" / "repair",
     ROOT / "nexus_platform" / "sim",
     ROOT / "scripts" / "run_sim_campaign.py",
+    ROOT / "scripts" / "run_repair.py",
 ]
 
 FORBIDDEN = [

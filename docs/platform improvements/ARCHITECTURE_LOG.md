@@ -688,3 +688,130 @@ instead, which my own anti-merge grep test would also have preferred.
 6. Free-tier budget respected — done throughout: 3 campaigns ≈ 23 actual
    LLM turns total, all throttled 8s, caps never exceeded, provider
    cooldowns honored, zero LLM calls in generation/classification.
+
+---
+
+## 2026-07-10 — Entry 7: Mission v2 correction received; the diagnose/fix work I did by hand was the wrong actor, and the real job is building the actor
+
+### The correction, stated plainly
+
+`HEALTH_CHECK_AGENT_MISSION.md` (new, read before anything else this
+session) identifies the mistake in Entries 5–6: **I diagnosed the NPS
+finding, designed the fix, wrote the code and tests, and pushed the branch —
+using my own reasoning.** The mission wanted the *Health Check Agent's own
+code* to do all of that, running on the product's shared free-tier chain.
+What I built (sim + classify, stages 1–2) was right; what I did next
+(stages 3–7 by hand) was standing in for the thing I was supposed to build.
+
+Consequences accepted from the mission file:
+- Goal item 3 is **re-opened**: it now means the pipeline's own code did the
+  planning, test-writing, and editing, with the actor evidenced in logs.
+- `autofix/unknown-metric-honesty` (pushed) is demoted to a **known-good
+  reference** to validate the pipeline against — it will not be the PR.
+- The finish line now includes a **Phase 2 fresh, harder campaign**
+  (very-very-hard tier: questions structurally requiring 5–6+ of the role's
+  allowed tables in one ask) run through the full pipeline, me observing
+  only.
+- PR opening is **pre-authorized in advance, in writing** (CONTEXT.md
+  §GitHub access) — no live-chat wait this time; the pipeline's `pr.py`
+  does the pushing/opening at the true end.
+- Email checkpoints (CONTEXT §2f.1): Phase 1→2 transition, final
+  goal-met, genuine blockers. `scripts/notify_prem.py` to be built
+  (smtplib/STARTTLS, env-var credentials, never written to disk).
+
+### Additional research (mission told me to search program-repair prior art specifically)
+
+- **[Agentless (arXiv:2407.01489)](https://arxiv.org/abs/2407.01489)** — the
+  closest prior art to what I need: no autonomous tool-use loop, just a
+  fixed three-phase pipeline (hierarchical fault localization: files →
+  elements → edit locations; repair via simple diff-format patch sampling;
+  validation via generated reproduction tests + regression tests). It beat
+  most agentic scaffolds on SWE-bench Lite at far lower cost. This validates
+  the mission's "fixed staged sequence, not an agent loop" proposal — on a
+  weak model, a *pipeline* with deterministic control flow is strictly more
+  reliable than an agent deciding its own next action.
+- **Edit formats for weak models** ([aider's edit-format docs and
+  benchmarks](https://aider.chat/docs/more/edit-formats.html),
+  [Diff-XYZ benchmark (arXiv:2510.12487)](https://arxiv.org/html/2510.12487v1)):
+  SEARCH/REPLACE blocks are the most reliably *applied* format below
+  frontier tier; unified diffs demand syntax capacity weak models don't
+  have. Small models remain error-prone in any format → the application
+  layer must be forgiving (whitespace-tolerant matching) and every failed
+  application must be fed back verbatim as a retry signal.
+- **Self-correction research** ([Small LMs Need Strong Verifiers
+  (arXiv:2404.17140)](https://arxiv.org/html/2404.17140v2), [LLMs Cannot
+  Self-Correct Reasoning Yet (Huang et al.)](https://www.semanticscholar.org/paper/6d4bacb69923e1e94fb4de468b939ce6db32fb51),
+  [The Self-Correction Illusion (arXiv:2606.05976)](https://arxiv.org/pdf/2606.05976)):
+  intrinsic self-critique on small models is unreliable and can *degrade*
+  output; what works is (a) strong external/deterministic verifiers and
+  (b) error signals fed back from outside. One finding directly shapes my
+  prompts: models correct errors presented as *someone else's* output far
+  better than errors in their own — so the critique stage frames the
+  hypothesis as "a colleague's draft to review," never "check your own work."
+
+### Design deviation from the mission's proposed 5-step shape (logged per the proposals-vs-requirements rule)
+
+The mission proposed: understand → iterate-reasoning-out-loud → plan →
+incremental implement → guardrail. I keep that skeleton but shift the
+*weight* of verification from LLM self-critique to deterministic checks,
+because the research above says intrinsic critique is the weakest link on
+exactly the models this must run on. Concretely:
+
+- Every LLM stage output passes a **deterministic validator** (parse
+  succeeded, named files exist, plan stays inside the scope fence, edited
+  file still `ast.parse`s, new test actually fails on the unfixed tree)
+  before the next stage runs; failures retry with the concrete error
+  appended — external signal, which the research says weak models *can* use.
+- The LLM critique pass survives (stage P2) but framed as reviewing a
+  colleague's hypothesis, and it is advisory — the hard gates are the
+  deterministic ones.
+- **Test-first ordering:** the pipeline writes the regression test *before*
+  the fix and must watch it fail on the un-fixed tree (that failing run is
+  the repro the eval gate requires). A test that passes pre-fix is rejected
+  with that exact feedback. This is Agentless's reproduction-test idea
+  fused with the eval gate that already exists.
+
+### The pipeline, concretely (modules to build)
+
+- `repair/context_pack.py` (deterministic, zero LLM) — assembles the
+  evidence pack for a finding: finding row + trace payload(s) (question,
+  route, route_reason, SQL, answer, access decision), a repo manifest
+  (in-scope files + their def/class index via `ast`), full source of
+  selected small files / function slices of big ones, and one existing test
+  file as a style pattern. Fault-localization scoping starts from a generic
+  route→module map (trace says `route: sql_agent` → orchestrator + sql_agent
+  + deterministic are candidates) — architecture-derived, works for any
+  finding, then the LLM narrows from the manifest (Agentless-style
+  hierarchical localization).
+- `repair/proposer.py` (the LLM stages, all via
+  `utils/llm_gateway.invoke_with_fallback` on the product chain — Gemini
+  Flash → Groq → NIM → Cerebras → Bedrock; **no Ollama**, unavailable on
+  this machine): P1 understand (written explanation of the mechanism, cites
+  real symbols; validator checks the symbols exist), P2 hypothesis + framed
+  critique, P3 written plan (ordered steps, exact files; validator enforces
+  scope fence + file existence), P4 incremental implement (one plan step at
+  a time, SEARCH/REPLACE blocks, apply + `ast.parse` after each), P5
+  self-review of the final diff vs the plan (advisory, one revision round).
+- `repair/apply.py` (deterministic) — lenient SEARCH/REPLACE application
+  (exact match, then whitespace-normalized), plan-file allowlist
+  enforcement (an edit to a file the plan didn't name = hard stop),
+  syntax check per edit.
+- `repair/runner.py` — finding → worktree branch off master (`pr.py`
+  helpers) → P1..P5 → eval gate (existing `eval_gate.py`) → local commit;
+  writes a full session log (every prompt/response/validator verdict, for
+  the "which actor did this" evidence) + an `agent_lessons` entry.
+- `scripts/run_repair.py` — CLI trigger. My own role during runs: observe,
+  log, fix *pipeline* bugs only.
+
+Budget: same discipline as campaigns — 8s throttle between LLM calls,
+shared `quota_tracker`, hard cap 25 LLM calls per finding attempt, max 3
+pipeline attempts per finding (circuit breaker), then stop and log.
+
+### Bright-line audit for this design
+
+Everything above is scaffolding reusable on an unseen finding: the
+route→module map derives from the product's architecture, prompts are
+templates with slots, pattern examples are "the file being edited" and "an
+existing test file," chosen mechanically. Nothing encodes what the NPS
+fix should look like. The reference branch is used only *after* the
+pipeline runs, to compare outcomes — it is never fed in.
