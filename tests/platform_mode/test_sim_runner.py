@@ -64,7 +64,7 @@ def test_campaign_tags_ledger_budget_and_stats(monkeypatch):
     company = f"simco_{uuid.uuid4().hex[:8]}"
     monkeypatch.setattr(sim_runner, "run_query", _stub_run_query())
     monkeypatch.setattr(sim_runner, "generate_candidates",
-                        lambda c, roles=None: _candidates(c))
+                        lambda c, roles=None, llm_roles=None: _candidates(c))
     monkeypatch.setattr(sim_runner, "persona_context", _fake_persona)
     monkeypatch.setattr(sim_runner, "_providers_available", lambda: True)
 
@@ -98,7 +98,7 @@ def test_no_llm_mode_skips_llm_candidates(monkeypatch):
     company = f"simco_{uuid.uuid4().hex[:8]}"
     monkeypatch.setattr(sim_runner, "run_query", _stub_run_query())
     monkeypatch.setattr(sim_runner, "generate_candidates",
-                        lambda c, roles=None: _candidates(c, n_det=2, n_llm=2))
+                        lambda c, roles=None, llm_roles=None: _candidates(c, n_det=2, n_llm=2))
     monkeypatch.setattr(sim_runner, "persona_context", _fake_persona)
     report = sim_runner.run_campaign(company, include_llm=False,
                                      delay_seconds=0.0, save_report=False)

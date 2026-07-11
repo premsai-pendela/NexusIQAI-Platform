@@ -76,13 +76,15 @@ def run_campaign(company: str, roles: Optional[list[str]] = None,
                  max_llm_calls: int = MAX_LLM_CALLS,
                  max_est_tokens: int = MAX_EST_TOKENS,
                  delay_seconds: float = DELAY_SECONDS,
-                 save_report: bool = True) -> dict:
+                 save_report: bool = True,
+                 llm_roles: Optional[list[str]] = None) -> dict:
     campaign_id = f"camp_{uuid.uuid4().hex[:10]}"
     started = time.time()
 
     lessons = _lessons_for(company)
     depri = _deprioritized_families(lessons)
-    candidates = generate_candidates(company, roles=roles)
+    candidates = generate_candidates(company, roles=roles,
+                                     llm_roles=llm_roles)
 
     # Deprioritized families get half the seats, never zero — a wrong lesson
     # must stay falsifiable (over-generalization guardrail, Entry 2).
