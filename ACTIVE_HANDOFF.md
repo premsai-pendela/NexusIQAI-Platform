@@ -86,12 +86,22 @@ those before resuming). Runs autonomously; Prem unavailable during the run.
   set). Checkpoint email #1 sent. Ten attempts total; every failure
   produced a committed scaffolding fix — Entries 7–10 in
   ARCHITECTURE_LOG tell the full story.
-- **Next unfinished milestone:** Phase 2 — fresh harder campaign
-  (`.venv/bin/python scripts/run_sim_campaign.py --company acmecloud
-  --llm-roles Analyst Admin Support Ops Finance`, very_hard tier live),
-  classify, run `scripts/run_repair.py` on what surfaces (observe
-  only), then publish once via `repair/pr.py` (advance authorization in
-  CONTEXT §GitHub access) and send checkpoint email #2.
+- **PHASE 2 COMPLETE (2026-07-11).** Three campaign rounds
+  (`camp_513292722a`, `camp_6b8aecf32b`, `camp_5588174d27`; 341 turns,
+  very_hard 5–6-table tier exercised in round 3 after fixing the
+  provider-availability check). New finding `hf_aa3f564b71`
+  (oracle-mismatch on the analyze-with-AI seam, reproduced twice).
+  Pipeline ran on it twice, observed only: attempt 1's REPLAN led to
+  the honor-REPLAN scaffolding fix; attempt 2 misdiagnosed the seam bug
+  and the hardened repro gate correctly refused every test that passed
+  on the buggy tree — no vacuous fix this time. Verdict: fix-level
+  generalization proven ("customers for a4" honestly clarified by the
+  NPS fix); named capability gap persisted to agent memory (seam bugs
+  need stubbed-LLM repros the pipeline can't yet write);
+  `hf_aa3f564b71` left open honestly. ARCHITECTURE_LOG Entries 11–12.
+- **Next unfinished milestone:** publish (two PRs per Entry 12: the
+  pipeline's fix branch `healthfix/88bdc043` via `repair/pr.py`, plus
+  `health-loop/dev` infrastructure), then checkpoint email #2.
 - **Resume command:** re-read `docs/platform improvements/
   HEALTH_CHECK_AGENT_MISSION.md` + `CONTEXT.md` + `ARCHITECTURE_LOG.md`
   guardrails; then `.venv/bin/python scripts/run_repair.py --company

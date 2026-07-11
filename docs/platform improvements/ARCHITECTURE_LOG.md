@@ -1169,6 +1169,52 @@ exactly that claim.
   different-shaped from the NPS finding, with a numeric oracle — the
   right Phase 2 target. Pipeline launched on it; I observe.
 
+---
+
+## 2026-07-11 — Entry 12: Phase 2 verdict — one generalization success, one honest capability gap. Publishing.
+
+Two pipeline attempts on the oracle-mismatch finding, observed:
+
+1. Attempt 1 REPLAN'd because the `deterministic.py` slice lacked
+   `parse_intent` — the model *correctly refused to guess*. Scaffolding
+   response (committed): a REPLAN that names missing code gets the
+   symbols added to its slice and one retry. That worked — attempt 2
+   had no REPLAN.
+2. Attempt 2 planned "register total revenue as a first-class metric" —
+   a misdiagnosis of a seam bug (the failing turn was an
+   analyze-with-AI reinterpretation, not a routing miss) — and its
+   regression tests kept **passing** on the buggy tree, so the hardened
+   repro gate refused every round and the attempt failed honestly.
+   This is the exact hole attempt 7's vacuous fix walked through, now
+   sealed: **no gate-passing junk this time.**
+
+The measured verdict on the pipeline after Phase 2 (the mission asked
+for exactly this evaluation, not a guaranteed second fix):
+
+- **It generalizes at the fix level:** its NPS fix honestly clarifies
+  "customers for a4" — a different finding it never saw.
+- **It has a real, named capability gap:** findings whose repro
+  requires *stubbing the LLM path* (seam bugs judged against the
+  oracle) are beyond its current test-writing skill — its tests
+  exercise the deterministic path and pass pre-fix. Persisted to agent
+  memory with evidence; the next scaffolding iteration is
+  stub-template injection for seam findings. `hf_aa3f564b71` stays
+  open (`needs_clarification`) rather than force-fitted.
+- The gate hierarchy (behavioral repro → eval gate → my validation →
+  Prem's review) held at every level this phase.
+
+Publishing decision (§2g, logged): **two PRs.** PR#1 = the pipeline's
+NPS fix (`healthfix/88bdc043`, curated tip) — the goal checklist's PR,
+opened by the pipeline's own `repair/pr.py`. PR#2 = the Health Check
+Agent infrastructure itself (`health-loop/dev`, 30+ commits: sim,
+classifier, repair pipeline, tests, logs) — reviewable as one unit;
+its body flags the orchestrator overlap with PR#1 (the hand-written
+reference gate) for Prem to resolve at merge. One consolidated PR was
+rejected because the fix (2 files, product behavior) and the
+infrastructure (dozens of files, tooling) deserve independent review
+verdicts. The old pushed `autofix/unknown-metric-honesty` branch stays
+as reference only, per the mission — Prem may delete it after review.
+
 ### State going into attempt 8 (continuation, per Prem's instruction)
 
 The finding is reopened (`health_repair_validator` note on
