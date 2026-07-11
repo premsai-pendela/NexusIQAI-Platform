@@ -74,25 +74,24 @@ those before resuming). Runs autonomously; Prem unavailable during the run.
   - **PR opening is pre-authorized in advance** (CONTEXT.md §GitHub
     access) — publish once at the true end via `repair/pr.py`, after
     Phase 2. Merging stays Prem-only, always.
-- **Next unfinished milestone:** Phase 1 validation on `hf_73a86c38bc`
-  (NPS fabrication), attempt 9 in flight (detached, resume from attempt
-  7's session). History: attempts 1–6 each died differently and each
-  produced a committed scaffolding fix (prompt slicing; adaptive
-  cooldown waits; format discipline; retry accounting; fresh-file test
-  rounds). **Attempt 7 completed the full loop and passed the eval gate
-  — but validation caught the fix was vacuous** (gate can't fire when
-  f.metric is None; repro was a helper-existence test admitted by the
-  since-removed soft-accept) → finding reopened, repro now must contain
-  the trace's question verbatim + fail on an assertion (exit 1).
-  Attempt 8 wrote a genuinely behavioral test but called the live
-  gateway and tripped a TypeError in the pipeline's own WIP code → test
-  writer now sees the plan's target files + deterministic-test
-  requirement + a monkeypatch-demonstrating style example. Branch
-  `healthfix/88bdc043` preserves all pipeline work (f9f897f + WIP
-  26fc1d6). Full narrative: ARCHITECTURE_LOG Entries 8–9. Then: email
-  Prem (checkpoint 1) → Phase 2 very-very-hard campaign (`--llm-roles
-  Analyst Admin Support Ops Finance`) → pipeline on new findings →
-  publish via `repair/pr.py` → email Prem (checkpoint 2).
+- **PHASE 1 COMPLETE (2026-07-11).** Attempt 10 (fresh plan, Cerebras +
+  Groq): the pipeline diagnosed, planned, tested, and fixed the NPS
+  finding itself. Branch `healthfix/88bdc043` (local), curated tip
+  `9717695` (f9f897f helper+gate → 5419b69 completing fall-through
+  checks; dead-code WIP dropped by rebase, history in session logs).
+  Suite on tip: **157 passed, 0 failed**; behavioral repro green; probes
+  + known imperfections in the worktree's `eval_evidence.json` (LTV
+  shape still reaches the agent; one doc-ish phrasing over-clarifies).
+  Finding `hf_73a86c38bc` status `fixed` (linked_branch/linked_eval
+  set). Checkpoint email #1 sent. Ten attempts total; every failure
+  produced a committed scaffolding fix — Entries 7–10 in
+  ARCHITECTURE_LOG tell the full story.
+- **Next unfinished milestone:** Phase 2 — fresh harder campaign
+  (`.venv/bin/python scripts/run_sim_campaign.py --company acmecloud
+  --llm-roles Analyst Admin Support Ops Finance`, very_hard tier live),
+  classify, run `scripts/run_repair.py` on what surfaces (observe
+  only), then publish once via `repair/pr.py` (advance authorization in
+  CONTEXT §GitHub access) and send checkpoint email #2.
 - **Resume command:** re-read `docs/platform improvements/
   HEALTH_CHECK_AGENT_MISSION.md` + `CONTEXT.md` + `ARCHITECTURE_LOG.md`
   guardrails; then `.venv/bin/python scripts/run_repair.py --company
