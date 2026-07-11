@@ -169,15 +169,31 @@ class Proposer:
                 time.sleep(self.delay_seconds)
             self.calls_made += 1
             call_no += 1
+            # The stage validator rides into the gateway too: a provider
+            # whose output flunks it is skipped in-call and the next
+            # provider tries immediately (the gateway discards the bad
+            # response without cooling the provider down).
             result = self.llm(prompt=attempt_prompt,
                               task=f"health_repair.{stage}",
-                              validator=lambda c: bool(c and c.strip()))
+                              validator=lambda c: bool(c and c.strip())
+                              and validator(c)[0])
             response = str(result.get("response") or "").strip()
             ok = bool(result.get("success")) and bool(response)
-            exhausted = not ok
-            reason = "" if ok else "no provider produced a response"
             if ok:
                 ok, reason = validator(response)
+                exhausted = False
+            else:
+                tried = result.get("models_tried") or []
+                had_invalid = any("INVALID" in str(t.get("status", ""))
+                                  for t in tried)
+                # Providers answered but every answer flunked the check →
+                # a substantive failure worth feedback; nobody answered at
+                # all → starvation worth waiting out.
+                exhausted = not had_invalid
+                reason = ("every available provider's answer failed the "
+                          "format/content check described in the prompt"
+                          if had_invalid
+                          else "no provider produced a response")
             self.log.append({
                 "ts": datetime.now(timezone.utc).isoformat(),
                 "stage": stage, "attempt": call_no - 1,

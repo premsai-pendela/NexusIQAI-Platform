@@ -788,10 +788,15 @@ def add_lesson(scope: str, lesson: str, evidence: list[str],
             "SELECT COUNT(*) FROM agent_lessons WHERE active=1"
         ).fetchone()[0] - MAX_ACTIVE_LESSONS
         if extra > 0:
+            # The just-written lesson is exempt: reads bump
+            # referenced_count, so entrenched entries out-count any
+            # newcomer (always 0) and would evict it at birth — the
+            # memory would stop learning the moment it filled up.
             conn.execute(
                 "UPDATE agent_lessons SET active=0 WHERE id IN ("
-                "SELECT id FROM agent_lessons WHERE active=1 "
-                "ORDER BY referenced_count ASC, id ASC LIMIT ?)", (extra,),
+                "SELECT id FROM agent_lessons WHERE active=1 AND id != ? "
+                "ORDER BY referenced_count ASC, id ASC LIMIT ?)",
+                (cur.lastrowid, extra),
             )
         conn.commit()
         return int(cur.lastrowid)
