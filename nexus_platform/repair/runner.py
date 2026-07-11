@@ -277,7 +277,15 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                             before, after, repro_before, repro_after,
                             outcome)
             (worktree_dir / "pr_body.md").write_text(body)
-            new_files = sorted(set(outcome.files_changed))
+            # Commit what actually changed on disk, bounded by the plan's
+            # allowlist — the authoritative record is the tree, not the
+            # per-step bookkeeping.
+            status = pr._git(["status", "--porcelain"], worktree_dir)
+            dirty = [line[3:].strip() for line in status.splitlines()
+                     if line.strip()]
+            new_files = sorted(f for f in dirty
+                               if f in plan.files_touched)
+            outcome.files_changed = new_files
             outcome.commit = pr.commit_paths(
                 worktree_dir, new_files,
                 _commit_message(pack, plan, outcome))
