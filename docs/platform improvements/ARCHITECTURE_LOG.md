@@ -974,3 +974,80 @@ Attempt 3 triggered on a recovered Gemini/NIM chain.
   that the deterministic-verifier design catches its own mistakes too.
 
 Attempt 5 triggered.
+
+---
+
+## 2026-07-11 — Entry 9: Attempt 7 passed the eval gate — and validation caught that the fix was vacuous
+
+### What the pipeline achieved (real, and worth stating first)
+
+Attempts 5–6 died young (an external background-task kill; then a retry-
+accounting bug of mine where starved calls consumed feedback retries —
+fixed with a while-loop and separate counters). Attempt 7 then ran ~75
+minutes across a brutal provider night (Gemini connection resets, NIM
+worker pool at 511/48, Groq/Cerebras hourly quotas) and **finished the
+whole loop on its own**: resumed its earlier plan, wrote a test, edited
+`deterministic.py` and `orchestrator.py` through four different providers
+(NIM → Cerebras → Gemini → Groq), passed the before/after eval gate, and
+committed — `f9f897f`, author-line evidence in the commit itself. The
+stage-resume design paid for itself: only the implement stages re-spent
+quota.
+
+### What validation then found (the actual lesson of this entry)
+
+I ran the finding's real question against the fixed tree — my role is to
+observe and validate, and this is the check the gate can't do:
+
+    f.metric = None
+    route = agent  (unchanged — still reaches the SQL agent)
+
+**The fix is vacuous for the failing question.** The pipeline added
+`metric_exists()` and gated `decide_route` with `if f.metric and not
+metric_exists(f.metric)` — but for "What is our NPS score for 2024?" the
+parser sets `f.metric = None`, so the new gate can never fire. The eval
+gate passed anyway because the repro was a *helper-existence unit test*:
+it failed pre-fix with an ImportError (pytest exit 2) and passed once the
+helper existed. Three of my own scaffolding decisions conspired to let
+that through:
+
+1. The test-writing prompt never showed the model the trace evidence —
+   a writer that can't see the failure writes a test for the helper it
+   plans to add, not for the behavior that's broken.
+2. Nothing required the repro to exercise the failing input.
+3. My soft-accept rule (added in iteration 1) admitted the wrong-reason
+   ImportError repro when retries ran out — the exact hole the vacuous
+   fix walked through.
+
+Also found while auditing the commit: `pr._git()` strips stdout, which
+mangles the *first* line of `git status --porcelain` output (' M path' →
+'M path'), so the pipeline's `sql_agent.py` fix-round edit was silently
+dropped from its commit. Bookkeeping bug, mine, now parsed NUL-delimited.
+
+### The response (scaffolding only, all generic; commit on health-loop/dev)
+
+- Test-step prompts now carry the finding's evidence text with an
+  explicit "the test must exercise this exact failing input" requirement.
+- The runner rejects any repro whose test file does not contain the
+  trace's question verbatim, with that feedback (deterministic check —
+  works for any finding, since every finding carries evidence traces).
+- Soft-accept is deleted. No behavioral repro → attempt fails honestly.
+- `_dirty_paths` (NUL-safe) replaces the line-stripped status parse.
+
+Judgment call, logged per the deviation rule: **eval-gate "PASS" is no
+longer the pipeline's sole definition of success** — the repro-relevance
+rule effectively upgrades the gate from "some test flipped" to "a test
+that replays the observed failure flipped." This is a materially stronger
+definition than CONTEXT.md §2e's before/after wording, adopted because
+attempt 7 demonstrated the weaker one is game-able by accident.
+
+### State going into attempt 8 (continuation, per Prem's instruction)
+
+The finding is reopened (`health_repair_validator` note on
+`hf_73a86c38bc`), a lesson persisted to agent memory. The attempt branch
+keeps the pipeline's work: commit `f9f897f` (helper + vacuous-but-
+harmless gate + helper test) plus its orphaned `sql_agent.py` fix-round
+edit, preserved as WIP commit `26fc1d6` with provenance noted. Attempt 8
+resumes the same plan on this branch: the containment rule now forces a
+behavioral repro (which will genuinely fail on this tree — verified),
+and the fix rounds must produce the real routing change on top of the
+partial work rather than starting over.
