@@ -99,9 +99,30 @@ those before resuming). Runs autonomously; Prem unavailable during the run.
   NPS fix); named capability gap persisted to agent memory (seam bugs
   need stubbed-LLM repros the pipeline can't yet write);
   `hf_aa3f564b71` left open honestly. ARCHITECTURE_LOG Entries 11–12.
-- **Next unfinished milestone:** publish (two PRs per Entry 12: the
-  pipeline's fix branch `healthfix/88bdc043` via `repair/pr.py`, plus
-  `health-loop/dev` infrastructure), then checkpoint email #2.
+- **PUBLISHED — MISSION GOAL MET (2026-07-11).** Both PRs opened by the
+  pipeline's own `repair/pr.py` (never merged by it — that's Prem's,
+  always):
+  - **PR #1 (the goal's PR):**
+    https://github.com/premsai-pendela/NexusIQAI-Platform/pull/1 — the
+    unknown-metric honesty fix, every line produced by the Health Check
+    Agent's repair pipeline on the free-tier chain; before/after
+    evidence + known imperfections in the PR body.
+  - **PR #2:** https://github.com/premsai-pendela/NexusIQAI-Platform/pull/2
+    — the Health Check Agent itself (sim + classifier + repair +
+    memory + logs). Merge-order note re orchestrator overlap is in its
+    body.
+  - Goal checklist: (1) campaigns ✓ (6, all tagged simulated) (2)
+    classifier flagged real bugs unprompted ✓ (3) pipeline's own code
+    planned/tested/edited the fix ✓ (session logs = actor evidence)
+    (4) real PR open ✓ (5) logs current ✓ (6) free-tier budget
+    respected throughout ✓. Phase 2 validation ✓ (generalization
+    proven; capability gap named and persisted).
+  - Open items for Prem: review/merge PRs; `hf_aa3f564b71`
+    (seam oracle-mismatch) left open with two honest failed pipeline
+    attempts logged; silent-partial-answer gap still recorded;
+    classifier gold labels still provisional; the old
+    `autofix/unknown-metric-honesty` remote branch is reference-only,
+    delete at will.
 - **Resume command:** re-read `docs/platform improvements/
   HEALTH_CHECK_AGENT_MISSION.md` + `CONTEXT.md` + `ARCHITECTURE_LOG.md`
   guardrails; then `.venv/bin/python scripts/run_repair.py --company
