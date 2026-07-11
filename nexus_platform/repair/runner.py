@@ -125,6 +125,29 @@ def _dirty_paths(worktree: Path) -> list[str]:
     return paths
 
 
+def _implement(proposer: Proposer, plan: Plan, step: dict,
+               feedback: str = "") -> str:
+    """One implement step, honoring a REPLAN that names missing code: a
+    model that says "I cannot see `symbol`" is doing the right thing —
+    show it the symbol and ask again, once, before treating REPLAN as a
+    real stop signal."""
+    resp = proposer.implement_step(plan, step, feedback=feedback)
+    if resp.strip().startswith("REPLAN:"):
+        symbols = re.findall(r"`([A-Za-z_][A-Za-z0-9_]*)`",
+                             resp.strip()[:400])
+        if symbols:
+            proposer._located_functions = list(dict.fromkeys(
+                list(proposer._located_functions) + symbols))
+            resp = proposer.implement_step(plan, step, feedback=(
+                "you asked to re-plan because you could not see: "
+                f"{', '.join(symbols)}. The file content shown to you now "
+                "includes them — implement the step."))
+        if resp.strip().startswith("REPLAN:"):
+            raise StageFailed(f"model asked to re-plan: "
+                              f"{resp.strip()[:200]}")
+    return resp
+
+
 def _pytest_tail(repo_root: Path, args: list[str]) -> str:
     """Re-run a failing pytest target to capture output for feedback. Kept
     separate from eval_gate so its EvalRun stays a clean record."""
@@ -237,10 +260,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                 if target.exists():
                     target.unlink()
             for step in plan.test_steps:
-                resp = proposer.implement_step(plan, step, feedback=feedback)
-                if resp.strip().startswith("REPLAN:"):
-                    raise StageFailed(f"model asked to re-plan during test "
-                                      f"step: {resp.strip()[:200]}")
+                resp = _implement(proposer, plan, step, feedback=feedback)
                 applied = apply_mod.apply_all(worktree_dir, resp,
                                               plan.files_touched)
                 if not applied.ok:
@@ -304,10 +324,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
         for step in plan.code_steps:
             feedback = ""
             for _ in range(3):
-                resp = proposer.implement_step(plan, step, feedback=feedback)
-                if resp.strip().startswith("REPLAN:"):
-                    raise StageFailed(f"model asked to re-plan: "
-                                      f"{resp.strip()[:200]}")
+                resp = _implement(proposer, plan, step, feedback=feedback)
                 applied = apply_mod.apply_all(worktree_dir, resp,
                                               plan.files_touched)
                 if applied.ok:
@@ -329,11 +346,8 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                 "Failing output:\n"
                 f"{_pytest_tail(worktree_dir, repro_args)}")
             for step in plan.code_steps:
-                resp = proposer.implement_step(plan, step,
-                                               feedback=fix_feedback)
-                if resp.strip().startswith("REPLAN:"):
-                    raise StageFailed(f"model asked to re-plan mid-repair: "
-                                      f"{resp.strip()[:200]}")
+                resp = _implement(proposer, plan, step,
+                                  feedback=fix_feedback)
                 applied = apply_mod.apply_all(worktree_dir, resp,
                                               plan.files_touched)
                 if applied.ok:

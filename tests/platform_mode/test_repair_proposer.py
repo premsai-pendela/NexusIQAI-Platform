@@ -385,6 +385,24 @@ def test_test_step_prompt_carries_the_failing_question():
     assert "OBSERVED FAILURE" in prompt
 
 
+def test_replan_naming_missing_symbol_gets_extended_context():
+    from nexus_platform.repair.runner import _implement
+    pack = _pack()
+    plan, _ = _parse_plan(GOOD_PLAN.replace(
+        "nexus_platform/orchestrator.py", "nexus_platform/deterministic.py"))
+    fake = FakeLLM([
+        "REPLAN: cannot locate `parse_intent` in the provided excerpt",
+        _block("nexus_platform/deterministic.py", "x", "y"),
+    ])
+    p = Proposer(pack=pack, llm=fake, delay_seconds=0)
+    p._located_functions = ["execute"]
+    out = _implement(p, plan, plan.code_steps[0])
+    assert "SEARCH" in out
+    assert "parse_intent" in p._located_functions
+    # The retry prompt must actually show the requested function.
+    assert "def parse_intent" in fake.prompts[1][1]
+
+
 # ── model chain composition ──────────────────────────────────────────────
 
 def test_build_models_never_includes_ollama_or_frontier():
