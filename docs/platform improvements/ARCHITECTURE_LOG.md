@@ -1142,6 +1142,33 @@ exactly that claim.
   from the mission ("a method it can apply to a finding it hasn't seen")
   — this is the first concrete instance of it holding.
 
+### Rounds 2–3: the very-hard tier actually exercised, and what it showed
+
+- Round 2 (`camp_6b8aecf32b`, 110 turns): all correct, zero findings —
+  but 20 LLM candidates skipped for "provider_cooldown" *while Cerebras
+  was up and serving*. Root cause: my Phase-1 `_providers_available`
+  only checked Gemini and Groq — the head of the chain — so a healthy
+  Cerebras looked like a dead chain. Fixed to cover every tier
+  (committed). The sim infrastructure keeps needing its own debugging —
+  same pattern as the first campaigns, still worth naming.
+- Round 3 (`camp_5588174d27`, 128 turns, 13 LLM turns): the
+  `very_hard_join` tier finally ran. 7/8 correct, one honest `vague`
+  (SQL generation failed → RAG-only degradation, correctly labeled).
+  Instructive wrinkle: several very-hard questions were "answered via
+  deterministic_sql_template" — the parser matched a *sub-part* of the
+  multi-table ask and silently answered that simpler interpretation.
+  That is the already-recorded silent-partial-answer product gap
+  surfacing under the very-hard tier, not a new bug — but it means my
+  "structurally forces the LLM path" claim for these templates was too
+  strong. Noted honestly; the tier still did its job (it produced the
+  round's one degradation and exercised multi-table SQL generation).
+- **`numeric_mismatch_vs_oracle` reproduced across both rounds**
+  (`hf_aa3f564b71`, HIGH): the repeat→Analyze-with-AI seam answered
+  `[2024.0, 1.0]` (round 1) and `[2498224.12, -1.0, -1.0]` (round 3)
+  for Q1-2024 revenue where the oracle says 3,906,775.33. Systematic,
+  different-shaped from the NPS finding, with a numeric oracle — the
+  right Phase 2 target. Pipeline launched on it; I observe.
+
 ### State going into attempt 8 (continuation, per Prem's instruction)
 
 The finding is reopened (`health_repair_validator` note on
