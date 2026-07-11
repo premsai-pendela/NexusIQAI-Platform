@@ -31,6 +31,10 @@ def main() -> int:
                         help="list open findings and exit")
     parser.add_argument("--worktree", default=None,
                         help="override the worktree directory")
+    parser.add_argument("--resume-from", default=None,
+                        help="previous session log to reuse the pipeline's "
+                             "own localize/understand/hypothesize/plan "
+                             "outputs from (saves quota on retries)")
     args = parser.parse_args()
 
     if args.list or not args.finding:
@@ -40,7 +44,8 @@ def main() -> int:
         return 0
 
     outcome = runner.run_repair(args.company, args.finding, REPO_ROOT,
-                                worktree_dir=args.worktree)
+                                worktree_dir=args.worktree,
+                                resume_session=args.resume_from)
     print(json.dumps({
         "finding": outcome.finding_id, "gate_passed": outcome.ok,
         "reason": outcome.reason, "branch": outcome.branch,

@@ -312,6 +312,33 @@ def test_implement_step_slices_large_files():
     assert len(prompt) < 30000
 
 
+def test_resume_seed_reconstructs_from_stage_records(tmp_path):
+    from nexus_platform.repair.runner import _load_resume_seed
+    session = {
+        "finding": "hf_x",
+        "stages": [
+            {"stage": "localize", "valid": True, "response":
+                "FILES: nexus_platform/orchestrator.py\nFUNCTIONS: decide_route"},
+            {"stage": "understand", "valid": True, "response":
+                "It routes wrong. MECHANISM: because."},
+            {"stage": "hypothesize", "valid": True, "response":
+                "ROOT_CAUSE: a\nLOCATION: b\nEXPECTED: c"},
+            {"stage": "critique", "valid": True, "response":
+                "VERDICT: REVISE\nROOT_CAUSE: a2\nLOCATION: b2\nEXPECTED: c2"},
+            {"stage": "plan", "valid": True, "response": GOOD_PLAN},
+        ],
+    }
+    p = tmp_path / "s.json"
+    p.write_text(__import__("json").dumps(session))
+    seed = _load_resume_seed(p, "hf_x")
+    assert seed is not None
+    assert seed["located"]["files"] == ["nexus_platform/orchestrator.py"]
+    assert "ROOT_CAUSE: a2" in seed["hypothesis"]  # critique's revision wins
+    assert "FILES_TOUCHED" in seed["plan"]
+    # wrong finding → no seed
+    assert _load_resume_seed(p, "hf_other") is None
+
+
 # ── model chain composition ──────────────────────────────────────────────
 
 def test_build_models_never_includes_ollama_or_frontier():

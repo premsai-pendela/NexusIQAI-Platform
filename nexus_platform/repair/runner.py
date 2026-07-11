@@ -33,7 +33,8 @@ from typing import Callable, Optional
 from nexus_platform import store
 from nexus_platform.repair import apply as apply_mod
 from nexus_platform.repair import context_pack, eval_gate, pr
-from nexus_platform.repair.proposer import (Plan, Proposer, StageFailed)
+from nexus_platform.repair.proposer import (Plan, Proposer, StageFailed,
+                                            _parse_plan)
 
 SUITE_ARGS = ["tests/platform_mode/"]
 MAX_TEST_REGENERATIONS = 2
@@ -71,6 +72,45 @@ def _fails_for_wrong_reason(pytest_tail: str) -> bool:
     return bool(_WRONG_REASON_RE.search(pytest_tail or ""))
 
 
+def _load_resume_seed(resume_session, finding_id: str) -> Optional[dict]:
+    """Recover the reasoning stages from a previous session log — either
+    its top-level keys or, for attempts that died mid-run, reconstructed
+    from the raw stage records. Returns None unless every seeded stage is
+    present and belongs to the same finding."""
+    if not resume_session:
+        return None
+    data = json.loads(Path(resume_session).read_text())
+    if data.get("finding") != finding_id:
+        return None
+    from nexus_platform.repair.proposer import _parse_list
+
+    def _last_valid(stage: str) -> Optional[str]:
+        hits = [e["response"] for e in data.get("stages", [])
+                if e["stage"] == stage and e.get("valid")]
+        return hits[-1] if hits else None
+
+    located = data.get("located")
+    if not located:
+        loc_resp = _last_valid("localize")
+        if loc_resp:
+            located = {"files": _parse_list(loc_resp, "FILES")[:3],
+                       "functions": _parse_list(loc_resp, "FUNCTIONS")[:6]}
+    understanding = data.get("understanding") or _last_valid("understand")
+    hypothesis = data.get("hypothesis")
+    if not hypothesis:
+        hypothesis = _last_valid("hypothesize")
+        critique = _last_valid("critique")
+        if critique and "VERDICT:" in critique and \
+                "REVISE" in critique.split("VERDICT:", 1)[1][:20]:
+            hypothesis = critique.split("VERDICT:", 1)[1]
+    plan = data.get("plan") or _last_valid("plan")
+    if all([located, located.get("files") if located else None,
+            understanding, hypothesis, plan]):
+        return {"located": located, "understanding": understanding,
+                "hypothesis": hypothesis, "plan": plan}
+    return None
+
+
 def _pytest_tail(repo_root: Path, args: list[str]) -> str:
     """Re-run a failing pytest target to capture output for feedback. Kept
     separate from eval_gate so its EvalRun stays a clean record."""
@@ -85,7 +125,8 @@ def _pytest_tail(repo_root: Path, args: list[str]) -> str:
 def run_repair(company: str, finding_id: str, repo_root: str | Path,
                worktree_dir: Optional[str | Path] = None,
                llm: Optional[Callable] = None,
-               keep_worktree_on_failure: bool = True) -> RepairOutcome:
+               keep_worktree_on_failure: bool = True,
+               resume_session: Optional[str | Path] = None) -> RepairOutcome:
     """Run the full pipeline for one finding. Returns an outcome either way;
     raises only on infrastructure errors (bad finding id, git failure)."""
     repo_root = Path(repo_root).resolve()
@@ -136,10 +177,31 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
         before = eval_gate.run_pytest(SUITE_ARGS, "before", cwd=worktree_dir)
 
         # ── LLM stages: localize → understand → hypothesize → plan ────
-        located = proposer.localize()
-        understanding = proposer.understand()
-        hypothesis = proposer.hypothesize(understanding)
-        plan = proposer.plan(hypothesis)
+        # A resumed run reloads the pipeline's own prior outputs (its
+        # operational memory) so scarce quota goes to the unfinished
+        # stages, not to re-deriving finished ones.
+        seed = _load_resume_seed(resume_session, finding_id)
+        if seed:
+            located = seed["located"]
+            proposer.seed_context(located.get("files", []),
+                                  located.get("functions", []))
+            understanding = seed["understanding"]
+            hypothesis = seed["hypothesis"]
+            plan, problem = _parse_plan(seed["plan"])
+            if problem or (worktree_dir / plan.test_file).exists():
+                raise StageFailed(f"resumed plan no longer valid: "
+                                  f"{problem or 'test file already exists'}")
+            proposer.log.append({
+                "ts": datetime.now(timezone.utc).isoformat(),
+                "stage": "resume", "attempt": 0, "model_used": None,
+                "prompt": f"(resumed from {resume_session})",
+                "response": "", "valid": True,
+                "validator_reason": "stages seeded from prior session"})
+        else:
+            located = proposer.localize()
+            understanding = proposer.understand()
+            hypothesis = proposer.hypothesize(understanding)
+            plan = proposer.plan(hypothesis)
         outcome.plan = plan
 
         # ── the regression test first; it must fail pre-fix ───────────
@@ -331,7 +393,14 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
     except Exception as exc:
         outcome.reason = f"{type(exc).__name__}: {exc}"
         outcome.llm_calls = proposer.calls_made
-        _save_session({"outcome": outcome.reason, "gate_passed": False})
+        partial = {k: v for k, v in (
+            ("located", locals().get("located")),
+            ("understanding", locals().get("understanding")),
+            ("hypothesis", locals().get("hypothesis")),
+            ("plan", getattr(locals().get("plan"), "raw", None)),
+        ) if v}
+        _save_session({"outcome": outcome.reason, "gate_passed": False,
+                       **partial})
         if not keep_worktree_on_failure:
             subprocess.run(["git", "worktree", "remove", "--force",
                             str(worktree_dir)], cwd=str(repo_root),

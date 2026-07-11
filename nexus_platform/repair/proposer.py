@@ -237,6 +237,20 @@ class Proposer:
         self._exhaustion_waited += wait
         return wait
 
+    def seed_context(self, files: list, functions: list) -> None:
+        """Rebuild code context from a previous session's localization —
+        the agent's own memory, so a resumed attempt doesn't re-spend
+        LLM budget re-deriving what it already worked out."""
+        files = [f for f in files if (self.pack.repo_root / f).exists()]
+        slices = [context_pack.file_slice(self.pack.repo_root, f, functions)
+                  for f in files]
+        self._code_context = "\n\n".join(slices)
+        self._located_functions = list(functions)
+        self._known_symbols = set(functions) | {
+            name for f in files
+            for name in re.findall(r"def (\w+)", (self.pack.repo_root / f)
+                                   .read_text())}
+
     # ── L: localization ──────────────────────────────────────────────────
 
     def localize(self) -> dict:
