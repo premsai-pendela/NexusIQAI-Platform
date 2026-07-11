@@ -32,8 +32,13 @@ from nexus_platform.repair.context_pack import EvidencePack
 
 MAX_LLM_CALLS_PER_ATTEMPT = 25
 DELAY_SECONDS = 8.0
+EXHAUSTION_WAIT_SECONDS = 150.0  # all providers cooling down: wait, retry
 MAX_PLAN_FILES = 4
 MAX_PLAN_STEPS = 6
+# Groq's free tier rejects requests over ~12k tokens outright (observed
+# live: HTTP 413 at ~52k chars), and Gemini Flash 504s on the same
+# prompts. Implement-step prompts must slice large files, not embed them.
+IMPLEMENT_SLICE_THRESHOLD_LINES = 400
 
 
 class BudgetExhausted(RuntimeError):
@@ -128,9 +133,11 @@ class Proposer:
     log: list = field(default_factory=list)
     calls_made: int = 0
     delay_seconds: float = DELAY_SECONDS
+    exhaustion_wait: float = EXHAUSTION_WAIT_SECONDS
     max_calls: int = MAX_LLM_CALLS_PER_ATTEMPT
     _code_context: str = ""
     _known_symbols: set = field(default_factory=set)
+    _located_functions: list = field(default_factory=list)
 
     def __post_init__(self):
         if self.llm is None:
@@ -159,6 +166,7 @@ class Proposer:
                               validator=lambda c: bool(c and c.strip()))
             response = str(result.get("response") or "").strip()
             ok = bool(result.get("success")) and bool(response)
+            exhausted = not ok
             reason = "" if ok else "no provider produced a response"
             if ok:
                 ok, reason = validator(response)
@@ -172,6 +180,12 @@ class Proposer:
             if ok:
                 return response
             last_reason = reason
+            if exhausted:
+                # Every provider is cooling down or over-limit — feedback
+                # is meaningless; waiting is the only thing that helps.
+                time.sleep(self.exhaustion_wait)
+                attempt_prompt = prompt
+                continue
             attempt_prompt = (
                 prompt + "\n\nYOUR PREVIOUS ANSWER WAS REJECTED for this "
                 f"concrete reason: {reason}\nProduce a corrected answer "
@@ -216,6 +230,7 @@ class Proposer:
         slices = [context_pack.file_slice(self.pack.repo_root, f, functions)
                   for f in files]
         self._code_context = "\n\n".join(slices)
+        self._located_functions = functions
         self._known_symbols = set(functions) | {
             name for f in files
             for name in re.findall(r"def (\w+)", (self.pack.repo_root / f)
@@ -367,14 +382,39 @@ class Proposer:
     def implement_step(self, plan: Plan, step: dict,
                        feedback: str = "") -> str:
         path = self.pack.repo_root / step["file"]
-        current = (path.read_text() if path.exists()
-                   else "(file does not exist yet)")
+        slice_note = ""
+        if not path.exists():
+            current = "(file does not exist yet)"
+        else:
+            lines = path.read_text().splitlines()
+            if (len(lines) > IMPLEMENT_SLICE_THRESHOLD_LINES
+                    and not step["file"].startswith("tests/")):
+                # Large file: show only the located/mentioned functions so
+                # the prompt stays inside every provider's request ceiling
+                # (observed live: whole-file prompts got 413'd by Groq and
+                # 504'd by Gemini). SEARCH text still matches — the slice
+                # is verbatim file content.
+                wanted = list(self._located_functions)
+                wanted += re.findall(r"(\w+)\s*\(", step["text"])
+                current = context_pack.file_slice(
+                    self.pack.repo_root, step["file"],
+                    [w for w in wanted if w])
+                slice_note = (
+                    "\nNOTE: only the relevant parts of the file are shown "
+                    "(separated by '# …'). Your SEARCH lines must be copied "
+                    "verbatim from the parts shown.\n")
+            else:
+                current = "\n".join(lines)
         style_example = ""
         if step["file"].startswith("tests/"):
             style_example = ("\nAn existing test file from this codebase, "
                              "as a style pattern:\n"
                              + context_pack.test_style_example(
-                                 self.pack.repo_root) + "\n")
+                                 self.pack.repo_root) + "\n"
+                             "\nThe product code under test (read it before "
+                             "writing the test — use only APIs that "
+                             "actually exist in it):\n"
+                             + self._code_context[:24000] + "\n")
         prompt = (
             f"{_PREAMBLE}\n"
             "You are implementing ONE step of an approved plan. Change "
@@ -384,7 +424,7 @@ class Proposer:
             f"The approved plan:\n{plan.raw}\n\n"
             f"THIS step: FILE: {step['file']} — {step['text']}\n\n"
             f"Current content of {step['file']}:\n```\n{current}\n```\n"
-            f"{style_example}\n"
+            f"{slice_note}{style_example}\n"
             f"{_EDIT_FORMAT}"
             + (f"\nFEEDBACK ON YOUR PREVIOUS ATTEMPT (fix exactly this):\n"
                f"{feedback}\n" if feedback else ""))

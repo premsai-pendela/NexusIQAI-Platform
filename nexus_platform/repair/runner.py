@@ -23,6 +23,7 @@ tests/platform_mode/test_repair_no_merge_path.py.
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -55,6 +56,21 @@ class RepairOutcome:
     models_used: list = field(default_factory=list)
 
 
+_WRONG_REASON_RE = re.compile(
+    r"ImportError|ModuleNotFoundError|fixture '\w+' not found|"
+    r"collected 0 items|errors? during collection|"
+    r"(TypeError|AttributeError)(?![\s\S]*AssertionError)")
+
+
+def _fails_for_wrong_reason(pytest_tail: str) -> bool:
+    """Heuristic: the failure is a bug in the test (bad import, invented
+    API, broken fixture), not the product failing an honest assertion.
+    Findings in this product manifest as wrong *answers*, so a genuine
+    repro fails on an assertion; crash-shaped failures get regenerated
+    (and soft-accepted only after retries are exhausted)."""
+    return bool(_WRONG_REASON_RE.search(pytest_tail or ""))
+
+
 def _pytest_tail(repo_root: Path, args: list[str]) -> str:
     """Re-run a failing pytest target to capture output for feedback. Kept
     separate from eval_gate so its EvalRun stays a clean record."""
@@ -85,6 +101,15 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
 
     if not worktree_dir.exists():
         pr.create_fix_worktree(repo_root, branch, worktree_dir, base="master")
+    else:
+        # A previous attempt may have left edits behind. The pipeline's own
+        # attempt worktree resets to its branch's last commit — uncommitted
+        # leftovers from a failed attempt must never leak into a new one.
+        subprocess.run(["git", "checkout", "--", "."],
+                       cwd=str(worktree_dir), capture_output=True)
+        subprocess.run(["git", "clean", "-fd", "--", "tests/",
+                        "nexus_platform/", "agents/"],
+                       cwd=str(worktree_dir), capture_output=True)
     # The proposer reasons about — and edits — the worktree, never the main
     # checkout. Evidence still comes from the main checkout's store.
     pack.repo_root = worktree_dir
@@ -120,6 +145,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
         # ── the regression test first; it must fail pre-fix ───────────
         repro_args = [plan.test_file]
         repro_before = None
+        last_failing_run = None
         feedback = ""
         for _ in range(MAX_TEST_REGENERATIONS + 1):
             for step in plan.test_steps:
@@ -136,23 +162,44 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                 run = eval_gate.run_pytest(repro_args, "repro_before",
                                            cwd=worktree_dir)
                 if run.exit_code != 0:
-                    repro_before = run
-                    break
-                feedback = (
-                    "your regression test PASSED against the current, "
-                    "still-buggy code — it does not encode the observed "
-                    "failure. The trace shows the product's actual wrong "
-                    "behavior; write the test so it asserts the honest "
-                    "expected behavior and therefore fails today. Test "
-                    f"output:\n{_pytest_tail(worktree_dir, repro_args)}")
+                    tail = _pytest_tail(worktree_dir, repro_args)
+                    if not _fails_for_wrong_reason(tail):
+                        repro_before = run
+                        break
+                    last_failing_run = run
+                    feedback = (
+                        "your regression test fails, but for the WRONG "
+                        "reason — it crashes inside the test itself "
+                        "(bad import, wrong API usage, missing fixture) "
+                        "instead of asserting the product's honest "
+                        "expected behavior and failing on that assertion. "
+                        "Use only APIs that exist in the code shown to "
+                        f"you. Test output:\n{tail}")
+                else:
+                    last_failing_run = None
+                    feedback = (
+                        "your regression test PASSED against the current, "
+                        "still-buggy code — it does not encode the observed "
+                        "failure. The trace shows the product's actual "
+                        "wrong behavior; write the test so it asserts the "
+                        "honest expected behavior and therefore fails "
+                        "today. Test output:\n"
+                        f"{_pytest_tail(worktree_dir, repro_args)}")
                 # Reset the test file so regeneration starts clean.
                 for step in plan.test_steps:
                     target = worktree_dir / step["file"]
                     if target.exists():
                         target.unlink()
         if repro_before is None:
-            raise StageFailed("could not produce a regression test that "
-                              "fails on the un-fixed tree")
+            # A crashing-but-failing test after every regeneration is a
+            # weaker repro than an asserting one, but the eval gate still
+            # requires it to flip fail→pass — accept with a note rather
+            # than discard the whole attempt.
+            if last_failing_run is not None:
+                repro_before = last_failing_run
+            else:
+                raise StageFailed("could not produce a regression test "
+                                  "that fails on the un-fixed tree")
 
         # ── code steps, one at a time ──────────────────────────────────
         for step in plan.code_steps:

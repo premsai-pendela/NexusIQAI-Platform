@@ -256,6 +256,62 @@ def test_session_log_records_every_call():
     assert entry["valid"] is True
 
 
+def test_exhaustion_waits_and_retries_without_feedback_suffix():
+    pack = _pack()
+    fake = FakeLLM([])  # always returns success=False
+    fake.responses = []
+
+    class Exhausted:
+        def __init__(self):
+            self.prompts = []
+
+        def __call__(self, *, prompt, task, validator):
+            self.prompts.append(prompt)
+            if len(self.prompts) < 2:
+                return {"success": False, "response": ""}
+            return {"success": True, "model_used": "fake",
+                    "response": "The function decide_route routes it. "
+                                "MECHANISM: " + "x" * 300}
+
+    ex = Exhausted()
+    p = Proposer(pack=pack, llm=ex, delay_seconds=0, exhaustion_wait=0)
+    p._known_symbols = {"decide_route"}
+    out = p.understand()
+    assert "MECHANISM:" in out
+    # The retry after exhaustion must NOT carry a REJECTED suffix — there
+    # was nothing wrong with the answer, there was no answer.
+    assert "REJECTED" not in ex.prompts[1]
+
+
+def test_wrong_reason_failure_detection():
+    from nexus_platform.repair.runner import _fails_for_wrong_reason
+    assert _fails_for_wrong_reason("E   ImportError: cannot import name")
+    assert _fails_for_wrong_reason("E   TypeError: f() takes 1 argument")
+    assert _fails_for_wrong_reason("ERROR ... fixture 'foo' not found")
+    assert not _fails_for_wrong_reason(
+        "E   AssertionError: expected honest refusal, got '-1'")
+    # A TypeError deep in setup followed by the real assertion counts as
+    # an honest assertion failure.
+    assert not _fails_for_wrong_reason(
+        "E   TypeError: bad\nlater...\nE   AssertionError: nope")
+
+
+def test_implement_step_slices_large_files():
+    pack = _pack()
+    plan, _ = _parse_plan(GOOD_PLAN.replace(
+        "nexus_platform/orchestrator.py", "agents/sql_agent.py"))
+    good = _block("agents/sql_agent.py", "x", "y")
+    fake = FakeLLM([good])
+    p = Proposer(pack=pack, llm=fake, delay_seconds=0)
+    p._located_functions = ["_validate_query"]
+    p.implement_step(plan, plan.code_steps[0])
+    prompt = fake.prompts[0][1]
+    # sql_agent.py is >1200 lines; the prompt must carry a slice, not the
+    # whole file (whole-file prompts got 413'd by Groq live).
+    assert "only the relevant parts of the file are shown" in prompt
+    assert len(prompt) < 30000
+
+
 # ── model chain composition ──────────────────────────────────────────────
 
 def test_build_models_never_includes_ollama_or_frontier():
