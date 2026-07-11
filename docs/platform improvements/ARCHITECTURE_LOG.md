@@ -815,3 +815,162 @@ templates with slots, pattern examples are "the file being edited" and "an
 existing test file," chosen mechanically. Nothing encodes what the NPS
 fix should look like. The reference branch is used only *after* the
 pipeline runs, to compare outcomes — it is never fed in.
+
+---
+
+## 2026-07-10 — Entry 8: First live pipeline run on `hf_73a86c38bc` — observations as they happen
+
+Pipeline built (commit 6be764c: `context_pack`/`proposer`/`apply`/`runner`,
+20 mocked-LLM tests, suite 203 green) and triggered via
+`scripts/run_repair.py --company acmecloud --finding hf_73a86c38bc`. My
+role from here: observe and log; touch only the pipeline's own code.
+
+**Live observations, first attempt (running):**
+
+- Worktree `../NexusIQAI-healthfix-88bdc043`, branch `healthfix/88bdc043`
+  off master — created by the pipeline's own `pr.py` helpers. BEFORE suite
+  baseline captured on the untouched tree.
+- **Free-tier reality check, immediately:** Gemini 2.5 Flash returned 504
+  DEADLINE_EXCEEDED on the large localize/understand prompts (evidence +
+  manifest + code slices), and Groq rejected one outright with HTTP 413
+  ("request too large" — Groq's free-tier per-request token ceiling). The
+  fallback chain absorbed both and the pipeline kept moving — this is
+  exactly the constraint Step 4 of CONTEXT.md described, now measured, not
+  assumed. Design note for iteration: prompt sizes must respect the
+  *smallest* mid-chain provider limit, or Groq is effectively skipped for
+  the heavy stages.
+- The pipeline got through localize → understand → hypothesize → plan and
+  wrote its first regression-test draft (`test_nps_score.py`). The draft is
+  weak in an instructive way: it invents a usage of an internal helper
+  (`sql_agent._invoke_with_fallback`) with the wrong signature — a
+  classic weak-model move (plausible API shape, unverified). The runner's
+  deterministic repro-must-fail gate + feedback loop exists for exactly
+  this; watching whether the feedback rescues it or the attempt dies here.
+- Scaffolding gap already visible regardless of outcome: the implement-step
+  prompt shows the model only the file being edited (plus plan + style
+  example) — it does **not** re-show the localized product code the test
+  is supposed to exercise. A test-writing model that can't see the code
+  under test guesses APIs. Generic fix (applies to any finding): include
+  the localization stage's code context in implement-step prompts. Will
+  apply if/when this attempt fails, so the change is driven by an observed
+  failure, not speculation.
+
+Also this session: added the Phase-2 `very_hard` question tier to
+`sim/question_gen.py` (mission's precise definition: one question that
+structurally requires joining 5–6+ of the role's allowed tables; emitted
+only when the template's full table set ⊆ the role's allowlist, so any
+failure is real, not an access artifact). Six templates across
+sales/support/finance/ops domains, 2 per eligible LLM-budget role,
+rotated. HR correctly gets none (4 allowed tables < the tier's floor).
+
+### Attempt 1 post-mortem (gate not reached; died of provider starvation)
+
+Outcome: `StageFailed: stage 'implement' failed after 3 attempts: no
+provider produced a response`, 11 LLM calls, session log
+`data/repair_sessions/hf_73a86c38bc_20260711T025849Z.json`.
+
+What the session log shows, stage by stage:
+
+- **The reasoning stages worked, on Groq Llama 3.3 70B, unassisted.** The
+  understand → hypothesize → critique chain produced a coherent diagnosis:
+  first hypothesis blamed missing data-existence validation in
+  `query_service.run_query`; the framed-critique stage — the piece the
+  self-correction research said only works with the "colleague's draft"
+  framing — actually *revised* it, relocating the root cause to the SQL
+  agent path. Its chosen location differs from my earlier hand-written
+  reference (orchestrator clarification gate vs. SQL-agent-side check):
+  a defensible alternative, and exactly the kind of difference the eval
+  gate exists to arbitrate, not me.
+- **The plan parsed and passed every guardrail** (3 files, test file
+  included, all in scope).
+- **Death cause was prompt size, not reasoning**: implement-step prompts
+  embedded the whole 1254-line `sql_agent.py` (~52k chars). Groq's free
+  tier 413s those outright; Gemini Flash 504s them; NIM then hit its
+  worker limit and Cerebras its hourly quota → all providers cooling down
+  → three consecutive empty responses → attempt dead. Measured provider
+  ceilings from the log: Groq fine at ≤39k chars, dead at 52k.
+- Also observed: the first regression-test draft failed for the *wrong
+  reason* (invented API signature → TypeError), and the repro gate
+  accepted it because "any failure" counted.
+
+### Iteration 1 (commit fa73779) — three generic changes, each tied to an observed failure
+
+1. Implement-step prompts now **slice large files** to the located
+   functions (verbatim content, so SEARCH/REPLACE still matches) — fits
+   every provider's ceiling.
+2. `_invoke` distinguishes **provider exhaustion from bad output**: waits
+   150s and retries the same prompt instead of burning feedback retries
+   on an empty chain.
+3. The repro gate **rejects wrong-reason failures** (ImportError/invented
+   API/fixture errors) with concrete feedback and regenerates the test;
+   soft-accepts a crashing repro only after retries are exhausted (the
+   fail→pass flip requirement still protects the gate). Test-writing
+   prompts now also include the located product code, so the model stops
+   guessing APIs it cannot see.
+
+All three are scaffolding — reusable unchanged on any finding. Attempt 2
+triggered.
+
+### Attempt 2 post-mortem (failed earlier but differently — that's progress)
+
+`StageFailed: stage 'hypothesize' failed after 3 attempts: missing
+required section EXPECTED:` — 5 LLM calls, session
+`hf_73a86c38bc_20260711T030938Z.json`.
+
+- localize + understand ran clean on Groq (it recovered sooner than its
+  headline cooldown suggested). Then two hypothesize calls landed on a
+  fully-cooling chain and returned nothing — and under the *old* retry
+  accounting those two starved calls consumed the feedback retries,
+  leaving exactly one real chance.
+- That one chance went to NVIDIA NIM's deepseek reasoning model, which
+  produced 9.4k characters of *narrated analysis* — content-wise a decent
+  diagnosis, but it spent its whole output budget thinking out loud and
+  never reached the required `EXPECTED:` section.
+
+Two more generic fixes (commits eb06c2f + this one):
+1. **Adaptive cooldown wait** — on exhaustion, ask the shared tracker
+   when the soonest provider recovers and sleep exactly that (+15s),
+   bounded by a 75-min per-attempt wall-clock budget; starved calls no
+   longer consume feedback retries.
+2. **Format-only + word-cap instructions** on every section-structured
+   prompt (hypothesize/critique/plan): "answer with ONLY these sections,
+   no narrated reasoning, under 250–300 words" — reasoning-style models
+   narrate past their output budget otherwise.
+
+Circuit-breaker check (guardrails §"stuck"): three attempts, but each
+carried a *new* hypothesis about the pipeline (prompt size → retry
+accounting + output discipline), so this is iteration, not spinning.
+Attempt 3 triggered on a recovered Gemini/NIM chain.
+
+### Attempts 3–4: an external kill, then the pipeline's best run yet — stopped by my own runner's bug
+
+- **Attempt 3** never got to write a session log: the background process
+  was killed externally (most likely the harness's background-task
+  runtime limit while the new adaptive cooldown wait slept through a
+  drained chain). Meanwhile Gemini hit a real 429 (60-min) — it had
+  504'd every single call this session and contributed nothing. Clean
+  worktree confirmed (the reuse-reset guard worked). Response: armed a
+  tracker-polling monitor and re-triggered only when a provider actually
+  recovered, instead of letting a sleeping process get killed again.
+- **Attempt 4** (Cerebras gpt-oss-120b carried nearly every stage; all
+  sliced prompts ≤28k chars fit fine — the size fix holds): produced the
+  strongest reasoning chain yet. Its plan: add a metric-existence check
+  in `deterministic.py` (the METRICS catalog is the ground truth), gate
+  routing in `orchestrator.py` *before* the SQL agent is invoked, handle
+  the honest-absence response in `sql_agent.py`, plus the regression
+  test. Independently, that converges on the same architectural idea as
+  the hand-written reference fix (stop the fabrication before the
+  engine), which is meaningful validation — nothing in any prompt
+  pointed there.
+- Attempt 4's death was **my runner's bug, not the model's**: the
+  test-regeneration loop deleted the draft test file at the end of every
+  non-accepted round — including the last one — so the soft-accept path
+  continued with no test on disk; pytest exited 4 ("file not found"),
+  the fix-round feedback confused the model, and it did the *correct*
+  guardrail thing: REPLAN. Iteration 3 (this commit): regeneration
+  deletes at round *start* (soft-accept keeps its file), and a repro is
+  only acceptable on pytest exit 1 (real test failures — never 2/4/5).
+  The weak model was fine; the scaffolding wasn't. Logged as evidence
+  that the deterministic-verifier design catches its own mistakes too.
+
+Attempt 5 triggered.
