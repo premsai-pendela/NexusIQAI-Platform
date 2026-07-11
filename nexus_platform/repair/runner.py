@@ -227,14 +227,15 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
         failing_questions = [t.get("question") for t in pack.traces
                              if t.get("question")]
         for regen_round in range(MAX_TEST_REGENERATIONS + 1):
-            if regen_round:
-                # Regenerating: clear the previous draft first, never at
-                # the end of a round (attempt-4 lesson: deleting after the
-                # last round left the fix rounds chasing a missing file).
-                for step in plan.test_steps:
-                    target = worktree_dir / step["file"]
-                    if target.exists():
-                        target.unlink()
+            # Every round writes the test file fresh (deleting at round
+            # START, never at the end — attempt-4 lesson). A stale draft
+            # from a previous run/round invites SEARCH/REPLACE fumbling
+            # (attempt 8 burned two of three rounds failing to edit the
+            # committed helper test); git history keeps every version.
+            for step in plan.test_steps:
+                target = worktree_dir / step["file"]
+                if target.exists():
+                    target.unlink()
             for step in plan.test_steps:
                 resp = proposer.implement_step(plan, step, feedback=feedback)
                 if resp.strip().startswith("REPLAN:"):

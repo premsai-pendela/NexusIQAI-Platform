@@ -494,6 +494,18 @@ class Proposer:
                 current = "\n".join(lines)
         style_example = ""
         if step["file"].startswith("tests/"):
+            # The test writer must see every product file the plan touches
+            # (not only the originally-localized ones) — the natural
+            # deterministic test seam often lives in a plan target the
+            # localization pass skipped.
+            plan_files = [s["file"] for s in plan.code_steps]
+            test_context = self._code_context
+            for extra in plan_files:
+                if extra not in test_context and \
+                        (self.pack.repo_root / extra).exists():
+                    test_context += "\n\n" + context_pack.file_slice(
+                        self.pack.repo_root, extra,
+                        self._located_functions)
             style_example = (
                 "\nTHE OBSERVED FAILURE THIS TEST MUST ENCODE — the test "
                 "must exercise the exact failing input below (the question "
@@ -501,6 +513,12 @@ class Proposer:
                 "honest expected outcome, not merely check that a helper "
                 "function exists:\n"
                 + self.pack.evidence_text()[:6000] + "\n"
+                "\nHard requirements for the test: it must be fully "
+                "deterministic — no live LLM call, no network. Prefer "
+                "exercising a deterministic entry point (e.g. the "
+                "routing/clarification decision for the failing question); "
+                "monkeypatch or stub anything that would call an LLM, the "
+                "way the style example below does.\n"
                 "\nAn existing test file from this codebase, "
                 "as a style pattern:\n"
                 + context_pack.test_style_example(
@@ -508,7 +526,7 @@ class Proposer:
                 "\nThe product code under test (read it before "
                 "writing the test — use only APIs that "
                 "actually exist in it):\n"
-                + self._code_context[:20000] + "\n")
+                + test_context[:24000] + "\n")
         prompt = (
             f"{_PREAMBLE}\n"
             "You are implementing ONE step of an approved plan. Change "

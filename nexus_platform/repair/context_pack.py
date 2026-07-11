@@ -232,11 +232,14 @@ def file_slice(repo_root: Path, rel_path: str,
 
 def test_style_example(repo_root: Path) -> str:
     """One existing platform test file, as a style pattern for generated
-    tests. Chosen mechanically: the shortest non-trivial test module."""
-    candidates = sorted(
-        (p for p in (repo_root / "tests/platform_mode").glob("test_*.py")
-         if 40 <= len(p.read_text().splitlines()) <= 400),
-        key=lambda p: len(p.read_text()))
+    tests. Chosen mechanically: the shortest non-trivial test module,
+    preferring one that demonstrates monkeypatching — regression tests
+    for LLM-path behavior must stub the LLM, and a weak model copies the
+    pattern it can see far more reliably than one it is told about."""
+    pool = [p for p in (repo_root / "tests/platform_mode").glob("test_*.py")
+            if 40 <= len(p.read_text().splitlines()) <= 400]
+    stubbed = [p for p in pool if "monkeypatch" in p.read_text()]
+    candidates = sorted(stubbed or pool, key=lambda p: len(p.read_text()))
     if not candidates:
         return ""
     path = candidates[0]
