@@ -21,7 +21,7 @@ from typing import Optional
 from nexus_platform.access_policy import RolePolicy
 from nexus_platform.deterministic import (
     Features, Intent, _METRIC_LABELS, _period_index, extract_features,
-    parse_intent,
+    parse_intent, metric_exists,
 )
 
 # ── Detection vocabularies ──────────────────────────────────────────────
@@ -269,6 +269,19 @@ def decide_route(question: str, policy: RolePolicy,
     if clar is not None:
         return RouteDecision(route="clarification", clarification=clar,
                              reason=f"clarification needed: {clar.kind}")
+
+    # If a metric was identified but doesn't exist in the catalog, clarify.
+    if f.metric and not metric_exists(f.metric):
+        return RouteDecision(
+            route="clarification",
+            clarification=Clarification(
+                kind="unknown_metric",
+                question=(f"I don't have data for '{f.metric}'. "
+                          "Did you mean one of these?"),
+                choices=role_metric_choices(policy),
+            ),
+            reason=f"clarification needed: unknown metric '{f.metric}'"
+        )
 
     # Policy + numbers in one question → both evidence sources, cross-checked.
     if _DOC_TERMS_RE.search(q) and (f.metric or f.explicit_periods):
