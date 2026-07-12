@@ -35,8 +35,13 @@ class Settings(BaseSettings):
     # role keep their current fallback order).
     bedrock_enabled: bool = False
     bedrock_region: str = "us-east-1"
-    bedrock_fast_model: str = "anthropic.claude-3-5-haiku-20241022-v1:0"
-    bedrock_reasoning_model: str = "anthropic.claude-3-5-haiku-20241022-v1:0"
+    # Claude Haiku 4.5 (near-frontier reasoning at Haiku cost/speed). Newer
+    # Anthropic models on Bedrock only support on-demand invocation through a
+    # cross-region inference profile, not the bare model ID — using the bare
+    # ID here throws "ValidationException: on-demand throughput isn't
+    # supported for this model", confirmed against this AWS account.
+    bedrock_fast_model: str = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
+    bedrock_reasoning_model: str = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
     bedrock_timeout: int = 30
 
     # Model names
