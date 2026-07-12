@@ -27,5 +27,16 @@ def test_unknown_metric_triggers_clarification():
     decision = decide_route("What is our NPS score for 2024?", policy, None)
 
     # The orchestrator must ask for clarification about the metric.
+    #
+    # kind is "unknown_metric", not "unclear_metric": find_clarification()'s
+    # own unknown-scalar-metric check (nexus_platform/orchestrator.py, the
+    # unknown-metric honesty gate) fires before decide_route()'s later
+    # metric-noun fallback ever runs, since decide_route calls
+    # find_clarification() first. Both were built to catch this same "NPS
+    # score" shape from the two PRs that shipped together (the honesty gate
+    # and this test's originating fix); "unknown_metric" is the one that
+    # actually reaches the caller, and three tests in
+    # test_unknown_metric_gate.py plus the classifier gold set already
+    # depend on that exact label — this assertion was the stale one.
     assert decision.clarification is not None, "Expected a clarification for unknown metric"
-    assert decision.clarification.kind == "unclear_metric"
+    assert decision.clarification.kind == "unknown_metric"
