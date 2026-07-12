@@ -19,6 +19,7 @@ import json
 import time
 import logging
 import queue
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any, Dict, List, Optional, Tuple, Callable
 from datetime import datetime
@@ -2120,12 +2121,23 @@ ANSWER:"""
 
 # Singleton agents remain separated by context so cached answers cannot cross evidence boundaries.
 _fusion_instances = {}
+_fusion_instances_lock = threading.Lock()
 
 
 def get_fusion_agent(data_context_key: str = "live") -> FusionAgent:
-    """Get a Fusion Agent scoped to a live or pilot data context."""
+    """Get a Fusion Agent scoped to a live or pilot data context.
+
+    Double-checked locking: the unguarded version raced on cold start —
+    concurrent callers (e.g. several health-check probes hitting a fresh
+    container before the first FusionAgent finished loading its embedding
+    model) each saw the key missing and independently built their own
+    full FusionAgent, multiplying an already-slow cold start. The fast
+    path stays lock-free once warm; only a miss pays the lock.
+    """
     if data_context_key not in _fusion_instances:
-        _fusion_instances[data_context_key] = FusionAgent(get_data_context(data_context_key))
+        with _fusion_instances_lock:
+            if data_context_key not in _fusion_instances:
+                _fusion_instances[data_context_key] = FusionAgent(get_data_context(data_context_key))
     return _fusion_instances[data_context_key]
 
 
