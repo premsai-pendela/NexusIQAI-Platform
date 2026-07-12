@@ -43,7 +43,7 @@ jobs:
           IMAGE_URI: ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           LATEST_URI: ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
         run: |
-          docker build --platform linux/amd64 -f Dockerfile.api -t "$IMAGE_URI" -t "$LATEST_URI" .
+          docker build --platform linux/arm64 -f Dockerfile.api -t "$IMAGE_URI" -t "$LATEST_URI" .
 
       - name: Push backend image
         env:
