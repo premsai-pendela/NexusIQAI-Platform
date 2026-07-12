@@ -38,12 +38,20 @@ jobs:
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Set up QEMU (for cross-building ARM64 on an x86_64 runner)
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build backend image
         env:
           IMAGE_URI: ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           LATEST_URI: ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
         run: |
-          docker build --platform linux/arm64 -f Dockerfile.api -t "$IMAGE_URI" -t "$LATEST_URI" .
+          docker buildx build --platform linux/arm64 -f Dockerfile.api -t "$IMAGE_URI" -t "$LATEST_URI" --load .
 
       - name: Push backend image
         env:
