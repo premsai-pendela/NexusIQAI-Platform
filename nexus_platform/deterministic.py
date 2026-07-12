@@ -37,6 +37,12 @@ _QUARTERS = {
 
 _MONTHS = {name.lower(): i for i, name in enumerate(calendar.month_name) if name}
 
+# ── Metric Catalog ──────────────────────────────────────────────────────
+
+def metric_exists(metric_name: str) -> bool:
+    """Check if a metric exists in the METRICS catalog."""
+    return metric_name in METRICS
+
 
 def _month_period(month_i: int) -> tuple[str, str, str]:
     label = f"{calendar.month_name[month_i]} 2024"
