@@ -32,9 +32,23 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install pytest pytest-subtests
+
+      - name: Verify committed brains match their source docs
+        # The demo-company brains are committed (see .gitignore note). This guard
+        # fails the build if a company's docs/db changed but its brain wasn't
+        # rebuilt + re-committed, so the RAG-boundary tests can never pass green
+        # against a stale index.
+        run: python -m nexus_platform.brain_builder --check
 
       - name: Unit and contract tests
-        run: python -m unittest discover -s tests -v
+        # Run via pytest, not `unittest discover`: the tests/platform_mode/* suite
+        # (access policy, SQL/RAG boundary, health check, repair proposer,
+        # cross-company isolation) is written as pytest-style functions, which
+        # `unittest discover` imports but never executes. pytest runs both the
+        # unittest.TestCase suites and the function-style suites, so the whole
+        # gate — including the platform-mode contracts — is actually enforced.
+        run: python -m pytest -q
 
       - name: Offline evals (validation contracts, no LLM/DB calls)
         run: python -m evals.offline_eval

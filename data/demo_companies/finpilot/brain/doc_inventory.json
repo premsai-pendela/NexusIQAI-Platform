@@ -1,0 +1,862 @@
+[
+  {
+    "file": "docs/finance/billing_policy.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/board_update_2023_Q3.pdf",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/board_update_2023_Q4.pdf",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/board_update_2024_Q1.pdf",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/board_update_2024_Q2.pdf",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/board_update_2024_Q3.pdf",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/board_update_2024_Q4.pdf",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/budget_memo_2024.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/collections_playbook.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/discount_policy.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/expenses_export.csv",
+    "department": "finance",
+    "chunks": 122
+  },
+  {
+    "file": "docs/finance/finance_summary_2023_07.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2023_08.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2023_09.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2023_10.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2023_11.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2023_12.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2024_01.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2024_02.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2024_03.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2024_04.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2024_05.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2024_06.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2024_07.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2024_08.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2024_09.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2024_10.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2024_11.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/finance_summary_2024_12.pdf",
+    "department": "finance",
+    "chunks": 2
+  },
+  {
+    "file": "docs/finance/invoice_lines_export.csv",
+    "department": "finance",
+    "chunks": 93
+  },
+  {
+    "file": "docs/finance/leads_export.csv",
+    "department": "finance",
+    "chunks": 94
+  },
+  {
+    "file": "docs/finance/overdue_invoices_export.csv",
+    "department": "finance",
+    "chunks": 25
+  },
+  {
+    "file": "docs/finance/payments_export.csv",
+    "department": "finance",
+    "chunks": 94
+  },
+  {
+    "file": "docs/finance/revenue_recognition.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/saas_spend_export.csv",
+    "department": "finance",
+    "chunks": 5
+  },
+  {
+    "file": "docs/finance/sales_report_2024_01.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/sales_report_2024_02.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/sales_report_2024_03.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/sales_report_2024_04.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/sales_report_2024_05.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/sales_report_2024_06.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/sales_report_2024_07.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/sales_report_2024_08.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/sales_report_2024_09.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/sales_report_2024_10.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/sales_report_2024_11.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/sales_report_2024_12.md",
+    "department": "finance",
+    "chunks": 1
+  },
+  {
+    "file": "docs/finance/vendor_bills_export.csv",
+    "department": "finance",
+    "chunks": 53
+  },
+  {
+    "file": "docs/general/all_hands_notes_2024_01.txt",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/all_hands_notes_2024_02.txt",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/all_hands_notes_2024_03.txt",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/all_hands_notes_2024_04.txt",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/all_hands_notes_2024_05.txt",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/all_hands_notes_2024_06.txt",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/all_hands_notes_2024_07.txt",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/all_hands_notes_2024_08.txt",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/all_hands_notes_2024_09.txt",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/all_hands_notes_2024_10.txt",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/all_hands_notes_2024_11.txt",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/all_hands_notes_2024_12.txt",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/business_glossary.md",
+    "department": "general",
+    "chunks": 2
+  },
+  {
+    "file": "docs/general/company_overview.md",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/data_dictionary.md",
+    "department": "general",
+    "chunks": 2
+  },
+  {
+    "file": "docs/general/employee_handbook.md",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/newsletter_2024_07.html",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/newsletter_2024_08.html",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/newsletter_2024_09.html",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/newsletter_2024_10.html",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/newsletter_2024_11.html",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/general/newsletter_2024_12.html",
+    "department": "general",
+    "chunks": 1
+  },
+  {
+    "file": "docs/hr/anti_harassment_policy.md",
+    "department": "hr",
+    "chunks": 1
+  },
+  {
+    "file": "docs/hr/compensation_bands.md",
+    "department": "hr",
+    "chunks": 1
+  },
+  {
+    "file": "docs/hr/compliance_training.md",
+    "department": "hr",
+    "chunks": 1
+  },
+  {
+    "file": "docs/hr/onboarding_policy.md",
+    "department": "hr",
+    "chunks": 1
+  },
+  {
+    "file": "docs/hr/org_chart.json",
+    "department": "hr",
+    "chunks": 3
+  },
+  {
+    "file": "docs/hr/parental_leave.md",
+    "department": "hr",
+    "chunks": 1
+  },
+  {
+    "file": "docs/hr/payroll_summary_export.csv",
+    "department": "hr",
+    "chunks": 7
+  },
+  {
+    "file": "docs/hr/performance_reviews.md",
+    "department": "hr",
+    "chunks": 1
+  },
+  {
+    "file": "docs/hr/pto_policy.md",
+    "department": "hr",
+    "chunks": 1
+  },
+  {
+    "file": "docs/hr/remote_work_policy.md",
+    "department": "hr",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/ops_report_2024_01.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/ops_report_2024_02.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/ops_report_2024_03.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/ops_report_2024_04.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/ops_report_2024_05.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/ops_report_2024_06.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/ops_report_2024_07.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/ops_report_2024_08.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/ops_report_2024_09.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/ops_report_2024_10.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/ops_report_2024_11.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/ops_report_2024_12.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/postmortem_13.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/postmortem_19.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/postmortem_2.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/postmortem_27.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/postmortem_29.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/postmortem_3.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/postmortem_30.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/postmortem_4.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/postmortem_5.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/postmortem_8.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/procurement_policy.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/purchase_orders_export.csv",
+    "department": "ops",
+    "chunks": 42
+  },
+  {
+    "file": "docs/ops/runbook_api.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/runbook_auth.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/runbook_billing.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/runbook_dashboard.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/runbook_ingest.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/ops/usage_events_sample.csv",
+    "department": "ops",
+    "chunks": 102
+  },
+  {
+    "file": "docs/ops/vendor_management.md",
+    "department": "ops",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_109.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_115.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_149.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_18.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_19.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_192.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_203.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_213.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_259.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_277.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_28.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_296.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_299.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_379.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_40.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_421.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_433.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_434.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_449.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/account_461.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/one_pager_chargeback_shield.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/one_pager_kyc_express.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/one_pager_merchant_onboard.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/one_pager_payout_scheduler.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/one_pager_settlement_ledger.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/one_pager_txnmonitor.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/pricing_guide.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/release_notes_2024_05.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/release_notes_2024_06.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/release_notes_2024_07.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/release_notes_2024_08.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/release_notes_2024_09.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/release_notes_2024_10.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/release_notes_2024_11.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/release_notes_2024_12.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/roadmap_2024_Q1.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/roadmap_2024_Q2.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/roadmap_2024_Q3.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/product/roadmap_2024_Q4.md",
+    "department": "product",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_report_2024_01.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_report_2024_02.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_report_2024_03.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_report_2024_04.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_report_2024_05.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_report_2024_06.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_report_2024_07.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_report_2024_08.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_report_2024_09.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_report_2024_10.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_report_2024_11.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_report_2024_12.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/csat_responses_export.csv",
+    "department": "support",
+    "chunks": 47
+  },
+  {
+    "file": "docs/support/escalation_policy.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/escalations_export.csv",
+    "department": "support",
+    "chunks": 15
+  },
+  {
+    "file": "docs/support/playbook_billing.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/playbook_bug.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/playbook_how-to.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/playbook_integration.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/playbook_outage.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/sla_policy.md",
+    "department": "support",
+    "chunks": 1
+  },
+  {
+    "file": "docs/support/ticket_export_recent.json",
+    "department": "support",
+    "chunks": 185
+  }
+]

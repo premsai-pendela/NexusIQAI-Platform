@@ -240,7 +240,33 @@ def build_brain(slug: str) -> dict:
 
 
 if __name__ == "__main__":
-    slugs = sys.argv[1:] or [c.slug for c in get_registry().companies.values()]
+    args = sys.argv[1:]
+
+    # `--check`: verify each committed brain still matches its source docs/db,
+    # without rebuilding. This is the CI staleness guard — if someone edits the
+    # documents but forgets to rebuild and commit the brain, the fingerprint in
+    # file_hashes.json no longer matches and this exits non-zero, so a stale
+    # brain can never pass the gate green.
+    if "--check" in args:
+        slugs = [a for a in args if a != "--check"] or [
+            c.slug for c in get_registry().companies.values()
+        ]
+        stale = []
+        for s in slugs:
+            status = brain_status(s)
+            print(f"{s}: {status['status']}  changed_files={status['changed_files']}")
+            if status["status"] != "ready":
+                stale.append(s)
+        if stale:
+            print(
+                f"\nERROR: brain(s) out of sync with source docs: {', '.join(stale)}\n"
+                f"Rebuild and commit them:  python -m nexus_platform.brain_builder {' '.join(stale)}"
+            )
+            sys.exit(1)
+        print(f"\nAll {len(slugs)} brains match their source docs.")
+        sys.exit(0)
+
+    slugs = args or [c.slug for c in get_registry().companies.values()]
     for s in slugs:
         result = build_brain(s)
         print(f"{s}: {result['status']} in {result['duration_s']}s "
