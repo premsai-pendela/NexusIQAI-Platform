@@ -58,6 +58,11 @@ sqlglot>=25.0.0
 torch>=2.1.0
 
 # API layer
-fastapi>=0.111.0
+# NOTE: starlette is pinned into FastAPI's supported range. Leaving it unpinned let
+# pip resolve starlette 1.x, which dropped the `on_startup` arg FastAPI passes to
+# Router -> TypeError on import -> the whole platform_mode test package failed to
+# collect and the CI test gate went red. Keep fastapi+starlette pinned as a pair.
+fastapi>=0.111.0,<0.116.0
+starlette>=0.37.2,<0.39.0
 uvicorn[standard]>=0.29.0
 slowapi>=0.1.9
