@@ -65,3 +65,6 @@ node_modules/
 # Platform runtime artifacts — regenerate via nexus_platform.brain_builder
 data/platform.db
 data/demo_companies/*/brain/
+
+# Simulation-employee private memory (durable on disk, noisy in git)
+sim_employees/memory/*/*.json
