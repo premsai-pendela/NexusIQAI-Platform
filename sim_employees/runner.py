@@ -43,13 +43,23 @@ def _verdict(route: str, decision: str, confidence: str, answer: str) -> tuple[s
 
 def ask(company: str, email: str, questions: list,
         *, delay: float = 15.0, llm_extra_delay: float = 20.0,
-        campaign_id: Optional[str] = None, quiet: bool = False) -> list[dict]:
+        campaign_id: Optional[str] = None, quiet: bool = False,
+        target: str = "local", base_url: Optional[str] = None) -> list[dict]:
     """Run a batch of questions for one simulation employee.
 
     `questions` items may be a plain string or a dict
     {question, family?, difficulty?}. Traces are tagged simulated; memory is
     updated in place; pacing sleeps between questions (longer after any turn
     that actually spent an LLM call).
+
+    target:
+      "local" (default) - call the analyst in-process; the trace lands in
+        whatever store this process points at (local DB, or RDS if the PG url
+        is set). Best for dev / offline / eval.
+      "live" - log in and POST to the deployed API (base_url), so the trace is
+        written by the cloud backend into RDS and shows on the live site. No
+        direct DB access from here, no firewall change. Curated demo accounts
+        only (needs a known password).
     """
     ctx = context_for(company, email)
     role = ctx.employee.role
@@ -58,6 +68,25 @@ def ask(company: str, email: str, questions: list,
     day = datetime.now(timezone.utc).strftime("%Y%m%d")
     campaign_id = campaign_id or f"empday_{day}"
     session_id = f"sim-emp-{memory._slug(email)}-{day}"
+
+    live = target == "live"
+    client = token = None
+    if live:
+        from sim_employees.client import DEFAULT_BASE_URL, LiveClient
+        from sim_employees.roster import demo_password
+        pw = demo_password(email)
+        if not pw:
+            raise ValueError(
+                f"live mode needs a known demo password for {email} "
+                "(curated seed accounts only)")
+        client = LiveClient(base_url or DEFAULT_BASE_URL)
+        token = client.login(email, pw)
+
+    def _call(qtext: str) -> dict:
+        if live:
+            return client.query(token, qtext, session_id)
+        with store.tagged_trace_source("simulated"):
+            return run_query(ctx, qtext, session_id)
 
     results = []
     for idx, q in enumerate(questions):
@@ -70,8 +99,7 @@ def ask(company: str, email: str, questions: list,
         if not qtext.strip():
             continue
 
-        with store.tagged_trace_source("simulated"):
-            res = run_query(ctx, qtext, session_id)
+        res = _call(qtext)
         plat = res.get("platform") or {}
         trace_id = plat.get("trace_id") or ""
         answer = str(res.get("answer") or "")

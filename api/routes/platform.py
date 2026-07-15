@@ -39,6 +39,11 @@ class PlatformQueryRequest(BaseModel):
     session_id: str = Field(..., min_length=4, max_length=64)
     repeat_action: Optional[str] = Field(
         None, pattern="^(use_previous|rerun|analyze_with_ai)$")
+    # A caller (e.g. a simulation employee) may opt its own traffic into the
+    # "simulated" bucket. Safe by construction: "simulated" is filtered OUT of
+    # default reads, so a client can only make its own traffic MORE hidden,
+    # never forge "real" traffic. Anything else falls back to real.
+    source: Optional[str] = Field(None, pattern="^(real|simulated)$")
 
 
 class FeedbackRequest(BaseModel):
@@ -153,11 +158,19 @@ async def platform_query(req: PlatformQueryRequest,
     request_id = str(uuid.uuid4())[:8]
     start = time.time()
     loop = asyncio.get_event_loop()
+    src = req.source if req.source in ("real", "simulated") else "real"
+
+    def _run():
+        # Set the source tag inside the executor thread so save_trace (which
+        # runs here) sees it — a contextvar set on the async thread would not
+        # propagate into the executor.
+        with store.tagged_trace_source(src):
+            return run_query(ctx, req.question, req.session_id,
+                             repeat_action=req.repeat_action)
+
     try:
         result = await asyncio.wait_for(
-            loop.run_in_executor(None, lambda: run_query(
-                ctx, req.question, req.session_id,
-                repeat_action=req.repeat_action)),
+            loop.run_in_executor(None, _run),
             timeout=_QUERY_TIMEOUT,
         )
     except asyncio.TimeoutError:

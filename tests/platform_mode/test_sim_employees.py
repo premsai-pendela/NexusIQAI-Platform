@@ -10,7 +10,8 @@ import uuid
 import pytest
 
 from sim_employees import memory, runner
-from sim_employees.roster import accessible, context_for, sim_roster
+from sim_employees.roster import (accessible, company_data_map, context_for,
+                                  sim_roster)
 
 
 @pytest.fixture()
@@ -81,3 +82,44 @@ def test_ask_tags_simulated_updates_memory_and_flags_weak(tmp_memory, monkeypatc
     mem = memory.load(company, email)
     assert mem["interactions"][-1]["route"] == "degraded_mode"
     assert len(mem["weak_spots"]) == 1
+
+
+def test_company_data_map_is_role_scoped():
+    # HR sees HR tables/docs; never sales/finance the role can't reach.
+    hr = company_data_map("acmecloud", "hr@acmecloud.test")
+    assert "employees_hr" in hr["tables"]
+    assert "orders" not in hr["tables"]
+    assert all(d in ("general", "hr") for d in hr["documents"])
+    # Columns are surfaced so the brain can ask specific questions.
+    assert hr["tables"]["employees_hr"]["columns"]
+
+
+def test_live_target_drives_http_client_and_tags_simulated(tmp_memory, monkeypatch):
+    calls = {}
+
+    class FakeClient:
+        def __init__(self, base_url):
+            calls["base"] = base_url
+
+        def login(self, email, password):
+            calls["login"] = (email, password)
+            return "tok"
+
+        def query(self, token, question, session_id, source="simulated"):
+            calls["source"] = source
+            return {"answer": "125", "platform": {
+                "route": "deterministic_sql_template", "access_decision": "allowed",
+                "confidence": "HIGH", "llm_skipped": True, "trace_id": "tr_live1"}}
+
+    import sim_employees.client as clientmod
+    monkeypatch.setattr(clientmod, "LiveClient", FakeClient)
+
+    results = runner.ask("acmecloud", "admin@acmecloud.test",
+                         ["What is our headcount?"], delay=0, quiet=True,
+                         target="live", base_url="http://x/api/v1")
+
+    assert calls["login"][0] == "admin@acmecloud.test"   # logged in as the employee
+    assert calls["source"] == "simulated"                # tagged simulated over HTTP
+    assert len(results) == 1 and results[0]["trace_id"] == "tr_live1"
+    mem = memory.load("acmecloud", "admin@acmecloud.test")
+    assert mem["interactions"][-1]["trace_id"] == "tr_live1"

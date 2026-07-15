@@ -19,7 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from sim_employees import memory  # noqa: E402
-from sim_employees.roster import accessible, sim_roster  # noqa: E402
+from sim_employees.roster import accessible, company_data_map, sim_roster  # noqa: E402
 
 # The question-design spec — realistic AND adversarial, tiered. The brain is
 # told to attack the analyst, not just query it.
@@ -70,6 +70,7 @@ def build_brief(company: str, employee: str = None) -> dict:
         employees.append({
             **r,
             "access": accessible(company, r["email"]),
+            "data_map": company_data_map(company, r["email"]),
             "memory": memory.brief_summary(mem),
         })
     return {"company": company, "employees": employees,
