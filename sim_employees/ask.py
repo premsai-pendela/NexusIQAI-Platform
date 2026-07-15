@@ -37,6 +37,12 @@ def main() -> int:
                     help="seconds between questions (default 15)")
     ap.add_argument("--llm-extra-delay", type=float, default=20.0,
                     help="extra seconds after a question that spent an LLM call")
+    ap.add_argument("--target", choices=["local", "live"], default="local",
+                    help="local = in-process (dev/eval); live = HTTP to the "
+                         "deployed API so traces land in RDS (default local)")
+    ap.add_argument("--base-url", default=None,
+                    help="API base for --target live "
+                         "(default https://api.nexusiq-ai.com/api/v1)")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
 
@@ -54,7 +60,8 @@ def main() -> int:
 
     results = runner.ask(args.company, args.employee, questions,
                          delay=args.delay, llm_extra_delay=args.llm_extra_delay,
-                         quiet=args.quiet)
+                         quiet=args.quiet, target=args.target,
+                         base_url=args.base_url)
     weak = sum(1 for r in results if r.get("weak"))
     print(f"\n{args.employee}: {len(results)} question(s) asked, "
           f"{weak} weak spot(s) flagged for re-probe.")

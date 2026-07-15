@@ -20,8 +20,16 @@ employees"*, do the following.
    ```
 
    It returns, per employee: their role, the tables/documents that role can
-   reach, a summary of their **recent questions** (don't repeat) and
+   reach, a **`data_map`** of the company's real schema (each accessible table
+   with its columns + row count, and documents by department) read from the
+   company brain, a summary of their **recent questions** (don't repeat) and
    **weak spots** (do re-probe), and the **question-design spec**.
+
+   Use the `data_map` to ask **company-specific** questions — reference real
+   columns, join across related tables for the very-hard tier, and bait
+   metrics that plausibly *don't* exist. The sim employee never touches the
+   database; it only asks in natural language, and this map is how it knows
+   what is realistic to ask for that company and role.
 
 2. **For each employee, write 5–10 questions** following the spec:
    - Mix the difficulty tiers (simple → moderate → hard → **very-hard**, where
@@ -44,9 +52,17 @@ employees"*, do the following.
    The runner queries the analyst inside that employee's access boundary,
    tags every trace `source="simulated"`, **paces** between questions (longer
    after any LLM turn, to protect the free tier), and updates the employee's
-   private memory. Traces land in the configured platform database — **RDS
-   when `NEXUSIQ_PLATFORM_PG_URL` is set (so they appear on the live site)**,
-   local SQLite otherwise.
+   private memory.
+
+   **Two targets** (via `--target`):
+   - `--target local` (default) — calls the analyst in-process; the trace goes
+     to whatever DB this process points at. Best for dev / offline / eval.
+   - `--target live` — logs in and POSTs to the deployed API
+     (`--base-url`, default `https://api.nexusiq-ai.com/api/v1`), so the cloud
+     backend writes the trace into **RDS** and it shows on the **live** Review
+     page. No direct DB access from this machine, no firewall change. Curated
+     demo accounts only. Example:
+     `... | python -m sim_employees.ask --company acmecloud --employee admin@acmecloud.test --target live`
 
 4. **(Optional) Leave a note for next time.** After a batch, you may append a
    short strategy note to the employee's memory `notes` field (what to probe
