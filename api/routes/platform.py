@@ -347,6 +347,29 @@ async def run_health_check_route(req: HealthCheckRequest,
     return report
 
 
+class HealthReviewRequest(BaseModel):
+    window_days: int = Field(30, ge=1, le=730)
+    source: str = "real"          # "real" | "simulated"
+    llm_budget: int = Field(25, ge=0, le=200)
+
+
+@router.post("/admin/health-review")
+async def run_health_review_route(req: HealthReviewRequest,
+                                  ctx: AccessContext = Depends(get_access_context)):
+    """Wave 1 of the Health Check agent: grade every trace (deterministic →
+    capped LLM → human-review) and return a structured, downloadable report."""
+    require_admin(ctx)
+    source = req.source if req.source in ("real", "simulated") else "real"
+    from nexus_platform.health_review import run_health_review
+    loop = asyncio.get_event_loop()
+    report = await loop.run_in_executor(
+        None, lambda: run_health_review(
+            ctx.company.slug, requested_by=ctx.employee.email,
+            window_days=req.window_days, source=source,
+            llm_budget=req.llm_budget))
+    return report
+
+
 @router.get("/admin/health-reports")
 def list_health_reports_route(ctx: AccessContext = Depends(get_access_context)):
     require_admin(ctx)
