@@ -75,7 +75,7 @@ def test_ask_tags_simulated_updates_memory_and_flags_weak(tmp_memory, monkeypatc
     results = runner.ask(company, email,
                          [{"question": "why did revenue move?",
                            "family": "seam", "difficulty": "hard"}],
-                         delay=0, llm_extra_delay=0, quiet=True)
+                         delay=0, llm_extra_delay=0, quiet=True, target="local")
 
     assert captured["source"] == "simulated"          # analyst saw simulated tag
     assert len(results) == 1 and results[0]["weak"] is True

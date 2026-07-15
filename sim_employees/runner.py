@@ -44,7 +44,7 @@ def _verdict(route: str, decision: str, confidence: str, answer: str) -> tuple[s
 def ask(company: str, email: str, questions: list,
         *, delay: float = 15.0, llm_extra_delay: float = 20.0,
         campaign_id: Optional[str] = None, quiet: bool = False,
-        target: str = "local", base_url: Optional[str] = None) -> list[dict]:
+        target: str = "live", base_url: Optional[str] = None) -> list[dict]:
     """Run a batch of questions for one simulation employee.
 
     `questions` items may be a plain string or a dict
@@ -53,13 +53,13 @@ def ask(company: str, email: str, questions: list,
     that actually spent an LLM call).
 
     target:
-      "local" (default) - call the analyst in-process; the trace lands in
-        whatever store this process points at (local DB, or RDS if the PG url
-        is set). Best for dev / offline / eval.
-      "live" - log in and POST to the deployed API (base_url), so the trace is
-        written by the cloud backend into RDS and shows on the live site. No
-        direct DB access from here, no firewall change. Curated demo accounts
-        only (needs a known password).
+      "live" (default) - log in and POST to the deployed API (base_url), so
+        the trace is written by the cloud backend into RDS and shows on the
+        live site. No direct DB access from here, no firewall change. Curated
+        demo accounts only (needs a known password).
+      "local" - call the analyst in-process; the trace lands in whatever store
+        this process points at (local DB, or RDS if the PG url is set). Opt in
+        explicitly for dev / offline / eval.
     """
     ctx = context_for(company, email)
     role = ctx.employee.role
