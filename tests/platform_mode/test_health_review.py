@@ -68,6 +68,29 @@ def test_report_structure_on_empty_company():
         assert key in r
 
 
+def test_review_watermark_roundtrip():
+    from nexus_platform import store
+    co = f"wm_{uuid.uuid4().hex[:8]}"
+    assert store.get_review_watermark(co) is None
+    store.set_review_watermark(co, "2026-07-15T10:00:00")
+    wm = store.get_review_watermark(co)
+    assert wm["last_ts"] == "2026-07-15T10:00:00" and wm["runs"] == 1
+    store.set_review_watermark(co, "2026-07-15T12:00:00")
+    wm2 = store.get_review_watermark(co)
+    assert wm2["last_ts"] == "2026-07-15T12:00:00" and wm2["runs"] == 2  # counter advances
+
+
+def test_review_report_has_incremental_memory():
+    co = f"emptyco_{uuid.uuid4().hex[:8]}"
+    r = hr.run_health_review(co, window_days=7, source="real", llm_budget=0)
+    for k in ("incremental", "since", "run_number", "new_traces_reviewed", "open_findings"):
+        assert k in r
+    assert r["run_number"] == 1 and r["new_traces_reviewed"] == 0
+    # a second run advances the run counter (the watermark persisted)
+    r2 = hr.run_health_review(co, window_days=7, source="real", llm_budget=0)
+    assert r2["run_number"] == 2 and r2["previous_run_at"] is not None
+
+
 def test_fixes_needed_rolls_up_and_ranks():
     employees = [{
         "name": "X", "traces": [

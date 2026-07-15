@@ -447,6 +447,9 @@ function buildReviewHtml(r: HealthReviewReport): string {
   const fixes = r.fixes_needed.map((f) => `
     <li><span class="sev sev-${f.severity}">${esc(f.severity)}</span> <b>${esc(f.issue)}</b> (${f.count}) — ${esc(f.recommendation)}
     <span class="tid">e.g. ${f.example_trace_ids.slice(0, 3).join(", ")}</span></li>`).join("");
+  const openF = r.open_findings.map((f) => `
+    <li><span class="sev sev-${f.severity}">${esc(f.severity)}</span> ${esc(f.summary)}
+    <span class="tid">${f.is_new ? "new this run" : "open since " + esc((f.first_seen || "").slice(0, 10))} · ${esc(f.status)}</span></li>`).join("");
   return `<!doctype html><html><head><meta charset="utf-8"><title>Health Report — ${esc(r.company_name)} — ${esc(r.report_date)}</title>
   <style>
     body{font:13px/1.5 -apple-system,system-ui,sans-serif;color:#29251f;margin:36px;max-width:900px}
@@ -477,6 +480,9 @@ function buildReviewHtml(r: HealthReviewReport): string {
   <div class="pagebreak"></div><h1>Fixes needed</h1>
   <p class="muted">From all reviewed traces, these need attention. Wave 2 (the repair pipeline) turns these into tested, human-reviewed pull requests.</p>
   <ul class="fixes">${fixes || "<li>No issues found — every gradable answer checked out.</li>"}</ul>
+  <div class="pagebreak"></div><h1>Open findings — memory (run #${r.run_number})</h1>
+  <p class="muted">Everything still open: new this run plus items carried over from earlier runs until they're fixed. This persists across runs.</p>
+  <ul class="fixes">${openF || "<li>Nothing open.</li>"}</ul>
   </body></html>`;
 }
 
@@ -551,6 +557,13 @@ function HealthReviewPanel() {
             </span>
           </div>
           <div style={{ fontSize: 12.5, color: "var(--body)", lineHeight: 1.6 }}>{report.narrative}</div>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 6 }}>
+            <span className="chip chip-neutral" style={{ fontSize: 9.5 }}>run #{report.run_number}</span>
+            <span className="chip chip-neutral" style={{ fontSize: 9.5 }}>{report.new_traces_reviewed} new since last run</span>
+            {report.summary.findings_carried > 0 && (
+              <span className="chip" style={{ fontSize: 9.5, background: "#FCF3DC", color: "#8A5B10" }}>{report.summary.findings_carried} carried over</span>
+            )}
+          </div>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", margin: "10px 0" }}>
             {Object.entries(vc).map(([v, n]) => (
               <span key={v} className="chip" style={{ background: VERDICT_STYLE[v]?.bg, color: VERDICT_STYLE[v]?.fg, fontSize: 10 }}>
@@ -608,6 +621,27 @@ function HealthReviewPanel() {
                       <span className="mono" style={{ fontSize: 10, color: "var(--muted-soft)", marginLeft: "auto" }}>{f.count}</span>
                     </div>
                     <div style={{ fontSize: 11.5, color: "var(--body)", marginTop: 3, lineHeight: 1.5 }}>{f.recommendation}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {report.open_findings.length > 0 && (
+            <div style={{ marginTop: 12 }}>
+              <div className="label" style={{ marginBottom: 4 }}>OPEN FINDINGS · MEMORY ({report.open_findings.length})</div>
+              <div style={{ fontSize: 10.5, color: "var(--muted)", marginBottom: 6 }}>
+                Everything still open — new this run and carried over from earlier runs until fixed. This is the memory that persists across runs; Wave 2 turns these into PRs.
+              </div>
+              <div style={{ display: "grid", gap: 4 }}>
+                {report.open_findings.map((f, i) => (
+                  <div key={i} style={{ display: "flex", gap: 7, alignItems: "center", padding: "6px 9px", borderRadius: 6, background: "var(--surface-card)", border: "0.5px solid var(--hairline)" }}>
+                    <span className="chip" style={{ fontSize: 8.5, background: f.severity === "high" ? "#F9E3E3" : "#FCF3DC", color: f.severity === "high" ? "#A32D2D" : "#8A5B10" }}>{f.severity}</span>
+                    <span style={{ fontSize: 12, color: "var(--ink)", flex: 1 }}>{f.summary}</span>
+                    {f.is_new
+                      ? <span className="chip" style={{ fontSize: 8.5, background: "var(--success-bg)", color: "var(--success-text)" }}>new</span>
+                      : <span className="chip mono" style={{ fontSize: 8.5, background: "var(--chip-neutral-bg)", color: "var(--chip-neutral-text)" }}>open since {(f.first_seen || "").slice(0, 10)}</span>}
+                    <span className="chip mono" style={{ fontSize: 8.5 }}>{f.status}</span>
                   </div>
                 ))}
               </div>

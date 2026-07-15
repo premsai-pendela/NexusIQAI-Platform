@@ -268,6 +268,16 @@ export type ReviewFix = {
   example_trace_ids: string[];
   recommendation: string;
 };
+export type OpenFinding = {
+  summary: string;
+  severity: string;
+  classification: string;
+  status: string;
+  first_seen: string;
+  last_seen: string;
+  is_new: boolean;
+  trace_id: string | null;
+};
 export type HealthReviewReport = {
   kind: string;
   company: string;
@@ -276,10 +286,15 @@ export type HealthReviewReport = {
   generated_at: string;
   report_date: string;
   window_days: number;
+  incremental: boolean;
+  since: string;
+  previous_run_at: string | null;
+  run_number: number;
   date_from: string;
   date_to: string;
   source: string;
   traces_reviewed: number;
+  new_traces_reviewed: number;
   graded: number;
   summary: {
     total_traces: number;
@@ -288,11 +303,14 @@ export type HealthReviewReport = {
     issues: number;
     llm_calls_used: number;
     needs_human_review: number;
+    findings_new: number;
+    findings_carried: number;
     per_employee: { name: string; role: string; email: string; traces: number; issues: number }[];
   };
   narrative: string;
   employees: ReviewEmployee[];
   fixes_needed: ReviewFix[];
+  open_findings: OpenFinding[];
   report_id?: string;
 };
 

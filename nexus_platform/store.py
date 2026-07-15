@@ -195,6 +195,13 @@ CREATE TABLE IF NOT EXISTS agent_lessons (
     active INTEGER NOT NULL DEFAULT 1,
     referenced_count INTEGER NOT NULL DEFAULT 0
 );
+
+CREATE TABLE IF NOT EXISTS review_watermark (
+    company TEXT PRIMARY KEY,
+    last_ts TEXT,
+    last_run_at TEXT,
+    runs INTEGER NOT NULL DEFAULT 0
+);
 """
 
 
@@ -610,6 +617,27 @@ def save_health_report(company: str, requested_by: str, window_days: int,
              json.dumps(payload, default=str)),
         )
     return hid
+
+
+def get_review_watermark(company: str) -> Optional[dict]:
+    """Where the last trace-review run stopped for this company (the newest
+    trace ts it had seen), plus when it ran and how many runs so far."""
+    with _tx() as c:
+        row = c.execute(
+            "SELECT last_ts, last_run_at, runs FROM review_watermark WHERE company=?",
+            (company,)).fetchone()
+    return row
+
+
+def set_review_watermark(company: str, last_ts: Optional[str]) -> None:
+    now = _now()
+    with _tx() as c:
+        c.execute(
+            "INSERT INTO review_watermark (company, last_ts, last_run_at, runs) "
+            "VALUES (?,?,?,1) ON CONFLICT (company) DO UPDATE SET "
+            "last_ts=excluded.last_ts, last_run_at=excluded.last_run_at, "
+            "runs=review_watermark.runs+1",
+            (company, last_ts, now))
 
 
 def list_health_reports(company: str, limit: int = 20) -> list[dict]:

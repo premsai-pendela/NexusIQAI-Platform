@@ -19,6 +19,7 @@ repairing the analyst is Wave 2 (nexus_platform/repair/), run separately.
 
 from __future__ import annotations
 
+import hashlib
 import re
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
@@ -34,6 +35,9 @@ from nexus_platform.sim.classifier import _num_match, _numbers, compute_oracle
 # Per-trace verdicts. correct/correct_refusal are healthy; the rest are issues.
 VERDICTS = ("correct", "partly_correct", "wrong", "false_refusal",
             "correct_refusal", "needs_human_review", "not_applicable")
+VERDICT_LABEL = {"wrong": "Wrong answer", "false_refusal": "Wrongly refused",
+                 "partly_correct": "Partly-right answer",
+                 "needs_human_review": "Needs human review"}
 _ISSUE_VERDICTS = ("wrong", "partly_correct", "false_refusal", "needs_human_review")
 _ANSWER_ROUTES = ("deterministic_sql_template", "sql_agent", "rag_agent",
                   "sql_plus_rag", "llm_planner", "sql_only", "rag_only",
@@ -231,17 +235,40 @@ def grade_trace(company: str, trace: dict, budget: dict) -> dict:
 
 # ── The report ──────────────────────────────────────────────────────────
 
+def _finding_fp(company: str, verdict: str, question: str) -> str:
+    from nexus_platform.health_check import _norm
+    return hashlib.sha1(
+        f"review|{verdict}|{company}|{_norm(question)}".encode()).hexdigest()[:16]
+
+
 def run_health_review(company: str, requested_by: str = "admin",
                       window_days: int = 30, source: str = "real",
-                      llm_budget: int = 25, save: bool = True) -> dict:
-    """Grade every trace in the window and build the Wave 1 report."""
+                      llm_budget: int = 25, save: bool = True,
+                      incremental: bool = True) -> dict:
+    """Grade traces and build the Wave 1 report.
+
+    Incremental by default: it remembers the newest trace it saw last time (a
+    per-company watermark) and only grades what's arrived since — then folds
+    the findings into the persistent ledger, so pending issues from earlier
+    runs are carried forward (and recurrences reopen). Pass incremental=False
+    to re-grade the whole window from scratch.
+    """
     now = datetime.now(timezone.utc)
-    date_from = (now - timedelta(days=window_days)).isoformat()
-    traces = store.list_traces_with_payload(company, date_from=date_from,
-                                            source=source)
+    run_start = now.isoformat()
     reg = get_registry()
     comp = reg.get_company(company)
     budget = {"remaining": llm_budget}
+
+    wm = store.get_review_watermark(company) if save else None
+    prev_ts = (wm or {}).get("last_ts")
+    prev_run_at = (wm or {}).get("last_run_at")
+    prior_runs = int((wm or {}).get("runs") or 0)
+    window_start = (now - timedelta(days=window_days)).isoformat()
+    since = prev_ts if (incremental and prev_ts) else window_start
+
+    traces = store.list_traces_with_payload(company, date_from=since, source=source)
+    if incremental and prev_ts:
+        traces = [t for t in traces if (t.get("ts") or "") > prev_ts]  # strictly new
 
     by_emp: dict = defaultdict(list)
     for tr in traces:
@@ -270,18 +297,59 @@ def run_health_review(company: str, requested_by: str = "admin",
     issues = sum(all_counts.get(v, 0) for v in _ISSUE_VERDICTS)
     llm_used = llm_budget - budget["remaining"]
 
+    # Memory: fold this run's issues into the persistent finding ledger, so
+    # pending items from earlier runs carry forward and recurrences reopen.
+    if save:
+        for e in employees:
+            for t in e["traces"]:
+                v = t["verdict"]
+                if v not in ("wrong", "false_refusal", "partly_correct"):
+                    continue
+                sev = "high" if v in ("wrong", "false_refusal") else "medium"
+                store.upsert_finding(
+                    company, _finding_fp(company, v, t["question"]),
+                    classification=v, severity=sev,
+                    summary=f"{VERDICT_LABEL[v]}: {t['question'][:100]}",
+                    payload={"trace_id": t["trace_id"], "question": t["question"],
+                             "expected": t["expected"], "reality": t["reality"],
+                             "reason": t["reason"]},
+                    actor="health_review")
+
+    # Every finding still open — new this run PLUS carried over from before.
+    open_findings = []
+    if save:
+        for f in store.list_findings(company):
+            if f.get("status") in ("fixed", "dismissed_valid"):
+                continue
+            open_findings.append({
+                "summary": f.get("summary"), "severity": f.get("severity"),
+                "classification": f.get("classification"), "status": f.get("status"),
+                "first_seen": f.get("first_seen"), "last_seen": f.get("last_seen"),
+                "is_new": (f.get("first_seen") or "") >= run_start,
+                "trace_id": (f.get("payload") or {}).get("trace_id"),
+            })
+    _sev = {"high": 0, "medium": 1, "low": 2, "info": 3}
+    open_findings.sort(key=lambda f: (_sev.get(f["severity"], 9), 0 if f["is_new"] else 1))
+    findings_new = sum(1 for f in open_findings if f["is_new"])
+    findings_carried = len(open_findings) - findings_new
+
+    # Advance the watermark to the newest trace we just graded.
+    if save:
+        max_ts = max((t.get("ts") for t in traces if t.get("ts")), default=prev_ts)
+        store.set_review_watermark(company, max_ts or run_start)
+
     fixes = _fixes_needed(employees)
+    since_note = (f"since the last run on {prev_run_at[:10]}"
+                  if (incremental and prev_run_at) else f"over the last {window_days} days")
     narrative = (
-        f"Reviewed {len(traces)} question{'s' if len(traces) != 1 else ''} from "
-        f"{len(employees)} employee(s) over the last {window_days} days. "
-        f"{all_counts.get('correct', 0)} answered correctly, "
-        f"{issues} need attention "
-        f"({all_counts.get('wrong', 0)} wrong, "
-        f"{all_counts.get('false_refusal', 0)} wrongly refused, "
-        f"{all_counts.get('partly_correct', 0)} partly right, "
-        f"{all_counts.get('needs_human_review', 0)} need a human's eyes). "
-        f"Grading used the deterministic layer first and {llm_used} LLM "
-        f"call(s) for the harder ones."
+        f"Reviewed {len(traces)} new question{'s' if len(traces) != 1 else ''} "
+        f"{since_note} from {len(employees)} employee(s). "
+        f"{all_counts.get('correct', 0)} correct, {issues} need attention "
+        f"({all_counts.get('wrong', 0)} wrong, {all_counts.get('false_refusal', 0)} "
+        f"wrongly refused, {all_counts.get('partly_correct', 0)} partly right, "
+        f"{all_counts.get('needs_human_review', 0)} need a human). "
+        f"{findings_new} new issue(s) this run; {findings_carried} still open from "
+        f"before. Deterministic-first grading + {llm_used} LLM call(s)."
     )
 
     report = {
@@ -292,10 +360,15 @@ def run_health_review(company: str, requested_by: str = "admin",
         "generated_at": now.isoformat(),
         "report_date": now.strftime("%B %d, %Y"),
         "window_days": window_days,
-        "date_from": date_from,
+        "incremental": incremental,
+        "since": since,
+        "previous_run_at": prev_run_at,
+        "run_number": prior_runs + 1,
+        "date_from": since,
         "date_to": now.isoformat(),
         "source": source,
         "traces_reviewed": len(traces),
+        "new_traces_reviewed": len(traces),
         "graded": graded,
         "summary": {
             "total_traces": len(traces),
@@ -304,6 +377,8 @@ def run_health_review(company: str, requested_by: str = "admin",
             "issues": issues,
             "llm_calls_used": llm_used,
             "needs_human_review": all_counts.get("needs_human_review", 0),
+            "findings_new": findings_new,
+            "findings_carried": findings_carried,
             "per_employee": [{"name": e["name"], "role": e["role"],
                               "email": e["email"], "traces": e["trace_count"],
                               "issues": e["issues"]} for e in employees],
@@ -311,6 +386,7 @@ def run_health_review(company: str, requested_by: str = "admin",
         "narrative": narrative,
         "employees": employees,
         "fixes_needed": fixes,
+        "open_findings": open_findings,
     }
     if save:
         report["report_id"] = store.save_health_report(
