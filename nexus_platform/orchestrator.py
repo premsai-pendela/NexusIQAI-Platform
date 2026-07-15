@@ -21,7 +21,7 @@ from typing import Optional
 from nexus_platform.access_policy import RolePolicy
 from nexus_platform.deterministic import (
     Features, Intent, _METRIC_LABELS, _period_index, extract_features,
-    parse_intent,
+    parse_intent, metric_exists,
 )
 
 # ── Detection vocabularies ──────────────────────────────────────────────
@@ -343,6 +343,51 @@ def decide_route(question: str, policy: RolePolicy,
     if clar is not None:
         return RouteDecision(route="clarification", clarification=clar,
                              reason=f"clarification needed: {clar.kind}")
+
+    # If a metric word appears in the question but parsing didn't capture it,
+    # ask for clarification.
+    if f.metric is None:
+        # metric labels are the human‑readable names for known metrics
+        _metric_labels = [lbl.lower() for lbl in _METRIC_LABELS.values()]
+        if any(lbl in q for lbl in _metric_labels):
+            return RouteDecision(
+                route="clarification",
+                clarification=Clarification(
+                    kind="unclear_metric",
+                    question=("I couldn't determine which metric you mean. "
+                              "Did you mean one of these?"),
+                    choices=role_metric_choices(policy),
+                ),
+                reason="clarification needed: unrecognized metric word"
+            )
+        # Detect metric‑like tokens that are not in the catalog (e.g., "NPS score").
+        # Look for a word preceding common metric nouns such as "score", "rate",
+        # "percentage", or "ratio". If found, treat it as an unrecognized metric.
+        m = re.search(r"\b(\w+)\s+(score|rate|percentage|ratio)\b", q)
+        if m:
+            return RouteDecision(
+                route="clarification",
+                clarification=Clarification(
+                    kind="unclear_metric",
+                    question=("I couldn't determine which metric you mean. "
+                              "Did you mean one of these?"),
+                    choices=role_metric_choices(policy),
+                ),
+                reason="clarification needed: unrecognized metric token"
+            )
+
+    # If a metric was identified but doesn't exist in the catalog, clarify.
+    if f.metric and not metric_exists(f.metric):
+        return RouteDecision(
+            route="clarification",
+            clarification=Clarification(
+                kind="unknown_metric",
+                question=(f"I don't have data for '{f.metric}'. "
+                          "Did you mean one of these?"),
+                choices=role_metric_choices(policy),
+            ),
+            reason=f"clarification needed: unknown metric '{f.metric}'"
+        )
 
     # Policy + numbers in one question → both evidence sources, cross-checked.
     if _DOC_TERMS_RE.search(q) and (f.metric or f.explicit_periods):

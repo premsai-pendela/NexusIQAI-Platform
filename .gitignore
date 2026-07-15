@@ -64,7 +64,13 @@ node_modules/
 
 # Platform runtime artifacts — regenerate via nexus_platform.brain_builder
 data/platform.db
-data/demo_companies/*/brain/
+# NOTE: the demo-company brains (data/demo_companies/*/brain/) are intentionally
+# COMMITTED, not ignored. They are built once locally and pushed so CI can run the
+# RAG-boundary tests against a real index without rebuilding on every run. A CI
+# guard (`python -m nexus_platform.brain_builder --check`) fails the build if the
+# committed brain no longer matches its source docs, so a stale brain can't slip
+# through. If you change a company's docs/db, rebuild + commit its brain.
+# Keep the local ChromaDB caches below ignored (transient, not per-company brains).
 
 # Simulation-employee private memory (durable on disk, noisy in git)
 sim_employees/memory/*/*.json

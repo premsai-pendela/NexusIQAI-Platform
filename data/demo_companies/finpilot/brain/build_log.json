@@ -1,0 +1,64 @@
+{
+  "company": "finpilot",
+  "built_at": "2026-07-13T22:40:23.655775+00:00",
+  "duration_s": 8.99,
+  "steps": [
+    {
+      "step": "scan files",
+      "detail": "174 source files hashed",
+      "at": "2026-07-13T22:40:14.694351+00:00"
+    },
+    {
+      "step": "profile structured data",
+      "detail": {
+        "products": 6,
+        "customers": 480,
+        "orders": 14500,
+        "invoices": 6202,
+        "support_tickets": 4500,
+        "employees_hr": 131,
+        "departments": 8,
+        "teams": 24,
+        "payroll_summary": 108,
+        "contacts": 1198,
+        "churn_events": 57,
+        "plans": 4,
+        "price_changes": 4,
+        "order_items": 21613,
+        "subscriptions": 480,
+        "usage_events": 60000,
+        "invoice_lines": 12419,
+        "payments": 5320,
+        "refunds": 448,
+        "credit_notes": 288,
+        "expenses": 3000,
+        "bills": 1800,
+        "saas_subscriptions": 60,
+        "vendors": 80,
+        "purchase_orders": 900,
+        "contracts": 250,
+        "finance_reports": 18,
+        "board_updates": 6,
+        "ticket_messages": 22398,
+        "slas": 4,
+        "csat_responses": 3181,
+        "escalations": 155,
+        "incidents": 120,
+        "campaigns": 24,
+        "leads": 6000
+      },
+      "at": "2026-07-13T22:40:14.696452+00:00"
+    },
+    {
+      "step": "build RAG index",
+      "detail": "1065 chunks in brain_finpilot",
+      "at": "2026-07-13T22:40:23.655573+00:00"
+    },
+    {
+      "step": "run access-policy checks",
+      "detail": "7 role policies mapped",
+      "at": "2026-07-13T22:40:23.655677+00:00"
+    }
+  ],
+  "status": "workspace ready"
+}

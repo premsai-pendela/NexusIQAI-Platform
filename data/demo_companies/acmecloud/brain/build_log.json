@@ -1,0 +1,64 @@
+{
+  "company": "acmecloud",
+  "built_at": "2026-07-13T22:40:05.670425+00:00",
+  "duration_s": 16.36,
+  "steps": [
+    {
+      "step": "scan files",
+      "detail": "174 source files hashed",
+      "at": "2026-07-13T22:39:49.336389+00:00"
+    },
+    {
+      "step": "profile structured data",
+      "detail": {
+        "products": 6,
+        "customers": 420,
+        "orders": 12500,
+        "invoices": 5465,
+        "support_tickets": 4500,
+        "employees_hr": 125,
+        "departments": 8,
+        "teams": 23,
+        "payroll_summary": 108,
+        "contacts": 1037,
+        "churn_events": 55,
+        "plans": 4,
+        "price_changes": 6,
+        "order_items": 18606,
+        "subscriptions": 420,
+        "usage_events": 60000,
+        "invoice_lines": 10979,
+        "payments": 4581,
+        "refunds": 324,
+        "credit_notes": 252,
+        "expenses": 3000,
+        "bills": 1800,
+        "saas_subscriptions": 60,
+        "vendors": 80,
+        "purchase_orders": 900,
+        "contracts": 250,
+        "finance_reports": 18,
+        "board_updates": 6,
+        "ticket_messages": 22473,
+        "slas": 4,
+        "csat_responses": 3216,
+        "escalations": 167,
+        "incidents": 120,
+        "campaigns": 24,
+        "leads": 6000
+      },
+      "at": "2026-07-13T22:39:49.341986+00:00"
+    },
+    {
+      "step": "build RAG index",
+      "detail": "1065 chunks in brain_acmecloud",
+      "at": "2026-07-13T22:40:05.670223+00:00"
+    },
+    {
+      "step": "run access-policy checks",
+      "detail": "7 role policies mapped",
+      "at": "2026-07-13T22:40:05.670325+00:00"
+    }
+  ],
+  "status": "workspace ready"
+}

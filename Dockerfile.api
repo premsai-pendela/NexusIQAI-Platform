@@ -18,6 +18,13 @@ RUN pip install --upgrade pip \
 
 COPY . .
 
+# data/demo_companies/*/brain/ is gitignored (derived embeddings, not source
+# data) — build it into the image so RAGAgent's chroma_dir.exists() check
+# doesn't fail on every request in a fresh container. Purely local: reads the
+# committed source docs + company.db, downloads the public embedding model
+# once, no secrets or live DB needed.
+RUN python -m nexus_platform.brain_builder
+
 EXPOSE 8000
 
 CMD ["sh", "-c", "uvicorn api.main:app --host 0.0.0.0 --port ${PORT} --workers 1"]

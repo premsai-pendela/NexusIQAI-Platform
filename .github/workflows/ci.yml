@@ -34,6 +34,13 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-subtests
 
+      - name: Verify committed brains match their source docs
+        # The demo-company brains are committed (see .gitignore note). This guard
+        # fails the build if a company's docs/db changed but its brain wasn't
+        # rebuilt + re-committed, so the RAG-boundary tests can never pass green
+        # against a stale index.
+        run: python -m nexus_platform.brain_builder --check
+
       - name: Unit and contract tests
         # Run via pytest, not `unittest discover`: the tests/platform_mode/* suite
         # (access policy, SQL/RAG boundary, health check, repair proposer,

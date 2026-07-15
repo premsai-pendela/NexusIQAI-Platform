@@ -1,0 +1,1202 @@
+{
+  "products": {
+    "columns": [
+      {
+        "name": "product_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "name",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "category",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "list_price",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "launched",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 6
+  },
+  "customers": {
+    "columns": [
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "name",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "segment",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "region",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "signup_date",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "plan",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "mrr",
+        "type": "REAL",
+        "not_null": true
+      }
+    ],
+    "row_count": 480
+  },
+  "orders": {
+    "columns": [
+      {
+        "name": "order_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "order_date",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "product_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "region",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "quantity",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "unit_price",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "total_amount",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 14500
+  },
+  "invoices": {
+    "columns": [
+      {
+        "name": "invoice_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "issue_date",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "due_date",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "amount",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "paid_date",
+        "type": "TEXT",
+        "not_null": false
+      }
+    ],
+    "row_count": 6202
+  },
+  "support_tickets": {
+    "columns": [
+      {
+        "name": "ticket_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "created_at",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "category",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "priority",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "resolution_hours",
+        "type": "REAL",
+        "not_null": false
+      },
+      {
+        "name": "csat",
+        "type": "INTEGER",
+        "not_null": false
+      }
+    ],
+    "row_count": 4500
+  },
+  "employees_hr": {
+    "columns": [
+      {
+        "name": "emp_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "department",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "role_title",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "region",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "hire_date",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "termination_date",
+        "type": "TEXT",
+        "not_null": false
+      },
+      {
+        "name": "salary_band",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 131
+  },
+  "departments": {
+    "columns": [
+      {
+        "name": "department_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "name",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "cost_center",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "head_emp_id",
+        "type": "INTEGER",
+        "not_null": false
+      }
+    ],
+    "row_count": 8
+  },
+  "teams": {
+    "columns": [
+      {
+        "name": "team_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "department_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "name",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "manager_emp_id",
+        "type": "INTEGER",
+        "not_null": true
+      }
+    ],
+    "row_count": 24
+  },
+  "payroll_summary": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "month",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "department",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "headcount",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "total_payroll",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "total_benefits",
+        "type": "REAL",
+        "not_null": true
+      }
+    ],
+    "row_count": 108
+  },
+  "contacts": {
+    "columns": [
+      {
+        "name": "contact_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "name",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "title",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "email",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "is_primary",
+        "type": "INTEGER",
+        "not_null": true
+      }
+    ],
+    "row_count": 1198
+  },
+  "churn_events": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "event_date",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "reason",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "mrr_lost",
+        "type": "REAL",
+        "not_null": true
+      }
+    ],
+    "row_count": 57
+  },
+  "plans": {
+    "columns": [
+      {
+        "name": "plan_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "name",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "monthly_price",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "seats_included",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "tier",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 4
+  },
+  "price_changes": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "product_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "changed_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "old_price",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "new_price",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "reason",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 4
+  },
+  "order_items": {
+    "columns": [
+      {
+        "name": "item_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "order_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "product_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "quantity",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "unit_price",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "line_total",
+        "type": "REAL",
+        "not_null": true
+      }
+    ],
+    "row_count": 21613
+  },
+  "subscriptions": {
+    "columns": [
+      {
+        "name": "subscription_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "plan_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "started_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "canceled_on",
+        "type": "TEXT",
+        "not_null": false
+      },
+      {
+        "name": "seats",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "mrr",
+        "type": "REAL",
+        "not_null": true
+      }
+    ],
+    "row_count": 480
+  },
+  "usage_events": {
+    "columns": [
+      {
+        "name": "event_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "product_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "event_ts",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "event_type",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "units",
+        "type": "INTEGER",
+        "not_null": true
+      }
+    ],
+    "row_count": 60000
+  },
+  "invoice_lines": {
+    "columns": [
+      {
+        "name": "line_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "invoice_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "description",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "quantity",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "unit_price",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "line_total",
+        "type": "REAL",
+        "not_null": true
+      }
+    ],
+    "row_count": 12419
+  },
+  "payments": {
+    "columns": [
+      {
+        "name": "payment_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "invoice_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "paid_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "amount",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "method",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 5320
+  },
+  "refunds": {
+    "columns": [
+      {
+        "name": "refund_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "order_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "refunded_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "amount",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "reason",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 448
+  },
+  "credit_notes": {
+    "columns": [
+      {
+        "name": "credit_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "issued_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "amount",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "reason",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 288
+  },
+  "expenses": {
+    "columns": [
+      {
+        "name": "expense_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "incurred_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "department",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "category",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "amount",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "description",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 3000
+  },
+  "bills": {
+    "columns": [
+      {
+        "name": "bill_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "vendor_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "billed_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "due_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "amount",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 1800
+  },
+  "saas_subscriptions": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "tool",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "owner_department",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "monthly_cost",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "seats",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "renewal_date",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 60
+  },
+  "vendors": {
+    "columns": [
+      {
+        "name": "vendor_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "name",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "category",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "country",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "active",
+        "type": "INTEGER",
+        "not_null": true
+      }
+    ],
+    "row_count": 80
+  },
+  "purchase_orders": {
+    "columns": [
+      {
+        "name": "po_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "vendor_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "ordered_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "amount",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "department",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 900
+  },
+  "contracts": {
+    "columns": [
+      {
+        "name": "contract_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "customer_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "vendor_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "kind",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "starts_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "ends_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "annual_value",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 250
+  },
+  "finance_reports": {
+    "columns": [
+      {
+        "name": "report_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "period",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "kind",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "revenue",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "expenses",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "net",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "file",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 18
+  },
+  "board_updates": {
+    "columns": [
+      {
+        "name": "update_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "period",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "headline",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "file",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 6
+  },
+  "ticket_messages": {
+    "columns": [
+      {
+        "name": "message_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "ticket_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "sent_at",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "author",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "body",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 22398
+  },
+  "slas": {
+    "columns": [
+      {
+        "name": "sla_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "priority",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "first_response_hours",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "resolution_hours",
+        "type": "INTEGER",
+        "not_null": true
+      }
+    ],
+    "row_count": 4
+  },
+  "csat_responses": {
+    "columns": [
+      {
+        "name": "response_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "ticket_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "submitted_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "score",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "comment",
+        "type": "TEXT",
+        "not_null": false
+      }
+    ],
+    "row_count": 3181
+  },
+  "escalations": {
+    "columns": [
+      {
+        "name": "escalation_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "ticket_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "escalated_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "to_team",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "reason",
+        "type": "TEXT",
+        "not_null": true
+      }
+    ],
+    "row_count": 155
+  },
+  "incidents": {
+    "columns": [
+      {
+        "name": "incident_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "opened_at",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "severity",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "service",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "minutes_to_resolve",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "postmortem_file",
+        "type": "TEXT",
+        "not_null": false
+      }
+    ],
+    "row_count": 120
+  },
+  "campaigns": {
+    "columns": [
+      {
+        "name": "campaign_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "name",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "channel",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "started_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "budget",
+        "type": "REAL",
+        "not_null": true
+      },
+      {
+        "name": "leads_target",
+        "type": "INTEGER",
+        "not_null": true
+      }
+    ],
+    "row_count": 24
+  },
+  "leads": {
+    "columns": [
+      {
+        "name": "lead_id",
+        "type": "INTEGER",
+        "not_null": false
+      },
+      {
+        "name": "campaign_id",
+        "type": "INTEGER",
+        "not_null": true
+      },
+      {
+        "name": "created_on",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "source",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "status",
+        "type": "TEXT",
+        "not_null": true
+      },
+      {
+        "name": "est_value",
+        "type": "REAL",
+        "not_null": true
+      }
+    ],
+    "row_count": 6000
+  }
+}

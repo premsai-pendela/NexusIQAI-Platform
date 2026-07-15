@@ -1,0 +1,64 @@
+{
+  "company": "medcore",
+  "built_at": "2026-07-13T22:40:14.665800+00:00",
+  "duration_s": 9.0,
+  "steps": [
+    {
+      "step": "scan files",
+      "detail": "173 source files hashed",
+      "at": "2026-07-13T22:40:05.697897+00:00"
+    },
+    {
+      "step": "profile structured data",
+      "detail": {
+        "products": 5,
+        "customers": 340,
+        "orders": 9500,
+        "invoices": 4341,
+        "support_tickets": 4500,
+        "employees_hr": 150,
+        "departments": 8,
+        "teams": 27,
+        "payroll_summary": 108,
+        "contacts": 863,
+        "churn_events": 39,
+        "plans": 4,
+        "price_changes": 4,
+        "order_items": 14161,
+        "subscriptions": 340,
+        "usage_events": 60000,
+        "invoice_lines": 8689,
+        "payments": 3730,
+        "refunds": 277,
+        "credit_notes": 204,
+        "expenses": 3000,
+        "bills": 1800,
+        "saas_subscriptions": 60,
+        "vendors": 80,
+        "purchase_orders": 900,
+        "contracts": 250,
+        "finance_reports": 18,
+        "board_updates": 6,
+        "ticket_messages": 22448,
+        "slas": 4,
+        "csat_responses": 3151,
+        "escalations": 192,
+        "incidents": 120,
+        "campaigns": 24,
+        "leads": 6000
+      },
+      "at": "2026-07-13T22:40:05.699945+00:00"
+    },
+    {
+      "step": "build RAG index",
+      "detail": "1059 chunks in brain_medcore",
+      "at": "2026-07-13T22:40:14.665600+00:00"
+    },
+    {
+      "step": "run access-policy checks",
+      "detail": "7 role policies mapped",
+      "at": "2026-07-13T22:40:14.665697+00:00"
+    }
+  ],
+  "status": "workspace ready"
+}

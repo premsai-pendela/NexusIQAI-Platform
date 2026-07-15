@@ -1,0 +1,221 @@
+{
+  "Admin": {
+    "tables": [
+      "orders",
+      "order_items",
+      "subscriptions",
+      "usage_events",
+      "churn_events",
+      "customers",
+      "contacts",
+      "products",
+      "plans",
+      "price_changes",
+      "invoices",
+      "invoice_lines",
+      "payments",
+      "refunds",
+      "credit_notes",
+      "expenses",
+      "bills",
+      "saas_subscriptions",
+      "contracts",
+      "finance_reports",
+      "vendors",
+      "purchase_orders",
+      "support_tickets",
+      "ticket_messages",
+      "slas",
+      "csat_responses",
+      "escalations",
+      "incidents",
+      "campaigns",
+      "leads",
+      "employees_hr",
+      "departments",
+      "teams",
+      "payroll_summary",
+      "board_updates"
+    ],
+    "departments": [
+      "general",
+      "finance",
+      "hr",
+      "support",
+      "product",
+      "ops"
+    ]
+  },
+  "CEO": {
+    "tables": [
+      "orders",
+      "order_items",
+      "subscriptions",
+      "usage_events",
+      "churn_events",
+      "customers",
+      "contacts",
+      "products",
+      "plans",
+      "price_changes",
+      "invoices",
+      "invoice_lines",
+      "payments",
+      "refunds",
+      "credit_notes",
+      "expenses",
+      "bills",
+      "saas_subscriptions",
+      "contracts",
+      "finance_reports",
+      "vendors",
+      "purchase_orders",
+      "support_tickets",
+      "ticket_messages",
+      "slas",
+      "csat_responses",
+      "escalations",
+      "incidents",
+      "campaigns",
+      "leads",
+      "employees_hr",
+      "departments",
+      "teams",
+      "payroll_summary",
+      "board_updates"
+    ],
+    "departments": [
+      "general",
+      "finance",
+      "hr",
+      "support",
+      "product",
+      "ops"
+    ]
+  },
+  "Analyst": {
+    "tables": [
+      "orders",
+      "order_items",
+      "subscriptions",
+      "usage_events",
+      "churn_events",
+      "customers",
+      "contacts",
+      "products",
+      "plans",
+      "price_changes",
+      "invoices",
+      "invoice_lines",
+      "payments",
+      "refunds",
+      "credit_notes",
+      "expenses",
+      "bills",
+      "saas_subscriptions",
+      "contracts",
+      "finance_reports",
+      "support_tickets",
+      "ticket_messages",
+      "slas",
+      "csat_responses",
+      "escalations",
+      "campaigns",
+      "leads"
+    ],
+    "departments": [
+      "general",
+      "finance",
+      "product",
+      "support"
+    ]
+  },
+  "Finance": {
+    "tables": [
+      "invoices",
+      "invoice_lines",
+      "payments",
+      "refunds",
+      "credit_notes",
+      "expenses",
+      "bills",
+      "saas_subscriptions",
+      "contracts",
+      "finance_reports",
+      "orders",
+      "order_items",
+      "subscriptions",
+      "usage_events",
+      "churn_events",
+      "customers",
+      "contacts",
+      "products",
+      "plans",
+      "price_changes",
+      "vendors",
+      "purchase_orders"
+    ],
+    "departments": [
+      "general",
+      "finance",
+      "product"
+    ]
+  },
+  "HR": {
+    "tables": [
+      "employees_hr",
+      "departments",
+      "teams",
+      "payroll_summary"
+    ],
+    "departments": [
+      "general",
+      "hr"
+    ]
+  },
+  "Support": {
+    "tables": [
+      "support_tickets",
+      "ticket_messages",
+      "slas",
+      "csat_responses",
+      "escalations",
+      "customers",
+      "contacts",
+      "products",
+      "plans",
+      "price_changes"
+    ],
+    "departments": [
+      "general",
+      "support",
+      "product"
+    ]
+  },
+  "Ops": {
+    "tables": [
+      "orders",
+      "order_items",
+      "subscriptions",
+      "usage_events",
+      "churn_events",
+      "products",
+      "plans",
+      "price_changes",
+      "support_tickets",
+      "ticket_messages",
+      "slas",
+      "csat_responses",
+      "escalations",
+      "vendors",
+      "purchase_orders",
+      "incidents"
+    ],
+    "departments": [
+      "general",
+      "ops",
+      "product",
+      "support"
+    ]
+  }
+}
