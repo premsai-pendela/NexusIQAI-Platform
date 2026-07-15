@@ -28,8 +28,9 @@ from nexus_platform.registry import get_registry  # noqa: E402
 def scan() -> list[str]:
     findings: list[str] = []
     registry = get_registry()
-    conn = store._get_conn()
-    rows = conn.execute("SELECT id, company, employee, role, payload FROM traces").fetchall()
+    with store._tx() as conn:
+        rows = conn.execute(
+            "SELECT id, company, employee, role, payload FROM traces").fetchall()
 
     for row in rows:
         tid, company, employee, role = row["id"], row["company"], row["employee"], row["role"]
@@ -58,8 +59,8 @@ def scan() -> list[str]:
 
 
 def main() -> int:
-    conn = store._get_conn()
-    total = conn.execute("SELECT COUNT(*) FROM traces").fetchone()[0]
+    with store._tx() as conn:
+        total = conn.execute("SELECT COUNT(*) FROM traces").scalar()
     findings = scan()
     print(f"scanned {total} traces")
     if findings:
