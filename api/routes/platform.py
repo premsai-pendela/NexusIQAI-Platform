@@ -311,6 +311,7 @@ def get_trace(trace_id: str, ctx: AccessContext = Depends(get_access_context)):
 class HealthCheckRequest(BaseModel):
     window_days: int = Field(30, ge=1, le=730)
     llm_summary: bool = False
+    source: str = "real"  # "real" | "simulated" — audited traffic, never mixed
 
 
 @router.post("/admin/health-check")
@@ -318,14 +319,18 @@ async def run_health_check_route(req: HealthCheckRequest,
                                  ctx: AccessContext = Depends(get_access_context)):
     """Run the Analyst Health Check agent over this company's traces and
     feedback. Analysis is deterministic; the optional LLM executive summary
-    degrades honestly when providers are exhausted."""
+    degrades honestly when providers are exhausted. `source` selects real
+    traffic (default) or synthetic-demo traffic — the two are never mixed in
+    one report."""
     require_admin(ctx)
+    source = req.source if req.source in ("real", "simulated") else "real"
     from nexus_platform.health_check import run_health_check
     loop = asyncio.get_event_loop()
     report = await loop.run_in_executor(
         None, lambda: run_health_check(
             ctx.company.slug, requested_by=ctx.employee.email,
-            window_days=req.window_days, llm_summary=req.llm_summary))
+            window_days=req.window_days, llm_summary=req.llm_summary,
+            source=source))
     return report
 
 

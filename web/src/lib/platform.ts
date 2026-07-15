@@ -229,10 +229,10 @@ export type HealthReport = {
   llm_summary_status?: string;
 };
 
-export const runHealthCheck = (windowDays = 30, llmSummary = false) =>
+export const runHealthCheck = (windowDays = 30, llmSummary = false, source = "real") =>
   req<HealthReport>("/platform/admin/health-check", {
     method: "POST",
-    body: JSON.stringify({ window_days: windowDays, llm_summary: llmSummary }),
+    body: JSON.stringify({ window_days: windowDays, llm_summary: llmSummary, source }),
   });
 
 export const submitFeedback = (payload: {

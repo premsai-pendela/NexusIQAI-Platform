@@ -308,6 +308,7 @@ function HealthCheckPanel({ onOpenTrace }: { onOpenTrace: (id: string) => void }
   const [busy, setBusy] = useState(false);
   const [days, setDays] = useState(30);
   const [aiSummary, setAiSummary] = useState(false);
+  const [source, setSource] = useState("real");
   const [err, setErr] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
 
@@ -315,7 +316,7 @@ function HealthCheckPanel({ onOpenTrace }: { onOpenTrace: (id: string) => void }
     setBusy(true);
     setErr(null);
     try {
-      setReport(await runHealthCheck(days, aiSummary));
+      setReport(await runHealthCheck(days, aiSummary, source));
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Health check failed");
     } finally {
@@ -337,6 +338,12 @@ function HealthCheckPanel({ onOpenTrace }: { onOpenTrace: (id: string) => void }
           </div>
         </div>
         <span style={{ marginLeft: "auto", display: "flex", gap: 8, alignItems: "center" }}>
+          <select value={source} onChange={(e) => setSource(e.target.value)}
+            title="Which traffic to audit — real usage or synthetic-demo (simulation employees). Never mixed."
+            style={{ padding: "6px 8px", borderRadius: 8, border: "1px solid var(--hairline-mid)", background: "var(--surface-card)", fontSize: 11.5, color: "var(--ink)", fontFamily: "var(--font-sans), sans-serif" }}>
+            <option value="real">real traffic</option>
+            <option value="simulated">synthetic demo</option>
+          </select>
           <select value={days} onChange={(e) => setDays(Number(e.target.value))}
             style={{ padding: "6px 8px", borderRadius: 8, border: "1px solid var(--hairline-mid)", background: "var(--surface-card)", fontSize: 11.5, color: "var(--ink)", fontFamily: "var(--font-sans), sans-serif" }}>
             <option value={7}>last 7 days</option>
