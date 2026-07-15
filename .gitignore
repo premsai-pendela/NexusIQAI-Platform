@@ -71,3 +71,6 @@ data/platform.db
 # committed brain no longer matches its source docs, so a stale brain can't slip
 # through. If you change a company's docs/db, rebuild + commit its brain.
 # Keep the local ChromaDB caches below ignored (transient, not per-company brains).
+
+# Simulation-employee private memory (durable on disk, noisy in git)
+sim_employees/memory/*/*.json
