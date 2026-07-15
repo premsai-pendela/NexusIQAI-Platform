@@ -143,3 +143,36 @@ so accumulation is fine once storage is durable.
 ## Running log
 - 2026-07-15: Phase 0 begun. Live-verified empty Review; root-caused to
   ephemeral SQLite in Fargate. Branch + plan created.
+- 2026-07-15: **Phase 1 COMPLETE.** `store.py` moved to the SQLAlchemy
+  dual-backend (`db.platform_engine()`; RDS Postgres when
+  `NEXUSIQ_PLATFORM_PG_URL` set, SQLite otherwise). Dialect diffs isolated
+  (paramstyle, IDENTITY, ON CONFLICT, RETURNING, sqlite-only PRAGMA
+  migrations). Public API unchanged. `tests/` **436 passed** (unchanged).
+  New `scripts/verify_platform_pg_store.py` spins up a throwaway local
+  Postgres and proves every table's PG read/write, source separation,
+  append-only accumulation, and **durability across engine dispose+reconnect
+  (= a Fargate redeploy on the same RDS) — all rows survive.** Committed.
+  Next: Phase 2 sim employees.
+- 2026-07-15: **Phase 2 COMPLETE.** `sim_employees/` package: personas
+  (role-scoped via the real access boundary), private file memory (git-ignored
+  + durable), paced run loop (longer breather after LLM turns), CLI-agnostic
+  `brief`/`ask` entry points + `INSTRUCTIONS.md`. Question brain = external
+  CLI; analyst = NexusIQ free tier; traces tagged simulated. Verified live
+  locally as the brain; `tests/` **439 passed** (3 new, mocked analyst = zero
+  quota). Committed. Next: Phase 3 Option C UI (must keep simulated clearly
+  labelled, never shown as real — honors the initiative's no-conflation rule).
+- 2026-07-15: **Phase 3 COMPLETE.** Admin Review trace explorer rebuilt as the
+  Option C 3-pane console: Year>Month>Day drill-down rail + list + detail with
+  the AGENT ANSWER (never shown before), route/confidence/tables/SQL/citations/
+  trace-id, and real vs synthetic-demo source badges + filter. Backend:
+  `store.list_traces_for_review` + `store.answer_for_trace`; `/admin/traces`
+  source filter. Verified live in-browser. `tests/` **439**. Committed.
+- 2026-07-15: **Phase 4 COMPLETE.** Health-check agent audits real OR
+  synthetic-demo traffic (source param + panel toggle), never mixed. Verified
+  live over 684 sim traces. Loop closed: sim employees -> traces -> health
+  check -> findings. `tests/` **439**. Committed.
+- 2026-07-15: **Phase 5 COMPLETE (handoff written).** Deploy steps in
+  `DEPLOY_HANDOFF_traces_to_rds.md`; store auto-writes to RDS once the branch
+  deploys (env var already wired), tables auto-create, durability proven
+  locally. Actual Fargate deploy needs Prem's AWS access. **ALL FIVE PHASES
+  DONE; branch trace-restore/dev green + committed.**

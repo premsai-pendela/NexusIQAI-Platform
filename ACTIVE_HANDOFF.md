@@ -25,9 +25,27 @@ Autonomous run, Prem unavailable — do not wait on him; proceed per plan.
   reach prod RDS or deploy from this Mac (locked down; no secrets touched) —
   live cutover is a documented handoff for Prem, never claimed done unless
   actually deployed.
-- **Milestones:** Phase 0 setup (branch+plan+handoff) — IN PROGRESS. Phase 1
-  durable store — NEXT. Phases 2 sim-employees, 3 Option C UI, 4 health loop,
-  5 deploy handoff.
+- **Milestones:** Phase 0 setup ✓. **Phase 1 durable store ✓** (store.py on
+  SQLAlchemy dual-backend; tests/ 436 green; PG path + redeploy-durability
+  proven via scripts/verify_platform_pg_store.py; committed). **Phase 2
+  sim-employees ✓** (sim_employees/ package: personas + file memory + paced
+  loop + CLI-agnostic brief/ask entry points + INSTRUCTIONS.md; verified live
+  locally, tests/ 439 green; committed). **Phase 3 Option C UI ✓** (admin
+  Review rebuilt as 3-pane Year>Month>Day console; agent-answer detail;
+  real/synthetic-demo source filter + badges; store.list_traces_for_review +
+  answer_for_trace; verified live in-browser, tests/ 439 green; committed).
+  **Phase 4 health loop ✓** (health-check agent audits real OR synthetic-demo
+  traffic via a source toggle; verified live over 684 sim traces; committed).
+  **Phase 5 deploy handoff ✓** (doc written — see below). **ALL PHASES DONE.**
+- **Local verify servers:** backend `.venv/bin/uvicorn api.main:app --port 8000`;
+  frontend `nexusiq-web-dev` launch config (`next dev` on 3000). Demo login
+  admin@acmecloud.test / demo-admin-2026.
+- **REMAINING FOR PREM (needs AWS access — build could not do it):** deploy
+  `trace-restore/dev` to Fargate so the store writes to RDS and the live
+  Review page persists. Exact steps:
+  `docs/platform improvements/DEPLOY_HANDOFF_traces_to_rds.md`. Nothing on the
+  live site changes until that deploy happens; everything is built + green +
+  committed locally. Merge/deploy is Prem's only, never automated.
 - **Resume command:** read the plan doc; `git checkout trace-restore/dev`;
   tests: `.venv/bin/python -m pytest tests/platform_mode/ -q`.
 
