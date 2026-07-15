@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import PlatformShell from "@/components/PlatformShell";
 import {
   FeedbackItem,
@@ -33,6 +33,24 @@ function StatusChip({ status }: { status: string }) {
   return <span className="chip" style={{ background: s.bg, color: s.fg }}>{status}</span>;
 }
 
+function SourceBadge({ source }: { source?: string }) {
+  const sim = source === "simulated";
+  return (
+    <span
+      className="chip mono"
+      title={sim ? "Synthetic demo traffic — a simulation employee, not a real customer" : "Organic traffic"}
+      style={{
+        fontSize: 9,
+        letterSpacing: "0.04em",
+        background: sim ? "var(--accent-tint, #EEF3EA)" : "var(--chip-neutral-bg)",
+        color: sim ? "var(--accent)" : "var(--chip-neutral-text)",
+      }}
+    >
+      {sim ? "synthetic demo" : "real"}
+    </span>
+  );
+}
+
 function TraceCard({ detail, onClose }: { detail: TraceDetail; onClose: () => void }) {
   const p = detail.payload as Record<string, unknown>;
   const policy = (p.access_policy || {}) as { allowed_tables?: string[]; allowed_departments?: string[] };
@@ -42,12 +60,19 @@ function TraceCard({ detail, onClose }: { detail: TraceDetail; onClose: () => vo
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         <span className="mono" style={{ fontSize: 10.5, color: "var(--mono-accent)" }}>{detail.id}</span>
         <StatusChip status={detail.access_decision} />
+        <SourceBadge source={detail.source} />
         <button onClick={onClose} style={{ marginLeft: "auto", background: "none", border: "none", cursor: "pointer", color: "var(--muted-soft)", fontSize: 13 }}>×</button>
       </div>
       <div style={{ fontSize: 13, color: "var(--ink)", margin: "8px 0 2px", fontWeight: 500 }}>{detail.question}</div>
       {p.followup_rewritten === true && (
         <div className="mono" style={{ fontSize: 10, color: "var(--mono-accent)" }}>↳ resolved as: {String(p.resolved_question)}</div>
       )}
+      {detail.answer ? (
+        <div style={{ margin: "10px 0 2px", padding: "10px 12px", background: "var(--surface-soft)", borderLeft: "2px solid var(--accent)", borderRadius: 6, fontSize: 12.5, color: "var(--ink)", lineHeight: 1.55 }}>
+          <div className="label" style={{ marginBottom: 4, color: "var(--accent)" }}>AGENT ANSWER</div>
+          {detail.answer}
+        </div>
+      ) : null}
       <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "3px 12px", fontSize: 11.5, color: "var(--body)", marginTop: 10 }}>
         <span className="label">EMPLOYEE</span><span>{detail.employee} · {detail.role}</span>
         <span className="label">WHEN</span><span>{new Date(detail.ts).toLocaleString()}</span>
@@ -70,6 +95,159 @@ function TraceCard({ detail, onClose }: { detail: TraceDetail; onClose: () => vo
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+function RouteBadge({ route, decision }: { route?: string | null; decision: string }) {
+  const denied = decision === "denied";
+  const warn = route === "clarification" || route === "degraded_mode" || route === "no_data";
+  const bg = denied ? "#F9E3E3" : warn ? "#FCF3DC" : "var(--chip-neutral-bg)";
+  const fg = denied ? "#A32D2D" : warn ? "#8A5B10" : "var(--chip-neutral-text)";
+  return (
+    <span className="chip mono" style={{ fontSize: 8.5, letterSpacing: "0.03em", background: bg, color: fg, flex: "none" }}>
+      {(route || "unknown").replace(/_/g, " ")}
+    </span>
+  );
+}
+
+/* Option C — the 3-pane trace console: a Year › Month › Day drill-down rail,
+   the day's trace list, and the full record on the right. Shows real and
+   synthetic-demo traffic, each labelled, never conflated. */
+function TraceConsole() {
+  const [traces, setTraces] = useState<TraceSummary[]>([]);
+  const [employees, setEmployees] = useState<{ email: string; name: string; role: string }[]>([]);
+  const [empFilter, setEmpFilter] = useState("");
+  const [sourceFilter, setSourceFilter] = useState("");
+  const [openTrace, setOpenTrace] = useState<TraceDetail | null>(null);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [selDay, setSelDay] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => { adminEmployees().then((r) => setEmployees(r.employees)).catch(() => {}); }, []);
+  useEffect(() => {
+    adminTraces({ employee: empFilter || undefined, source: sourceFilter || undefined })
+      .then((r) => setTraces(r.traces))
+      .catch((e) => setErr(e.message));
+  }, [empFilter, sourceFilter]);
+
+  // Year › Month › Day tree with counts, newest first.
+  const tree = useMemo(() => {
+    const years: Record<string, Record<string, Record<string, number>>> = {};
+    for (const t of traces) {
+      const y = t.ts.slice(0, 4), m = t.ts.slice(0, 7), d = t.ts.slice(0, 10);
+      (years[y] ??= {}); (years[y][m] ??= {}); years[y][m][d] = (years[y][m][d] || 0) + 1;
+    }
+    return years;
+  }, [traces]);
+
+  const listed = useMemo(
+    () => (selDay ? traces.filter((t) => t.ts.slice(0, 10) === selDay) : traces).slice(0, 80),
+    [traces, selDay]);
+
+  const openById = (id: string) => {
+    setOpenId(id);
+    fetchTraceDetail(id).then(setOpenTrace).catch((e) => setErr(e.message));
+  };
+  const monthName = (m: string) => new Date(`${m}-01T00:00:00`).toLocaleString(undefined, { month: "long" });
+  const dayLabel = (d: string) => new Date(`${d}T00:00:00`).toLocaleDateString(undefined, { weekday: "short", day: "numeric" });
+
+  const railBtn = (label: string, count: number, active: boolean, onClick: () => void, indent: number, bold = false) => (
+    <button onClick={onClick}
+      style={{ display: "flex", justifyContent: "space-between", gap: 8, width: "100%", textAlign: "left",
+        background: active ? "var(--accent-tint, #EEF3EA)" : "none", border: "none", cursor: "pointer",
+        padding: `5px 8px 5px ${8 + indent * 12}px`, borderRadius: 7,
+        color: active ? "var(--accent)" : "var(--muted)", fontSize: bold ? 12 : 11.5,
+        fontFamily: bold ? "var(--font-sans), sans-serif" : "var(--font-mono), monospace", fontWeight: bold ? 600 : 400 }}>
+      <span>{label}</span>
+      <span style={{ color: "var(--muted-soft)", fontVariantNumeric: "tabular-nums" }}>{count}</span>
+    </button>
+  );
+
+  return (
+    <div style={{ marginBottom: 26 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
+        <div className="label">EMPLOYEE QUERY TRACES · {traces.length}</div>
+        <span style={{ marginLeft: "auto", display: "flex", gap: 8, alignItems: "center" }}>
+          <select value={sourceFilter} onChange={(e) => { setSourceFilter(e.target.value); setSelDay(null); }}
+            style={{ padding: "6px 8px", borderRadius: 8, border: "1px solid var(--hairline-mid)", background: "var(--surface-card)", fontSize: 11.5, color: "var(--ink)" }}>
+            <option value="">All traffic</option>
+            <option value="real">Real only</option>
+            <option value="simulated">Synthetic demo only</option>
+          </select>
+          <select value={empFilter} onChange={(e) => { setEmpFilter(e.target.value); setSelDay(null); }}
+            style={{ padding: "6px 8px", borderRadius: 8, border: "1px solid var(--hairline-mid)", background: "var(--surface-card)", fontSize: 11.5, color: "var(--ink)" }}>
+            <option value="">All employees</option>
+            {employees.map((e) => <option key={e.email} value={e.email}>{e.name} ({e.role})</option>)}
+          </select>
+        </span>
+      </div>
+      {err && <div style={{ color: "#A32D2D", fontSize: 12, marginBottom: 8 }}>{err}</div>}
+
+      <div style={{ display: "grid", gridTemplateColumns: "168px 1.05fr 1.15fr", gap: 14, alignItems: "start" }}>
+        {/* Rail: Year › Month › Day */}
+        <div className="card" style={{ background: "var(--surface-soft)", padding: "10px 8px", position: "sticky", top: 14, maxHeight: "72vh", overflowY: "auto" }}>
+          <div className="label" style={{ padding: "2px 8px 6px" }}>TIMELINE</div>
+          {Object.keys(tree).sort().reverse().map((y) => {
+            const yCount = Object.values(tree[y]).reduce((a, mm) => a + Object.values(mm).reduce((b, n) => b + n, 0), 0);
+            const yOpen = expanded[y] ?? true;
+            return (
+              <div key={y}>
+                {railBtn(`${yOpen ? "▾" : "▸"} ${y}`, yCount, false, () => setExpanded((s) => ({ ...s, [y]: !yOpen })), 0, true)}
+                {yOpen && Object.keys(tree[y]).sort().reverse().map((m) => {
+                  const mCount = Object.values(tree[y][m]).reduce((b, n) => b + n, 0);
+                  const mOpen = expanded[m] ?? true;
+                  return (
+                    <div key={m}>
+                      {railBtn(`${mOpen ? "▾" : "▸"} ${monthName(m)}`, mCount, false, () => setExpanded((s) => ({ ...s, [m]: !mOpen })), 1)}
+                      {mOpen && Object.keys(tree[y][m]).sort().reverse().map((d) =>
+                        <div key={d}>{railBtn(dayLabel(d), tree[y][m][d], selDay === d, () => setSelDay(selDay === d ? null : d), 2)}</div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+          {Object.keys(tree).length === 0 && <div style={{ fontSize: 11.5, color: "var(--muted)", padding: "6px 8px" }}>No traces yet.</div>}
+        </div>
+
+        {/* Middle: the list */}
+        <div style={{ display: "grid", gap: 6, alignContent: "start" }}>
+          {selDay && <div className="mono" style={{ fontSize: 10, color: "var(--muted)", letterSpacing: "0.08em" }}>
+            {new Date(`${selDay}T00:00:00`).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" })} · {listed.length}
+          </div>}
+          {listed.length === 0 && <div style={{ fontSize: 12.5, color: "var(--muted)" }}>No traces in this range.</div>}
+          {listed.map((t) => (
+            <button key={t.id} onClick={() => openById(t.id)}
+              className="card"
+              style={{ background: openId === t.id ? "var(--surface-soft)" : "var(--surface-card)", padding: "9px 11px",
+                display: "flex", flexDirection: "column", gap: 5, cursor: "pointer", textAlign: "left", width: "100%",
+                border: openId === t.id ? "1px solid var(--accent)" : "0.5px solid var(--hairline)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <StatusChip status={t.access_decision} />
+                <RouteBadge route={t.route} decision={t.access_decision} />
+                <SourceBadge source={t.source} />
+                <span className="mono" style={{ marginLeft: "auto", fontSize: 9, color: "var(--muted-soft)" }}>
+                  {new Date(t.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                </span>
+              </div>
+              <span style={{ fontSize: 12.5, color: "var(--ink)", lineHeight: 1.35 }}>{t.question}</span>
+              <span className="mono" style={{ fontSize: 9.5, color: "var(--muted-soft)" }}>{t.employee.split("@")[0]} · {t.role}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Right: detail */}
+        <div style={{ position: "sticky", top: 14 }}>
+          {openTrace
+            ? <TraceCard detail={openTrace} onClose={() => { setOpenTrace(null); setOpenId(null); }} />
+            : <div className="card" style={{ background: "var(--surface-soft)", border: "1px dashed var(--hairline-mid)", padding: "30px 18px", textAlign: "center", color: "var(--muted-soft)", fontSize: 12.5 }}>
+                Select a trace to see its full record — question, the agent&apos;s answer, route, SQL, citations, and trace id.
+              </div>}
+        </div>
+      </div>
     </div>
   );
 }
@@ -223,27 +401,14 @@ function HealthCheckPanel({ onOpenTrace }: { onOpenTrace: (id: string) => void }
 export default function AdminReviewPage() {
   const [feedback, setFeedback] = useState<FeedbackItem[]>([]);
   const [feedbackTab, setFeedbackTab] = useState<FeedbackTab>("new-reviews");
-  const [traces, setTraces] = useState<TraceSummary[]>([]);
-  const [employees, setEmployees] = useState<{ email: string; name: string; role: string }[]>([]);
-  const [empFilter, setEmpFilter] = useState("");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
   const [openTrace, setOpenTrace] = useState<TraceDetail | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
   const loadFeedback = useCallback(
     () => adminFeedback().then((r) => setFeedback(r.feedback)).catch((e) => setErr(e.message)),
     []);
-  const loadTraces = useCallback(() => {
-    adminTraces({
-      employee: empFilter || undefined,
-      date_from: dateFrom ? `${dateFrom}T00:00:00` : undefined,
-      date_to: dateTo ? `${dateTo}T23:59:59` : undefined,
-    }).then((r) => setTraces(r.traces)).catch((e) => setErr(e.message));
-  }, [empFilter, dateFrom, dateTo]);
 
-  useEffect(() => { loadFeedback(); adminEmployees().then((r) => setEmployees(r.employees)).catch(() => {}); }, [loadFeedback]);
-  useEffect(() => { loadTraces(); }, [loadTraces]);
+  useEffect(() => { loadFeedback(); }, [loadFeedback]);
 
   const triage = async (id: string, status: string) => {
     await setFeedbackStatus(id, status).catch((e) => setErr(e.message));
@@ -289,7 +454,16 @@ export default function AdminReviewPage() {
 
           <HealthCheckPanel onOpenTrace={openTraceById} />
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1.25fr", gap: 24, alignItems: "start" }}>
+          {openTrace && (
+            <div style={{ marginBottom: 22 }}>
+              <TraceCard detail={openTrace} onClose={() => setOpenTrace(null)} />
+            </div>
+          )}
+
+          {/* Option C — Year › Month › Day trace console */}
+          <TraceConsole />
+
+          <div>
             {/* Feedback queue */}
             <div>
               <div className="label" style={{ marginBottom: 8 }}>EMPLOYEE FEEDBACK · {feedback.length}</div>
@@ -348,39 +522,6 @@ export default function AdminReviewPage() {
                   </div>
                 ))}
               </div>
-            </div>
-
-            {/* Trace explorer */}
-            <div>
-              <div className="label" style={{ marginBottom: 8 }}>EMPLOYEE QUERY TRACES · {traces.length}</div>
-              <div style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
-                <select value={empFilter} onChange={(e) => setEmpFilter(e.target.value)}
-                  style={{ padding: "7px 9px", borderRadius: 8, border: "1px solid var(--hairline-mid)", background: "var(--surface-soft)", fontSize: 12, color: "var(--ink)", fontFamily: "var(--font-sans), sans-serif" }}>
-                  <option value="">All employees</option>
-                  {employees.map((e) => <option key={e.email} value={e.email}>{e.name} ({e.role})</option>)}
-                </select>
-                <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)}
-                  style={{ padding: "6px 9px", borderRadius: 8, border: "1px solid var(--hairline-mid)", background: "var(--surface-soft)", fontSize: 12, color: "var(--ink)", fontFamily: "var(--font-mono), monospace" }} />
-                <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)}
-                  style={{ padding: "6px 9px", borderRadius: 8, border: "1px solid var(--hairline-mid)", background: "var(--surface-soft)", fontSize: 12, color: "var(--ink)", fontFamily: "var(--font-mono), monospace" }} />
-              </div>
-
-              <div style={{ display: "grid", gap: 6 }}>
-                {traces.length === 0 && <div style={{ fontSize: 12.5, color: "var(--muted)" }}>No traces match these filters.</div>}
-                {traces.map((t) => (
-                  <button key={t.id} onClick={() => openTraceById(t.id)}
-                    className="card"
-                    style={{ background: "var(--surface-card)", padding: "9px 12px", display: "flex", alignItems: "center", gap: 9, cursor: "pointer", border: "0.5px solid var(--hairline)", textAlign: "left", width: "100%" }}>
-                    <StatusChip status={t.access_decision} />
-                    <span style={{ fontSize: 12, color: "var(--ink)", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{t.question}</span>
-                    <span className="mono" style={{ fontSize: 9.5, color: "var(--muted-soft)", flex: "none" }}>
-                      {t.employee.split("@")[0]} · {new Date(t.ts).toLocaleDateString()} {new Date(t.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                    </span>
-                  </button>
-                ))}
-              </div>
-
-              {openTrace && <TraceCard detail={openTrace} onClose={() => setOpenTrace(null)} />}
             </div>
           </div>
         </div>

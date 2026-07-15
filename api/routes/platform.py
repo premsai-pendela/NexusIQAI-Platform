@@ -281,11 +281,14 @@ def set_feedback_status(feedback_id: str, req: FeedbackStatusRequest,
 
 @router.get("/admin/traces")
 def review_traces(employee: Optional[str] = None, date_from: Optional[str] = None,
-                  date_to: Optional[str] = None,
+                  date_to: Optional[str] = None, source: Optional[str] = None,
                   ctx: AccessContext = Depends(get_access_context)):
     require_admin(ctx)
-    return {"traces": store.list_traces(ctx.company.slug, employee=employee,
-                                        date_from=date_from, date_to=date_to)}
+    # source=None returns both real and simulated, each carrying its own
+    # `source` badge — labelled, never conflated.
+    return {"traces": store.list_traces_for_review(
+        ctx.company.slug, employee=employee, date_from=date_from,
+        date_to=date_to, source=source)}
 
 
 @router.get("/traces/{trace_id}")
@@ -297,6 +300,9 @@ def get_trace(trace_id: str, ctx: AccessContext = Depends(get_access_context)):
         raise HTTPException(status_code=404, detail="Trace not found in your company workspace")
     if not ctx.is_admin and trace["employee"] != ctx.employee.email:
         raise HTTPException(status_code=403, detail="You can only view your own traces")
+    # The answer text lives in the memory turn the query wrote; surface it so
+    # the detail pane can show what the analyst actually answered.
+    trace["answer"] = store.answer_for_trace(ctx.company.slug, trace_id)
     return trace
 
 

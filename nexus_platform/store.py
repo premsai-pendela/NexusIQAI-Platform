@@ -658,6 +658,55 @@ def list_traces(company: str, employee: Optional[str] = None,
     return rows
 
 
+def answer_for_trace(company: str, trace_id: str) -> Optional[str]:
+    """The analyst's answer text for a trace, from the memory turn it wrote
+    (traces store routing/SQL/citations; the answer lives in memory_turns)."""
+    with _tx() as c:
+        row = c.execute(
+            "SELECT answer_summary FROM memory_turns WHERE company=? AND "
+            "trace_id=? ORDER BY id DESC LIMIT 1", (company, trace_id),
+        ).fetchone()
+    return (row or {}).get("answer_summary")
+
+
+def list_traces_for_review(company: str, employee: Optional[str] = None,
+                           date_from: Optional[str] = None,
+                           date_to: Optional[str] = None, limit: int = 1000,
+                           source: Optional[str] = None) -> list[dict]:
+    """Trace rows for the admin Review console: each carries its `source`
+    (real|simulated — shown as a labelled badge, never conflated) plus the
+    route and a short answer, joined from the memory turn. `source=None`
+    returns both, explicitly, for the admin view."""
+    sub_route = ("(SELECT m.route FROM memory_turns m WHERE m.trace_id=t.id "
+                 "AND m.company=t.company ORDER BY m.id DESC LIMIT 1)")
+    sub_ans = ("(SELECT m.answer_summary FROM memory_turns m WHERE "
+               "m.trace_id=t.id AND m.company=t.company ORDER BY m.id DESC LIMIT 1)")
+    sql = (f"SELECT t.id, t.company, t.employee, t.role, t.ts, t.question, "
+           f"t.access_decision, COALESCE(t.source,'real') AS source, "
+           f"{sub_route} AS route, {sub_ans} AS answer "
+           f"FROM traces t WHERE t.company=?")
+    params: list = [company]
+    if source is not None:
+        if source not in TRACE_SOURCES:
+            raise ValueError(f"Unknown trace source: {source}")
+        sql += " AND COALESCE(t.source,'real') = ?"
+        params.append(source)
+    if employee:
+        sql += " AND t.employee=?"
+        params.append(employee)
+    if date_from:
+        sql += " AND t.ts >= ?"
+        params.append(date_from)
+    if date_to:
+        sql += " AND t.ts <= ?"
+        params.append(date_to)
+    sql += " ORDER BY t.ts DESC LIMIT ?"
+    params.append(limit)
+    with _tx() as c:
+        rows = c.execute(sql, params).fetchall()
+    return rows
+
+
 # ── Simulation campaign ledger ──────────────────────────────────────────
 
 def save_sim_query(company: str, campaign_id: str, persona_role: str,

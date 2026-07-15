@@ -99,6 +99,9 @@ export type TraceSummary = {
   ts: string;
   question: string;
   access_decision: string;
+  source?: string;          // "real" | "simulated"
+  route?: string | null;
+  answer?: string | null;   // short answer text (from the memory turn)
 };
 
 export type FeedbackItem = {
@@ -260,6 +263,7 @@ export const adminTraces = (filters?: {
   employee?: string;
   date_from?: string;
   date_to?: string;
+  source?: string;
 }) => {
   const qs = new URLSearchParams(
     Object.entries(filters || {}).filter(([, v]) => v) as [string, string][]
@@ -275,6 +279,8 @@ export const fetchTraceDetail = (id: string) =>
     ts: string;
     question: string;
     access_decision: string;
+    answer?: string | null;
+    source?: string;
     payload: Record<string, unknown>;
   }>(`/platform/traces/${id}`);
 
