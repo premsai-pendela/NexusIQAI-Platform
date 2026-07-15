@@ -1,5 +1,36 @@
 # ACTIVE HANDOFF — NexusIQAI Platform
 
+## INITIATIVE: Durable Traces + Simulation Employees + Trace Console (2026-07-15, in progress)
+
+Full plan: `docs/platform improvements/TRACE_RESTORE_AND_SIM_EMPLOYEES_PLAN.md`
+(read it first on resume). Branch: `trace-restore/dev` (off `health-loop/dev`).
+Autonomous run, Prem unavailable — do not wait on him; proceed per plan.
+
+- **Why:** live Review page shows 0 traces/0 feedback. Root cause: traces/
+  feedback/health/memory live in `store.py` raw-SQLite (`data/platform.db`),
+  which in Fargate is ephemeral and wiped on every redeploy. Company data is
+  durable on RDS; platform metadata is not.
+- **Goal (4 parts):** (1) durable dual-backend store (RDS in cloud, SQLite
+  local); (2) simulation employees — personas + private file-memory + external
+  CLI brain (CLI-agnostic) + pacing, querying the analyst backend directly,
+  tagged `source="simulated"`; (3) Review rebuilt as Option C 3-pane console
+  with Year›Month›Day drill-down + agent-answer in detail; (4) health-check
+  loop over the accumulated history.
+- **Decisions locked:** sim traces → durable store (show on live);
+  pacing between questions (longer after LLM turns); memory as files in the
+  sim-employees folder; AcmeCloud first; sim traffic shown on Review with an
+  honest label; question-gen brain = external CLI, analyst = NexusIQ free tier.
+- **Autonomy boundary:** build + verify everything LOCALLY (Postgres path
+  proven against a local throwaway Postgres — `pg_ctl`/`psql` present). CANNOT
+  reach prod RDS or deploy from this Mac (locked down; no secrets touched) —
+  live cutover is a documented handoff for Prem, never claimed done unless
+  actually deployed.
+- **Milestones:** Phase 0 setup (branch+plan+handoff) — IN PROGRESS. Phase 1
+  durable store — NEXT. Phases 2 sim-employees, 3 Option C UI, 4 health loop,
+  5 deploy handoff.
+- **Resume command:** read the plan doc; `git checkout trace-restore/dev`;
+  tests: `.venv/bin/python -m pytest tests/platform_mode/ -q`.
+
 ## INITIATIVE: Self-Improving Health Check Agent (2026-07-10, in progress)
 
 Mission brief: `docs/platform improvements/CONTEXT.md` (+ model-routing rules
