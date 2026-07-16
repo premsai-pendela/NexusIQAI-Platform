@@ -656,19 +656,20 @@ class Proposer:
             # (not only the originally-localized ones) — the natural
             # deterministic test seam often lives in a plan target the
             # localization pass skipped.
-            plan_files = [s["file"] for s in plan.code_steps]
-            test_context = self._code_context
-            # Show the test writer the functions the PLAN itself names (not
-            # just the localized ones) — the entry point the test must drive
-            # (e.g. run_query) is usually named in the plan text but may have
-            # been missed by localization, which triggers a REPLAN loop.
-            plan_funcs = list(dict.fromkeys(
-                self._located_functions
-                + re.findall(r"`?\b([a-z_][a-z0-9_]{2,})\b`?\s*\(", plan.raw)))
-            for extra in plan_files:
-                if (self.pack.repo_root / extra).exists():
-                    test_context += "\n\n" + context_pack.file_slice(
-                        self.pack.repo_root, extra, plan_funcs)
+            # Show the test writer the FULL source of every product file the
+            # plan touches (and the localized ones) — not slices. The test
+            # writer kept REPLANning because a needed entry point / call site
+            # wasn't in a narrow slice; the CLI brain handles large prompts
+            # fine, so give it whole files (capped) and end the REPLAN loop.
+            want_files = list(dict.fromkeys(
+                [s["file"] for s in plan.code_steps]
+                + [f for f in getattr(self.pack, "candidate_files", [])]))
+            parts = []
+            for extra in want_files:
+                fp = self.pack.repo_root / extra
+                if fp.exists():
+                    parts.append(f"### {extra} (full source)\n{fp.read_text()}")
+            test_context = "\n\n".join(parts) or self._code_context
             style_example = (
                 "\nTHE OBSERVED FAILURE THIS TEST MUST ENCODE — the test "
                 "must exercise the exact failing input below (the question "
@@ -689,7 +690,7 @@ class Proposer:
                 "\nThe product code under test (read it before "
                 "writing the test — use only APIs that "
                 "actually exist in it):\n"
-                + test_context[:9000] + "\n")
+                + test_context[:30000] + "\n")
         # For a CODE step, show the regression test that was already written
         # and now FAILS — the code edit must make exactly that test pass, so
         # the model needs to see what behavior the test asserts (keeps the
