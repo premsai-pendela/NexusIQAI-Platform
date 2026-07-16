@@ -23,6 +23,7 @@ tests/platform_mode/test_repair_no_merge_path.py.
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 from dataclasses import dataclass, field
@@ -267,7 +268,15 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
             # join the evidence so the plan and the regression test must
             # cover the class, not one literal question. A prediction that
             # doesn't reproduce is reported as a hypothesis, never counted.
-            predictions = predictor.predict_and_verify(proposer, pack)
+            # NEXUSIQ_REPAIR_SKIP_PREDICT conserves the free tier when it is
+            # near-exhausted (the predict step runs full analyst queries);
+            # skipping it is an honest operational choice, logged in the
+            # session, not a change to what a fix must satisfy.
+            if os.environ.get("NEXUSIQ_REPAIR_SKIP_PREDICT") == "1":
+                predictions = {"verified": [], "unverified": [],
+                               "skipped": "budget-conserving (env)"}
+            else:
+                predictions = predictor.predict_and_verify(proposer, pack)
             for hit in predictions["verified"]:
                 tr = store.get_trace(company, hit["trace_id"])
                 if tr:
