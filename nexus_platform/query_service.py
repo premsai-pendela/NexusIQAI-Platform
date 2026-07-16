@@ -18,7 +18,7 @@ from typing import Optional
 import re
 
 from nexus_platform import store
-from nexus_platform.access_policy import classify_restricted_intent, refusal_message
+from nexus_platform.access_policy import ALL_TABLES, classify_restricted_intent, refusal_message
 from nexus_platform.auth import AccessContext
 from nexus_platform.charts import build_chart_spec, wants_chart
 from nexus_platform.contexts import get_company_fusion_agent
@@ -40,13 +40,22 @@ def _lock_for(key: str) -> threading.Lock:
 
 
 def _is_access_denied(result: dict) -> Optional[str]:
-    """Detect the AST-level table denial raised by the role allowlist."""
+    """Detect the AST-level table denial raised by the role allowlist.
+
+    A denial that names a table outside access_policy.ALL_TABLES is not a
+    real, catalogued table — it's a hallucinated/garbled name from a bad
+    SQL generation — so it is reported as the "__unknown__" sentinel
+    instead of the raw name, letting callers distinguish it from a
+    genuine role-restricted-table denial.
+    """
     for section in ("sql_result",):
         err = str(((result.get(section) or {}).get("error")) or "")
         if "ACCESS_DENIED_TABLE" in err:
-            return err.split("ACCESS_DENIED_TABLE:")[-1].strip().split()[0].strip("'\"")
+            table = err.split("ACCESS_DENIED_TABLE:")[-1].strip().split()[0].strip("'\"")
+            return table if table in ALL_TABLES else "__unknown__"
     if "ACCESS_DENIED_TABLE" in str(result.get("error") or ""):
-        return str(result.get("error")).split("ACCESS_DENIED_TABLE:")[-1].strip()
+        table = str(result.get("error")).split("ACCESS_DENIED_TABLE:")[-1].strip()
+        return table if table in ALL_TABLES else "__unknown__"
     return None
 
 
@@ -732,8 +741,9 @@ def run_query(ctx: AccessContext, question: str, session_id: str,
 
     rewritten = resolved != question
     denied_table = _is_access_denied(result)
+    unknown_table_denial = denied_table == "__unknown__"
     denied_reason = None
-    if denied_table is not None:
+    if denied_table is not None and not unknown_table_denial:
         denied_reason = f"the '{denied_table}' data area is outside your role"
     elif denied_intent is not None:
         denied_reason = denied_intent
@@ -748,7 +758,18 @@ def run_query(ctx: AccessContext, question: str, session_id: str,
     result["sources"] = sources
 
     refused = False
-    if denied_reason is not None:
+    if unknown_table_denial and denied_reason is None:
+        # A hallucinated/garbled table name from bad SQL generation — not a
+        # real role restriction, so no refusal_message wording is used.
+        refused = True
+        answer = "I couldn't generate a valid query for that — please rephrase your question."
+        result["answer"] = answer
+        result["confidence"] = "LOW"
+        result["confidence_reason"] = "The generated query referenced a table outside the known schema."
+        result["sql_result"] = None
+        result["sources"] = []
+        sources = []
+    elif denied_reason is not None:
         refused = True
         answer = refusal_message(role, ctx.company.name, detail=denied_reason)
         result["answer"] = answer
