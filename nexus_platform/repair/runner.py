@@ -446,8 +446,14 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
             _progress(f"repro_after failed; fix round {rounds + 1}")
             rounds += 1
             fix_feedback = (
-                "the fix is applied but the regression test still fails. "
-                "Failing output:\n"
+                "Your previous edit is ALREADY APPLIED and appears in the "
+                "'Current content' shown above — do NOT repeat it (its "
+                "original SEARCH text no longer matches the edited file). "
+                "The regression test still fails. Study the failing output "
+                "below, then emit a NEW, corrected SEARCH/REPLACE whose "
+                "SEARCH lines are copied verbatim from the CURRENT content "
+                "above, so the test passes. Match the exact strings/values "
+                "the test asserts.\nFailing output:\n"
                 f"{_pytest_tail(worktree_dir, repro_args)}")
             for step in plan.code_steps:
                 resp = _implement(proposer, plan, step,
