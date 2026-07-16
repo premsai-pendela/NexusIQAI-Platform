@@ -77,6 +77,50 @@ bug's fix): the plan prompt now requires the exact end-to-end + close-variant
 + boundary test the reviewer keeps asking for, and confirm rounds → 4, so a
 sound plan and a rigorous review align faster. Re-running.
 
+## CLI-brain end-to-end: the fix IS produced + gate-passed (2026-07-16 17:33)
+
+The pipeline ran the full loop on the CLI brain and **passed the eval gate**:
+`repro flipped fail→pass; suite 222 passed, no new failures vs baseline`.
+The fix it produced (100% pipeline SEARCH/REPLACE, verified by reading the
+diff + re-running the suite in the worktree: 222 passed, 3 new regression
+tests pass):
+- `access_policy.py`: new `_is_known_table`; `refusal_message` now only
+  emits "the 'X' data area is outside your role" for a KNOWN table — an
+  unknown/internal table (like `traces`) gets a generic "couldn't be
+  processed — please rephrase" instead of a fabricated role-boundary denial.
+- `query_service.py`: `_is_access_denied` strips the leaked table name
+  cleanly (quotes/whitespace) so the branch is consistent.
+This is the generalized fix for FUTURE_IMPROVEMENTS #1 (ghost-table denial),
+found + fixed unprompted.
+
+### Harness hardening to make the run reliably COMPLETE (all generic)
+
+The first gate-pass didn't commit — the advisory self_review timed out after
+the gate. Fixing that surfaced a chain of real reliability bugs, each fixed
+as generic plumbing (never the bug's fix), all tests green:
+1. **Commit before the advisory self-review** — a verified, gate-passed fix
+   must never be lost to a slow/killed review; self_review now only amends
+   if its revision still passes the gate.
+2. **CLI timeout ≠ starvation** — a CLI-brain timeout/error was misclassified
+   as free-tier exhaustion, triggering cooldown-WAIT cycles that hung a
+   single flaky call for the whole window. Now a fast bounded retry.
+3. **Dropped the literal-question test guard** — it rejected the (strong-
+   review-approved) mechanism-level repro (which names the denied table, not
+   the garbled question) and forced endless regen. Superseded by the strong
+   confirm_plan review + the repro-must-fail-before check.
+4. **Shrank the oversized test-writing prompt** (30k→~13k chars) that was
+   timing out the CLI call.
+5. **Code-step implement now sees the failing regression test** it must make
+   pass — keeps code and test coherent (a mismatched pair fails repro_after).
+6. **Checkpoint after plan-confirm + reuse the confirmed plan on resume**
+   (don't re-confirm — confirm is non-deterministic and can discard a good
+   plan) + `NEXUSIQ_REPAIR_FRESH_PLAN` + flushed progress markers + implement
+   starts cheap and escalates (mechanical apply; gate is the backstop).
+
+Remaining variable: raw CLI output non-determinism (a given run may emit a
+weak test or a mismatched code edit — the eval gate correctly rejects those).
+A retry loop runs the pipeline until a gate-pass, which now commits reliably.
+
 ## Wave-2 repair run #1 — finding hf_e4796a5431 (finpilot, false_refusal)
 
 Started 2026-07-16 ~02:58Z on the product's own free-tier chain. Four
