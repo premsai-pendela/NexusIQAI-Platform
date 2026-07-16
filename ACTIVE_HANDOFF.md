@@ -30,9 +30,25 @@ via `scripts/notify_telegram.py`.
   hc_d29a351231 (medcore, run 1), hc_e75e8d889b (finpilot, run 1); 14 open
   findings; fabricated test-pollution finding hf_baeb9f105d dismissed + leak
   fixed. Gemini free tier in cooldown (~60min from 02:50Z); judge fell back.
-- **Next unfinished milestone:** Part 2C+D — repair pipeline on
-  `hf_e4796a5431` (finpilot false_refusal, deterministic evidence), then
-  D.9 double-check and the bot PR.
+- **Part 2C in progress (commits 9f28683, b8f94ae, 0102919, b6fe0d1):**
+  repair pipeline supervised across attempts. hf_e4796a5431 diagnosed as a
+  stochastic sql-failed seam bug → logged OPEN honestly (not the
+  access-policy classifier the pipeline localized to). Pivoted to the
+  deterministic malformed-bypass bug `hf_fbccccb7e2` (medcore): typo'd/
+  malformed questions route to `agent` instead of a clarification. Pipeline
+  running on it; whole free tier in cooldown (§2c floor), pipeline riding
+  out backoff. Scaffolding hardened: concrete plan-stage feedback, mandatory
+  plan self-confirm, partial resume. Entry 14 written.
+- **Next unfinished milestone:** let hf_fbccccb7e2 repair complete (or log
+  quota-blocked honestly), then D.9 double-check + PR via repair/pr.py as
+  Nexus-Healthcheck-Bot (verified reachable). Resume:
+  `.venv/bin/python scripts/run_repair.py --company medcore --finding hf_fbccccb7e2`
+  (add --resume-from the newest data/repair_sessions/hf_fbccccb7e2_*.json).
+- **Honest metrics so far:** 54 live adversarial Qs / 3 companies; Wave-1
+  caught 14 findings incl. self-caught false positive (dismissed); latency
+  before-numbers recorded (wrongful denial up to 17.6s vs 0.19s
+  deterministic); 1 hard bug honestly open (sql-failed seam), 1 already-
+  resolved finding dismissed, 1 deterministic bug in repair.
 - **Resume:** read the mission file, then this section; task list in session;
   tests `.venv/bin/python -m pytest tests/platform_mode/ -q`.
 - **Known failures:** none yet.
