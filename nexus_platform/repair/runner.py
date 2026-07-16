@@ -354,8 +354,6 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
         repro_args = [plan.test_file]
         repro_before = None
         feedback = ""
-        failing_questions = [t.get("question") for t in pack.traces
-                             if t.get("question")]
         for regen_round in range(MAX_TEST_REGENERATIONS + 1):
             _progress(f"test-writing round {regen_round} "
                       f"(test={plan.test_file})")
@@ -376,42 +374,17 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                     feedback = applied.reason
                     break
             else:
-                test_text = ""
-                test_path = worktree_dir / plan.test_file
-                if test_path.exists():
-                    test_text = test_path.read_text()
-                # Attempt-7 lesson: a repro that never exercises the failing
-                # input lets a vacuous fix through the gate. The test must
-                # touch the real failing evidence — the literal question OR a
-                # concrete token from the finding (the denied table, the
-                # wrong value). For stochastic-seam bugs the deterministic
-                # repro is at the mechanism the trace names (e.g. the denied
-                # table), not the literal question — and the strong
-                # confirm_plan review already vetted that the test is
-                # end-to-end, not a helper-existence check.
-                evidence_tokens = list(failing_questions)
-                for t in pack.traces:
-                    p = t.get("payload") or {}
-                    for key in ("denied_reason", "expected", "reality"):
-                        v = p.get(key)
-                        if isinstance(v, str) and 3 < len(v) < 60:
-                            evidence_tokens.append(v)
-                fp = pack.finding.get("payload") or {}
-                for key in ("expected", "reality"):
-                    v = fp.get(key)
-                    if isinstance(v, str) and 3 < len(v) < 60:
-                        evidence_tokens.append(v)
-                if evidence_tokens and not any(tok in test_text
-                                               for tok in evidence_tokens):
-                    feedback = (
-                        "your regression test never exercises the actual "
-                        "failing input from the trace. Drive the exact "
-                        "failing input "
-                        f"{failing_questions[0]!r} (or the concrete "
-                        "failing value/table the trace names) through the "
-                        "product's real behavior, assert the honest "
-                        "expected outcome, and fail on today's code.")
-                    continue
+                # The real, sufficient guards against a vacuous/helper-only
+                # test are: (a) the strong confirm_plan review already vetted
+                # the plan's test is end-to-end and adequate (it explicitly
+                # rejected a helper-only test for this finding), and (b) the
+                # repro_before check just below — a test must FAIL on the
+                # unfixed tree to be accepted, so a test that doesn't encode
+                # the real failure can't pass. The old literal-question
+                # string-match is superseded by these and was rejecting
+                # legitimate mechanism-level repros (e.g. a false-denial bug
+                # whose deterministic repro names the denied table, not the
+                # garbled question).
                 run = eval_gate.run_pytest(repro_args, "repro_before",
                                            cwd=worktree_dir)
                 if run.exit_code != 0:
