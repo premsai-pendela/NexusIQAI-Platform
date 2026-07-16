@@ -174,6 +174,45 @@ now partial — a run that died before a valid plan reuses its finished
 localize/understand/hypothesize outputs instead of re-deriving them.
 Attempt 2 relaunched with --resume-from. Lesson persisted to deepwork.
 
+## RESUMED 2026-07-16 (CLI-brain era) — TASK 1: automatic per-sub-task model selection
+
+Context change since the pause: the repair brain was rewired to Claude Code
+via CLI (`cli_brain.py`, headless `claude -p`, tools off, single turn), so the
+free-tier daily-cap that blocked the fix is gone. But the in-CLI model tier
+was a STATIC map (`_HEAVY_STAGES`→sonnet, else→haiku) — which put the REVIEW
+stages (critique, confirm_plan, self_review) on haiku. A weak reviewer that
+"AGREE"s a bad fix is worse than no review, and nothing downstream catches a
+rubber-stamp. Fixed.
+
+**Design (automatic, two rules over an ordered tier ladder weak→strong,
+default `haiku,sonnet`):**
+1. **A reviewer is never weaker than the author.** Review/judgement stages
+   always run on the ladder's TOP tier — no downstream validator catches a
+   rubber-stamp, so they can never start cheap. (Directly removes the flagged
+   risk.)
+2. **Generation stages start complexity-appropriately and escalate.**
+   Inherently-hard stages (plan, implement) and any call with a large prompt
+   (>14k chars of code context, env-tunable) start strong; the lighter
+   generation stages (understand, hypothesize, predict) start cheap and
+   escalate ONE tier each time the stage validator rejects the answer — the
+   proposer threads the retry `attempt` in (counted as substantive failures,
+   so cooldown waits never spuriously escalate). A stage is thus never
+   *silently* stuck on a model too weak to pass its own check.
+
+Considered and rejected: pure prompt-size heuristic alone (misses semantic
+weakness on small prompts); difficulty-tagging every stage by hand (that's
+just the static map again). The escalate-on-validator-failure signal is the
+honest one — it fires exactly when the current tier demonstrably wasn't
+enough. Reviews are the exception because their failure is invisible to a
+format validator, so they get strength unconditionally.
+
+Env knobs: `NEXUSIQ_REPAIR_CLI_TIERS` (ladder), `NEXUSIQ_REPAIR_CLI_BIG_PROMPT`
+(strong-start threshold); old `_CLI_MODEL`/`_CLI_CHEAP_MODEL` still pin
+top/bottom for back-compat. Tests: 249 platform green (7 new/updated in
+`test_repair_cli_brain.py`, incl. escalation threaded end-to-end through
+`_invoke`). Live-verified: critique→sonnet, understand@0→haiku, @1→sonnet,
+real CLI call `cli:haiku` OK.
+
 ## Honest run metrics (as of 05:56Z) — captured only what really happened
 
 - **Harnesses upgraded:** 4/4 (sim, Wave-1 review, Wave-2 repair, analyst

@@ -29,6 +29,19 @@ via `scripts/notify_telegram.py`.
 > (the free-tier "EXACT RESUME" command below is superseded; its diagnosis +
 > repro + fix location remain valid inputs).
 
+> **RESUMED 2026-07-16 — TASK 1 DONE (automatic model selection).** The CLI
+> brain's static tier map (`_HEAVY_STAGES`→sonnet, else→haiku) put the REVIEW
+> stages on haiku → rubber-stamp risk. Replaced with automatic selection over
+> an ordered ladder (`haiku,sonnet`): (1) review stages (critique/confirm_plan/
+> self_review) always the TOP tier — a reviewer is never weaker than the
+> author; (2) generation stages start complexity-appropriately (plan/implement
+> + large prompts start strong; understand/hypothesize/predict start cheap)
+> and escalate one tier per validator-rejected retry (proposer threads
+> `attempt`). Env: `NEXUSIQ_REPAIR_CLI_TIERS`, `NEXUSIQ_REPAIR_CLI_BIG_PROMPT`.
+> 249 platform tests green; live-verified (critique→sonnet, understand
+> escalates haiku→sonnet, real `cli:haiku` call OK). Commit pending below.
+> **NEXT: TASK 2 — run the CLI health check end-to-end on hf_fbccccb7e2 → PR.**
+
 - **Branch:** `trace-restore/dev`. GH_TOKEN = Nexus-Healthcheck-Bot (verified);
   PR at the end opens under the bot identity via `repair/pr.py`. Never merge.
 - **Objective:** (1) make 4 harnesses genuinely agentic (sim_employees,

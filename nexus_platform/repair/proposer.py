@@ -125,11 +125,11 @@ def _gateway_llm(prompt: str, task: str,
 
 def _default_llm(prompt: str, task: str,
                  validator: Optional[Callable[[str], bool]],
-                 reasoning: bool = True) -> dict:
+                 reasoning: bool = True, attempt: int = 0) -> dict:
     if _use_cli_brain(reasoning):
         from nexus_platform.repair.cli_brain import cli_llm
-        return cli_llm(prompt=prompt, task=task,
-                       validator=validator, reasoning=reasoning)
+        return cli_llm(prompt=prompt, task=task, validator=validator,
+                       reasoning=reasoning, attempt=attempt)
     return _gateway_llm(prompt, task, validator, reasoning=reasoning)
 
 
@@ -224,12 +224,18 @@ class Proposer:
                           task=f"health_repair.{stage}",
                           validator=lambda c: bool(c and c.strip())
                           and validator(c)[0])
-            # Per-stage tier routing; injected test doubles that don't take
-            # a `reasoning` kwarg keep working unchanged.
+            # Per-stage tier routing + automatic escalation; injected test
+            # doubles that don't take these kwargs keep working unchanged.
+            # `attempt` = number of prior substantive (validator) failures for
+            # this stage — cooldown waits don't decrement feedback_left, so
+            # they never spuriously escalate the model tier.
             import inspect
             try:
-                if "reasoning" in inspect.signature(self.llm).parameters:
+                params = inspect.signature(self.llm).parameters
+                if "reasoning" in params:
                     kwargs["reasoning"] = STAGE_REASONING.get(stage, True)
+                if "attempt" in params:
+                    kwargs["attempt"] = retries - feedback_left
             except (ValueError, TypeError):
                 pass
             result = self.llm(**kwargs)
