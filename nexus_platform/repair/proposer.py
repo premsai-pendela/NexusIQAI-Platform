@@ -688,6 +688,17 @@ class Proposer:
                     "\nThe regression test your change must make PASS (it "
                     f"fails today — read what it asserts):\n```python\n"
                     + test_path.read_text()[:6000] + "\n```\n")
+        surgical_note = ""
+        if not step["file"].startswith("tests/"):
+            surgical_note = (
+                "\nSURGICAL EDIT RULE (avoids breaking other tests): make the "
+                "SMALLEST possible change — add a new branch/guard for the "
+                "defect's specific case only. Do NOT alter the wording, "
+                "return value, or logic of any EXISTING code path (e.g. the "
+                "current denial/refusal message for legitimate cases must "
+                "stay byte-for-byte identical). Other tests depend on today's "
+                "behavior for the non-defect cases; change only the defect "
+                "case.\n")
         prompt = (
             f"{_PREAMBLE}\n"
             "You are implementing ONE step of an approved plan. Change "
@@ -696,7 +707,7 @@ class Proposer:
             "REPLAN: <why> instead of any edit.\n\n"
             f"The approved plan:\n{plan.raw}\n\n"
             f"THIS step: FILE: {step['file']} — {step['text']}\n\n"
-            f"{test_under_fix}"
+            f"{test_under_fix}{surgical_note}"
             f"Current content of {step['file']}:\n```\n{current}\n```\n"
             f"{slice_note}{style_example}\n"
             f"{_EDIT_FORMAT}"
