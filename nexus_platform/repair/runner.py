@@ -118,8 +118,12 @@ def _load_resume_seed(resume_session, finding_id: str) -> Optional[dict]:
         # Partial resume is allowed: a run that died before producing a
         # valid plan still seeds the finished reasoning stages — scarce
         # quota goes to the unfinished stage, not to re-deriving these.
+        # A checkpoint session's plan was ALREADY self-confirmed, so the
+        # resume must not re-confirm it (confirm is non-deterministic — a
+        # good plan can get spuriously REVISE'd on a second pass).
         return {"located": located, "understanding": understanding,
-                "hypothesis": hypothesis, "plan": plan}
+                "hypothesis": hypothesis, "plan": plan,
+                "plan_confirmed": bool(data.get("checkpoint")) and bool(plan)}
     return None
 
 
@@ -239,27 +243,34 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                                   located.get("functions", []))
             understanding = seed["understanding"]
             hypothesis = seed["hypothesis"]
-            if seed.get("plan"):
+            if seed.get("plan") and seed.get("plan_confirmed"):
+                # Checkpoint resume: the plan was already self-confirmed
+                # before the prior run died — reuse it and go straight to
+                # implement/gate. Re-confirming a good plan risks a spurious
+                # REVISE (confirm is non-deterministic) that discards it.
                 plan, problem = _parse_plan(seed["plan"])
                 if problem:
                     raise StageFailed(f"resumed plan no longer valid: {problem}")
             else:
-                # Partial resume: the prior attempt died before a valid
-                # plan — plan now, on the seeded reasoning.
-                plan = proposer.plan(hypothesis)
-            # A plan is never exempt from self-confirmation — seeded ones
-            # included (a prior session's plan may be exactly what its own
-            # confirm stage rejected).
-            for _ in range(MAX_PLAN_CONFIRM_ROUNDS):
-                confirmed, notes = proposer.confirm_plan(plan, hypothesis)
-                if confirmed:
-                    eval_notes = notes
-                    break
-                plan = proposer.plan(hypothesis, feedback=notes)
-            else:
-                raise StageFailed(
-                    "plan was not self-confirmed after "
-                    f"{MAX_PLAN_CONFIRM_ROUNDS} revision rounds: {notes}")
+                # Partial resume without a confirmed plan: (re)plan on the
+                # seeded reasoning, then self-confirm — a plan is never
+                # exempt from confirmation unless it was already confirmed.
+                if seed.get("plan"):
+                    plan, problem = _parse_plan(seed["plan"])
+                    if problem:
+                        plan = proposer.plan(hypothesis)
+                else:
+                    plan = proposer.plan(hypothesis)
+                for _ in range(MAX_PLAN_CONFIRM_ROUNDS):
+                    confirmed, notes = proposer.confirm_plan(plan, hypothesis)
+                    if confirmed:
+                        eval_notes = notes
+                        break
+                    plan = proposer.plan(hypothesis, feedback=notes)
+                else:
+                    raise StageFailed(
+                        "plan was not self-confirmed after "
+                        f"{MAX_PLAN_CONFIRM_ROUNDS} revision rounds: {notes}")
             # A resumed continuation may find its test file already on the
             # branch from a prior round — the test steps then edit it
             # rather than create it.
