@@ -627,9 +627,12 @@ class Proposer:
         slice_note = ""
         new_file = not path.exists()
         if new_file:
-            current = ("THIS FILE DOES NOT EXIST YET. To create it, your "
-                       "SEARCH section must be completely EMPTY — do not "
-                       "put this sentence or anything else inside SEARCH.")
+            current = ("THIS FILE DOES NOT EXIST YET. Create it the EASY way: "
+                       "emit exactly one line 'FILE: " + step["file"] + "' "
+                       "followed immediately by a single fenced code block "
+                       "(```python … ```) containing the COMPLETE file "
+                       "content. Do NOT use SEARCH/REPLACE for a new file. "
+                       "Output nothing else — no prose before or after.")
         else:
             lines = path.read_text().splitlines()
             if (len(lines) > IMPLEMENT_SLICE_THRESHOLD_LINES

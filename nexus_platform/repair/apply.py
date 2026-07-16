@@ -35,6 +35,15 @@ _BLOCK_RE = re.compile(
     r">{5,9} *REPLACE",
     re.DOTALL)
 
+# New-file convenience format: `FILE: path` then a fenced code block holding
+# the complete file content. Models emit fenced blocks far more reliably than
+# an empty-SEARCH block, so this removes the biggest test-writing failure
+# mode. Only used for a path that has no SEARCH/REPLACE block.
+_NEWFILE_RE = re.compile(
+    r"FILE:\s*(?P<path>[^\n]+)\n"
+    r"```[a-zA-Z0-9_+-]*\n(?P<content>.*?)\n?```",
+    re.DOTALL)
+
 
 @dataclass
 class Edit:
@@ -52,10 +61,20 @@ class ApplyResult:
 
 def parse_blocks(text: str) -> list[Edit]:
     edits = []
+    seen_paths = set()
     for m in _BLOCK_RE.finditer(text):
-        edits.append(Edit(path=m.group("path").strip().strip("`"),
-                          search=m.group("search"),
+        p = m.group("path").strip().strip("`")
+        seen_paths.add(p)
+        edits.append(Edit(path=p, search=m.group("search"),
                           replace=m.group("replace")))
+    # New-file fenced blocks — only for a path with no SEARCH/REPLACE block
+    # above (so a normal edit is never misread as a whole-file overwrite).
+    for m in _NEWFILE_RE.finditer(text):
+        p = m.group("path").strip().strip("`")
+        if p in seen_paths:
+            continue
+        seen_paths.add(p)
+        edits.append(Edit(path=p, search="", replace=m.group("content")))
     return edits
 
 
