@@ -80,6 +80,25 @@ via `scripts/notify_telegram.py`.
 > All harness code is committed and green — only the run environment blocks
 > completion. The pipeline already PROVED it produces the correct
 > gate-passed fix (17:33 today).
+>
+> **✅ DONE 2026-07-16 23:54Z — PR #13 OPEN (goal met).** After Prem freed
+> disk, the CLI health-check pipeline produced and committed the fix itself
+> and `repair/pr.py` opened
+> **https://github.com/premsai-pendela/NexusIQAI-Platform/pull/13** under
+> **Nexus-Healthcheck-Bot** (never merged — Prem's to review/merge). Fix
+> (100% pipeline-authored, `cli:sonnet`): `query_service._is_access_denied`
+> validates the denied table against `access_policy.ALL_TABLES` and returns a
+> `__unknown__` sentinel for a hallucinated/uncatalogued name; `run_query`
+> then gives an honest "couldn't generate a valid query — please rephrase"
+> instead of fabricating "the 'X' data area is outside your role" — the
+> generalized fix for FUTURE_IMPROVEMENTS #1. Gate: repro fail→pass, 222
+> suite, zero regressions; branch `healthfix/e64f9273` (WIP-test + fix
+> commits). D.9 double-checked: full suite green in the worktree +
+> independent verification (unknown table→sentinel, real table→genuine
+> denial preserved, no-denial→None). Finding `hf_fbccccb7e2` marked fixed.
+> Convergence came from writing the test once (committed to the branch) then
+> cheap code+gate resumes until a clean gate-pass — see ARCHITECTURE_LOG
+> Entry 15 for the full reliability-engineering story.
 
 - **Branch:** `trace-restore/dev`. GH_TOKEN = Nexus-Healthcheck-Bot (verified);
   PR at the end opens under the bot identity via `repair/pr.py`. Never merge.
