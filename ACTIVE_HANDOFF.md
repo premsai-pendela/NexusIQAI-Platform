@@ -63,6 +63,23 @@ via `scripts/notify_telegram.py`.
 > `NEXUSIQ_REPAIR_SKIP_PREDICT=1 .venv/bin/python scripts/run_repair.py --company medcore --finding hf_fbccccb7e2 --resume-from data/repair_sessions/hf_fbccccb7e2_20260716T152705Z.json`
 > (repeat until `git -C ../NexusIQAI-healthfix-e64f9273 log` shows a fix
 > commit; then push+PR via repair/pr.py — never merge).
+>
+> **BLOCKED 2026-07-16 ~20:00Z — DISK FULL (needs Prem to free space).** The
+> machine's disk (`/System/Volumes/Data`) is 100% full — 187Gi is Prem's own
+> data, only ~120–240MB free. A pipeline run needs a ~73MB git-worktree copy
+> + model-load temp (~120MB), which doesn't fit, so runs now die in startup
+> and can't produce/commit a fix. My cleanups reclaimed only my own
+> artifacts (worktrees, session logs). **The confirmed-plan checkpoint
+> (`hf_fbccccb7e2_20260716T152705Z.json`) was deleted during the disk
+> cleanup**, so resume is now a FULL run (predict/localize/understand/
+> hypothesize/plan/confirm → implement → gate), ~15 min — which also exceeds
+> the observed ~10-min process-kill window. **To resume:** (1) Prem frees
+> disk space (≥ a few GB); (2) re-run the full command above WITHOUT
+> --resume-from until it writes a checkpoint, then resume with --resume-from
+> that checkpoint until a gate-pass commits; (3) push+PR via repair/pr.py.
+> All harness code is committed and green — only the run environment blocks
+> completion. The pipeline already PROVED it produces the correct
+> gate-passed fix (17:33 today).
 
 - **Branch:** `trace-restore/dev`. GH_TOKEN = Nexus-Healthcheck-Bot (verified);
   PR at the end opens under the bot identity via `repair/pr.py`. Never merge.
