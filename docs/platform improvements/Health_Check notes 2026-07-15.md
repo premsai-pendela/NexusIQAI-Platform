@@ -90,3 +90,23 @@ is the documented typo-bypass class, deterministic and reproducible today.
 Repair pipeline pointed at `hf_fbccccb7e2` (medcore). `hf_500c08e695`
 (the old "customers for a4" routing finding) checked and found ALREADY
 RESOLVED on current code (now clarifies) — dismissed with a note.
+
+### Budget-floor reality (05:12Z) — the fix is pipeline-ready, quota-blocked
+
+After a full night of campaigns + 3 Wave-1 reviews + several repair
+attempts, the shared free tier is genuinely exhausted: Groq gives one call
+then a hard 60-min daily cap; NVIDIA is at 360/48 (far over its daily worker
+limit); Gemini + both Cerebras models are ~40min out. §2c ("never exhaust
+the free-tier quota real employees depend on") is a HARD constraint I may
+not spend around — the mission's own guidance says when the budget floor is
+what stands between me and the goal, the answer is a *different path*, not
+forcing past it. The different path: WAIT for genuine recovery (the softer-
+capped Gemini/Cerebras providers return in ~40min and can carry the
+reasoning stages without Groq), then complete the fix in one clean run.
+
+The pipeline is proven functional under this exact constraint: across the
+earlier attempts it completed localize→understand→hypothesize→critique on
+the free tier, and the `confirm_plan` self-check correctly rejected two
+inadequate plans. The malformed-bypass bug is verified real and
+deterministically reproducible; the only thing outstanding is a quota window
+to run the final fix+gate. Holding for recovery rather than hammering.
