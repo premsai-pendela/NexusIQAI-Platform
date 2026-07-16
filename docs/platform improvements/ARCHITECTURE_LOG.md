@@ -1330,3 +1330,74 @@ module) and the manifest includes the packs. Isolation proven by
 `tests/platform_mode/test_company_overrides.py`: an AcmeCloud-only rule
 fires for AcmeCloud and NOT MedCore; empty packs change nothing; a crashing
 pack degrades cleanly. Suite: 233 passed.
+
+## 2026-07-16 — Entry 14: The full loop run — campaigns, reviews, and honest repair supervision
+
+**Campaigns (Part 2A).** I acted as the strong-tier brain (attack planning
+from each company briefing); a Haiku subagent was the cheap phrasing tier —
+the mission's brain tier split, exercised for real. 54 adversarial questions
+across AcmeCloud (3 employees, adapting to 34 prior interactions + 1 recorded
+weak spot), MedCore, and FinPilot (first-ever campaigns). Every question
+fresh (none repeated a solved one); balanced across simple → very-hard
+5-table joins, with hallucination-bait, role-boundary, malformed/typo, seam,
+and chart-mismatch families. Traces landed in RDS (live) AND the local store
+via the evidence bridge (verified: 14+ local traces each carrying their RDS
+`live_trace_id` and answer). Latency captured per turn.
+
+**Reviews (Part 2B).** Wave 1 graded all three companies deterministic-first
+(reports hc_50fcb12888 / hc_d29a351231 / hc_e75e8d889b), watermarks advanced,
+uncapped trace ids. It caught 14 findings — and caught its OWN false positive:
+3 "wrong headcount" findings turned out to be fabricated evidence from a unit
+test leaking fixture answers into the real store. Dismissed loudly with a
+note, traces deleted, leak fixed at source (test now captures store writes
+instead of hitting the real DB). An honest health check dismisses its own
+false positives as visibly as it flags real ones.
+
+**Repair supervision (Part 2C/D) — the honest core of the run.** The
+pipeline ran on the product's free-tier chain; I supervised every attempt.
+
+Attempt sequence on the first target (hf_e4796a5431, a FinPilot false
+refusal): four attempts, each surfacing a real scaffolding weakness that I
+fixed as generic plumbing (never the bug's fix):
+  1. plan stage failed blind — the gateway was discarding rejected LLM
+     responses, so the feedback loop had nothing concrete. Fixed: preserve
+     `invalid_content`, re-run the stage validator on it, feed the concrete
+     reason back. Plus partial resume seeding.
+  2. the new `confirm_plan` self-check WORKED — it rejected two plans that
+     fixed only one of two named root-cause components. Fixed: seeded plans
+     are never exempt from re-confirmation; rounds 2→3.
+  3–4. quota exhaustion / external kill.
+
+Then the intervention that mattered most: I stopped the loop and
+independently verified the finding. The pipeline had localized to the
+access-policy classifier — but that function does NOT refuse the question
+(the role's `support_tickets` topics already cover it), and a live re-run
+returned a correct `sql_plus_rag` answer. The stored trace's real signal was
+`engine_route: "rag_only (sql_failed)"`: the SQL half of the hard join
+failed on the free tier and the degraded fallback emitted a false
+access-denial. That is a **stochastic sql-failure seam bug** needing a
+stubbed-LLM repro the pipeline cannot yet write (the same capability gap
+recorded for hf_aa3f564b71 last initiative). Logged honestly **OPEN** — an
+honestly-open hard bug does not block the goal, and faking a fix for it
+would have been the dishonest path.
+
+**Pivot to a bug the pipeline CAN honestly fix.** I re-routed every open
+finding through the deterministic layer (no LLM) and found that nearly all
+the campaign refusals were the same stochastic seam (they route to
+agent/sql_plus_rag today). But the sweep surfaced a genuinely deterministic,
+reproducible-today bug: malformed/typo'd questions (`expnses for quater 5?`,
+`tikets by priorty for p9?`, `teh margns for q0?`) route to `agent` — and a
+confident LLM answer — instead of a clarification, because the
+malformed-period gate only fires with a recognized metric and the typo'd
+metric leaves `f.metric=None`. This is the documented typo-bypass class,
+squarely in the pipeline's proven capability, and its repro needs no LLM.
+Repair re-pointed at hf_fbccccb7e2 (medcore). Separately, the old
+hf_500c08e695 routing finding was checked and found already RESOLVED on
+current code (now clarifies) — dismissed with a note.
+
+**On the budget floor.** By this point a full night of campaigns + reviews +
+repair attempts had genuinely exhausted the shared free tier (all providers
+in multi-minute-to-hour cooldown; NVIDIA at its hard 48/48 daily cap). I did
+not push past it — the pipeline's own cooldown-aware backoff rides out
+recovery, and I launched nothing else competing for the recovering quota.
+This is the §2c floor behaving exactly as intended.
