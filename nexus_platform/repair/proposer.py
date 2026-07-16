@@ -218,6 +218,17 @@ class Proposer:
                           "format/content check described in the prompt"
                           if had_invalid
                           else "no provider produced a response")
+                if had_invalid:
+                    # Derive the CONCRETE stage-validator reason from the
+                    # last rejected answer — a weak model can act on "TEST_
+                    # FILE already exists", not on "your answer failed".
+                    invalids = [t.get("invalid_content") for t in tried
+                                if t.get("invalid_content")]
+                    if invalids:
+                        response = invalids[-1]
+                        _, why = validator(invalids[-1])
+                        if why:
+                            reason = why
             self.log.append({
                 "ts": datetime.now(timezone.utc).isoformat(),
                 "stage": stage, "attempt": call_no - 1,

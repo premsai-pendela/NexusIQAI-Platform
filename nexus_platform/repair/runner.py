@@ -106,7 +106,10 @@ def _load_resume_seed(resume_session, finding_id: str) -> Optional[dict]:
             hypothesis = critique.split("VERDICT:", 1)[1]
     plan = data.get("plan") or _last_valid("plan")
     if all([located, located.get("files") if located else None,
-            understanding, hypothesis, plan]):
+            understanding, hypothesis]):
+        # Partial resume is allowed: a run that died before producing a
+        # valid plan still seeds the finished reasoning stages — scarce
+        # quota goes to the unfinished stage, not to re-deriving these.
         return {"located": located, "understanding": understanding,
                 "hypothesis": hypothesis, "plan": plan}
     return None
@@ -228,9 +231,24 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                                   located.get("functions", []))
             understanding = seed["understanding"]
             hypothesis = seed["hypothesis"]
-            plan, problem = _parse_plan(seed["plan"])
-            if problem:
-                raise StageFailed(f"resumed plan no longer valid: {problem}")
+            if seed.get("plan"):
+                plan, problem = _parse_plan(seed["plan"])
+                if problem:
+                    raise StageFailed(f"resumed plan no longer valid: {problem}")
+            else:
+                # Partial resume: the prior attempt died before a valid
+                # plan — plan + self-confirm now, on the seeded reasoning.
+                plan = proposer.plan(hypothesis)
+                for _ in range(MAX_PLAN_CONFIRM_ROUNDS):
+                    confirmed, notes = proposer.confirm_plan(plan, hypothesis)
+                    if confirmed:
+                        eval_notes = notes
+                        break
+                    plan = proposer.plan(hypothesis, feedback=notes)
+                else:
+                    raise StageFailed(
+                        "plan was not self-confirmed after "
+                        f"{MAX_PLAN_CONFIRM_ROUNDS} revision rounds: {notes}")
             # A resumed continuation may find its test file already on the
             # branch from a prior round — the test steps then edit it
             # rather than create it.

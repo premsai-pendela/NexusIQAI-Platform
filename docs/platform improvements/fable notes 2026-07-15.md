@@ -146,6 +146,34 @@ previously localized with only the always-candidate file), and the sim
 runner now records `latency_s` per question (mission's latency requirement;
 AcmeCloud ran pre-change, MedCore/FinPilot will carry timings).
 
+## Latency profile (honest numbers, measured live, MedCore+FinPilot runs)
+
+Per-route wall-clock from the campaign's recorded `latency_s` (36 turns):
+- deterministic_sql_template: avg 0.19s (n=12)
+- clarification: avg 0.18s (n=10)
+- sql_agent: avg 1.34s (n=2); rag_agent: 14.23s (n=1)
+- **access_refusal: avg 3.20s, max 17.64s (n=16)** — a denial should be a
+  policy-layer decision (~0.2s like clarifications); the slow ones are being
+  decided at the END of the engine path. The false-refusal bug class and the
+  latency problem are the same defect: fixing where the decision happens
+  fixes both. Before-numbers recorded here for an honest before→after.
+
+## Intervention #1 — repair attempt 1 failed at plan; scaffolding corrected (03:00Z)
+
+Attempt 1 on `hf_e4796a5431` ran predict → localize → understand →
+hypothesize → critique clean (all Groq; predictions: 3 hypotheses, none
+deterministically reproduced — honestly binned unverified), then died at
+`plan`: three rounds of "every provider's answer failed the format check"
+with **no visible reason** — the gateway discarded rejected responses, so
+the proposer's feedback loop had nothing concrete to say. Correction (all
+generic scaffolding, no fix content): (1) gateway now attaches
+`invalid_content` to validation failures; (2) proposer re-runs the STAGE
+validator on the last rejected answer and feeds the concrete reason back
+("TEST_FILE already exists", not "your answer failed"); (3) resume-seed is
+now partial — a run that died before a valid plan reuses its finished
+localize/understand/hypothesize outputs instead of re-deriving them.
+Attempt 2 relaunched with --resume-from. Lesson persisted to deepwork.
+
 ## Git topology decision (01:25Z)
 `origin/master` = PR #12 merge (has sim_employees, repair, store, sim/).
 Local `trace-restore/dev` is +4 (Wave-1 grader). Local `master` was stale →

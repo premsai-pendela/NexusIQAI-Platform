@@ -1,5 +1,42 @@
 # ACTIVE HANDOFF — NexusIQAI Platform
 
+## INITIATIVE: Agentic Harnesses + Full Health-Check Run (2026-07-15/16, IN PROGRESS)
+
+Mission: `docs/platform improvements/FABLE_MISSION_2026-07-15_agentic-harnesses-and-full-run.md`
+(that file wins over older CONTEXT/HEALTH_CHECK_AGENT_MISSION where they
+conflict — no human gates this run; self-confirmation instead). Running under
+/deepwork, task id `agentic-harnesses-full-run-2026-07-15`. Notes:
+`docs/platform improvements/fable notes 2026-07-15.md` +
+`Health_Check notes 2026-07-15.md`. Telegram glance on every handoff update
+via `scripts/notify_telegram.py`.
+
+- **Branch:** `trace-restore/dev`. GH_TOKEN = Nexus-Healthcheck-Bot (verified);
+  PR at the end opens under the bot identity via `repair/pr.py`. Never merge.
+- **Objective:** (1) make 4 harnesses genuinely agentic (sim_employees,
+  health_review W1, repair W2, AI Data Analyst) — routing/memory/tools/loop;
+  (2) one-analyst/three-companies coexistence design; (3) full loop live:
+  sim attack → W1 report → W2 repair (predict/verify/plan/evals/self-confirm)
+  → regression tests → D.9 double-check → PR by the bot.
+- **Completed milestones:** setup ✓; harness evaluation ✓ (verdicts in fable
+  notes); harness upgrades ✓ committed `ccc0d29` (Haiku 4.5 Bedrock wiring —
+  live verify deploy-gated, this Mac's IAM has no bedrock perms; Wave-1
+  uncapped trace ids + resolved-since-last-run; sim answer-memory +
+  never-repeat + live→local evidence mirror; repair lesson-read, per-stage
+  tiering, predictor with reproduce-verification, plan self-confirm);
+  one-analyst/three-companies ✓ (company_overrides packs + orchestrator
+  seams + isolation tests). Suite 233 green.
+- **Part 2A ✓ + 2B ✓ (commit 9fd719c):** 54 live adversarial questions across
+  3 companies (RDS + local mirror); Wave-1 reports hc_50fcb12888 (acme, run 5),
+  hc_d29a351231 (medcore, run 1), hc_e75e8d889b (finpilot, run 1); 14 open
+  findings; fabricated test-pollution finding hf_baeb9f105d dismissed + leak
+  fixed. Gemini free tier in cooldown (~60min from 02:50Z); judge fell back.
+- **Next unfinished milestone:** Part 2C+D — repair pipeline on
+  `hf_e4796a5431` (finpilot false_refusal, deterministic evidence), then
+  D.9 double-check and the bot PR.
+- **Resume:** read the mission file, then this section; task list in session;
+  tests `.venv/bin/python -m pytest tests/platform_mode/ -q`.
+- **Known failures:** none yet.
+
 ## INITIATIVE: Durable Traces + Simulation Employees + Trace Console (2026-07-15, in progress)
 
 Full plan: `docs/platform improvements/TRACE_RESTORE_AND_SIM_EMPLOYEES_PLAN.md`
