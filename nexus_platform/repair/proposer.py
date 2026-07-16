@@ -49,7 +49,7 @@ MAX_PLAN_STEPS = 6
 # Groq's free tier rejects requests over ~12k tokens outright (observed
 # live: HTTP 413 at ~52k chars), and Gemini Flash 504s on the same
 # prompts. Implement-step prompts must slice large files, not embed them.
-IMPLEMENT_SLICE_THRESHOLD_LINES = 400
+IMPLEMENT_SLICE_THRESHOLD_LINES = 1500
 
 
 class BudgetExhausted(RuntimeError):
