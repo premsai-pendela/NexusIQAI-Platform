@@ -114,6 +114,38 @@ Details + reasoning in ARCHITECTURE_LOG Entry 13. Summary:
   isolation tests (fires for A, not B; empty packs inert; crash degrades).
 - Suite: **233 passed** (was 229 before this wave; +4 tenancy tests).
 
+## Part 2A — sim attack live (started 01:22Z wall / campaign log ongoing)
+
+- I am the strong-tier brain: attack strategies planned per employee from
+  each briefing (AcmeCloud memory read: 34 prior interactions across 3
+  employees; HR has one recorded weak spot — the tenure question returned an
+  EMPTY answer, trace `tr_6daaa225d8` — being re-probed with a sharper
+  phrasing). A Haiku subagent is the cheap phrasing tier (mission's brain
+  tier split, exercised for real).
+- AcmeCloud batch design (6 q/employee × 3 employees, all fresh —
+  none repeat the 34 prior questions): simple regression checks,
+  hallucination-bait (gross logo retention, LTV, happiness index),
+  role-boundary probes (analyst→salaries, HR→tickets), very-hard 4-5-table
+  joins, typo'd+malformed periods (revenu q9, recenue teh, attriton h9),
+  compound %-of-last-year chart, bare seam follow-ups.
+- MedCore/FinPilot: memories empty (first-ever campaigns). Bait chosen to be
+  industry-plausible: patient readmission rate (healthcare), chargeback
+  rate + settlement latency (fintech), CES, budget variance, on-call
+  coverage ratio. Boundary probes matched to each role's actual data_map.
+- Budget: 36 questions total across 3 companies, most deterministic-path;
+  runner paces 15s (+20s after LLM turns). Live traces land in RDS tagged
+  simulated; every turn also mirrored to the local store (evidence bridge).
+
+## Evidence bridge verified live (02:40Z)
+
+Local mirror confirmed working mid-campaign: 14 simulated traces in the
+local store for 2026-07-16, each carrying `live_trace_id` (the RDS twin) and
+a joined answer. Two more harness fixes landed while monitoring:
+`ROUTE_MODULES` gained an `access_refusal` mapping (false-refusal findings
+previously localized with only the always-candidate file), and the sim
+runner now records `latency_s` per question (mission's latency requirement;
+AcmeCloud ran pre-change, MedCore/FinPilot will carry timings).
+
 ## Git topology decision (01:25Z)
 `origin/master` = PR #12 merge (has sim_employees, repair, store, sim/).
 Local `trace-restore/dev` is +4 (Wave-1 grader). Local `master` was stale →

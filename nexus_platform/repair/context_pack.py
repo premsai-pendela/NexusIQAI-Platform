@@ -46,6 +46,11 @@ ROUTE_MODULES = {
     "clarification": ["nexus_platform/orchestrator.py"],
     "denied": ["nexus_platform/access_policy.py",
                "nexus_platform/query_service.py"],
+    # Refusal routes: the deny decision is made by the deterministic
+    # executor + access policy, surfaced through query_service.
+    "access_refusal": ["nexus_platform/access_policy.py",
+                       "nexus_platform/deterministic.py",
+                       "nexus_platform/query_service.py"],
 }
 _ALWAYS_CANDIDATES = ["nexus_platform/query_service.py"]
 

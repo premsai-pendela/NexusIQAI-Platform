@@ -120,8 +120,11 @@ def ask(company: str, email: str, questions: list,
         if not qtext.strip():
             continue
 
+        started = time.time()
         res = _call(qtext)
+        latency_s = round(time.time() - started, 2)
         plat = res.get("platform") or {}
+        plat.setdefault("latency_s", latency_s)
         trace_id = plat.get("trace_id") or ""
         answer = str(res.get("answer") or "")
         route = plat.get("route") or "unknown"
@@ -138,6 +141,7 @@ def ask(company: str, email: str, questions: list,
             "confidence": confidence, "llm_used": llm_used,
             "answer_summary": answer[:1500], "trace_id": trace_id,
             "local_trace_id": local_trace_id,
+            "latency_s": latency_s,
             "verdict": verdict,
         }
         memory.append_interaction(mem, interaction, weak=weak, weak_note=note)
