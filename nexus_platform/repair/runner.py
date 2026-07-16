@@ -39,7 +39,7 @@ from nexus_platform.repair.proposer import (Plan, Proposer, StageFailed,
 SUITE_ARGS = ["tests/platform_mode/"]
 MAX_TEST_REGENERATIONS = 2
 MAX_FIX_ROUNDS = 2
-MAX_PLAN_CONFIRM_ROUNDS = 2
+MAX_PLAN_CONFIRM_ROUNDS = 3
 
 
 @dataclass
@@ -237,18 +237,21 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                     raise StageFailed(f"resumed plan no longer valid: {problem}")
             else:
                 # Partial resume: the prior attempt died before a valid
-                # plan — plan + self-confirm now, on the seeded reasoning.
+                # plan — plan now, on the seeded reasoning.
                 plan = proposer.plan(hypothesis)
-                for _ in range(MAX_PLAN_CONFIRM_ROUNDS):
-                    confirmed, notes = proposer.confirm_plan(plan, hypothesis)
-                    if confirmed:
-                        eval_notes = notes
-                        break
-                    plan = proposer.plan(hypothesis, feedback=notes)
-                else:
-                    raise StageFailed(
-                        "plan was not self-confirmed after "
-                        f"{MAX_PLAN_CONFIRM_ROUNDS} revision rounds: {notes}")
+            # A plan is never exempt from self-confirmation — seeded ones
+            # included (a prior session's plan may be exactly what its own
+            # confirm stage rejected).
+            for _ in range(MAX_PLAN_CONFIRM_ROUNDS):
+                confirmed, notes = proposer.confirm_plan(plan, hypothesis)
+                if confirmed:
+                    eval_notes = notes
+                    break
+                plan = proposer.plan(hypothesis, feedback=notes)
+            else:
+                raise StageFailed(
+                    "plan was not self-confirmed after "
+                    f"{MAX_PLAN_CONFIRM_ROUNDS} revision rounds: {notes}")
             # A resumed continuation may find its test file already on the
             # branch from a prior round — the test steps then edit it
             # rather than create it.
