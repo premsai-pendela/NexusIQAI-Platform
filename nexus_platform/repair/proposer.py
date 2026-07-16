@@ -655,7 +655,7 @@ class Proposer:
                 "verbatim) through the product's behavior and assert the "
                 "honest expected outcome, not merely check that a helper "
                 "function exists:\n"
-                + self.pack.evidence_text()[:6000] + "\n"
+                + self.pack.evidence_text()[:3500] + "\n"
                 "\nHard requirements for the test: it must be fully "
                 "deterministic — no live LLM call, no network. Prefer "
                 "exercising a deterministic entry point (e.g. the "
@@ -669,7 +669,7 @@ class Proposer:
                 "\nThe product code under test (read it before "
                 "writing the test — use only APIs that "
                 "actually exist in it):\n"
-                + test_context[:24000] + "\n")
+                + test_context[:9000] + "\n")
         prompt = (
             f"{_PREAMBLE}\n"
             "You are implementing ONE step of an approved plan. Change "

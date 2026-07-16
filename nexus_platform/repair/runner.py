@@ -147,7 +147,16 @@ def _implement(proposer: Proposer, plan: Plan, step: dict,
     model that says "I cannot see `symbol`" is doing the right thing —
     show it the symbol and ask again, once, before treating REPLAN as a
     real stop signal."""
+    import sys
+    import time as _t
+    _s = _t.time()
+    print(f"[repair {datetime.now(timezone.utc).strftime('%H:%M:%S')}] "
+          f"  implement_step start ({step['file']})",
+          file=sys.stderr, flush=True)
     resp = proposer.implement_step(plan, step, feedback=feedback)
+    print(f"[repair {datetime.now(timezone.utc).strftime('%H:%M:%S')}] "
+          f"  implement_step done in {_t.time() - _s:.0f}s "
+          f"(resp {len(resp)} chars)", file=sys.stderr, flush=True)
     if resp.strip().startswith("REPLAN:"):
         symbols = re.findall(r"`([A-Za-z_][A-Za-z0-9_]*)`",
                              resp.strip()[:400])
