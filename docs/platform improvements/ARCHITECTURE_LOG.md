@@ -1401,3 +1401,67 @@ in multi-minute-to-hour cooldown; NVIDIA at its hard 48/48 daily cap). I did
 not push past it — the pipeline's own cooldown-aware backoff rides out
 recovery, and I launched nothing else competing for the recovering quota.
 This is the §2c floor behaving exactly as intended.
+
+## 2026-07-16 — Entry 15: TASK 1 (automatic model selection) + making the CLI-brain repair loop reliably COMPLETE
+
+**TASK 1 — automatic per-sub-task model selection (done).** The CLI brain's
+model tier was a static map (`_HEAVY_STAGES`→sonnet, else→haiku), which put
+the REVIEW stages (critique/confirm_plan/self_review) on haiku — a
+rubber-stamp risk (a weak reviewer that "AGREE"s a bad fix is worse than no
+review; nothing downstream catches it). Replaced with automatic selection
+over an ordered ladder (`haiku,sonnet`, env `NEXUSIQ_REPAIR_CLI_TIERS`):
+(1) review stages always run on the TOP tier — a reviewer is never weaker
+than the author; (2) generation stages start at a complexity-appropriate
+tier (plan + large prompts start strong; understand/hypothesize/predict start
+cheap) and escalate one tier per validator-rejected retry (the proposer
+threads the `attempt` in, counting substantive failures so cooldown waits
+don't spuriously escalate). Live-verified: the strong confirm_plan reviewer
+**rejected an inadequate plan 3× that a haiku reviewer would have passed** —
+exactly the failure TASK 1 removes.
+
+**TASK 2 — the loop gate-passed a real fix (17:33), then a long reliability
+grind to make it reliably commit + PR.** The pipeline diagnosed, unprompted,
+the generalized ghost-table false-denial (`refusal_message` fabricating "the
+'traces' data area is outside your role" for an internal table in no policy —
+the generalized form of FUTURE_IMPROVEMENTS #1), and passed the eval gate
+(repro flip + 222 suite, no regressions). Getting from "gate-passes once" to
+"reliably produces a committed PR" surfaced a chain of real
+harness-reliability bugs, each fixed generically (never the bug's fix), all
+tests green:
+
+- **commit before the advisory self-review** — a verified fix must never be
+  lost to a slow/killed review; self-review only amends if its revision still
+  passes the gate.
+- **CLI timeout ≠ free-tier starvation** — a CLI error was misclassified as
+  quota exhaustion, spiralling a single flaky call into a whole window of
+  timeout+cooldown-wait cycles. Now a fast bounded retry (`brain="cli"` flag).
+- **checkpoint after plan-confirm + reuse the confirmed plan on resume**
+  without re-confirming (confirm is non-deterministic and can discard a good
+  plan); `NEXUSIQ_REPAIR_FRESH_PLAN` for the opposite case.
+- **dropped the literal-question test guard** (superseded by the strong
+  confirm_plan review + repro-must-fail-before) — it rejected legitimate
+  mechanism-level repros and forced endless regen.
+- **"end-to-end" clarified** to mean the real defective FUNCTION with
+  constructed inputs, NOT the whole request pipeline — resolves the
+  review-demands-e2e vs test-writer-can't-monkeypatch-internals deadlock.
+- **test-writer sees full source of plan+candidate files** (not narrow
+  slices) — ends the REPLAN-for-missing-source loop; cap tuned for CLI speed.
+- **fenced-code-block format for NEW files** (models emit these far more
+  reliably than an empty-SEARCH block — the top test-write format failure).
+- **code-step implement sees the failing regression test** (keeps code+test
+  coherent) + a **surgical-edit rule** (change only the defect case; keep
+  existing paths byte-identical) so edits don't regress other tests.
+- **commit the regression test once repro is established + reuse it on
+  resume** — the test-write is the slowest CLI call; making it a one-time
+  cost lets short code+gate resumes retry cheaply until a clean gate-pass.
+- **MAX_TEST_REGENERATIONS→0** (one fast test-write shot per attempt) + a
+  fresh-fail retry loop.
+
+The irreducible remainder is raw CLI output non-determinism — any given run
+may emit a weak test or a non-surgical edit, which the eval gate correctly
+rejects. The architecture above turns that from "a full 15-min run must get
+lucky at every stage" into "write the test once, then cheap code+gate resumes
+until a clean gate-pass commits" — the honest way to make a non-deterministic
+generator converge under an eval gate. (An unrelated mid-run environmental
+failure — the machine disk filled to 100% from ~19 worktree copies + model
+caches — halted work until Prem freed space; documented in ACTIVE_HANDOFF.)
