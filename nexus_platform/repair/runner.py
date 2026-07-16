@@ -105,7 +105,14 @@ def _load_resume_seed(resume_session, finding_id: str) -> Optional[dict]:
         if critique and "VERDICT:" in critique and \
                 "REVISE" in critique.split("VERDICT:", 1)[1][:20]:
             hypothesis = critique.split("VERDICT:", 1)[1]
-    plan = data.get("plan") or _last_valid("plan")
+    # NEXUSIQ_REPAIR_FRESH_PLAN=1 seeds only the reasoning stages (localize/
+    # understand/hypothesize) and forces a FRESH plan — used when the prior
+    # plan was rejected and the plan prompt has since been improved, so the
+    # resume re-plans with the new prompt instead of reusing the stale plan.
+    if os.environ.get("NEXUSIQ_REPAIR_FRESH_PLAN") == "1":
+        plan = None
+    else:
+        plan = data.get("plan") or _last_valid("plan")
     if all([located, located.get("files") if located else None,
             understanding, hypothesis]):
         # Partial resume is allowed: a run that died before producing a
