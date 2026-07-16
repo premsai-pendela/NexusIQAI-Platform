@@ -676,6 +676,18 @@ class Proposer:
                 "writing the test — use only APIs that "
                 "actually exist in it):\n"
                 + test_context[:9000] + "\n")
+        # For a CODE step, show the regression test that was already written
+        # and now FAILS — the code edit must make exactly that test pass, so
+        # the model needs to see what behavior the test asserts (keeps the
+        # code and test coherent; a mismatched pair fails repro_after).
+        test_under_fix = ""
+        if not step["file"].startswith("tests/"):
+            test_path = self.pack.repo_root / plan.test_file
+            if test_path.exists():
+                test_under_fix = (
+                    "\nThe regression test your change must make PASS (it "
+                    f"fails today — read what it asserts):\n```python\n"
+                    + test_path.read_text()[:6000] + "\n```\n")
         prompt = (
             f"{_PREAMBLE}\n"
             "You are implementing ONE step of an approved plan. Change "
@@ -684,6 +696,7 @@ class Proposer:
             "REPLAN: <why> instead of any edit.\n\n"
             f"The approved plan:\n{plan.raw}\n\n"
             f"THIS step: FILE: {step['file']} — {step['text']}\n\n"
+            f"{test_under_fix}"
             f"Current content of {step['file']}:\n```\n{current}\n```\n"
             f"{slice_note}{style_example}\n"
             f"{_EDIT_FORMAT}"
