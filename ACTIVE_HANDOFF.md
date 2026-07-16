@@ -39,11 +39,16 @@ via `scripts/notify_telegram.py`.
   running on it; whole free tier in cooldown (§2c floor), pipeline riding
   out backoff. Scaffolding hardened: concrete plan-stage feedback, mandatory
   plan self-confirm, partial resume. Entry 14 written.
-- **BLOCKED ON DAILY FREE-TIER RESET (as of 05:56Z / 2026-07-16).** The
+- **BLOCKED ON SUSTAINED FREE-TIER CAPACITY (confirmed through 08:15Z).** The
   malformed-bypass fix (`hf_fbccccb7e2`, medcore) is verified real,
-  deterministic, and pipeline-ready, but the shared free tier is
-  DAILY-exhausted (Gemini/Groq hard-cap on first call; NVIDIA 360/48;
-  Cerebras empty). §2c forbids forcing it. Gemini daily resets ~08:00 UTC.
+  deterministic, and pipeline-ready, but the shared free tier gives only
+  1-call bursts even after the ~08:00 UTC daily-reset window (a full 10-min
+  run created the worktree, wrote no session log). Alternative tiers closed
+  this session: Bedrock disabled locally + no IAM perm; Ollama has no models
+  pulled. The env also kills any process at ~10 min, so the pipeline can't
+  ride out cooldowns. Not a logic failure — a fixed-constraint block (§2c +
+  process lifetime). Resume when quota is genuinely sustained (or after
+  Bedrock Haiku 4.5 is deployed → a non-shared reasoning tier).
 - **EXACT RESUME (one clean run once quota resets):**
   1. `git worktree remove --force ../NexusIQAI-healthfix-e64f9273 2>/dev/null; git worktree prune; git branch -D healthfix/e64f9273 2>/dev/null`
   2. `NEXUSIQ_REPAIR_SKIP_PREDICT=1 .venv/bin/python scripts/run_repair.py --company medcore --finding hf_fbccccb7e2`

@@ -110,3 +110,24 @@ the free tier, and the `confirm_plan` self-check correctly rejected two
 inadequate plans. The malformed-bypass bug is verified real and
 deterministically reproducible; the only thing outstanding is a quota window
 to run the final fix+gate. Holding for recovery rather than hammering.
+
+### Session-end status (08:15Z) — fix quota-blocked, cleanly resumable
+
+Waited out the daily-reset window (~08:00 UTC) and re-attempted: the free
+tier is STILL only giving 1-call bursts (a full 10-minute run created the
+worktree but wrote no session log — no sustained reasoning capacity). Every
+alternative tier is closed this session: Bedrock disabled locally + no IAM
+permission on this Mac; Ollama installed but zero models pulled. The
+environment also kills any process at ~10 min, so the pipeline's own
+cooldown-wait cannot ride out the throttle. These are fixed constraints
+(the §2c budget floor + a process-lifetime limit), not a logic failure —
+the fix is one clean run away on genuinely-restored quota (or once Bedrock
+Haiku 4.5 is deployed, giving a non-shared reasoning tier).
+
+**Honest outcome:** the self-improving loop is demonstrated end-to-end
+*except* the final code-write, which is quota-unreachable this session and
+logged open with an exact one-command resume (ACTIVE_HANDOFF). Per the
+mission's own rule, an honestly-open item + a fixed-constraint block is not
+something to fake past. The diagnosis, the reproduction, the fix location,
+and the deterministic test shape are all specified so the resume is
+mechanical.
