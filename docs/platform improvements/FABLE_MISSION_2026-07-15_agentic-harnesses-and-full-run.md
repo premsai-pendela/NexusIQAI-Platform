@@ -243,17 +243,31 @@ review, or health check **goes vague, broad, or off-target**, stop that agent
 immediately, make the specific correction, and resume/restart it — don't let it
 spin. Log the intervention.
 
-**Supervise the repair quality — re-loop the Health Check if the fix is not
-genuinely done.** After the Health Check repairs a bug, you verify it was fixed
-*properly* — not merely that a test went green, but that the fix truly addresses
-the **class** of failure, is in the right scope, and introduced no regression. If
-it's inadequate (superficial, wrong scope, the class isn't actually fixed, or it
-regressed something), **send the Health Check back to change its fix plan and
-re-implement** — loop it (re-plan → re-fix → re-test) until the fix is genuinely
-correct, or until it's honestly logged as currently unreachable. You supervise;
-the Health Check's own autonomous loop still does the diagnosing and fixing —
+**Supervise the repair quality — re-loop the Health Check if the fix OR its
+tests are not genuinely done.** After the Health Check repairs a bug, you verify
+it was done *properly* — not merely that a test went green. Judge **both halves**
+against **accuracy and efficiency**:
+
+- **The code fix.** Does it truly address the whole **class** of failure (not
+  just the literal question), sit in the narrowest right scope, introduce no
+  regression, and stay efficient — the smallest, cleanest change, no needless
+  complexity or added latency, matching how this codebase already solves similar
+  cases? (Accurate *with less latency* — not accurate-but-slow.)
+- **The regression tests.** Are they *meaningful*, not vacuous — do they actually
+  fail on today's buggy tree and pass only after the fix, exercise every failing
+  input from the trace (plus the edge phrasings the plan's own evals named), and
+  avoid asserting on a mere helper's existence or any live-LLM/network call?
+
+If **either** is inadequate — superficial or wrong-scope fix, class not actually
+fixed, a regression, an inefficient/over-broad change, or a weak/vacuous test —
+**send the Health Check back to revisit its plan and re-implement** the deficient
+half (the code, the tests, or both). Loop it (re-plan → re-fix → re-test) until
+the fix is genuinely correct *and* efficient and the tests genuinely prove it, or
+until it's honestly logged as currently unreachable. You supervise; the Health
+Check's own autonomous loop still does the diagnosing, fixing, and test-writing —
 its reasoning brain is Claude Code via CLI (corrected §2e). You never hand-write
-the fix yourself in this session; the agent invokes the CLI to do it.
+the fix or the tests yourself in this session; the agent invokes the CLI to
+redo the work.
 
 ## Fixed constraints (not yours to loosen)
 - Never merge; never touch secrets/`.env`/tokens; never change repo security
