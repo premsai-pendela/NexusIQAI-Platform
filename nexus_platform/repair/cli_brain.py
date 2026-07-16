@@ -125,7 +125,10 @@ def _claude_bin() -> Optional[str]:
 
 def _fail(model: str, status: str, response: str = "",
           invalid: Optional[str] = None) -> dict:
-    tried = {"model": model, "status": status}
+    # brain="cli" tells the proposer this failure is NOT free-tier
+    # starvation — the Claude CLI has no quota cooldown, so a timeout/error
+    # here must be a fast bounded retry, never a multi-minute cooldown wait.
+    tried = {"model": model, "status": status, "brain": "cli"}
     if invalid is not None:
         tried["invalid_content"] = invalid
     return {"response": response, "success": False,

@@ -248,13 +248,19 @@ class Proposer:
                 tried = result.get("models_tried") or []
                 had_invalid = any("INVALID" in str(t.get("status", ""))
                                   for t in tried)
+                # A CLI-brain failure (timeout/error) is never free-tier
+                # starvation — the Claude CLI has no quota cooldown, so it
+                # must be a fast bounded retry, not a multi-minute wait (a
+                # misclassification here spiralled a single hung call into a
+                # whole 10-min window of timeout+wait cycles).
+                had_cli = any(t.get("brain") == "cli" for t in tried)
                 # Providers answered but every answer flunked the check →
                 # a substantive failure worth feedback; nobody answered at
-                # all → starvation worth waiting out.
-                exhausted = not had_invalid
-                reason = ("every available provider's answer failed the "
-                          "format/content check described in the prompt"
-                          if had_invalid
+                # all → starvation worth waiting out (gateway only).
+                exhausted = not had_invalid and not had_cli
+                reason = ("the response failed the format/content check "
+                          "described in the prompt"
+                          if (had_invalid or had_cli)
                           else "no provider produced a response")
                 if had_invalid:
                     # Derive the CONCRETE stage-validator reason from the
