@@ -338,34 +338,62 @@ today's real Admin Review page). After a simulation campaign, it should:
   (Prem will need to hand-label an initial batch — flag this need in
   `ACTIVE_HANDOFF.md` when you get there rather than assuming it exists).
 
-### 2e. Diagnose and fix real findings — this has to become the product's own code, not just something you do by hand
+### 2e. Diagnose and fix real findings — an autonomous repair agent whose reasoning brain is Claude Code via CLI
 
-**Correction to how this was written before:** everything in Step 4 ("the
-real constraint") about the brain being weak, shared, and free-tier applies
-to *this entire step*, not just the classifier and memory system. Diagnosing
-a finding and writing its fix cannot permanently be something that only
-happens because a Claude Code / Fable session was manually invoked to do it
-— that would mean the "self-improving" loop only ever runs when a human
-starts one of these sessions, which is not the goal. **The actual
-deliverable of this step is a real module —
-`nexus_platform/repair/proposer.py` (per
-`SELF_IMPROVING_HEALTH_CHECK_AGENT_PLAN.md` §8) — that, given a finding,
-calls the product's own shared LLM gateway
-(`utils/llm_gateway.py::invoke_with_fallback`, the same Gemini → Groq →
-NVIDIA NIM → Cerebras → Bedrock → Ollama chain everything else uses) to read
-the relevant code and document corpus and produce a candidate diagnosis and
-fix on its own — not Fable doing that reasoning in its place.**
+> **REVISION 2026-07-16 (supersedes the earlier "free-tier chain writes the
+> fix" rule below).** Prem's decision: weak free-tier models **cannot** do the
+> complex reasoning of program repair — diagnosing from traces, predicting
+> hidden bugs, planning a fix, writing the code and its regression tests (the
+> Karpathy point: match model strength to task difficulty). So the health
+> check's **second part — the repair agent — is a CLI connected to Claude
+> Code** for this run. Its hard sub-tasks run on **Claude Code invoked via CLI
+> as a headless subprocess** (exactly the pattern `sim_employees/` already uses
+> for its external CLI question-brain), while **cheap sub-tasks stay on cheap /
+> free-tier models** (per-sub-task routing, mandatory, *inside* the CLI health
+> check). Everything below that says "the fix must run on the product's own
+> free-tier chain / `invoke_with_fallback`" is **superseded** by this banner.
+> `nexus_platform/repair/` must be **rewired** from `invoke_with_fallback` to a
+> CLI-invocation brain for the hard stages.
+
+**Why this is still autonomous and still honest (the two concerns the old rule
+was protecting):**
+
+- **Autonomy.** The worry was "the loop only ever runs when a human starts a
+  Claude Code session." That is still avoided: the repair agent invokes Claude
+  Code **programmatically / headlessly** (a subprocess it shells out to as a
+  tool inside its own loop), not a human hand-running a session per fix. The
+  loop is agent-driven end to end.
+- **Honesty.** The worry was "Fable secretly does the job by hand and hides it."
+  Still enforced: **you (Fable, this interactive session) never hand-write a
+  specific finding's diagnosis or fix.** The difference is only *which brain the
+  agent's loop uses* — a model strong enough to actually succeed (Claude Code)
+  instead of a free-tier model that could not. The honest claim shifts from "the
+  product's tiny free-tier models heal themselves" to "**an agentic self-repair
+  harness, built on Claude Code / the Agent SDK, audits traces, diagnoses,
+  predicts hidden bugs, and opens eval-gated fix PRs**" — which is both true and
+  actually works.
+
+**The actual deliverable of this step** is a real, autonomous repair agent
+(`nexus_platform/repair/` + `scripts/run_repair.py`) that, given a finding,
+routes each sub-task to the right tier — **cheap/free-tier** for reading the
+report, localizing files, deterministic checks, and formatting; **Claude Code
+via CLI** for the diagnosis, hidden-bug prediction, fix plan, and the code +
+regression tests — and produces a candidate fix on a branch on its own, not
+Fable doing that reasoning in its place.
 
 Your job across this mission has two layers, and don't conflate them:
 
-- **Build the module.** Design the prompting/retrieval so a comparatively
-  weak free-tier model can do a credible job at this — feeding it the right
+- **Build the module.** Design the prompting/retrieval/tooling so the CLI
+  (Claude Code) reasoning brain does a credible job — feeding it the right
   slice of code and trace context, structuring the ask so it produces a
-  localized diff rather than an open-ended one, and so on. This is
-  genuinely hard and is exactly the kind of architecture problem Step 4
-  already told you to research prior art for (don't skip that research for
-  this step specifically — "LLM-based automated program repair" /
-  "self-healing code" is real prior art to search for here too).
+  localized diff rather than an open-ended one, giving it the eval/test
+  runners as tools, and routing the cheap framing/localization steps to
+  cheap models first so the strong CLI stage gets a tight, well-scoped ask.
+  This is genuinely hard and is exactly the kind of architecture problem
+  Step 4 already told you to research prior art for (don't skip that research
+  for this step specifically — "LLM-based automated program repair" /
+  "self-healing code" / "agentic code repair (SWE-agent / Agentless)" is real
+  prior art to search for here too).
 - **Validate it, don't just replace it.** Once the module exists, *use it*
   to actually diagnose and draft the fix for a real finding — run the
   module, inspect what it produces, and only step in with your own direct

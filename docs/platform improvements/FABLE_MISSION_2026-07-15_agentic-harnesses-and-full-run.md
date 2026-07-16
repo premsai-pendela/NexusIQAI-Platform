@@ -64,10 +64,15 @@ Four harnesses: (1) sim employees, (2) health review (Wave 1), (3) health check
 For **each**, read its present harness and judge it against this bar:
 - **Per-sub-task model routing — deliberate tiering, not one model for the whole
   harness.** A cheap model for cheap/simple sub-tasks (phrasing a question,
-  formatting, summarizing); a stronger tier (reasoning/Sonnet/Opus-class where
-  it applies, or the reasoning tier of the product's own chain for pipeline
-  code) for genuine reasoning (diagnosis, fix design, prediction). The harness
-  should **decide the tier per sub-task automatically and run it.**
+  formatting, summarizing, reading a report, localizing a file); a **strong**
+  tier for genuine reasoning (diagnosis, fix design, hidden-bug prediction,
+  writing the code + regression tests). **For the health check / repair (Wave 2)
+  the strong tier is Claude Code invoked via CLI** — a headless subprocess the
+  agent shells out to, exactly like the sim-employee CLI brain — because weak
+  free-tier models cannot do complex program repair (this is the corrected §2e;
+  the old "free-tier chain writes the fix" rule is superseded — see below). The
+  harness should **decide the tier per sub-task automatically and run it**, and
+  keep cheap work on cheap models even inside the CLI health check.
 - **Memory** — the working memory (live scratchpad) *and* the persistent memory
   each harness needs, at the right scope (see each harness's specifics below).
 - **Tools** — the tools that sub-task actually needs (schema/data map, code
@@ -84,9 +89,12 @@ gate.**
 
 **Harness-edit boundary (resolves the old contradiction):** you (Fable) may edit
 the **harness** — the routing, memory, loop, and tool *plumbing* of any of the
-four, including the AI Data Analyst's harness. You may **never hand-write the
-code *inside* it that fixes a specific product bug** — that always goes through
-the repair pipeline on the product's own free-tier chain (the §2e bright line).
+four, including the AI Data Analyst's harness. You may **never hand-write, in
+this interactive session, the code *inside* it that fixes a specific product
+bug** — that always goes through the **repair agent's own autonomous loop, whose
+reasoning brain is Claude Code invoked via CLI** (the corrected §2e). The agent
+does the diagnosing and fixing autonomously (it shells out to Claude Code
+headlessly for the hard sub-tasks); you never hand-patch the fix in chat.
 
 ### Per-harness specifics
 1. **Sim employees.** Memory must **store each question AND the analyst's
@@ -118,6 +126,17 @@ the repair pipeline on the product's own free-tier chain (the §2e bright line).
    → **self-confirm the plan** → fix → recreate every bug as a regression test →
    run tests + evals; on failure, go back, re-plan, re-fix (**always plan before
    changing code**).
+   **Model routing inside this CLI health check (corrected §2e):** the hard
+   sub-tasks — diagnose from traces, predict hidden bugs, write the fix plan,
+   write the code + regression tests, final pre-PR review — run on **Claude Code
+   via CLI** (a headless subprocess the runner invokes, like the sim-employee
+   brain); the cheap sub-tasks — reading the report, localizing files,
+   deterministic grading, formatting notes — route to **cheap/free-tier**
+   models. **Never** run the code-writing on the weak free-tier chain: that was
+   the old rule and it demonstrably could not do complex repair (and got
+   quota-blocked). The rewiring of `nexus_platform/repair/` from
+   `utils/llm_gateway.invoke_with_fallback` to a CLI-invocation brain for the
+   hard stages is part of this harness upgrade.
 4. **AI Data Analyst.** Judge its routing (is it genuinely per-sub-task?),
    memory, and loop/self-correction. Upgrade its **harness** as needed (see the
    boundary above).
@@ -232,8 +251,9 @@ it's inadequate (superficial, wrong scope, the class isn't actually fixed, or it
 regressed something), **send the Health Check back to change its fix plan and
 re-implement** — loop it (re-plan → re-fix → re-test) until the fix is genuinely
 correct, or until it's honestly logged as currently unreachable. You supervise;
-the Health Check's own code still does the diagnosing and fixing (the §2e bright
-line holds — you never hand-write the fix yourself).
+the Health Check's own autonomous loop still does the diagnosing and fixing —
+its reasoning brain is Claude Code via CLI (corrected §2e). You never hand-write
+the fix yourself in this session; the agent invokes the CLI to do it.
 
 ## Fixed constraints (not yours to loosen)
 - Never merge; never touch secrets/`.env`/tokens; never change repo security

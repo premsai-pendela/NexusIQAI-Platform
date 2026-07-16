@@ -10,6 +10,25 @@ conflict — no human gates this run; self-confirmation instead). Running under
 `Health_Check notes 2026-07-15.md`. Telegram glance on every handoff update
 via `scripts/notify_telegram.py`.
 
+> **DESIGN CHANGE 2026-07-16 — DONE (supersedes the free-tier repair path below).**
+> Prem's decision + corrected §2e: the repair agent's **hard sub-tasks**
+> (understand, hypothesize, critique, plan, predict hidden bugs, implement,
+> self-review) now run on **Claude Code invoked via CLI** (headless
+> subprocess), because weak free-tier models cannot do complex program repair
+> and kept getting quota-blocked. The cheap sub-task (localization) stays on
+> the free-tier gateway.
+> **Rewiring implemented + verified (245 platform tests green):**
+> `nexus_platform/repair/cli_brain.py` (headless `claude -p`, all tools off,
+> single turn, per-stage model tiering: heavy→`sonnet`, light→`haiku`, both
+> env-tunable) + `proposer._default_llm` routes hard→CLI, cheap→gateway.
+> `NEXUSIQ_REPAIR_BRAIN=gateway` forces the old free-tier-only path; default
+> is `cli`. Live end-to-end confirmed (`model_used: cli:haiku`).
+> **Corrected resume for the deferred fix** (no more quota block; predict can
+> run since it's off the shared tier — drop `NEXUSIQ_REPAIR_SKIP_PREDICT`):
+> `.venv/bin/python scripts/run_repair.py --company medcore --finding hf_fbccccb7e2`
+> (the free-tier "EXACT RESUME" command below is superseded; its diagnosis +
+> repro + fix location remain valid inputs).
+
 - **Branch:** `trace-restore/dev`. GH_TOKEN = Nexus-Healthcheck-Bot (verified);
   PR at the end opens under the bot identity via `repair/pr.py`. Never merge.
 - **Objective:** (1) make 4 harnesses genuinely agentic (sim_employees,

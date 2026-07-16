@@ -11,14 +11,22 @@ this initiative and follow it for the rest of that session.
 routing rules in this file are about which model *you* (Fable, running this
 build session) use for a given task *while you're building and operating
 this session*. They are a separate question from what `CONTEXT.md` §2e
-requires for the finished system: the actual diagnose-and-fix-a-real-bug
-capability must end up as product code that runs on the product's own
-shared free-tier LLM chain (Gemini/Groq/NVIDIA NIM/Cerebras/Bedrock/Ollama),
-not a capability that only exists because a Fable session was invoked to
-perform it by hand. Don't read "diagnosing... is a Fable-tier task" below as
-license to permanently do that diagnosis yourself instead of building the
-module that does it on the product's own models — see `CONTEXT.md` §2e for
-the corrected, precise version of this.
+requires for the finished system.
+
+> **REVISION 2026-07-16 — see the banner atop `CONTEXT.md` §2e.** The
+> finished repair capability's **hard sub-tasks** (diagnose, predict hidden
+> bugs, plan, write code + tests) now run on **Claude Code invoked via CLI**
+> as a headless subprocess of the repair agent's own autonomous loop — *not*
+> on the product's weak free-tier chain, which could not do complex program
+> repair. **Cheap sub-tasks still route to cheap/free-tier models** (this
+> per-sub-task routing is required *inside* the CLI health check too). The
+> two guarantees the old rule protected still hold: the loop stays autonomous
+> (the agent invokes the CLI programmatically, not a human per fix) and you
+> (Fable, this session) still never hand-write a specific finding's fix. The
+> old "product's own shared free-tier chain writes the fix" wording is
+> superseded. Don't read "diagnosing... is a Fable-tier task" below as license
+> to hand-write the diagnosis yourself instead of having the agent's loop
+> invoke the CLI to do it — see `CONTEXT.md` §2e for the precise version.
 
 This file does not replace the repo-root `CLAUDE.md` — it adds model-routing
 rules on top of it. Every rule in the root `CLAUDE.md` (autonomy, honesty,
@@ -38,10 +46,10 @@ intelligence proportional to the task:
   question-generation strategy looks like)
 - Writing or revising the agentic plan itself (the kind of document already
   at `docs/Current NexusIQ docs/SELF_IMPROVING_HEALTH_CHECK_AGENT_PLAN.md`)
-- Designing and building the `repair/proposer.py` module that will do the
-  actual diagnosis-and-fix reasoning going forward on the product's own
-  models (see the distinction called out above and detailed in
-  `CONTEXT.md` §2e) — the module's design is architecture, squarely
+- Designing and building the `repair/` module that will do the actual
+  diagnosis-and-fix reasoning going forward by invoking **Claude Code via CLI**
+  for the hard stages (revised §2e — was "the product's own models"; cheap
+  stages still route cheap) — the module's design is architecture, squarely
   Fable-tier
 - Validating the module's output and, only when its first attempt is
   genuinely unusable, fixing the *module's approach* (not silently

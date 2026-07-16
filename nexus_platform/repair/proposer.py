@@ -1,10 +1,16 @@
-"""The repair proposer: staged LLM reasoning on the product's own chain.
+"""The repair proposer: staged LLM reasoning with per-sub-task model routing.
 
 This module is the Health Check Agent's stages 3–5 (plan → write tests →
-edit code). Every piece of reasoning here is performed by the product's
-shared free-tier LLM chain via ``utils.llm_gateway.invoke_with_fallback`` —
-the same Gemini → Groq → NVIDIA NIM → Cerebras → Bedrock chain the AI Data
-Analyst runs on. No frontier model is involved, ever.
+edit code). Per the corrected §2e (2026-07-16), reasoning is tiered by
+sub-task: the **cheap** sub-task (fault localization) runs on the product's
+shared free-tier chain via ``utils.llm_gateway.invoke_with_fallback`` (the
+same Gemini → Groq → NVIDIA NIM → Cerebras → Bedrock chain the AI Data
+Analyst uses); the **hard** sub-tasks (understand, hypothesize, critique,
+plan, confirm, implement, review) run on **Claude Code via CLI**
+(``repair.cli_brain``) because weak free-tier models cannot do complex
+program repair. ``NEXUSIQ_REPAIR_BRAIN=gateway`` forces the old free-tier-only
+path. In both cases Fable never hand-writes a specific fix — the agent's own
+loop does, this just chooses the brain.
 
 Design (rationale + citations in ARCHITECTURE_LOG Entry 7): a fixed staged
 pipeline, not a free agent loop — Agentless-style. Reliability on a weak
@@ -21,6 +27,7 @@ has never seen. Nothing in them encodes any specific bug's fix.
 
 from __future__ import annotations
 
+import os
 import re
 import time
 from dataclasses import dataclass, field
@@ -87,7 +94,22 @@ STAGE_REASONING = {
 }
 
 
-def _default_llm(prompt: str, task: str,
+# Corrected §2e (2026-07-16): the hard repair sub-tasks route to Claude Code
+# via CLI (a strong model — weak free-tier models can't do complex program
+# repair); the cheap sub-task (localization) stays on the free-tier gateway.
+# `reasoning` carries the split: STAGE_REASONING marks localize False → cheap
+# → gateway; everything else True → CLI brain. Set NEXUSIQ_REPAIR_BRAIN=gateway
+# to force the whole pipeline back onto the free-tier chain (the old path).
+def _use_cli_brain(reasoning: bool) -> bool:
+    mode = os.environ.get("NEXUSIQ_REPAIR_BRAIN", "cli").strip().lower()
+    if mode == "gateway":
+        return False
+    if mode == "cli":
+        return bool(reasoning)
+    return bool(reasoning)
+
+
+def _gateway_llm(prompt: str, task: str,
                  validator: Optional[Callable[[str], bool]],
                  reasoning: bool = True) -> dict:
     from utils.llm_gateway import get_llm_gateway
@@ -99,6 +121,16 @@ def _default_llm(prompt: str, task: str,
         task=task, temperature=0.2,
         metadata={"agent": "health_repair"},
         response_validator=validator)
+
+
+def _default_llm(prompt: str, task: str,
+                 validator: Optional[Callable[[str], bool]],
+                 reasoning: bool = True) -> dict:
+    if _use_cli_brain(reasoning):
+        from nexus_platform.repair.cli_brain import cli_llm
+        return cli_llm(prompt=prompt, task=task,
+                       validator=validator, reasoning=reasoning)
+    return _gateway_llm(prompt, task, validator, reasoning=reasoning)
 
 
 _PREAMBLE = (
