@@ -47,7 +47,46 @@ output, latency numbers, and the PR link.
 
 ## Wave-2 repair run #1 — finding hf_e4796a5431 (finpilot, false_refusal)
 
-Started 2026-07-16 ~02:58Z on the product's own free-tier chain (Gemini
-cooling down; fallbacks in play). Stages: lessons read → predict+verify →
-localize → understand → hypothesize+critique → plan → self-confirm → test
-first (must fail) → fix → eval gate. Log updates follow as stages complete.
+Started 2026-07-16 ~02:58Z on the product's own free-tier chain. Four
+attempts, each observed and supervised:
+- **Attempt 1** ran predict→critique clean (Groq), died at `plan`: three
+  format-check failures with no visible reason. Root cause: the gateway
+  discarded rejected responses. Fixed (scaffolding): preserve
+  `invalid_content`, re-run the stage validator on it, feed the concrete
+  reason back; partial resume seeding.
+- **Attempt 2** (resumed): the new `confirm_plan` gate WORKED — it rejected
+  two plans that fixed only one of two named root-cause components (topic
+  matching but not Intent population), then ran out of rounds just as a good
+  plan arrived. Fixed (scaffolding): seeded plans are never exempt from
+  re-confirmation; confirm rounds 2→3.
+- **Attempt 3** killed externally mid-run; whole free-tier chain in cooldown.
+- **Attempt 4** relaunched to ride out cooldowns.
+
+**SUPERVISION INTERVENTION (the important one).** I stopped the loop and
+independently verified the finding. Two hard facts the pipeline missed:
+  1. Re-running the exact question live returns `sql_plus_rag/allowed` with a
+     CORRECT answer — the campaign refusal was **stochastic**.
+  2. The stored trace payload shows `engine_route: "rag_only (sql_failed)"` —
+     the SQL half of the 5-table join failed on the free tier and the
+     degraded fallback emitted a false access-denial. The bug is NOT in the
+     access-policy classifier the pipeline localized to (that function
+     correctly returns None here); it's the sql-failed degraded path, a
+     STOCHASTIC seam bug needing a stubbed-LLM repro the pipeline can't yet
+     write (same class as the prior initiative's open hf_aa3f564b71).
+  → `hf_e4796a5431` logged honestly **OPEN** with this diagnosis. An
+  honestly-open hard bug does not block the goal (mission stop condition).
+
+**Pivot to a deterministic, reproducible bug.** I re-routed every open
+finding's question through the deterministic layer only (no LLM). Result:
+nearly all the campaign `access_refusal`s were the same stochastic
+sql-failed seam (they route to agent/sql_plus_rag today, not refusal). But
+that surfaced a genuinely deterministic bug the pipeline CAN fix:
+malformed/typo'd questions (`what were our expnses for quater 5?`,
+`tikets by priorty for p9?`, `teh margns for q0?`) route to `agent` — and
+thence to a confident LLM answer — instead of a clarification, because
+`find_clarification`'s malformed-period gate only fires when a recognized
+metric is present, and the typo'd metric word leaves `f.metric=None`. This
+is the documented typo-bypass class, deterministic and reproducible today.
+Repair pipeline pointed at `hf_fbccccb7e2` (medcore). `hf_500c08e695`
+(the old "customers for a4" routing finding) checked and found ALREADY
+RESOLVED on current code (now clarifies) — dismissed with a note.
