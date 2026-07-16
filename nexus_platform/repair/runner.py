@@ -303,6 +303,18 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                     f"{MAX_PLAN_CONFIRM_ROUNDS} revision rounds: {notes}")
         outcome.plan = plan
 
+        # ── checkpoint the reasoning stages before the slow test/implement/
+        # gate phase. The reasoning stages are the expensive part (CLI-brain
+        # calls); if this run is killed during implement or the eval gate, a
+        # --resume-from of this file skips straight back to the seeded plan
+        # instead of re-deriving localize/understand/hypothesize/plan.
+        _save_session({"outcome": "checkpoint: plan confirmed, pre-implement",
+                       "gate_passed": False, "checkpoint": True,
+                       "located": located, "understanding": understanding,
+                       "hypothesis": hypothesis,
+                       "plan": plan.raw if plan else None,
+                       "eval_notes": eval_notes})
+
         # ── the regression test first; it must fail pre-fix ───────────
         repro_args = [plan.test_file]
         repro_before = None
