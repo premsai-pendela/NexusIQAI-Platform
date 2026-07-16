@@ -29,6 +29,12 @@ from nexus_platform.repair.context_pack import EvidencePack
 
 MAX_PREDICTIONS = 3
 VERIFY_DELAY_SECONDS = 5.0  # pacing between verification runs (quota floor)
+# The whole predict step is best-effort and must never eat the repair's
+# window/quota: verification runs full analyst queries, so cap the total
+# wall-clock spent verifying. When the free tier is exhausted a single
+# verification can block for minutes — past this budget, remaining
+# predictions are reported as unverified hypotheses (their honest tier).
+MAX_VERIFY_WALL_SECONDS = 120.0
 
 _PRED_RE = re.compile(
     r"^\s*PREDICTION:\s*(?P<q>[^|]+?)\s*\|\s*ROLE:\s*(?P<role>[A-Za-z]+)\s*"
@@ -99,6 +105,7 @@ def predict_and_verify(proposer, pack: EvidencePack) -> dict:
         resp = proposer._invoke("predict", _prediction_prompt(pack), _validate)
     except Exception:
         return out
+    started = time.time()
     seen = set()
     for m in _PRED_RE.finditer(resp):
         q = m.group("q").strip()
@@ -107,6 +114,12 @@ def predict_and_verify(proposer, pack: EvidencePack) -> dict:
         if not q or q.lower() in seen:
             continue
         seen.add(q.lower())
+        # Past the wall-clock budget, don't run more analyst queries — bin
+        # the rest as unverified hypotheses (the honest tier) rather than
+        # block the repair waiting on an exhausted tier.
+        if time.time() - started > MAX_VERIFY_WALL_SECONDS:
+            out["unverified"].append({"question": q, "role": role, "why": why})
+            continue
         try:
             hit = _verify_one(pack.company, role, q)
         except Exception:
