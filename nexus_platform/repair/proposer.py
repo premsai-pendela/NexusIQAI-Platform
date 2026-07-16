@@ -732,7 +732,7 @@ class Proposer:
         # The new-test-file write is the highest-variance step (a fresh file
         # from scratch); give it more format-retry chances so a couple of
         # malformed CLI rolls don't sink the whole attempt.
-        retries = 4 if new_file else 2
+        retries = 3 if new_file else 2
         return self._invoke("implement", prompt, _validate, retries=retries)
 
     # ── P5: self-review of the final diff ────────────────────────────────
