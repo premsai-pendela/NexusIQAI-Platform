@@ -39,8 +39,30 @@ via `scripts/notify_telegram.py`.
 > and escalate one tier per validator-rejected retry (proposer threads
 > `attempt`). Env: `NEXUSIQ_REPAIR_CLI_TIERS`, `NEXUSIQ_REPAIR_CLI_BIG_PROMPT`.
 > 249 platform tests green; live-verified (critique→sonnet, understand
-> escalates haiku→sonnet, real `cli:haiku` call OK). Commit pending below.
-> **NEXT: TASK 2 — run the CLI health check end-to-end on hf_fbccccb7e2 → PR.**
+> escalates haiku→sonnet, real `cli:haiku` call OK). Committed `b5a2c6d`.
+>
+> **TASK 2 — CLI health check ran end-to-end and GATE-PASSED the fix
+> (2026-07-16 17:33).** On `hf_fbccccb7e2` the pipeline: diagnosed (the
+> generalized ghost-table false-denial — `refusal_message` fabricating "the
+> 'traces' data area is outside your role" for an internal table in no
+> policy), predicted hidden bugs, planned, **self-confirmed on the STRONG
+> model** (TASK 1 payoff — the strong reviewer rejected inadequate plans a
+> haiku reviewer would have rubber-stamped), implemented, and **passed the
+> eval gate**: repro flip + suite 222 passed, no regressions; the fix is
+> 100% pipeline-authored (verified by reading the diff + re-running the
+> suite in the worktree). The in-run commit was lost to the advisory
+> self-review timing out; ~13 generic harness-reliability fixes since make a
+> gate-pass commit reliably (commit-before-review; CLI-timeout≠starvation;
+> code-step sees the failing test; surgical-edit rule; fix-round recovery;
+> new-file retries; plan-confirm checkpoint + confirmed-plan resume;
+> dropped the literal-question test guard; shrunk oversized test prompt).
+> Remaining variable is raw CLI output non-determinism (the eval gate
+> correctly rejects weak rolls); a retry loop runs the pipeline until a
+> committed gate-pass, then `repair/pr.py` pushes + opens the PR under
+> Nexus-Healthcheck-Bot. Resume:
+> `NEXUSIQ_REPAIR_SKIP_PREDICT=1 .venv/bin/python scripts/run_repair.py --company medcore --finding hf_fbccccb7e2 --resume-from data/repair_sessions/hf_fbccccb7e2_20260716T152705Z.json`
+> (repeat until `git -C ../NexusIQAI-healthfix-e64f9273 log` shows a fix
+> commit; then push+PR via repair/pr.py — never merge).
 
 - **Branch:** `trace-restore/dev`. GH_TOKEN = Nexus-Healthcheck-Bot (verified);
   PR at the end opens under the bot identity via `repair/pr.py`. Never merge.
