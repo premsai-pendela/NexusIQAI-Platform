@@ -10,6 +10,12 @@ employees"*, do the following.
 > **Brain split (important):** *You* (this external CLI) generate the
 > questions. The **analyst answers on NexusIQ's own free-tier LLM chain** —
 > never route the analyst through yourself. You only decide *what to ask*.
+>
+> **Tier split inside the brain:** use a STRONG model to read the briefing and
+> plan each employee's attack strategy (which weak spots to re-probe, which
+> adversarial families, which real tables/columns to bait); a CHEAP model may
+> then phrase the individual questions from that plan. Don't spend
+> strong-model budget on mere phrasing.
 
 ## Steps
 

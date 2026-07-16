@@ -32,13 +32,14 @@ from typing import Callable, Optional
 
 from nexus_platform import store
 from nexus_platform.repair import apply as apply_mod
-from nexus_platform.repair import context_pack, eval_gate, pr
+from nexus_platform.repair import context_pack, eval_gate, pr, predictor
 from nexus_platform.repair.proposer import (Plan, Proposer, StageFailed,
                                             _parse_plan)
 
 SUITE_ARGS = ["tests/platform_mode/"]
 MAX_TEST_REGENERATIONS = 2
 MAX_FIX_ROUNDS = 2
+MAX_PLAN_CONFIRM_ROUNDS = 2
 
 
 @dataclass
@@ -176,6 +177,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
 
     outcome = RepairOutcome(finding_id=finding_id, ok=False, reason="",
                             branch=branch, worktree=str(worktree_dir))
+    predictions = {"verified": [], "unverified": []}
 
     if not worktree_dir.exists():
         pr.create_fix_worktree(repo_root, branch, worktree_dir, base="master")
@@ -207,6 +209,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
             "finding": finding_id, "company": company, "branch": branch,
             "worktree": str(worktree_dir),
             "llm_calls": proposer.calls_made,
+            "predictions": predictions,
             "stages": proposer.log, **extra}, indent=2, default=str))
 
     try:
@@ -217,6 +220,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
         # A resumed run reloads the pipeline's own prior outputs (its
         # operational memory) so scarce quota goes to the unfinished
         # stages, not to re-deriving finished ones.
+        eval_notes = ""
         seed = _load_resume_seed(resume_session, finding_id)
         if seed:
             located = seed["located"]
@@ -237,10 +241,36 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                 "response": "", "valid": True,
                 "validator_reason": "stages seeded from prior session"})
         else:
+            # Predict related hidden bugs and verify each by reproducing a
+            # real failing input BEFORE diagnosing — verified predictions
+            # join the evidence so the plan and the regression test must
+            # cover the class, not one literal question. A prediction that
+            # doesn't reproduce is reported as a hypothesis, never counted.
+            predictions = predictor.predict_and_verify(proposer, pack)
+            for hit in predictions["verified"]:
+                tr = store.get_trace(company, hit["trace_id"])
+                if tr:
+                    pack.traces.append(tr)
+
             located = proposer.localize()
             understanding = proposer.understand()
             hypothesis = proposer.hypothesize(understanding)
+
+            # Plan, then self-confirm it (the agent's own gate, not a human
+            # pause) before a single line of code changes. A REVISE verdict
+            # feeds the concrete reason back into a fresh plan.
             plan = proposer.plan(hypothesis)
+            eval_notes = ""
+            for _ in range(MAX_PLAN_CONFIRM_ROUNDS):
+                confirmed, notes = proposer.confirm_plan(plan, hypothesis)
+                if confirmed:
+                    eval_notes = notes
+                    break
+                plan = proposer.plan(hypothesis, feedback=notes)
+            else:
+                raise StageFailed(
+                    "plan was not self-confirmed after "
+                    f"{MAX_PLAN_CONFIRM_ROUNDS} revision rounds: {notes}")
         outcome.plan = plan
 
         # ── the regression test first; it must fail pre-fix ───────────
@@ -388,7 +418,8 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
         if passed:
             body = _pr_body(pack, plan, hypothesis, understanding,
                             before, after, repro_before, repro_after,
-                            outcome)
+                            outcome, predictions=predictions,
+                            eval_notes=eval_notes)
             (worktree_dir / "pr_body.md").write_text(body)
             # Commit what actually changed on disk, bounded by the plan's
             # allowlist — the authoritative record is the tree, not the
@@ -425,6 +456,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                        "located": located, "understanding": understanding,
                        "hypothesis": hypothesis,
                        "plan": plan.raw if plan else None,
+                       "eval_notes": eval_notes,
                        "files_changed": outcome.files_changed,
                        "commit": outcome.commit})
         return outcome
@@ -460,8 +492,30 @@ def _commit_message(pack, plan: Plan, outcome: RepairOutcome) -> str:
 
 def _pr_body(pack, plan: Plan, hypothesis: str, understanding: str,
              before, after, repro_before, repro_after,
-             outcome: RepairOutcome) -> str:
+             outcome: RepairOutcome, predictions: Optional[dict] = None,
+             eval_notes: str = "") -> str:
     f = pack.finding
+    predictions = predictions or {"verified": [], "unverified": []}
+    pred_section = ""
+    if predictions["verified"] or predictions["unverified"]:
+        v_lines = "\n".join(
+            f"- **verified**: `{p['question']}` ({p['role']}) — reproduced as "
+            f"{p['verdict']} (trace `{p['trace_id']}`)"
+            for p in predictions["verified"]) or "- none"
+        u_lines = "\n".join(
+            f"- hypothesis (did NOT reproduce): `{p['question']}` ({p['role']})"
+            for p in predictions["unverified"]) or "- none"
+        pred_section = f"""
+## Predicted related bugs (three tiers, never conflated)
+
+Predicted-and-verified (each reproduced on a real input before the fix):
+{v_lines}
+
+Predicted-but-unverified hypotheses (reported only, not counted):
+{u_lines}
+"""
+    evals_section = (f"\n## New eval coverage the pipeline decided this "
+                     f"change needs\n\n{eval_notes}\n" if eval_notes else "")
     return f"""## What this fixes
 
 {f['summary']}
@@ -483,10 +537,11 @@ in {outcome.llm_calls} LLM calls. The full stage-by-stage session log
 ## The pipeline's root-cause analysis
 
 {hypothesis.strip()}
-
-## The pipeline's plan
+{pred_section}
+## The pipeline's plan (self-confirmed before any code changed)
 
 {plan.raw}
+{evals_section}
 
 ## Eval evidence (before → after)
 

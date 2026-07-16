@@ -863,6 +863,25 @@ def update_finding_status(finding_id: str, to_status: str, actor: str,
     return True
 
 
+def finding_resolutions_since(company: str, since_ts: Optional[str]) -> dict:
+    """Map finding_id -> resolution event ts for findings of this company
+    whose status moved to fixed/dismissed_valid after `since_ts` (all of
+    them when since_ts is None). Lets the health review say, run over run,
+    which of last run's bugs actually got resolved."""
+    sql = (
+        "SELECT e.finding_id, e.ts FROM health_finding_events e "
+        "JOIN health_findings f ON f.id = e.finding_id "
+        "WHERE f.company=? AND e.to_status IN ('fixed','dismissed_valid')"
+    )
+    params: list = [company]
+    if since_ts:
+        sql += " AND e.ts > ?"
+        params.append(since_ts)
+    with _tx() as c:
+        rows = c.execute(sql, params).fetchall()
+    return {r["finding_id"]: r["ts"] for r in rows}
+
+
 def list_findings(company: str, status: Optional[str] = None) -> list[dict]:
     sql = "SELECT * FROM health_findings WHERE company=?"
     params: list = [company]

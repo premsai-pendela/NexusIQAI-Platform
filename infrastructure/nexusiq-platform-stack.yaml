@@ -54,7 +54,11 @@ Parameters:
 
   BedrockModelId:
     Type: String
-    Default: anthropic.claude-3-5-haiku-20241022-v1:0
+    # Claude Haiku 4.5's foundation-model id. The app invokes it through the
+    # us. cross-region inference profile (see config/settings.py), which
+    # routes to this foundation model in any US region — hence the wildcard
+    # region on the foundation-model ARN below.
+    Default: anthropic.claude-haiku-4-5-20251001-v1:0
 
   ApiDomainName:
     Type: String
@@ -195,7 +199,12 @@ Resources:
                 Action:
                   - bedrock:InvokeModel
                   - bedrock:Converse
-                Resource: !Sub arn:aws:bedrock:${AWS::Region}::foundation-model/${BedrockModelId}
+                Resource:
+                  # Cross-region inference profile (what the app actually
+                  # calls) + the underlying foundation model in every US
+                  # region the profile may route to.
+                  - !Sub arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/us.${BedrockModelId}
+                  - !Sub arn:aws:bedrock:*::foundation-model/${BedrockModelId}
 
   # ────────────────────────────────────────────────────────────
   # ECS cluster / task definition / service
@@ -273,10 +282,59 @@ Resources:
               awslogs-stream-prefix: ecs
 
   # ────────────────────────────────────────────────────────────
+  # ALB access logs — lets you see real traffic to the API (who's
+  # hitting it, from where, when) instead of flying blind on whether
+  # a shared link ever got opened.
+  # ────────────────────────────────────────────────────────────
+  AlbLogBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub nexusiq-alb-logs-${AWS::AccountId}
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireOldLogs
+            Status: Enabled
+            ExpirationInDays: 90
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  AlbLogBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref AlbLogBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          # us-east-1's fixed ELB log-delivery account — see
+          # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::127311923021:root
+            Action: s3:PutObject
+            Resource: !Sub arn:aws:s3:::${AlbLogBucket}/alb-logs/AWSLogs/${AWS::AccountId}/*
+          - Effect: Allow
+            Principal:
+              Service: delivery.logs.amazonaws.com
+            Action: s3:PutObject
+            Resource: !Sub arn:aws:s3:::${AlbLogBucket}/alb-logs/AWSLogs/${AWS::AccountId}/*
+            Condition:
+              StringEquals:
+                s3:x-amz-acl: bucket-owner-full-control
+          - Effect: Allow
+            Principal:
+              Service: delivery.logs.amazonaws.com
+            Action: s3:GetBucketAcl
+            Resource: !GetAtt AlbLogBucket.Arn
+
+  # ────────────────────────────────────────────────────────────
   # Load balancer
   # ────────────────────────────────────────────────────────────
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    DependsOn: AlbLogBucketPolicy
     Properties:
       Name: nexusiq-api-alb
       Type: application
@@ -284,6 +342,13 @@ Resources:
       Subnets: !Ref PublicSubnetIds
       SecurityGroups:
         - !Ref AlbSecurityGroup
+      LoadBalancerAttributes:
+        - Key: access_logs.s3.enabled
+          Value: 'true'
+        - Key: access_logs.s3.bucket
+          Value: !Ref AlbLogBucket
+        - Key: access_logs.s3.prefix
+          Value: alb-logs
 
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -394,6 +459,10 @@ Outputs:
   AlbDnsName:
     Description: ALB DNS name — point api.<yourdomain> at this via CNAME
     Value: !GetAtt LoadBalancer.DNSName
+
+  AlbLogBucketName:
+    Description: S3 bucket receiving ALB access logs (who hit the API, when, from where)
+    Value: !Ref AlbLogBucket
 
   EcrRepositoryUri:
     Value: !GetAtt EcrRepository.RepositoryUri

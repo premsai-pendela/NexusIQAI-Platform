@@ -69,8 +69,10 @@ _METRIC_SUFFIXES = frozenset(("score", "rate", "ratio", "margin", "index",
 _metric_vocab_cache: frozenset | None = None
 
 
-def _metric_vocabulary() -> frozenset:
-    """Every word the workspace's metrics, tables, and topic maps know.
+def _metric_vocabulary(company: Optional[str] = None) -> frozenset:
+    """Every word the workspace's metrics, tables, and topic maps know,
+    plus any words the company's override pack adds (per-tenant vocabulary
+    extension — see nexus_platform/company_overrides/).
 
     A metric term with no overlap here is one the workspace does not define
     — the SQL path must not invent semantics for it (see the unknown-metric
@@ -97,6 +99,11 @@ def _metric_vocabulary() -> frozenset:
                 words.update(topic.split())
         words.update(key for key, _ in _GROUP_PATTERNS)
         _metric_vocab_cache = frozenset(w for w in words if len(w) > 2)
+    if company:
+        from nexus_platform.company_overrides import extra_metric_vocabulary
+        extra = extra_metric_vocabulary(company)
+        if extra:
+            return _metric_vocab_cache | extra
     return _metric_vocab_cache
 
 
@@ -156,10 +163,22 @@ def _titled(metric: Optional[str], rest: str) -> str:
 # ── Clarification gate ──────────────────────────────────────────────────
 
 def find_clarification(question: str, f: Features, policy: RolePolicy,
-                       prev: Optional[Intent]) -> Optional[Clarification]:
+                       prev: Optional[Intent],
+                       company: Optional[str] = None) -> Optional[Clarification]:
     """Return the clarification this question needs, or None if it is safe
-    to keep routing. Checks are ordered most-specific first."""
+    to keep routing. Checks are ordered most-specific first.
+
+    Company-scoped rules (the override pack) are consulted before the
+    shared rules, so a fix for one company can never clobber another's."""
     q = " " + question.lower().strip().rstrip("?.!") + " "
+
+    # 0. Company override pack (per-tenant seam; see company_overrides/).
+    if company:
+        from nexus_platform.company_overrides import find_clarification_override
+        hit = find_clarification_override(company, question, f, policy)
+        if isinstance(hit, Clarification):
+            return hit
+        # "pass" or None → fall through to the shared rules.
 
     # 1. Overbroad ("analyze everything")
     if _OVERBROAD_RE.search(q):
@@ -302,7 +321,7 @@ def find_clarification(question: str, f: Features, policy: RolePolicy,
             tokens = [t for t in re.findall(r"[a-z0-9]+", term)
                       if t not in _METRIC_SUFFIXES and len(t) > 1]
             if tokens and len(tokens) <= 4 and not any(
-                    t in _metric_vocabulary() for t in tokens):
+                    t in _metric_vocabulary(company) for t in tokens):
                 return Clarification(
                     kind="unknown_metric",
                     question=(f"\u201c{term}\u201d isn\u2019t a metric tracked in your "
@@ -320,7 +339,8 @@ def find_clarification(question: str, f: Features, policy: RolePolicy,
 
 def decide_route(question: str, policy: RolePolicy,
                  prev: Optional[Intent] = None,
-                 repeat_action: Optional[str] = None) -> RouteDecision:
+                 repeat_action: Optional[str] = None,
+                 company: Optional[str] = None) -> RouteDecision:
     """Decide how one analyst question should be handled.
 
     Repeat/dashboard handling happens in the query service (they need session
@@ -339,7 +359,7 @@ def decide_route(question: str, policy: RolePolicy,
         return RouteDecision(route="llm_planner", insight=True,
                              reason="insight/why question needs the planner over SQL/RAG tools")
 
-    clar = find_clarification(question, f, policy, prev)
+    clar = find_clarification(question, f, policy, prev, company=company)
     if clar is not None:
         return RouteDecision(route="clarification", clarification=clar,
                              reason=f"clarification needed: {clar.kind}")

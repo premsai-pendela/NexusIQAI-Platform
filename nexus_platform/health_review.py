@@ -157,6 +157,11 @@ def _llm_judge(ctx: AccessContext, question: str, answer: str,
                            "description": "Groq"})
         models = insert_bedrock_fallback(
             insert_cerebras_fallback(models, reasoning=True), reasoning=True)
+        # The designated judge is Bedrock Claude Haiku 4.5 (the reasoning
+        # tier): when Bedrock is enabled, try it first and keep the rest of
+        # the product chain as fallback. Locally (BEDROCK_ENABLED=0) the
+        # chain order is unchanged.
+        models.sort(key=lambda m: 0 if m.get("type") == "bedrock" else 1)
         if not models:
             return _v("needs_human_review", "human",
                       "No judge model was reachable — a person should review "
@@ -315,6 +320,20 @@ def run_health_review(company: str, requested_by: str = "admin",
                              "reason": t["reason"]},
                     actor="health_review")
 
+    # Run-over-run comparison: which of the previously-open bugs actually
+    # got resolved since the last review run?
+    resolved_findings = []
+    if save:
+        resolutions = store.finding_resolutions_since(company, prev_run_at)
+        for f in store.list_findings(company):
+            if f.get("status") in ("fixed", "dismissed_valid") and f["id"] in resolutions:
+                resolved_findings.append({
+                    "summary": f.get("summary"), "severity": f.get("severity"),
+                    "status": f.get("status"), "resolved_at": resolutions[f["id"]],
+                    "linked_branch": f.get("linked_branch"),
+                    "trace_id": (f.get("payload") or {}).get("trace_id"),
+                })
+
     # Every finding still open — new this run PLUS carried over from before.
     open_findings = []
     if save:
@@ -349,7 +368,8 @@ def run_health_review(company: str, requested_by: str = "admin",
         f"wrongly refused, {all_counts.get('partly_correct', 0)} partly right, "
         f"{all_counts.get('needs_human_review', 0)} need a human). "
         f"{findings_new} new issue(s) this run; {findings_carried} still open from "
-        f"before. Deterministic-first grading + {llm_used} LLM call(s)."
+        f"before; {len(resolved_findings)} previously-open issue(s) resolved since "
+        f"the last run. Deterministic-first grading + {llm_used} LLM call(s)."
     )
 
     report = {
@@ -387,6 +407,7 @@ def run_health_review(company: str, requested_by: str = "admin",
         "employees": employees,
         "fixes_needed": fixes,
         "open_findings": open_findings,
+        "resolved_findings": resolved_findings,
     }
     if save:
         report["report_id"] = store.save_health_report(
@@ -421,14 +442,16 @@ def _fixes_needed(employees: list) -> list:
                 b = buckets[v]
                 b["count"] += 1
                 b["employees"].add(e["name"])
-                if len(b["traces"]) < 6:
-                    b["traces"].append(t["trace_id"])
+                # Every trace id, uncapped — a finding must name the exact
+                # evidence, not a sample (the UI may still preview a few).
+                b["traces"].append(t["trace_id"])
     out = []
     for v, (title, sev, rec) in labels.items():
         if v in buckets:
             b = buckets[v]
             out.append({"issue": title, "severity": sev, "count": b["count"],
                         "employees": sorted(b["employees"])[:8],
+                        "trace_ids": b["traces"],
                         "example_trace_ids": b["traces"], "recommendation": rec})
     order = {"high": 0, "medium": 1, "low": 2}
     out.sort(key=lambda f: (order.get(f["severity"], 9), -f["count"]))

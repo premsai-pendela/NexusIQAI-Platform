@@ -1,0 +1,121 @@
+# Fable notes — 2026-07-15 — Agentic Harnesses + Full Run
+
+Running log for the FABLE_MISSION_2026-07-15 run. Written continuously while
+working, not retrospectively. Companion file: `Health_Check notes 2026-07-15.md`
+(the Health Check agent's own log).
+
+## Session start (2026-07-16T00:55Z)
+
+- Deepwork activated (`agentic-harnesses-full-run-2026-07-15`), no trusted
+  lessons yet for this scope.
+- Environment verified: `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` set; `GH_TOKEN`
+  authenticates as **Nexus-Healthcheck-Bot** (the separate bot identity from
+  mission §E exists — PR finish line reachable). GMAIL_* not set — irrelevant,
+  this run uses Telegram, not email.
+- `scripts/notify_telegram.py` already exists from the prior initiative and
+  matches the mission spec (env-only secrets, non-fatal failures). Reusing it.
+- Branch: `trace-restore/dev` (durable-store + sim_employees + Wave-1 review
+  work already merged live per PR #11).
+
+## Plan of record
+
+1. Evaluate the four harnesses against the agentic bar (routing / memory /
+   tools / loop): sim_employees, health_review (W1), repair (W2), analyst.
+2. Upgrade what misses the bar (incl. Bedrock Haiku 4.5 verification).
+3. Design + implement the one-analyst/three-companies coexistence layer.
+4. Full loop: sim attack (live, 3 companies) → review report → repair →
+   tests/evals → D.9 double-check → PR by `repair/pr.py` as the bot.
+
+## Harness verdicts (evaluation complete 2026-07-16T01:20Z)
+
+Bar = per-sub-task model routing · memory · tools · loop engineering.
+
+### 1. sim_employees — CLOSE TO BAR, needs memory + tier-split upgrades
+- **Loop ✓**: brief (plan) → ask (act) → cheap verdict heuristics (check) →
+  weak-spot re-probe (correct). Real external signal per question.
+- **Tools ✓**: company-brain `data_map` (real schema per role), access-bounded
+  live client, paced runner, sim-query ledger.
+- **Memory ✗ (gap)**: interactions store only `answer_summary[:300]`, and the
+  brief exposes only the LAST 10 questions — "never repeat a solved question"
+  is not guaranteed across runs once history > 10. Mission requires question
+  AND answer stored and next-run decisions made from past answers.
+- **Routing ~ (gap)**: single external brain does both strategy and phrasing.
+  Mission wants strong-model attack planning + cheap-model phrasing.
+- **Upgrade**: memory stores fuller answers + exposes the complete
+  solved-question set and per-question outcomes in the brief; QUESTION_SPEC/
+  INSTRUCTIONS encode the strong-plans/cheap-phrases split.
+
+### 2. health_review (Wave 1) — MOSTLY AT BAR, three concrete gaps
+- **Deterministic-first ✓** (oracle recompute + policy re-derivation, zero
+  LLM); **capped LLM judge ✓** on the product chain; **honest abstention ✓**
+  ("needs_human_review", never a guess); **watermark ✓**; findings ledger
+  carries open bugs run-over-run and reopens recurrences ✓.
+- **Gap A**: Bedrock tier pinned to Claude 3.5 Haiku
+  (`config/settings.py:38-39`) — mission explicitly requires Haiku 4.5,
+  wired + verified, not silently 3.5.
+- **Gap B**: report's `fixes_needed.example_trace_ids` capped at 6 — mission
+  requires the EXACT trace ids per finding, not a capped sample.
+- **Gap C**: no explicit "was last run's bug resolved?" comparison in the
+  report output (the ledger has the data; the report doesn't say it).
+
+### 3. repair (Wave 2) — STRONG LOOP, missing memory-read + prediction + plan-confirm
+- **Loop ✓✓**: staged Agentless-style pipeline with deterministic validators,
+  verbatim-pytest external feedback, test-first repro that must fail pre-fix,
+  eval gate, advisory self-review, cooldown-aware quota waits, resume-seed
+  from prior session logs. No merge path (grep-enforced by test).
+- **Memory ✗ (gap)**: it WRITES lessons (`store.add_lesson`) but never READS
+  them before starting — mission requires lesson memory read-before-start.
+- **Prediction ✗ (gap)**: no predict-related-hidden-bugs step, no
+  verify-by-reproducing-real-failing-input, no three-tier reporting.
+- **Plan self-confirmation ✗ (gap)**: hypothesis gets a framed critique and
+  the final diff gets a self-review, but the PLAN itself is never
+  self-confirmed before code changes, and the plan doesn't decide its own
+  new-eval needs.
+- **Routing ~ (gap)**: every stage uses the same full chain; no per-stage
+  tiering (localize is cheaper work than hypothesize/plan).
+
+### 4. AI Data Analyst — MEETS THE BAR (evidence below); real work is tenancy
+- **Routing ✓**: orchestrator gives every question an explicit zero-LLM
+  RouteDecision; deterministic layer answers 15 metric families with no LLM;
+  SQL/RAG agents pick model tiers by query complexity
+  (`_models_for_complexity`, reasoning=True only for complex;
+  `sql.format_answer`/`sql.explain_query` pinned to cheap tiers). That is
+  genuine per-sub-task tiering already.
+- **Memory ✓**: session memory (prev-intent follow-up resolution), user chart
+  prefs; **Loop ✓**: SQL error-feedback repair round, RAG evidence assessment
+  + reranking, production harness step limits.
+- **Verdict**: keep; log why (this section). The genuine deficiency the
+  mission names is the one-analyst/three-companies collision problem —
+  handled as its own design task — plus latency measurement where touched.
+
+## Upgrades implemented (01:30–02:20Z) — all four harnesses + tenancy
+
+Details + reasoning in ARCHITECTURE_LOG Entry 13. Summary:
+- Bedrock → **Claude Haiku 4.5** (`us.anthropic.claude-haiku-4-5-20251001-v1:0`,
+  settings + CFN IAM for inference-profile AND foundation-model ARNs).
+  Honest limit: live verify is deploy-gated — this Mac's IAM user has zero
+  bedrock permissions (AccessDenied on list AND a 5-token converse test).
+- Wave-1 report: uncapped `trace_ids` per finding, `resolved_findings`
+  run-over-run section (new `store.finding_resolutions_since`), judge
+  prefers Bedrock Haiku 4.5 tier when enabled.
+- sim_employees: full answer memory (1500 chars), `all_asked_questions`
+  never-repeat guarantee, answers in recent_outcomes, brain tier split
+  documented (strong plans / cheap phrases).
+- Live→local **evidence bridge**: live-mode sim runs mirror each turn into
+  the local store (trace + answer, `payload.live_trace_id`) — chosen over
+  RDS sync (unreachable) and server-side export (needs deploy); zero extra
+  quota.
+- Repair: lessons READ before start; Wave-1→Wave-2 seam fix (singular
+  `trace_id` findings now load evidence + answers); per-stage tiering
+  (localize=fast, reasoning elsewhere); **predictor.py**
+  (predict→reproduce→three honest tiers); **confirm_plan** self-check
+  before any code edit; PR body carries prediction tiers + eval notes.
+- Tenancy: `nexus_platform/company_overrides/` packs + orchestrator seams +
+  isolation tests (fires for A, not B; empty packs inert; crash degrades).
+- Suite: **233 passed** (was 229 before this wave; +4 tenancy tests).
+
+## Git topology decision (01:25Z)
+`origin/master` = PR #12 merge (has sim_employees, repair, store, sim/).
+Local `trace-restore/dev` is +4 (Wave-1 grader). Local `master` was stale →
+fast-forward sync to origin/master (a sync, never a commit) so repair
+worktrees branch off current product code.

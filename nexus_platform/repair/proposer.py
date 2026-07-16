@@ -53,10 +53,14 @@ class StageFailed(RuntimeError):
     pass
 
 
-def build_models() -> list:
+def build_models(reasoning: bool = True) -> list:
     """The product's own fallback chain — mirrors health_check's usage.
     Ollama is deliberately not appended: it is not available on this
-    machine for this initiative (HEALTH_CHECK_AGENT_MISSION.md)."""
+    machine for this initiative (HEALTH_CHECK_AGENT_MISSION.md).
+
+    Per-sub-task tiering: reasoning=True appends the chain's reasoning-tier
+    Cerebras/Bedrock models (diagnosis, planning, code); reasoning=False the
+    fast tier (cheap mechanical sub-tasks like localization)."""
     from config.settings import settings
     from utils.llm_gateway import insert_bedrock_fallback, insert_cerebras_fallback
 
@@ -71,16 +75,27 @@ def build_models() -> list:
         models.append({"name": settings.nvidia_model, "type": "nvidia",
                        "description": "NVIDIA NIM"})
     return insert_bedrock_fallback(
-        insert_cerebras_fallback(models, reasoning=True), reasoning=True)
+        insert_cerebras_fallback(models, reasoning=reasoning),
+        reasoning=reasoning)
+
+
+# Which chain tier each stage deserves: genuine reasoning (diagnosis, fix
+# design, prediction, code) gets the reasoning tier; mechanical narrowing
+# (pick files from a manifest) runs on the fast tier.
+STAGE_REASONING = {
+    "localize": False,
+}
 
 
 def _default_llm(prompt: str, task: str,
-                 validator: Optional[Callable[[str], bool]]) -> dict:
+                 validator: Optional[Callable[[str], bool]],
+                 reasoning: bool = True) -> dict:
     from utils.llm_gateway import get_llm_gateway
     from utils.quota_tracker import quota_tracker
 
     return get_llm_gateway().invoke_with_fallback(
-        prompt=prompt, models=build_models(), tracker=quota_tracker,
+        prompt=prompt, models=build_models(reasoning=reasoning),
+        tracker=quota_tracker,
         task=task, temperature=0.2,
         metadata={"agent": "health_repair"},
         response_validator=validator)
@@ -173,10 +188,19 @@ class Proposer:
             # whose output flunks it is skipped in-call and the next
             # provider tries immediately (the gateway discards the bad
             # response without cooling the provider down).
-            result = self.llm(prompt=attempt_prompt,
-                              task=f"health_repair.{stage}",
-                              validator=lambda c: bool(c and c.strip())
-                              and validator(c)[0])
+            kwargs = dict(prompt=attempt_prompt,
+                          task=f"health_repair.{stage}",
+                          validator=lambda c: bool(c and c.strip())
+                          and validator(c)[0])
+            # Per-stage tier routing; injected test doubles that don't take
+            # a `reasoning` kwarg keep working unchanged.
+            import inspect
+            try:
+                if "reasoning" in inspect.signature(self.llm).parameters:
+                    kwargs["reasoning"] = STAGE_REASONING.get(stage, True)
+            except (ValueError, TypeError):
+                pass
+            result = self.llm(**kwargs)
             response = str(result.get("response") or "").strip()
             ok = bool(result.get("success")) and bool(response)
             if ok:
@@ -413,7 +437,7 @@ class Proposer:
 
     # ── P3: plan ─────────────────────────────────────────────────────────
 
-    def plan(self, hypothesis: str) -> Plan:
+    def plan(self, hypothesis: str, feedback: str = "") -> Plan:
         prompt = (
             f"{_PREAMBLE}\n"
             "Your job in THIS step: write the implementation plan. No code "
@@ -421,7 +445,10 @@ class Proposer:
             f"{self.pack.evidence_text()}\n"
             f"Relevant source code:\n\n{self._code_context}\n\n"
             f"The confirmed root-cause analysis:\n{hypothesis}\n\n"
-            "Hard constraints on the plan:\n"
+            + (f"A reviewer REJECTED your previous plan for this concrete "
+               f"reason — the new plan must fix it:\n{feedback}\n\n"
+               if feedback else "")
+            + "Hard constraints on the plan:\n"
             f"- Touch at most {MAX_PLAN_FILES} files, all inside "
             "nexus_platform/, agents/, or tests/platform_mode/.\n"
             "- Include exactly one NEW regression test file under "
@@ -434,7 +461,14 @@ class Proposer:
             "above — the fix should look like it was written by the same "
             "author.\n"
             "- Smallest change that fixes the CLASS of failure, not just "
-            "this literal question.\n\n"
+            "this literal question.\n"
+            "- Tenancy rule: this product serves several companies with one "
+            "shared analyst. If the defect is specific to ONE company's "
+            "vocabulary or data (not a flaw in shared logic), the code "
+            "change belongs in that company's override pack "
+            "(nexus_platform/company_overrides/<company>.py — see its "
+            "hooks), never in a shared module. A genuine shared-logic flaw "
+            "still belongs in the shared module.\n\n"
             "Answer with ONLY this format — no preamble, no narrated "
             "reasoning, under 300 words total:\n"
             "PLAN:\n"
@@ -463,6 +497,52 @@ class Proposer:
         resp = self._invoke("plan", prompt, _validate)
         plan_obj, _ = _parse_plan(resp)
         return plan_obj
+
+    # ── P3.5: self-confirm the plan before any code changes ─────────────
+
+    def confirm_plan(self, plan: Plan, hypothesis: str) -> tuple[bool, str]:
+        """The pipeline's own gate on its own plan — a self-check, not a
+        human pause. Returns (confirmed, notes): notes are either the
+        reviewer's EVAL_NOTES (what new evals the change needs) when
+        confirmed, or the concrete reason to re-plan when not."""
+        prompt = (
+            "You are reviewing a colleague's implementation plan for a "
+            "product-defect fix BEFORE any code is written. Be skeptical "
+            "and concrete.\n\n"
+            f"{self.pack.evidence_text()}\n"
+            f"The root-cause analysis:\n{hypothesis}\n\n"
+            f"The plan:\n{plan.raw}\n\n"
+            "Check four things: (1) the plan's regression test exercises "
+            "every failing input in the evidence above and would fail on "
+            "today's code; (2) the code change is the narrowest one that "
+            "fixes the whole CLASS of failure, not just these literal "
+            "questions; (3) nothing in the plan touches code unrelated to "
+            "the failure; (4) decide what NEW evaluation coverage this "
+            "change needs beyond the regression test (edge phrasings, "
+            "adjacent behaviors that must NOT change) — the plan's test "
+            "should encode those too.\n\n"
+            "Reply in EXACTLY one of these two formats, nothing else:\n"
+            "VERDICT: CONFIRMED\nEVAL_NOTES: <one short paragraph: the new "
+            "eval coverage this change needs>\n"
+            "or\n"
+            "VERDICT: REVISE\nREASON: <the one concrete problem the new "
+            "plan must fix>\n")
+
+        def _validate(resp: str) -> tuple[bool, str]:
+            if "VERDICT:" not in resp:
+                return False, "missing 'VERDICT:' line"
+            tail = resp.split("VERDICT:", 1)[1]
+            if "CONFIRMED" in tail[:20] and "EVAL_NOTES:" not in resp:
+                return False, "a CONFIRMED verdict must include EVAL_NOTES:"
+            if "REVISE" in tail[:20] and "REASON:" not in resp:
+                return False, "a REVISE verdict must include REASON:"
+            return True, ""
+
+        resp = self._invoke("confirm_plan", prompt, _validate)
+        tail = resp.split("VERDICT:", 1)[1]
+        if "CONFIRMED" in tail[:20]:
+            return True, resp.split("EVAL_NOTES:", 1)[1].strip()
+        return False, resp.split("REASON:", 1)[1].strip()
 
     # ── P4: implement, one step at a time ────────────────────────────────
 

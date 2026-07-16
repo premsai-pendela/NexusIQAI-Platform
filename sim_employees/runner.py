@@ -88,6 +88,27 @@ def ask(company: str, email: str, questions: list,
         with store.tagged_trace_source("simulated"):
             return run_query(ctx, qtext, session_id)
 
+    def _mirror_locally(qtext: str, answer: str, plat: dict) -> str:
+        """Evidence bridge for live mode: the cloud backend wrote the trace
+        into RDS (shown on the live Review page), but this machine's repair
+        pipeline reads the LOCAL store. Mirror the same turn locally —
+        trace + answer turn, tagged simulated, carrying the live trace id —
+        so Wave 1/Wave 2 can grade and repair from identical evidence with
+        zero extra LLM or API spend."""
+        payload = {k: v for k, v in plat.items() if k != "trace_id"}
+        payload["live_trace_id"] = plat.get("trace_id") or ""
+        local_tid = store.save_trace(
+            company, email, role, qtext,
+            plat.get("access_decision") or "unknown", payload,
+            source="simulated")
+        store.save_turn(
+            company, email, session_id, qtext,
+            plat.get("resolved_question") or qtext, answer,
+            plat.get("engine_route") or plat.get("route") or "unknown",
+            None, (plat.get("access_decision") == "denied"),
+            route=plat.get("route"), trace_id=local_tid)
+        return local_tid
+
     results = []
     for idx, q in enumerate(questions):
         if isinstance(q, dict):
@@ -108,12 +129,15 @@ def ask(company: str, email: str, questions: list,
         confidence = plat.get("confidence") or "N/A"
         llm_used = not plat.get("llm_skipped", False)
 
+        local_trace_id = _mirror_locally(qtext, answer, plat) if live else trace_id
+
         verdict, weak, note = _verdict(route, decision, confidence, answer)
         interaction = {
             "question": qtext, "family": family, "difficulty": difficulty,
             "route": route, "access_decision": decision,
             "confidence": confidence, "llm_used": llm_used,
-            "answer_summary": answer[:300], "trace_id": trace_id,
+            "answer_summary": answer[:1500], "trace_id": trace_id,
+            "local_trace_id": local_trace_id,
             "verdict": verdict,
         }
         memory.append_interaction(mem, interaction, weak=weak, weak_note=note)

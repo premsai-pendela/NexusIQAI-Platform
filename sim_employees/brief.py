@@ -49,9 +49,16 @@ QUESTION_SPEC = {
         "turn's context",
         "chart mismatch: ask for a pie chart of something non-categorical",
     ],
-    "adaptivity_rule": "Read this employee's recent_questions and weak_spots. "
-                       "Do NOT repeat a solved question. DO re-probe each weak "
-                       "spot with a sharper or differently-phrased attempt.",
+    "adaptivity_rule": "Read this employee's all_asked_questions (never repeat "
+                       "ANY of them), recent_outcomes (the analyst's actual "
+                       "answers — decide the next attack from what it said), "
+                       "and weak_spots (re-probe each with a sharper or "
+                       "differently-phrased attempt).",
+    "brain_tiering": "Split the brain by cost: a STRONG model reads this brief "
+                     "and plans each employee's attack strategy (which weak "
+                     "spots, which families, which tables to bait); a CHEAP "
+                     "model may then phrase the individual questions from that "
+                     "plan. Never spend strong-model budget on mere phrasing.",
     "submit_via": "python -m sim_employees.ask --company <c> --employee <e> "
                   "(questions as JSON on stdin: a list of strings, or objects "
                   "{question, family, difficulty}).",

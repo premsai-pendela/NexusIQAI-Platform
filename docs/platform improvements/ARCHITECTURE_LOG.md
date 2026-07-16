@@ -1226,3 +1226,107 @@ resumes the same plan on this branch: the containment rule now forces a
 behavioral repro (which will genuinely fail on this tree — verified),
 and the fix rounds must produce the real routing change on top of the
 partial work rather than starting over.
+
+## 2026-07-16 — Entry 13: Agentic-harness upgrade wave (FABLE_MISSION 2026-07-15) — verdicts, upgrades, and the tenancy seam
+
+New mission (`FABLE_MISSION_2026-07-15_agentic-harnesses-and-full-run.md`)
+supersedes the older CONTEXT/HEALTH_CHECK_AGENT_MISSION where they conflict:
+no human gates this run; the agents self-confirm their own work; the final PR
+opens under the separate `Nexus-Healthcheck-Bot` GitHub identity (verified in
+this session via `gh auth status` — GH_TOKEN is the bot's PAT).
+
+**Harness evaluation** (full verdicts with evidence in
+`fable notes 2026-07-15.md`): the AI Data Analyst already meets the
+routing/memory/loop bar (explicit zero-LLM RouteDecision, complexity-tiered
+model selection in sql/rag agents, SQL error-feedback repair round, session
+memory); sim_employees had a strong loop but under-guaranteed memory;
+health_review (Wave 1) was deterministic-first with an honest abstention tier
+but capped its evidence lists and sat on the retired Bedrock 3.5 Haiku;
+repair (Wave 2) had excellent loop engineering but wrote lessons without ever
+reading them, had no hidden-bug prediction, and never self-confirmed its plan
+before editing code.
+
+**Upgrades implemented this session:**
+
+1. *Bedrock → Claude Haiku 4.5.* `config/settings.py` now defaults both
+   Bedrock tiers to `us.anthropic.claude-haiku-4-5-20251001-v1:0` (the
+   cross-region inference profile — the invocation form newer Anthropic
+   models require on Bedrock; 3.5 Haiku is retired upstream). The CFN
+   template's `BedrockModelId` and the task-role IAM policy were updated to
+   cover BOTH the inference-profile ARN and the underlying foundation-model
+   ARNs (`arn:aws:bedrock:*::foundation-model/...`). **Honest limitation:**
+   this machine's IAM user (`Nexusiq_AI-Deploy`) has no bedrock:* permissions
+   — verified by direct test (ListFoundationModels, ListInferenceProfiles,
+   and a 5-token Converse all AccessDenied). Live verification of Haiku 4.5
+   in the account is therefore deploy-gated: it can only be confirmed from
+   the ECS task role after Prem deploys the updated stack/policy.
+
+2. *Wave 1 report.* `fixes_needed` entries now carry EVERY trace id
+   (uncapped, `trace_ids` + legacy `example_trace_ids`); the report gains a
+   `resolved_findings` section (run-over-run: which previously-open bugs
+   actually got resolved since the last run, via the new
+   `store.finding_resolutions_since()` which reads the finding-event
+   ledger); the LLM judge prefers the Bedrock Haiku 4.5 reasoning tier first
+   when Bedrock is enabled, falling back to the rest of the product chain.
+
+3. *sim_employees memory.* Interactions now keep the analyst's answer up to
+   1500 chars; the brief exposes `all_asked_questions` (complete history —
+   the never-repeat guarantee no longer silently expires after 10
+   questions) and the answers inside `recent_outcomes` (decide the next
+   attack from what the analyst actually said). QUESTION_SPEC/INSTRUCTIONS
+   now encode the brain tier split: strong model plans the attack, cheap
+   model phrases questions.
+
+4. *Live→local evidence bridge (Part 2A plumbing).* In live mode the sim
+   runner now mirrors every turn into the LOCAL store (trace tagged
+   simulated + answer turn, carrying the live trace id as
+   `payload.live_trace_id`). Options considered: RDS→local sync (needs prod
+   DB reachability this Mac doesn't have), server-side review + export
+   (needs a deploy Prem hasn't run). The mirror wins: zero extra LLM/API
+   spend, identical evidence, works today.
+
+5. *Repair pipeline.* (a) Lesson memory is now READ before starting —
+   `context_pack.load_evidence` injects up to 8 active `repair`-scope
+   lessons into the evidence text (pipeline-authored, generic). (b) Fixed a
+   real Wave-1→Wave-2 seam gap: review findings store `payload.trace_id`
+   (singular) which `load_evidence` ignored — a repair on a review finding
+   would have loaded zero traces. Both shapes now accepted, and the trace's
+   answer text is joined in from memory_turns. (c) Per-stage model tiering:
+   `build_models(reasoning=)` + `STAGE_REASONING` map — localization runs
+   the fast tier, diagnosis/planning/code the reasoning tier (mirrors the
+   product's own complexity tiering). (d) New `repair/predictor.py`:
+   predict-related-hidden-bugs stage — one reasoning-tier call proposes
+   same-class failing inputs; each is VERIFIED by actually running it
+   through the product locally (tagged simulated) and grading with the
+   review's deterministic tier; three tiers reported separately
+   (surfaced / predicted-verified / predicted-unverified), predictions that
+   don't reproduce are never counted. Verified predictions join the
+   evidence pack so the plan + regression test must cover the class.
+   (e) New `confirm_plan` stage: the pipeline self-confirms its plan
+   (test-covers-evidence, narrowest-class-fix, scope, and what NEW eval
+   coverage the change needs) before any code changes; REVISE feeds a
+   concrete reason back into a fresh plan (2 rounds, then honest failure).
+   PR body now carries the prediction tiers + the pipeline's own eval notes.
+
+**The one-analyst/three-companies design (the mission's hard problem).**
+Research: the standard production answer is a shared kernel with
+tenant-scoped extension points — shared logic stays generic; per-tenant
+behavior lives in the tenant's own module/config consulted at explicit
+seams; isolation is enforced with tests (Microsoft Learn, "Multitenant SaaS
+patterns" — application-level tenant isolation over shared compute:
+https://learn.microsoft.com/en-us/azure/azure-sql/database/saas-tenancy-app-design-patterns;
+academic treatment of per-tenant customization layers: arXiv 1402.6045.
+Most other search hits were SEO filler and were discarded unverified.)
+Implementation: `nexus_platform/company_overrides/` — one module per company
+(acmecloud/medcore/finpilot), two hooks each (`EXTRA_METRIC_VOCABULARY`,
+`find_clarification(question, features, policy)`), consulted by the
+orchestrator BEFORE shared rules (`decide_route`/`find_clarification` now
+take `company`, threaded from `ctx.company.slug` in query_service; the
+unknown-metric vocabulary is extended per-company). A broken override
+degrades to shared behavior (never crashes another tenant's path). The
+repair pipeline's plan prompt now carries the generic tenancy rule
+(company-specific fix → that company's pack; shared-logic flaw → shared
+module) and the manifest includes the packs. Isolation proven by
+`tests/platform_mode/test_company_overrides.py`: an AcmeCloud-only rule
+fires for AcmeCloud and NOT MedCore; empty packs change nothing; a crashing
+pack degrades cleanly. Suite: 233 passed.
