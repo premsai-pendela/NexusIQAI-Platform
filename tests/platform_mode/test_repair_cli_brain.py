@@ -30,10 +30,17 @@ def _clean_cli_env(monkeypatch):
         monkeypatch.delenv(v, raising=False)
 
 
-def test_hard_start_stages_start_strong():
-    # plan/implement are inherently hard — first attempt already strong.
+def test_plan_starts_strong():
+    # plan designs the whole change — worth the strong model up front.
     assert cli_brain.model_for("health_repair.plan", attempt=0) == "sonnet"
-    assert cli_brain.model_for("health_repair.implement", attempt=0) == "sonnet"
+
+
+def test_implement_starts_cheap_and_escalates():
+    # implement applies a SEARCH/REPLACE from an already-confirmed plan —
+    # mechanical, so it starts cheap and escalates (apply guardrails + eval
+    # gate are the correctness backstop). A large prompt still starts strong.
+    assert cli_brain.model_for("health_repair.implement", attempt=0) == "haiku"
+    assert cli_brain.model_for("health_repair.implement", attempt=1) == "sonnet"
 
 
 def test_light_generation_starts_cheap_then_escalates():

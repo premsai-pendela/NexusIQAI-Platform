@@ -60,9 +60,15 @@ _REVIEW_STAGES = {"critique", "confirm_plan", "self_review"}
 
 # Generation stages that are inherently hard enough to start on the strong
 # tier rather than pay a cheap-model round that will almost always be
-# escalated (rule 2). The remaining generation stages (understand,
-# hypothesize, predict) start cheap and escalate on validator failure.
-_HARD_START_STAGES = {"plan", "implement"}
+# escalated (rule 2). `plan` designs the whole change and is worth the strong
+# model up front. `implement` is deliberately NOT here: applying a
+# SEARCH/REPLACE from an already-confirmed, detailed plan is mechanical, so
+# it starts cheap and escalates — and it is never *silently* weak because
+# three concrete signals force a stronger retry: the apply guardrails
+# (verbatim SEARCH match, syntax check, scope fence), the "repro must flip
+# fail→pass" eval gate, and the "zero new suite failures" gate. A large
+# implement prompt still starts strong via the BIG_PROMPT heuristic.
+_HARD_START_STAGES = {"plan"}
 
 _DENY_TOOLS = ["Bash", "Read", "Edit", "Write", "Grep", "Glob",
                "WebFetch", "WebSearch", "Task", "NotebookEdit"]

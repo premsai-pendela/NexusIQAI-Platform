@@ -219,6 +219,14 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
     session_path = log_dir / f"{finding_id}_{stamp}.json"
     outcome.session_log = str(session_path)
 
+    def _progress(msg: str) -> None:
+        # Flushed real-time phase markers — the CLI-brain implement/gate
+        # phase is long, and buffered stdout is lost when the process is
+        # killed; these make progress (and where a kill landed) visible.
+        import sys
+        print(f"[repair {datetime.now(timezone.utc).strftime('%H:%M:%S')}] "
+              f"{msg}", file=sys.stderr, flush=True)
+
     def _save_session(extra: dict) -> None:
         session_path.write_text(json.dumps({
             "finding": finding_id, "company": company, "branch": branch,
@@ -340,6 +348,8 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
         failing_questions = [t.get("question") for t in pack.traces
                              if t.get("question")]
         for regen_round in range(MAX_TEST_REGENERATIONS + 1):
+            _progress(f"test-writing round {regen_round} "
+                      f"(test={plan.test_file})")
             # Every round writes the test file fresh (deleting at round
             # START, never at the end — attempt-4 lesson). A stale draft
             # from a previous run/round invites SEARCH/REPLACE fumbling
@@ -361,19 +371,37 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                 test_path = worktree_dir / plan.test_file
                 if test_path.exists():
                     test_text = test_path.read_text()
-                if failing_questions and not any(q in test_text
-                                                 for q in failing_questions):
-                    # Attempt-7 lesson: a repro that never exercises the
-                    # failing input lets a vacuous fix through the gate. A
-                    # helper-existence test is not a repro.
+                # Attempt-7 lesson: a repro that never exercises the failing
+                # input lets a vacuous fix through the gate. The test must
+                # touch the real failing evidence — the literal question OR a
+                # concrete token from the finding (the denied table, the
+                # wrong value). For stochastic-seam bugs the deterministic
+                # repro is at the mechanism the trace names (e.g. the denied
+                # table), not the literal question — and the strong
+                # confirm_plan review already vetted that the test is
+                # end-to-end, not a helper-existence check.
+                evidence_tokens = list(failing_questions)
+                for t in pack.traces:
+                    p = t.get("payload") or {}
+                    for key in ("denied_reason", "expected", "reality"):
+                        v = p.get(key)
+                        if isinstance(v, str) and 3 < len(v) < 60:
+                            evidence_tokens.append(v)
+                fp = pack.finding.get("payload") or {}
+                for key in ("expected", "reality"):
+                    v = fp.get(key)
+                    if isinstance(v, str) and 3 < len(v) < 60:
+                        evidence_tokens.append(v)
+                if evidence_tokens and not any(tok in test_text
+                                               for tok in evidence_tokens):
                     feedback = (
                         "your regression test never exercises the actual "
-                        "failing input from the trace. It must send the "
-                        "exact question "
-                        f"{failing_questions[0]!r} through the product's "
-                        "behavior (routing/orchestration), assert the "
-                        "honest expected outcome, and fail on today's "
-                        "code because of that assertion.")
+                        "failing input from the trace. Drive the exact "
+                        "failing input "
+                        f"{failing_questions[0]!r} (or the concrete "
+                        "failing value/table the trace names) through the "
+                        "product's real behavior, assert the honest "
+                        "expected outcome, and fail on today's code.")
                     continue
                 run = eval_gate.run_pytest(repro_args, "repro_before",
                                            cwd=worktree_dir)
@@ -384,6 +412,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                     # never a valid repro.
                     if run.exit_code == 1 and not _fails_for_wrong_reason(tail):
                         repro_before = run
+                        _progress("repro_before OK (test fails on unfixed tree)")
                         break
                     feedback = (
                         "your regression test fails, but for the WRONG "
@@ -412,6 +441,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
 
         # ── code steps, one at a time ──────────────────────────────────
         for step in plan.code_steps:
+            _progress(f"code step: {step['file']}")
             feedback = ""
             for _ in range(3):
                 resp = _implement(proposer, plan, step, feedback=feedback)
@@ -426,10 +456,12 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                                   f"retries: {feedback}")
 
         # ── the repro must now pass; regressions must be zero ─────────
+        _progress("code applied; running repro_after")
         repro_after = eval_gate.run_pytest(repro_args, "repro_after",
                                            cwd=worktree_dir)
         rounds = 0
         while repro_after.exit_code != 0 and rounds < MAX_FIX_ROUNDS:
+            _progress(f"repro_after failed; fix round {rounds + 1}")
             rounds += 1
             fix_feedback = (
                 "the fix is applied but the regression test still fails. "
@@ -445,9 +477,11 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
             repro_after = eval_gate.run_pytest(repro_args, "repro_after",
                                                cwd=worktree_dir)
 
+        _progress("running full suite (after) for regression check")
         after = eval_gate.run_pytest(SUITE_ARGS, "after", cwd=worktree_dir)
         passed, reason = eval_gate.gate(before, after, repro_before,
                                         repro_after)
+        _progress(f"gate: passed={passed} — {reason[:80]}")
 
         # ── advisory self-review, one revision round, then re-gate ─────
         if passed:
