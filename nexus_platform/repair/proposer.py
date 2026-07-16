@@ -693,7 +693,7 @@ class Proposer:
                 "\nThe product code under test (read it before "
                 "writing the test — use only APIs that "
                 "actually exist in it):\n"
-                + test_context[:30000] + "\n")
+                + test_context[:14000] + "\n")
         # For a CODE step, show the regression test that was already written
         # and now FAILS — the code edit must make exactly that test pass, so
         # the model needs to see what behavior the test asserts (keeps the
