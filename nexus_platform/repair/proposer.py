@@ -649,12 +649,17 @@ class Proposer:
             # localization pass skipped.
             plan_files = [s["file"] for s in plan.code_steps]
             test_context = self._code_context
+            # Show the test writer the functions the PLAN itself names (not
+            # just the localized ones) — the entry point the test must drive
+            # (e.g. run_query) is usually named in the plan text but may have
+            # been missed by localization, which triggers a REPLAN loop.
+            plan_funcs = list(dict.fromkeys(
+                self._located_functions
+                + re.findall(r"`?\b([a-z_][a-z0-9_]{2,})\b`?\s*\(", plan.raw)))
             for extra in plan_files:
-                if extra not in test_context and \
-                        (self.pack.repo_root / extra).exists():
+                if (self.pack.repo_root / extra).exists():
                     test_context += "\n\n" + context_pack.file_slice(
-                        self.pack.repo_root, extra,
-                        self._located_functions)
+                        self.pack.repo_root, extra, plan_funcs)
             style_example = (
                 "\nTHE OBSERVED FAILURE THIS TEST MUST ENCODE — the test "
                 "must exercise the exact failing input below (the question "
