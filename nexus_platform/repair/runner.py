@@ -465,53 +465,86 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                                         repro_after)
         _progress(f"gate: passed={passed} — {reason[:80]}")
 
-        # ── advisory self-review, one revision round, then re-gate ─────
-        if passed:
-            diff = pr._git(["diff"], worktree_dir)
-            review = proposer.self_review(plan, diff[:20000])
-            if "REVISE" in review.split("VERDICT:", 1)[1][:20]:
-                applied = apply_mod.apply_all(worktree_dir, review,
-                                              plan.files_touched)
-                if applied.ok:
-                    repro_after = eval_gate.run_pytest(
-                        repro_args, "repro_after", cwd=worktree_dir)
-                    after = eval_gate.run_pytest(SUITE_ARGS, "after",
-                                                 cwd=worktree_dir)
-                    passed, reason = eval_gate.gate(before, after,
-                                                    repro_before, repro_after)
-
-        evidence_path = worktree_dir / "eval_evidence.json"
-        eval_gate.save_evidence(evidence_path,
-                                [before, repro_before, repro_after, after],
-                                (passed, reason))
-        outcome.evidence_path = str(evidence_path)
-        outcome.ok = passed
-        outcome.reason = reason
         outcome.llm_calls = proposer.calls_made
         outcome.models_used = sorted({e.get("model_used") for e in
                                       proposer.log if e.get("model_used")})
 
+        def _write_evidence():
+            evidence_path = worktree_dir / "eval_evidence.json"
+            eval_gate.save_evidence(
+                evidence_path, [before, repro_before, repro_after, after],
+                (passed, reason))
+            outcome.evidence_path = str(evidence_path)
+            outcome.ok = passed
+            outcome.reason = reason
+
         if passed:
+            # Commit the gate-passed fix IMMEDIATELY, before the advisory
+            # self-review. The review is a strong-model CLI call that can be
+            # slow/interrupted — a verified fix must never be lost to it.
+            _write_evidence()
             body = _pr_body(pack, plan, hypothesis, understanding,
                             before, after, repro_before, repro_after,
                             outcome, predictions=predictions,
                             eval_notes=eval_notes)
             (worktree_dir / "pr_body.md").write_text(body)
-            # Commit what actually changed on disk, bounded by the plan's
-            # allowlist — the authoritative record is the tree, not the
-            # per-step bookkeeping.
             new_files = sorted(f for f in _dirty_paths(worktree_dir)
                                if f in plan.files_touched)
             outcome.files_changed = new_files
             outcome.commit = pr.commit_paths(
                 worktree_dir, new_files,
                 _commit_message(pack, plan, outcome))
+            _progress(f"committed gate-passed fix ({outcome.commit[:8]})")
+
+            # ── advisory self-review; amend the commit only if it revises
+            # AND the change still passes the gate. A slow/killed review now
+            # leaves the already-committed verified fix intact.
+            try:
+                diff = pr._git(["show", "--format=", "HEAD"], worktree_dir)
+                review = proposer.self_review(plan, diff[:20000])
+                if "VERDICT:" in review and \
+                        "REVISE" in review.split("VERDICT:", 1)[1][:20]:
+                    applied = apply_mod.apply_all(worktree_dir, review,
+                                                  plan.files_touched)
+                    if applied.ok:
+                        repro_after = eval_gate.run_pytest(
+                            repro_args, "repro_after", cwd=worktree_dir)
+                        after = eval_gate.run_pytest(SUITE_ARGS, "after",
+                                                     cwd=worktree_dir)
+                        passed2, reason2 = eval_gate.gate(
+                            before, after, repro_before, repro_after)
+                        if passed2:
+                            reason = reason2
+                            _write_evidence()
+                            (worktree_dir / "pr_body.md").write_text(_pr_body(
+                                pack, plan, hypothesis, understanding, before,
+                                after, repro_before, repro_after, outcome,
+                                predictions=predictions, eval_notes=eval_notes))
+                            amend = sorted(f for f in _dirty_paths(worktree_dir)
+                                           if f in plan.files_touched)
+                            pr._git(["add", *amend, "pr_body.md",
+                                     "eval_evidence.json"], worktree_dir)
+                            pr._git(["commit", "--amend", "--no-edit"],
+                                    worktree_dir)
+                            outcome.commit = pr._git(["rev-parse", "HEAD"],
+                                                     worktree_dir)
+                            _progress("self-review revision amended")
+                        else:
+                            # Revision broke the gate — revert to the
+                            # committed, verified fix.
+                            pr._git(["checkout", "--", "."], worktree_dir)
+                            _progress("self-review revision regressed; kept "
+                                      "the committed fix")
+            except Exception as exc:
+                _progress(f"self-review skipped ({type(exc).__name__}); "
+                          "committed fix stands")
+
             store.update_finding_status(
                 finding_id, "fixed", actor="health_repair_pipeline",
                 note=f"fix staged locally by the repair pipeline "
                      f"(models: {', '.join(outcome.models_used)}); "
                      f"publish pending mission end",
-                linked_branch=branch, linked_eval=str(evidence_path))
+                linked_branch=branch, linked_eval=outcome.evidence_path)
             store.add_lesson(
                 scope="repair",
                 lesson=f"pipeline fixed {finding_id} "
@@ -521,6 +554,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                                          pack.traces if t.get("id")],
                 campaign_id=pack.finding["payload"].get("campaign_id"))
         else:
+            _write_evidence()
             store.add_lesson(
                 scope="repair",
                 lesson=f"pipeline attempt on {finding_id} failed the gate: "
