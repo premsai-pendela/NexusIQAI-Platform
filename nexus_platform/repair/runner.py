@@ -354,7 +354,25 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
         repro_args = [plan.test_file]
         repro_before = None
         feedback = ""
+
+        # Resumability: if a prior attempt already wrote+committed the
+        # regression test to this branch (survives the worktree reset) and
+        # it still fails on the un-fixed tree, skip the expensive test-write
+        # and go straight to code steps. The test-write is the slowest CLI
+        # call; making it a one-time cost lets short code+gate resumes retry
+        # cheaply until a clean gate-pass.
+        committed = pr._git(["ls-files", plan.test_file], worktree_dir).strip()
+        if committed:
+            run = eval_gate.run_pytest(repro_args, "repro_before",
+                                       cwd=worktree_dir)
+            if run.exit_code == 1 and not _fails_for_wrong_reason(
+                    _pytest_tail(worktree_dir, repro_args)):
+                repro_before = run
+                _progress("reusing committed regression test (repro_before OK)")
+
         for regen_round in range(MAX_TEST_REGENERATIONS + 1):
+            if repro_before is not None:
+                break
             _progress(f"test-writing round {regen_round} "
                       f"(test={plan.test_file})")
             # Every round writes the test file fresh (deleting at round
@@ -420,6 +438,18 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
             raise StageFailed("could not produce a regression test that "
                               "exercises the failing input and fails on "
                               "the un-fixed tree")
+
+        # Commit the established regression test to the branch so a future
+        # resume can reuse it (skip the slow test-write) — only if it isn't
+        # already committed (the reuse path above).
+        if not committed and (worktree_dir / plan.test_file).exists():
+            try:
+                pr.commit_paths(worktree_dir, [plan.test_file],
+                                f"WIP regression test for {finding_id} "
+                                "(repro established; fix pending)")
+                _progress("committed regression test (resume-safe)")
+            except Exception as exc:
+                _progress(f"test-commit skipped ({type(exc).__name__})")
 
         # ── code steps, one at a time ──────────────────────────────────
         for step in plan.code_steps:
