@@ -45,6 +45,38 @@ output, latency numbers, and the PR link.
 - Watermarks advanced for all three; `resolved_findings` sections empty (no
   prior resolutions — first cross-company run).
 
+## CLI-brain run on hf_fbccccb7e2 (2026-07-16 14:58Z) — TASK 1 validated live
+
+First full CLI-brain repair run, and it validated the automatic model
+selection (TASK 1) in the best possible way. Per-stage models used (from the
+session log): predict=`cli:haiku`, localize=`Gemini Flash` (gateway, the cheap
+sub-task), understand/hypothesize/critique/plan = `cli:sonnet`, and
+**confirm_plan = sonnet** (review pinned to the strong tier). Escalation
+visible: plan retries show the escalated `sonnet`.
+
+**The payoff:** the strong `confirm_plan` reviewer **rejected an inadequate
+plan across all 3 rounds** — the plan's regression test only unit-tested a
+helper in isolation instead of driving the real failing input through
+`query_service`, and the root cause was under-confirmed. A haiku reviewer
+(the old static map) would very likely have rubber-stamped it. This is the
+exact rubber-stamp failure TASK 1 removed, caught live.
+
+**The diagnosis was genuinely sharp** (sonnet): the real defect is that
+`traces` — an internal observability table in NO role's `TABLE_AREAS` — gets
+treated as a role-boundary denial by `_is_access_denied`, and `refusal_message`
+fabricates a confident false "(the 'traces' data area is outside your role)"
+for it. That is the **generalized form of FUTURE_IMPROVEMENTS #1** (ghost-table
+denial mislabel), found unprompted. And the pipeline figured out the
+deterministic repro the prior initiative said it couldn't: stub the SQL
+execution layer to emit `ACCESS_DENIED_TABLE:<table>` (no live LLM), then
+assert `query_service` doesn't fabricate the role-denial sentence.
+
+**Why it didn't ship yet:** the plan and the (correctly strict) confirm gate
+didn't converge in 3 rounds. Supervisory fix (generic harness, not this
+bug's fix): the plan prompt now requires the exact end-to-end + close-variant
++ boundary test the reviewer keeps asking for, and confirm rounds → 4, so a
+sound plan and a rigorous review align faster. Re-running.
+
 ## Wave-2 repair run #1 — finding hf_e4796a5431 (finpilot, false_refusal)
 
 Started 2026-07-16 ~02:58Z on the product's own free-tier chain. Four

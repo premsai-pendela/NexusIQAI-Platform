@@ -40,7 +40,7 @@ from nexus_platform.repair.proposer import (Plan, Proposer, StageFailed,
 SUITE_ARGS = ["tests/platform_mode/"]
 MAX_TEST_REGENERATIONS = 2
 MAX_FIX_ROUNDS = 2
-MAX_PLAN_CONFIRM_ROUNDS = 3
+MAX_PLAN_CONFIRM_ROUNDS = 4
 
 
 @dataclass
