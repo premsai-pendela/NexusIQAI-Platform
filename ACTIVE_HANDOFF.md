@@ -39,16 +39,39 @@ via `scripts/notify_telegram.py`.
   running on it; whole free tier in cooldown (§2c floor), pipeline riding
   out backoff. Scaffolding hardened: concrete plan-stage feedback, mandatory
   plan self-confirm, partial resume. Entry 14 written.
-- **Next unfinished milestone:** let hf_fbccccb7e2 repair complete (or log
-  quota-blocked honestly), then D.9 double-check + PR via repair/pr.py as
-  Nexus-Healthcheck-Bot (verified reachable). Resume:
-  `.venv/bin/python scripts/run_repair.py --company medcore --finding hf_fbccccb7e2`
-  (add --resume-from the newest data/repair_sessions/hf_fbccccb7e2_*.json).
-- **Honest metrics so far:** 54 live adversarial Qs / 3 companies; Wave-1
-  caught 14 findings incl. self-caught false positive (dismissed); latency
-  before-numbers recorded (wrongful denial up to 17.6s vs 0.19s
-  deterministic); 1 hard bug honestly open (sql-failed seam), 1 already-
-  resolved finding dismissed, 1 deterministic bug in repair.
+- **BLOCKED ON DAILY FREE-TIER RESET (as of 05:56Z / 2026-07-16).** The
+  malformed-bypass fix (`hf_fbccccb7e2`, medcore) is verified real,
+  deterministic, and pipeline-ready, but the shared free tier is
+  DAILY-exhausted (Gemini/Groq hard-cap on first call; NVIDIA 360/48;
+  Cerebras empty). §2c forbids forcing it. Gemini daily resets ~08:00 UTC.
+- **EXACT RESUME (one clean run once quota resets):**
+  1. `git worktree remove --force ../NexusIQAI-healthfix-e64f9273 2>/dev/null; git worktree prune; git branch -D healthfix/e64f9273 2>/dev/null`
+  2. `NEXUSIQ_REPAIR_SKIP_PREDICT=1 .venv/bin/python scripts/run_repair.py --company medcore --finding hf_fbccccb7e2`
+     (predict-skip conserves quota; the deterministic bug's repro needs no
+     LLM. Add `--resume-from` the newest `data/repair_sessions/hf_fbccccb7e2_*.json`
+     if a partial session was written.)
+  3. On `gate_passed: true`: D.9 — re-run the repro + suite in the worktree;
+     then I independently verify the fix flips route agent→clarification for
+     `expnses for quater 5?` / `tikets by priorty for p9?` deterministically.
+  4. PR via the pipeline's own code:
+     `from nexus_platform.repair import pr; pr.push_branch(worktree, "healthfix/e64f9273"); pr.open_pr(worktree, title, worktree/"pr_body.md")`
+     — pushes + opens under Nexus-Healthcheck-Bot (GH_TOKEN, verified
+     reachable). NEVER merge.
+- **Honest metrics:** 54 live adversarial Qs / 3 companies; Wave-1 = 13
+  findings open + 8 resolved/dismissed (incl. self-caught false positive +
+  an already-resolved routing finding); latency before-numbers (wrongful
+  denial up to 17.6s vs 0.19s deterministic); 1 hard seam bug diagnosed +
+  open (`hf_e4796a5431`); 233 tests green; repair pipeline hardened across 5
+  supervised attempts (each fix committed).
+- **The verified diagnosis for the deferred fix** (so the pipeline needn't
+  re-derive it): `find_clarification`'s malformed-period gate only fires when
+  a recognized metric is present (`f.metric or f.explicit_periods`); a typo'd
+  metric word leaves `f.metric=None`, so `teh margns for q0` / `expnses for
+  quater 5` bypass to `agent`→confident LLM answer. The class-level fix
+  belongs in `orchestrator.find_clarification` (fire the malformed/unknown
+  gate on a bare malformed token OR an unrecognized metric-shaped term even
+  when `f.metric is None`). Deterministic repro: assert `decide_route(q,
+  policy).route == "clarification"`, no LLM.
 - **Resume:** read the mission file, then this section; task list in session;
   tests `.venv/bin/python -m pytest tests/platform_mode/ -q`.
 - **Known failures:** none yet.

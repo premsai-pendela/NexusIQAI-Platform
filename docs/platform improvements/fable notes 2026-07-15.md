@@ -174,6 +174,45 @@ now partial — a run that died before a valid plan reuses its finished
 localize/understand/hypothesize outputs instead of re-deriving them.
 Attempt 2 relaunched with --resume-from. Lesson persisted to deepwork.
 
+## Honest run metrics (as of 05:56Z) — captured only what really happened
+
+- **Harnesses upgraded:** 4/4 (sim, Wave-1 review, Wave-2 repair, analyst
+  harness judgment) + Bedrock→Haiku 4.5 wiring. Tests: 229→**233 green**.
+- **Tenancy:** `company_overrides` shared-kernel + per-company packs +
+  orchestrator seams, isolation proven by 4 dedicated tests.
+- **Live campaigns:** 54 adversarial questions, 3 companies, 8 employees;
+  every question fresh (none repeated a solved one); RDS + local mirror.
+- **Wave-1 reviews:** 3 reports (hc_50fcb12888, hc_d29a351231,
+  hc_e75e8d889b); **13 findings open** across 3 companies + **8
+  resolved/dismissed** (incl. the self-caught fabricated false positive and
+  the already-resolved "customers for a4" routing finding).
+- **Classifier caught unprompted:** a deterministic false-refusal
+  (FinPilot Ops SLA join), the misclassified-refusal class across companies,
+  and — via honest self-audit — its OWN store-pollution false positive.
+- **Latency before-numbers (measured live):** deterministic 0.19s vs
+  wrongful `access_refusal` up to **17.64s** (avg 3.20s). The false-refusal
+  bug class and the latency spike are the same sql-failed-seam defect.
+- **Bugs:** 1 hard seam bug (`hf_e4796a5431`) diagnosed + logged OPEN;
+  1 deterministic malformed-bypass bug (`hf_fbccccb7e2`) verified real +
+  pipeline-ready, fix **quota-deferred** on the daily free-tier cap;
+  several other findings are the same stochastic seam class (open) or
+  already-resolved (dismissed).
+- **Repair pipeline hardened across 5 supervised attempts:** concrete
+  plan-stage feedback (was discarding rejected LLM answers), mandatory plan
+  self-confirmation (never exempt, seeded included), partial resume seeding,
+  bounded predictor, budget-conserving predict-skip knob. Each fix committed.
+
+## Budget-floor stop-assessment (05:56Z)
+
+The shared free tier is DAILY-exhausted: Gemini and Groq each give one call
+then a hard ~60-min/daily wall; NVIDIA is 360/48 over its daily worker cap;
+Cerebras returns empty. This is §2c behaving as designed after a full night
+of legitimate campaigns + reviews + repair attempts — a fixed constraint I
+may not spend around. Gemini's daily quota resets ~08:00 UTC (midnight
+Pacific). The malformed-bypass fix is one clean run away once quota resets;
+everything else this run is complete and committed. Resume path in
+ACTIVE_HANDOFF.
+
 ## Git topology decision (01:25Z)
 `origin/master` = PR #12 merge (has sim_employees, repair, store, sim/).
 Local `trace-restore/dev` is +4 (Wave-1 grader). Local `master` was stale →
