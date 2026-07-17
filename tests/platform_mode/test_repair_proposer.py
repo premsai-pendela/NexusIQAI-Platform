@@ -308,7 +308,11 @@ def test_wrong_reason_failure_detection():
         "E   TypeError: bad\nlater...\nE   AssertionError: nope")
 
 
-def test_implement_step_slices_large_files():
+def test_implement_step_slices_large_files(monkeypatch):
+    # Exercise the slice behavior independent of the exact threshold constant
+    # (which is tuned separately for the CLI brain's real request size): force
+    # a low ceiling so any real product file trips it.
+    monkeypatch.setattr(proposer_mod, "IMPLEMENT_SLICE_THRESHOLD_LINES", 50)
     pack = _pack()
     plan, _ = _parse_plan(GOOD_PLAN.replace(
         "nexus_platform/orchestrator.py", "agents/sql_agent.py"))
@@ -318,8 +322,8 @@ def test_implement_step_slices_large_files():
     p._located_functions = ["_validate_query"]
     p.implement_step(plan, plan.code_steps[0])
     prompt = fake.prompts[0][1]
-    # sql_agent.py is >1200 lines; the prompt must carry a slice, not the
-    # whole file (whole-file prompts got 413'd by Groq live).
+    # A file over the (now low) threshold must carry a slice, not the whole
+    # file (whole-file prompts got 413'd by Groq live).
     assert "only the relevant parts of the file are shown" in prompt
     assert len(prompt) < 30000
 
