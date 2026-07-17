@@ -1,8 +1,9 @@
 """Trigger the Health Check Agent's repair pipeline on a stored finding.
 
 The pipeline itself (nexus_platform/repair/) does the diagnosing, planning,
-test-writing, and code-editing — on the product's own free-tier LLM chain.
-This script only points it at a finding and prints what it did.
+test-writing, and code-editing — its hard reasoning stages on Claude Code via
+CLI, the cheap localization stage on the product's free-tier chain (corrected
+§2e). This script only points it at a finding and prints what it did.
 
 Usage:
     .venv/bin/python scripts/run_repair.py --company acmecloud --finding hf_xxxx

@@ -207,3 +207,59 @@ mission's own rule, an honestly-open item + a fixed-constraint block is not
 something to fake past. The diagnosis, the reproduction, the fix location,
 and the deterministic test shape are all specified so the resume is
 mechanical.
+
+### RUN COMPLETED (2026-07-16, later session) — PR #13 open, goal met
+
+The quota block above was resolved by the design change Prem made: the repair
+brain now runs the HARD stages on **Claude Code via CLI** (`repair/cli_brain.py`),
+not the shared free tier — so the pipeline no longer competes with live traffic
+for reasoning capacity. Both tasks then completed. Full engineering narrative:
+ARCHITECTURE_LOG **Entry 15**.
+
+- **TASK 1 — automatic per-sub-task model selection (done).** Replaced the
+  static heavy/light map with automatic tiering over a ladder
+  (`NEXUSIQ_REPAIR_CLI_TIERS`, default `haiku,sonnet`): **review stages
+  (critique/confirm_plan/self_review) always run on the TOP tier** (a reviewer
+  is never weaker than the author — removes the rubber-stamp risk); generation
+  stages start at a complexity-appropriate tier and **escalate one tier per
+  validator-rejected retry**. Live-proven: the strong `confirm_plan` reviewer
+  **rejected an inadequate plan 3× that a haiku reviewer would have passed**.
+
+- **TASK 2 — pipeline diagnosed + fixed a real bug end-to-end → PR #13.** Note:
+  it did NOT fix the malformed-typo-bypass I'd pre-diagnosed; running the loop,
+  it diagnosed unprompted the **more general and more serious** bug behind the
+  same finding (`hf_fbccccb7e2`, trace `tr_91fcf57504`): a garbled query
+  (`what were our expnses for quater 5?`) makes the SQL LLM hallucinate a
+  **nonexistent table**, the AST allowlist rejects it as `ACCESS_DENIED_TABLE`,
+  and `query_service` then **fabricated a confident false role-denial** — "the
+  'traces' data area is outside your role" — for a table that does not exist in
+  `access_policy.ALL_TABLES`. Fix: validate the denied table against
+  `ALL_TABLES`; if it isn't real, return an honest "couldn't generate a valid
+  query — please rephrase" instead of a fabricated permission refusal. A
+  confident false denial is worse than a missing clarification — this was the
+  better catch, and the pipeline found it itself.
+  - **Authored 100% by the pipeline** (diagnosis, self-confirmed plan,
+    regression test, code) in **5 LLM calls** on **cli:sonnet**. Session log:
+    `data/repair_sessions/hf_fbccccb7e2_20260716T235006Z.json`.
+  - **Eval gate (before→after):** untouched tree — repro **1 failed** (bug real
+    + encoded), suite 221 passed / 1 failed. After the fix — repro **passed**,
+    suite **222 passed, zero new regressions**.
+  - **PR #13** opened under **Nexus-Healthcheck-Bot**, +62/−6 across 2 files,
+    **human-merge-gated** (no merge code path, structurally enforced). Never
+    merged. D.9 double-check + independent verification done.
+
+- **Honest limits (unchanged, not faked):** this run produced **one**
+  pipeline-authored fix (proof-of-capability, not volume). The two hard
+  `access_refusal` findings are the same **stochastic sql-failed seam**
+  (`hf_e4796a5431`) — still logged **OPEN** (needs a stubbed-LLM repro the
+  pipeline can't yet write). The predictor produced **class-level
+  generalization** (the fix covers any hallucinated table), not a separately
+  verified hidden-bug fix. A mid-run **disk-full** episode (~19 worktree copies
+  + model caches) halted work until Prem freed space.
+
+- **Reliability engineering (the real story of the run):** getting the CLI-brain
+  loop from "gate-passes once (17:33)" to "reliably commits + PRs" took ~15
+  generic harness fixes (commit-before-review, CLI-timeout ≠ starvation,
+  checkpoint+reuse the confirmed plan, commit the regression test once and
+  resume cheap code+gate until a clean pass, surgical-edit rule, etc.) — none of
+  them ever the bug's fix. All committed; all 250 platform tests green.

@@ -629,8 +629,10 @@ def _commit_message(pack, plan: Plan, outcome: RepairOutcome) -> str:
     kind = pack.finding["payload"].get("kind", "finding")
     return (f"Fix {kind}: {pack.finding['summary'][:100]}\n\n"
             f"Diagnosed, planned, and written by the Health Check Agent "
-            f"repair pipeline\nrunning on the product's shared free-tier "
-            f"LLM chain (models used: {', '.join(outcome.models_used)}).\n"
+            f"repair pipeline:\nthe hard reasoning stages run on Claude Code "
+            f"via CLI, the cheap localization\nstage on the product's "
+            f"free-tier chain (models used: "
+            f"{', '.join(outcome.models_used)}).\n"
             f"Finding: {pack.finding['id']}; evidence traces: "
             f"{', '.join(t.get('id', '?') for t in pack.traces)}.\n"
             f"Eval gate: {outcome.reason}")
@@ -674,8 +676,9 @@ evidence trace(s): {', '.join(t.get('id', '?') for t in pack.traces)}).
 
 Every step of this fix — diagnosis, plan, regression test, and code —
 was produced by the Health Check Agent's own repair pipeline
-(`nexus_platform/repair/`), running on the product's shared free-tier
-LLM chain ({', '.join(outcome.models_used) or 'fallback chain'}),
+(`nexus_platform/repair/`). Its hard reasoning stages run on Claude Code
+via CLI; the cheap localization stage stays on the product's free-tier
+chain. Models used: {', '.join(outcome.models_used) or 'fallback chain'},
 in {outcome.llm_calls} LLM calls. The full stage-by-stage session log
 (prompts, responses, validator verdicts) is preserved locally at
 `{outcome.session_log}`.
