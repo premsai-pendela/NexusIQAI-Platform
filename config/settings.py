@@ -35,8 +35,14 @@ class Settings(BaseSettings):
     # role keep their current fallback order).
     bedrock_enabled: bool = False
     bedrock_region: str = "us-east-1"
-    bedrock_fast_model: str = "anthropic.claude-3-5-haiku-20241022-v1:0"
-    bedrock_reasoning_model: str = "anthropic.claude-3-5-haiku-20241022-v1:0"
+    # Claude Haiku 4.5 (3.5 Haiku was retired upstream 2026-02). Newer
+    # Anthropic models on Bedrock are invoked through the cross-region
+    # inference profile id (us. prefix), not the bare foundation-model id —
+    # the task role's IAM policy must allow BOTH the inference-profile ARN
+    # and the underlying foundation-model ARNs (see
+    # infrastructure/nexusiq-platform-stack.yaml).
+    bedrock_fast_model: str = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
+    bedrock_reasoning_model: str = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
     bedrock_timeout: int = 30
 
     # Model names

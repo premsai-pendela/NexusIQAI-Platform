@@ -195,6 +195,13 @@ CREATE TABLE IF NOT EXISTS agent_lessons (
     active INTEGER NOT NULL DEFAULT 1,
     referenced_count INTEGER NOT NULL DEFAULT 0
 );
+
+CREATE TABLE IF NOT EXISTS review_watermark (
+    company TEXT PRIMARY KEY,
+    last_ts TEXT,
+    last_run_at TEXT,
+    runs INTEGER NOT NULL DEFAULT 0
+);
 """
 
 
@@ -612,6 +619,27 @@ def save_health_report(company: str, requested_by: str, window_days: int,
     return hid
 
 
+def get_review_watermark(company: str) -> Optional[dict]:
+    """Where the last trace-review run stopped for this company (the newest
+    trace ts it had seen), plus when it ran and how many runs so far."""
+    with _tx() as c:
+        row = c.execute(
+            "SELECT last_ts, last_run_at, runs FROM review_watermark WHERE company=?",
+            (company,)).fetchone()
+    return row
+
+
+def set_review_watermark(company: str, last_ts: Optional[str]) -> None:
+    now = _now()
+    with _tx() as c:
+        c.execute(
+            "INSERT INTO review_watermark (company, last_ts, last_run_at, runs) "
+            "VALUES (?,?,?,1) ON CONFLICT (company) DO UPDATE SET "
+            "last_ts=excluded.last_ts, last_run_at=excluded.last_run_at, "
+            "runs=review_watermark.runs+1",
+            (company, last_ts, now))
+
+
 def list_health_reports(company: str, limit: int = 20) -> list[dict]:
     with _tx() as c:
         rows = c.execute(
@@ -833,6 +861,25 @@ def update_finding_status(finding_id: str, to_status: str, actor: str,
             (finding_id, _now(), actor, row["status"], to_status, note),
         )
     return True
+
+
+def finding_resolutions_since(company: str, since_ts: Optional[str]) -> dict:
+    """Map finding_id -> resolution event ts for findings of this company
+    whose status moved to fixed/dismissed_valid after `since_ts` (all of
+    them when since_ts is None). Lets the health review say, run over run,
+    which of last run's bugs actually got resolved."""
+    sql = (
+        "SELECT e.finding_id, e.ts FROM health_finding_events e "
+        "JOIN health_findings f ON f.id = e.finding_id "
+        "WHERE f.company=? AND e.to_status IN ('fixed','dismissed_valid')"
+    )
+    params: list = [company]
+    if since_ts:
+        sql += " AND e.ts > ?"
+        params.append(since_ts)
+    with _tx() as c:
+        rows = c.execute(sql, params).fetchall()
+    return {r["finding_id"]: r["ts"] for r in rows}
 
 
 def list_findings(company: str, status: Optional[str] = None) -> list[dict]:

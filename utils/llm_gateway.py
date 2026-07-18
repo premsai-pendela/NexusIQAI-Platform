@@ -542,7 +542,13 @@ class LLMGateway:
                     response = client.invoke(prompt)
                     content = _response_text(response)
                 if response_validator is not None and not response_validator(content):
-                    raise LLMResponseValidationError("LLM response did not pass task validation")
+                    err = LLMResponseValidationError(
+                        "LLM response did not pass task validation")
+                    # Keep the rejected text: callers with a feedback loop
+                    # need to see WHAT failed to produce a concrete
+                    # correction (a discarded answer is an unusable signal).
+                    err.invalid_content = content
+                    raise err
                 elapsed = time.time() - model_start
                 output_tokens = _estimate_tokens(content)
                 actual_usage = _extract_actual_token_usage(response)
@@ -615,6 +621,9 @@ class LLMGateway:
                     "time": round(elapsed, 2),
                     "task": task,
                 }
+                if isinstance(exc, LLMResponseValidationError):
+                    attempt["invalid_content"] = getattr(
+                        exc, "invalid_content", "")[:4000]
                 models_tried.append(attempt)
                 observer.update_generation(
                     generation,
