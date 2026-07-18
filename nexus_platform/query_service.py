@@ -692,7 +692,8 @@ def run_query(ctx: AccessContext, question: str, session_id: str,
         # "rerun" falls through to normal routing; "analyze_with_ai" is
         # handled by the route decision below.
 
-    decision = decide_route(question, ctx.policy, prev_intent, repeat_action)
+    decision = decide_route(question, ctx.policy, prev_intent, repeat_action,
+                            company=ctx.company.slug)
 
     if decision.route == "clarification":
         return _finish_clarification(ctx, question, session_id, decision, len(turns))

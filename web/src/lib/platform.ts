@@ -235,6 +235,91 @@ export const runHealthCheck = (windowDays = 30, llmSummary = false, source = "re
     body: JSON.stringify({ window_days: windowDays, llm_summary: llmSummary, source }),
   });
 
+// ── Wave 1 trace-review report ─────────────────────────────────────────
+export type ReviewTrace = {
+  trace_id: string;
+  employee: string;
+  role: string;
+  ts: string;
+  question: string;
+  answer: string;
+  route: string | null;
+  access_decision: string | null;
+  verdict: string;
+  tier: string;
+  reason: string;
+  expected: string;
+  reality: string;
+};
+export type ReviewEmployee = {
+  email: string;
+  name: string;
+  role: string;
+  trace_count: number;
+  verdict_counts: Record<string, number>;
+  issues: number;
+  traces: ReviewTrace[];
+};
+export type ReviewFix = {
+  issue: string;
+  severity: string;
+  count: number;
+  employees: string[];
+  example_trace_ids: string[];
+  recommendation: string;
+};
+export type OpenFinding = {
+  summary: string;
+  severity: string;
+  classification: string;
+  status: string;
+  first_seen: string;
+  last_seen: string;
+  is_new: boolean;
+  trace_id: string | null;
+};
+export type HealthReviewReport = {
+  kind: string;
+  company: string;
+  company_name: string;
+  requested_by: string;
+  generated_at: string;
+  report_date: string;
+  window_days: number;
+  incremental: boolean;
+  since: string;
+  previous_run_at: string | null;
+  run_number: number;
+  date_from: string;
+  date_to: string;
+  source: string;
+  traces_reviewed: number;
+  new_traces_reviewed: number;
+  graded: number;
+  summary: {
+    total_traces: number;
+    employees_active: number;
+    verdict_counts: Record<string, number>;
+    issues: number;
+    llm_calls_used: number;
+    needs_human_review: number;
+    findings_new: number;
+    findings_carried: number;
+    per_employee: { name: string; role: string; email: string; traces: number; issues: number }[];
+  };
+  narrative: string;
+  employees: ReviewEmployee[];
+  fixes_needed: ReviewFix[];
+  open_findings: OpenFinding[];
+  report_id?: string;
+};
+
+export const runHealthReview = (windowDays = 30, source = "real", llmBudget = 25) =>
+  req<HealthReviewReport>("/platform/admin/health-review", {
+    method: "POST",
+    body: JSON.stringify({ window_days: windowDays, source, llm_budget: llmBudget }),
+  });
+
 export const submitFeedback = (payload: {
   category: string;
   message: string;

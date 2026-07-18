@@ -5,12 +5,14 @@ import {
   FeedbackItem,
   HealthFinding,
   HealthReport,
+  HealthReviewReport,
   TraceSummary,
   adminEmployees,
   adminFeedback,
   adminTraces,
   fetchTraceDetail,
   runHealthCheck,
+  runHealthReview,
   setFeedbackStatus,
 } from "@/lib/platform";
 
@@ -405,6 +407,252 @@ function HealthCheckPanel({ onOpenTrace }: { onOpenTrace: (id: string) => void }
   );
 }
 
+const VERDICT_STYLE: Record<string, { bg: string; fg: string; label: string }> = {
+  correct: { bg: "var(--success-bg)", fg: "var(--success-text)", label: "correct" },
+  correct_refusal: { bg: "var(--success-bg)", fg: "var(--success-text)", label: "correct refusal" },
+  wrong: { bg: "#F9E3E3", fg: "#A32D2D", label: "wrong" },
+  false_refusal: { bg: "#F9E3E3", fg: "#A32D2D", label: "wrongly refused" },
+  partly_correct: { bg: "#FCF3DC", fg: "#8A5B10", label: "partly right" },
+  needs_human_review: { bg: "#FCF3DC", fg: "#8A5B10", label: "needs human review" },
+  not_applicable: { bg: "var(--chip-neutral-bg)", fg: "var(--chip-neutral-text)", label: "n/a" },
+};
+
+function VerdictChip({ v }: { v: string }) {
+  const s = VERDICT_STYLE[v] || VERDICT_STYLE.not_applicable;
+  return <span className="chip mono" style={{ fontSize: 9, background: s.bg, color: s.fg }}>{s.label}</span>;
+}
+
+function esc(s: unknown): string {
+  return String(s ?? "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c] as string));
+}
+
+/* Build a self-contained printable HTML doc for the report → open in a new
+   window → the browser's print dialog saves it as a PDF (no server-side lib). */
+function buildReviewHtml(r: HealthReviewReport): string {
+  const vc = r.summary.verdict_counts || {};
+  const chip = (v: string, n: number) => `<span class="v v-${v}">${VERDICT_STYLE[v]?.label || v}: ${n}</span>`;
+  const perEmp = r.summary.per_employee.map(
+    (e) => `<tr><td>${esc(e.name)}</td><td>${esc(e.role)}</td><td class="num">${e.traces}</td><td class="num ${e.issues ? "bad" : ""}">${e.issues}</td></tr>`
+  ).join("");
+  const empSections = r.employees.map((e) => `
+    <section class="emp">
+      <h2>${esc(e.name)} — ${esc(e.role)} <span class="sub">${esc(e.email)} · ${e.trace_count} trace(s) · ${e.issues} to review</span></h2>
+      ${e.traces.map((t) => `
+        <div class="trace ${["wrong", "false_refusal"].includes(t.verdict) ? "t-bad" : ""}">
+          <div class="trow"><span class="v v-${t.verdict}">${VERDICT_STYLE[t.verdict]?.label || t.verdict}</span>
+            <span class="q">${esc(t.question)}</span><span class="tid">${esc(t.trace_id)}</span></div>
+          <div class="rev">${esc(t.reason)}${t.expected && t.expected !== "—" ? ` <b>Expected:</b> ${esc(t.expected)} · <b>Got:</b> ${esc(t.reality)}` : ""}</div>
+        </div>`).join("")}
+    </section>`).join("");
+  const fixes = r.fixes_needed.map((f) => `
+    <li><span class="sev sev-${f.severity}">${esc(f.severity)}</span> <b>${esc(f.issue)}</b> (${f.count}) — ${esc(f.recommendation)}
+    <span class="tid">e.g. ${f.example_trace_ids.slice(0, 3).join(", ")}</span></li>`).join("");
+  const openF = r.open_findings.map((f) => `
+    <li><span class="sev sev-${f.severity}">${esc(f.severity)}</span> ${esc(f.summary)}
+    <span class="tid">${f.is_new ? "new this run" : "open since " + esc((f.first_seen || "").slice(0, 10))} · ${esc(f.status)}</span></li>`).join("");
+  return `<!doctype html><html><head><meta charset="utf-8"><title>Health Report — ${esc(r.company_name)} — ${esc(r.report_date)}</title>
+  <style>
+    body{font:13px/1.5 -apple-system,system-ui,sans-serif;color:#29251f;margin:36px;max-width:900px}
+    h1{font:600 24px Georgia,serif;margin:0 0 2px} h2{font:600 15px Georgia,serif;margin:18px 0 8px;border-bottom:1px solid #ddd;padding-bottom:4px}
+    .muted{color:#8c8479} .sub{font:400 11px system-ui;color:#8c8479}
+    .head{border-bottom:2px solid #2f5233;padding-bottom:10px;margin-bottom:14px}
+    .narr{background:#f5f1ea;border-left:3px solid #2f5233;padding:10px 12px;border-radius:6px;margin:12px 0}
+    .vs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+    .v{font:600 10px system-ui;padding:2px 8px;border-radius:20px;background:#eee;color:#555}
+    .v-correct,.v-correct_refusal{background:#e6eee3;color:#2f5233}
+    .v-wrong,.v-false_refusal{background:#f9e3e3;color:#a32d2d}
+    .v-partly_correct,.v-needs_human_review{background:#fcf3dc;color:#8a5b10}
+    table{border-collapse:collapse;width:100%;margin:8px 0;font-size:12px} th,td{text-align:left;padding:5px 8px;border-bottom:1px solid #eee}
+    th{font:600 10px system-ui;text-transform:uppercase;letter-spacing:.05em;color:#8c8479} .num{text-align:right} .bad{color:#a32d2d;font-weight:600}
+    .emp{page-break-inside:avoid} .trace{margin:6px 0;padding:7px 9px;border:0.5px solid #eee;border-radius:6px} .t-bad{border-color:#e7b7b7;background:#fdf6f6}
+    .trow{display:flex;gap:8px;align-items:baseline} .q{flex:1;font-weight:500} .tid{font:10px monospace;color:#aaa}
+    .rev{font-size:11.5px;color:#4c463d;margin-top:3px} .fixes li{margin:7px 0}
+    .sev{font:600 9px system-ui;padding:1px 6px;border-radius:4px;text-transform:uppercase} .sev-high{background:#f9e3e3;color:#a32d2d} .sev-medium{background:#fcf3dc;color:#8a5b10}
+    .pagebreak{page-break-before:always} @media print{body{margin:14mm}}
+  </style></head><body>
+  <div class="head"><h1>Health Report</h1>
+    <div class="muted">${esc(r.company_name)} · ${esc(r.report_date)} · reviewed traces from the last ${r.window_days} days (${esc((r.date_from || "").slice(0, 10))} → ${esc((r.date_to || "").slice(0, 10))}) · ${esc(r.source)} traffic</div></div>
+  <div class="narr">${esc(r.narrative)}</div>
+  <div class="vs">${Object.entries(vc).map(([v, n]) => chip(v, n as number)).join("")}</div>
+  <h2>Traces reviewed: ${r.traces_reviewed} · by employee</h2>
+  <table><thead><tr><th>Employee</th><th>Role</th><th class="num">Traces</th><th class="num">To review</th></tr></thead><tbody>${perEmp}</tbody></table>
+  <div class="pagebreak"></div><h1>Per-employee review</h1>${empSections}
+  <div class="pagebreak"></div><h1>Fixes needed</h1>
+  <p class="muted">From all reviewed traces, these need attention. Wave 2 (the repair pipeline) turns these into tested, human-reviewed pull requests.</p>
+  <ul class="fixes">${fixes || "<li>No issues found — every gradable answer checked out.</li>"}</ul>
+  <div class="pagebreak"></div><h1>Open findings — memory (run #${r.run_number})</h1>
+  <p class="muted">Everything still open: new this run plus items carried over from earlier runs until they're fixed. This persists across runs.</p>
+  <ul class="fixes">${openF || "<li>Nothing open.</li>"}</ul>
+  </body></html>`;
+}
+
+function HealthReviewPanel() {
+  const [report, setReport] = useState<HealthReviewReport | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [days, setDays] = useState(30);
+  const [source, setSource] = useState("real");
+  const [err, setErr] = useState<string | null>(null);
+  const [openEmp, setOpenEmp] = useState<string | null>(null);
+
+  const run = async () => {
+    setBusy(true); setErr(null);
+    try { setReport(await runHealthReview(days, source, 25)); }
+    catch (e) { setErr(e instanceof Error ? e.message : "Review failed"); }
+    finally { setBusy(false); }
+  };
+  const downloadPdf = () => {
+    if (!report) return;
+    const w = window.open("", "_blank");
+    if (!w) return;
+    w.document.write(buildReviewHtml(report));
+    w.document.close();
+    setTimeout(() => w.print(), 350);
+  };
+  const downloadJson = () => {
+    if (!report) return;
+    const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `health-report-${report.company}-${(report.date_to || "").slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  const vc = report?.summary.verdict_counts || {};
+  return (
+    <div className="card" style={{ background: "var(--surface-soft)", padding: "14px 16px", marginBottom: 22 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+        <div>
+          <div style={{ fontSize: 14.5, fontWeight: 500, color: "var(--ink)" }}>Trace Review — Wave 1</div>
+          <div style={{ fontSize: 11.5, color: "var(--muted)" }}>
+            Judges every trace one by one — deterministic first, an LLM for the harder ones, and flags anything neither can decide for a human. Produces a downloadable report.
+          </div>
+        </div>
+        <span style={{ marginLeft: "auto", display: "flex", gap: 8, alignItems: "center" }}>
+          <select value={source} onChange={(e) => setSource(e.target.value)}
+            style={{ padding: "6px 8px", borderRadius: 8, border: "1px solid var(--hairline-mid)", background: "var(--surface-card)", fontSize: 11.5, color: "var(--ink)", fontFamily: "var(--font-sans), sans-serif" }}>
+            <option value="real">real traffic</option>
+            <option value="simulated">synthetic demo</option>
+          </select>
+          <select value={days} onChange={(e) => setDays(Number(e.target.value))}
+            style={{ padding: "6px 8px", borderRadius: 8, border: "1px solid var(--hairline-mid)", background: "var(--surface-card)", fontSize: 11.5, color: "var(--ink)", fontFamily: "var(--font-sans), sans-serif" }}>
+            <option value={7}>last 7 days</option>
+            <option value={30}>last 30 days</option>
+            <option value={90}>last 90 days</option>
+          </select>
+          <button className="btn-primary" onClick={run} disabled={busy} style={{ fontSize: 12, padding: "7px 14px", opacity: busy ? 0.6 : 1 }}>
+            {busy ? "Reviewing…" : report ? "Run again" : "Review all traces"}
+          </button>
+        </span>
+      </div>
+      {err && <div style={{ color: "#A32D2D", fontSize: 12, marginTop: 10 }}>{err}</div>}
+
+      {report && (
+        <div style={{ marginTop: 12 }}>
+          <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", marginBottom: 8 }}>
+            <span className="mono" style={{ fontSize: 11, color: "var(--ink)", fontWeight: 600 }}>Health Report · {report.report_date}</span>
+            <span style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
+              <button onClick={downloadPdf} className="btn-primary" style={{ fontSize: 11, padding: "5px 11px" }}>↓ Download PDF</button>
+              <button onClick={downloadJson} style={{ fontSize: 11, padding: "5px 11px", borderRadius: 8, border: "1px solid var(--hairline-mid)", background: "var(--surface-card)", cursor: "pointer", color: "var(--ink)" }}>↓ JSON</button>
+            </span>
+          </div>
+          <div style={{ fontSize: 12.5, color: "var(--body)", lineHeight: 1.6 }}>{report.narrative}</div>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 6 }}>
+            <span className="chip chip-neutral" style={{ fontSize: 9.5 }}>run #{report.run_number}</span>
+            <span className="chip chip-neutral" style={{ fontSize: 9.5 }}>{report.new_traces_reviewed} new since last run</span>
+            {report.summary.findings_carried > 0 && (
+              <span className="chip" style={{ fontSize: 9.5, background: "#FCF3DC", color: "#8A5B10" }}>{report.summary.findings_carried} carried over</span>
+            )}
+          </div>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", margin: "10px 0" }}>
+            {Object.entries(vc).map(([v, n]) => (
+              <span key={v} className="chip" style={{ background: VERDICT_STYLE[v]?.bg, color: VERDICT_STYLE[v]?.fg, fontSize: 10 }}>
+                {VERDICT_STYLE[v]?.label || v}: {n}
+              </span>
+            ))}
+          </div>
+
+          {/* per-employee summary → expand to per-trace reviews */}
+          <div style={{ display: "grid", gap: 5, marginTop: 6 }}>
+            {report.employees.map((e) => (
+              <div key={e.email} className="card" style={{ background: "var(--surface-card)", padding: "8px 11px", border: "0.5px solid var(--hairline)" }}>
+                <button onClick={() => setOpenEmp(openEmp === e.email ? null : e.email)}
+                  style={{ background: "none", border: "none", cursor: "pointer", width: "100%", textAlign: "left", display: "flex", alignItems: "center", gap: 8, padding: 0 }}>
+                  <span style={{ fontSize: 12.5, color: "var(--ink)", fontWeight: 500 }}>{e.name}</span>
+                  <span className="mono" style={{ fontSize: 10, color: "var(--muted)" }}>{e.role}</span>
+                  <span style={{ marginLeft: "auto", display: "flex", gap: 5, alignItems: "center" }}>
+                    <span className="mono" style={{ fontSize: 10, color: "var(--muted-soft)" }}>{e.trace_count} traces</span>
+                    {e.issues > 0 && <span className="chip" style={{ background: "#F9E3E3", color: "#A32D2D", fontSize: 9 }}>{e.issues} to review</span>}
+                    <span style={{ color: "var(--muted-soft)", fontSize: 11 }}>{openEmp === e.email ? "▾" : "▸"}</span>
+                  </span>
+                </button>
+                {openEmp === e.email && (
+                  <div style={{ display: "grid", gap: 4, marginTop: 8 }}>
+                    {e.traces.map((t) => (
+                      <div key={t.trace_id} style={{ padding: "6px 8px", borderRadius: 6, background: "var(--surface-soft)", border: ["wrong", "false_refusal"].includes(t.verdict) ? "0.5px solid #E7B7B7" : "0.5px solid transparent" }}>
+                        <div style={{ display: "flex", gap: 7, alignItems: "baseline" }}>
+                          <VerdictChip v={t.verdict} />
+                          <span style={{ fontSize: 12, color: "var(--ink)", flex: 1 }}>{t.question}</span>
+                          <span className="mono" style={{ fontSize: 9, color: "var(--muted-soft)" }}>{t.tier}</span>
+                        </div>
+                        <div style={{ fontSize: 11, color: "var(--body)", marginTop: 3, lineHeight: 1.45 }}>
+                          {t.reason}
+                          {t.expected && t.expected !== "—" && (
+                            <span className="mono" style={{ color: "var(--muted)" }}> · expected {t.expected} · got {t.reality}</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {report.fixes_needed.length > 0 && (
+            <div style={{ marginTop: 12 }}>
+              <div className="label" style={{ marginBottom: 6 }}>FIXES NEEDED</div>
+              <div style={{ display: "grid", gap: 5 }}>
+                {report.fixes_needed.map((f, i) => (
+                  <div key={i} className="card" style={{ background: "var(--surface-card)", padding: "8px 11px", border: "0.5px solid var(--hairline)" }}>
+                    <div style={{ display: "flex", gap: 7, alignItems: "center" }}>
+                      <span className="chip" style={{ background: f.severity === "high" ? "#F9E3E3" : "#FCF3DC", color: f.severity === "high" ? "#A32D2D" : "#8A5B10", fontSize: 9 }}>{f.severity}</span>
+                      <span style={{ fontSize: 12.5, color: "var(--ink)", fontWeight: 500 }}>{f.issue}</span>
+                      <span className="mono" style={{ fontSize: 10, color: "var(--muted-soft)", marginLeft: "auto" }}>{f.count}</span>
+                    </div>
+                    <div style={{ fontSize: 11.5, color: "var(--body)", marginTop: 3, lineHeight: 1.5 }}>{f.recommendation}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {report.open_findings.length > 0 && (
+            <div style={{ marginTop: 12 }}>
+              <div className="label" style={{ marginBottom: 4 }}>OPEN FINDINGS · MEMORY ({report.open_findings.length})</div>
+              <div style={{ fontSize: 10.5, color: "var(--muted)", marginBottom: 6 }}>
+                Everything still open — new this run and carried over from earlier runs until fixed. This is the memory that persists across runs; Wave 2 turns these into PRs.
+              </div>
+              <div style={{ display: "grid", gap: 4 }}>
+                {report.open_findings.map((f, i) => (
+                  <div key={i} style={{ display: "flex", gap: 7, alignItems: "center", padding: "6px 9px", borderRadius: 6, background: "var(--surface-card)", border: "0.5px solid var(--hairline)" }}>
+                    <span className="chip" style={{ fontSize: 8.5, background: f.severity === "high" ? "#F9E3E3" : "#FCF3DC", color: f.severity === "high" ? "#A32D2D" : "#8A5B10" }}>{f.severity}</span>
+                    <span style={{ fontSize: 12, color: "var(--ink)", flex: 1 }}>{f.summary}</span>
+                    {f.is_new
+                      ? <span className="chip" style={{ fontSize: 8.5, background: "var(--success-bg)", color: "var(--success-text)" }}>new</span>
+                      : <span className="chip mono" style={{ fontSize: 8.5, background: "var(--chip-neutral-bg)", color: "var(--chip-neutral-text)" }}>open since {(f.first_seen || "").slice(0, 10)}</span>}
+                    <span className="chip mono" style={{ fontSize: 8.5 }}>{f.status}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function AdminReviewPage() {
   const [feedback, setFeedback] = useState<FeedbackItem[]>([]);
   const [feedbackTab, setFeedbackTab] = useState<FeedbackTab>("new-reviews");
@@ -460,6 +708,8 @@ export default function AdminReviewPage() {
           {err && <div style={{ color: "#A32D2D", fontSize: 12.5, marginBottom: 12 }}>{err}</div>}
 
           <HealthCheckPanel onOpenTrace={openTraceById} />
+
+          <HealthReviewPanel />
 
           {openTrace && (
             <div style={{ marginBottom: 22 }}>
