@@ -56,6 +56,7 @@ export default function PlatformLogin() {
           <span className="breadcrumb">PLATFORM · EMPLOYEE LOGIN</span>
         </div>
         <div className="doors">
+          <a href="https://github.com/premsai-pendela/NexusIQAI-Platform" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
           <Link href="/">← NexusIQ home</Link>
         </div>
       </nav>
