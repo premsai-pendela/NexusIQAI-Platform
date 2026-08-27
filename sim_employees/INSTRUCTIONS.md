@@ -10,6 +10,12 @@ employees"*, do the following.
 > **Brain split (important):** *You* (this external CLI) generate the
 > questions. The **analyst answers on NexusIQ's own free-tier LLM chain** —
 > never route the analyst through yourself. You only decide *what to ask*.
+>
+> **Tier split inside the brain:** use a STRONG model to read the briefing and
+> plan each employee's attack strategy (which weak spots to re-probe, which
+> adversarial families, which real tables/columns to bait); a CHEAP model may
+> then phrase the individual questions from that plan. Don't spend
+> strong-model budget on mere phrasing.
 
 ## Steps
 
@@ -55,14 +61,15 @@ employees"*, do the following.
    private memory.
 
    **Two targets** (via `--target`):
-   - `--target local` (default) — calls the analyst in-process; the trace goes
-     to whatever DB this process points at. Best for dev / offline / eval.
-   - `--target live` — logs in and POSTs to the deployed API
+   - `--target live` (**default**) — logs in and POSTs to the deployed API
      (`--base-url`, default `https://api.nexusiq-ai.com/api/v1`), so the cloud
      backend writes the trace into **RDS** and it shows on the **live** Review
      page. No direct DB access from this machine, no firewall change. Curated
-     demo accounts only. Example:
-     `... | python -m sim_employees.ask --company acmecloud --employee admin@acmecloud.test --target live`
+     demo accounts only. This is the default — just running the sim seeds the
+     live site.
+   - `--target local` — opt in explicitly for dev/eval/offline: calls the
+     analyst in-process and writes to this machine's DB, not the cloud.
+     Example: `... | python -m sim_employees.ask --company acmecloud --employee admin@acmecloud.test --target local`
 
 4. **(Optional) Leave a note for next time.** After a batch, you may append a
    short strategy note to the employee's memory `notes` field (what to probe

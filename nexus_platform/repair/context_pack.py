@@ -28,7 +28,10 @@ IN_SCOPE_PREFIXES = ("nexus_platform/", "agents/", "tests/platform_mode/")
 
 # Product modules eligible for localization. sim/ and repair/ are the Health
 # Check Agent's own code — a product fix never belongs there.
-_MANIFEST_GLOBS = ("nexus_platform/*.py", "agents/*.py")
+# company_overrides/ is the per-tenant seam: company-specific fixes land in
+# the company's own pack, never in shared modules (see that package's doc).
+_MANIFEST_GLOBS = ("nexus_platform/*.py", "agents/*.py",
+                   "nexus_platform/company_overrides/*.py")
 
 # Which modules implement each answer route (from the platform architecture:
 # orchestrator decides the route, query_service is the single entry point,
@@ -43,6 +46,11 @@ ROUTE_MODULES = {
     "clarification": ["nexus_platform/orchestrator.py"],
     "denied": ["nexus_platform/access_policy.py",
                "nexus_platform/query_service.py"],
+    # Refusal routes: the deny decision is made by the deterministic
+    # executor + access policy, surfaced through query_service.
+    "access_refusal": ["nexus_platform/access_policy.py",
+                       "nexus_platform/deterministic.py",
+                       "nexus_platform/query_service.py"],
 }
 _ALWAYS_CANDIDATES = ["nexus_platform/query_service.py"]
 
@@ -68,6 +76,7 @@ class EvidencePack:
     candidate_files: list[str] = field(default_factory=list)
     manifest: str = ""
     sim_rows: list[dict] = field(default_factory=list)
+    lessons: list[str] = field(default_factory=list)
 
     def evidence_text(self) -> str:
         """The finding + trace evidence, formatted for a prompt."""
@@ -79,6 +88,16 @@ class EvidencePack:
             f"Classifier recommendation: {f['payload'].get('recommendation')}",
             "",
         ]
+        # Wave-1 review findings carry the graded expectation directly.
+        for key in ("question", "expected", "reality", "reason"):
+            val = f["payload"].get(key)
+            if val:
+                lines.append(f"Review {key}: {str(val)[:500]}")
+        if self.lessons:
+            lines.append("OPERATIONAL LESSONS from this pipeline's own past "
+                         "repairs (its memory — read before re-deriving):")
+            lines.extend(f"- {l}" for l in self.lessons)
+            lines.append("")
         for tr in self.traces:
             lines.append(f"--- TRACE {tr.get('id', '?')} ---")
             payload = tr.get("payload") or {}
@@ -118,12 +137,30 @@ def load_evidence(company: str, finding_id: str, repo_root: str | Path,
         raise KeyError(f"finding {finding_id} not found for {company}")
     finding = findings[finding_id]
     traces = []
-    for tid in finding["payload"].get("evidence", []):
+    # Campaign findings carry an "evidence" list; Wave-1 review findings
+    # carry a single "trace_id" — accept both so the repair pipeline can
+    # work directly off the health review's ledger.
+    evidence_ids = list(finding["payload"].get("evidence", []))
+    single = finding["payload"].get("trace_id")
+    if single and single not in evidence_ids:
+        evidence_ids.append(single)
+    for tid in evidence_ids:
         tr = store.get_trace(company, tid)
         if tr:
+            # Traces store routing; the answer text lives in memory_turns —
+            # surface it so the model sees what the product actually said.
+            if not (tr.get("payload") or {}).get("answer"):
+                ans = store.answer_for_trace(company, tid)
+                if ans:
+                    tr.setdefault("payload", {})["answer"] = ans
             traces.append(tr)
     pack = EvidencePack(finding=finding, traces=traces, company=company,
                         repo_root=Path(repo_root))
+    # The pipeline's own lesson memory, read before starting (compact digest;
+    # lesson text is pipeline-authored, generic, never a specific bug's fix).
+    pack.lessons = [str(l.get("lesson"))[:240]
+                    for l in store.list_active_lessons(scope="repair")[:8]
+                    if l.get("lesson")]
     trace_ids = {t.get("id") for t in traces}
     campaign = finding["payload"].get("campaign_id")
     if campaign:

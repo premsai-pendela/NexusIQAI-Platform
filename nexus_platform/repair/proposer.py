@@ -1,10 +1,16 @@
-"""The repair proposer: staged LLM reasoning on the product's own chain.
+"""The repair proposer: staged LLM reasoning with per-sub-task model routing.
 
 This module is the Health Check Agent's stages 3–5 (plan → write tests →
-edit code). Every piece of reasoning here is performed by the product's
-shared free-tier LLM chain via ``utils.llm_gateway.invoke_with_fallback`` —
-the same Gemini → Groq → NVIDIA NIM → Cerebras → Bedrock chain the AI Data
-Analyst runs on. No frontier model is involved, ever.
+edit code). Per the corrected §2e (2026-07-16), reasoning is tiered by
+sub-task: the **cheap** sub-task (fault localization) runs on the product's
+shared free-tier chain via ``utils.llm_gateway.invoke_with_fallback`` (the
+same Gemini → Groq → NVIDIA NIM → Cerebras → Bedrock chain the AI Data
+Analyst uses); the **hard** sub-tasks (understand, hypothesize, critique,
+plan, confirm, implement, review) run on **Claude Code via CLI**
+(``repair.cli_brain``) because weak free-tier models cannot do complex
+program repair. ``NEXUSIQ_REPAIR_BRAIN=gateway`` forces the old free-tier-only
+path. In both cases Fable never hand-writes a specific fix — the agent's own
+loop does, this just chooses the brain.
 
 Design (rationale + citations in ARCHITECTURE_LOG Entry 7): a fixed staged
 pipeline, not a free agent loop — Agentless-style. Reliability on a weak
@@ -21,6 +27,7 @@ has never seen. Nothing in them encodes any specific bug's fix.
 
 from __future__ import annotations
 
+import os
 import re
 import time
 from dataclasses import dataclass, field
@@ -42,7 +49,7 @@ MAX_PLAN_STEPS = 6
 # Groq's free tier rejects requests over ~12k tokens outright (observed
 # live: HTTP 413 at ~52k chars), and Gemini Flash 504s on the same
 # prompts. Implement-step prompts must slice large files, not embed them.
-IMPLEMENT_SLICE_THRESHOLD_LINES = 400
+IMPLEMENT_SLICE_THRESHOLD_LINES = 1500
 
 
 class BudgetExhausted(RuntimeError):
@@ -53,10 +60,14 @@ class StageFailed(RuntimeError):
     pass
 
 
-def build_models() -> list:
+def build_models(reasoning: bool = True) -> list:
     """The product's own fallback chain — mirrors health_check's usage.
     Ollama is deliberately not appended: it is not available on this
-    machine for this initiative (HEALTH_CHECK_AGENT_MISSION.md)."""
+    machine for this initiative (HEALTH_CHECK_AGENT_MISSION.md).
+
+    Per-sub-task tiering: reasoning=True appends the chain's reasoning-tier
+    Cerebras/Bedrock models (diagnosis, planning, code); reasoning=False the
+    fast tier (cheap mechanical sub-tasks like localization)."""
     from config.settings import settings
     from utils.llm_gateway import insert_bedrock_fallback, insert_cerebras_fallback
 
@@ -71,19 +82,55 @@ def build_models() -> list:
         models.append({"name": settings.nvidia_model, "type": "nvidia",
                        "description": "NVIDIA NIM"})
     return insert_bedrock_fallback(
-        insert_cerebras_fallback(models, reasoning=True), reasoning=True)
+        insert_cerebras_fallback(models, reasoning=reasoning),
+        reasoning=reasoning)
 
 
-def _default_llm(prompt: str, task: str,
-                 validator: Optional[Callable[[str], bool]]) -> dict:
+# Which chain tier each stage deserves: genuine reasoning (diagnosis, fix
+# design, prediction, code) gets the reasoning tier; mechanical narrowing
+# (pick files from a manifest) runs on the fast tier.
+STAGE_REASONING = {
+    "localize": False,
+}
+
+
+# Corrected §2e (2026-07-16): the hard repair sub-tasks route to Claude Code
+# via CLI (a strong model — weak free-tier models can't do complex program
+# repair); the cheap sub-task (localization) stays on the free-tier gateway.
+# `reasoning` carries the split: STAGE_REASONING marks localize False → cheap
+# → gateway; everything else True → CLI brain. Set NEXUSIQ_REPAIR_BRAIN=gateway
+# to force the whole pipeline back onto the free-tier chain (the old path).
+def _use_cli_brain(reasoning: bool) -> bool:
+    mode = os.environ.get("NEXUSIQ_REPAIR_BRAIN", "cli").strip().lower()
+    if mode == "gateway":
+        return False
+    if mode == "cli":
+        return bool(reasoning)
+    return bool(reasoning)
+
+
+def _gateway_llm(prompt: str, task: str,
+                 validator: Optional[Callable[[str], bool]],
+                 reasoning: bool = True) -> dict:
     from utils.llm_gateway import get_llm_gateway
     from utils.quota_tracker import quota_tracker
 
     return get_llm_gateway().invoke_with_fallback(
-        prompt=prompt, models=build_models(), tracker=quota_tracker,
+        prompt=prompt, models=build_models(reasoning=reasoning),
+        tracker=quota_tracker,
         task=task, temperature=0.2,
         metadata={"agent": "health_repair"},
         response_validator=validator)
+
+
+def _default_llm(prompt: str, task: str,
+                 validator: Optional[Callable[[str], bool]],
+                 reasoning: bool = True, attempt: int = 0) -> dict:
+    if _use_cli_brain(reasoning):
+        from nexus_platform.repair.cli_brain import cli_llm
+        return cli_llm(prompt=prompt, task=task, validator=validator,
+                       reasoning=reasoning, attempt=attempt)
+    return _gateway_llm(prompt, task, validator, reasoning=reasoning)
 
 
 _PREAMBLE = (
@@ -173,10 +220,25 @@ class Proposer:
             # whose output flunks it is skipped in-call and the next
             # provider tries immediately (the gateway discards the bad
             # response without cooling the provider down).
-            result = self.llm(prompt=attempt_prompt,
-                              task=f"health_repair.{stage}",
-                              validator=lambda c: bool(c and c.strip())
-                              and validator(c)[0])
+            kwargs = dict(prompt=attempt_prompt,
+                          task=f"health_repair.{stage}",
+                          validator=lambda c: bool(c and c.strip())
+                          and validator(c)[0])
+            # Per-stage tier routing + automatic escalation; injected test
+            # doubles that don't take these kwargs keep working unchanged.
+            # `attempt` = number of prior substantive (validator) failures for
+            # this stage — cooldown waits don't decrement feedback_left, so
+            # they never spuriously escalate the model tier.
+            import inspect
+            try:
+                params = inspect.signature(self.llm).parameters
+                if "reasoning" in params:
+                    kwargs["reasoning"] = STAGE_REASONING.get(stage, True)
+                if "attempt" in params:
+                    kwargs["attempt"] = retries - feedback_left
+            except (ValueError, TypeError):
+                pass
+            result = self.llm(**kwargs)
             response = str(result.get("response") or "").strip()
             ok = bool(result.get("success")) and bool(response)
             if ok:
@@ -186,14 +248,31 @@ class Proposer:
                 tried = result.get("models_tried") or []
                 had_invalid = any("INVALID" in str(t.get("status", ""))
                                   for t in tried)
+                # A CLI-brain failure (timeout/error) is never free-tier
+                # starvation — the Claude CLI has no quota cooldown, so it
+                # must be a fast bounded retry, not a multi-minute wait (a
+                # misclassification here spiralled a single hung call into a
+                # whole 10-min window of timeout+wait cycles).
+                had_cli = any(t.get("brain") == "cli" for t in tried)
                 # Providers answered but every answer flunked the check →
                 # a substantive failure worth feedback; nobody answered at
-                # all → starvation worth waiting out.
-                exhausted = not had_invalid
-                reason = ("every available provider's answer failed the "
-                          "format/content check described in the prompt"
-                          if had_invalid
+                # all → starvation worth waiting out (gateway only).
+                exhausted = not had_invalid and not had_cli
+                reason = ("the response failed the format/content check "
+                          "described in the prompt"
+                          if (had_invalid or had_cli)
                           else "no provider produced a response")
+                if had_invalid:
+                    # Derive the CONCRETE stage-validator reason from the
+                    # last rejected answer — a weak model can act on "TEST_
+                    # FILE already exists", not on "your answer failed".
+                    invalids = [t.get("invalid_content") for t in tried
+                                if t.get("invalid_content")]
+                    if invalids:
+                        response = invalids[-1]
+                        _, why = validator(invalids[-1])
+                        if why:
+                            reason = why
             self.log.append({
                 "ts": datetime.now(timezone.utc).isoformat(),
                 "stage": stage, "attempt": call_no - 1,
@@ -413,7 +492,7 @@ class Proposer:
 
     # ── P3: plan ─────────────────────────────────────────────────────────
 
-    def plan(self, hypothesis: str) -> Plan:
+    def plan(self, hypothesis: str, feedback: str = "") -> Plan:
         prompt = (
             f"{_PREAMBLE}\n"
             "Your job in THIS step: write the implementation plan. No code "
@@ -421,20 +500,45 @@ class Proposer:
             f"{self.pack.evidence_text()}\n"
             f"Relevant source code:\n\n{self._code_context}\n\n"
             f"The confirmed root-cause analysis:\n{hypothesis}\n\n"
-            "Hard constraints on the plan:\n"
+            + (f"A reviewer REJECTED your previous plan for this concrete "
+               f"reason — the new plan must fix it:\n{feedback}\n\n"
+               if feedback else "")
+            + "Hard constraints on the plan:\n"
             f"- Touch at most {MAX_PLAN_FILES} files, all inside "
             "nexus_platform/, agents/, or tests/platform_mode/.\n"
             "- Include exactly one NEW regression test file under "
-            "tests/platform_mode/ that encodes the failing case from the "
-            "trace. It must FAIL on today's code and PASS after the fix, "
-            "and must not depend on any live LLM call (stub or monkeypatch "
-            "whatever would call one).\n"
+            "tests/platform_mode/ that encodes the failing case. It must "
+            "FAIL on today's code and PASS after the fix, and must not "
+            "depend on any live LLM call. Make it genuine, not a helper "
+            "unit-test that a reviewer will (rightly) call inadequate:\n"
+            "    * It must exercise the ACTUAL defective FUNCTION(S) with "
+            "realistic inputs and assert the honest outcome — NOT a new "
+            "helper in isolation, but ALSO not necessarily the whole "
+            "request pipeline. Testing the real function where the bug "
+            "lives (e.g. calling the actual `refusal_message` / "
+            "`_is_access_denied` with a constructed denied-table result) "
+            "IS a valid end-to-end-of-the-defect test and is PREFERRED over "
+            "driving the top-level entry point when that would require "
+            "monkeypatching deep internals. Stub only a live LLM/SQL call "
+            "if one is unavoidable; never stub the code under test.\n"
+            "    * Include a CLOSE VARIANT (a different input of the same "
+            "shape) so the fix is proven to address the class, not one "
+            "literal string, AND a BOUNDARY case (e.g. the empty/None/"
+            "already-correct input) proving the fix doesn't break the "
+            "healthy path.\n"
             "- Prefer a narrow, localized check that matches how this "
             "codebase already handles similar situations in the code shown "
             "above — the fix should look like it was written by the same "
             "author.\n"
             "- Smallest change that fixes the CLASS of failure, not just "
-            "this literal question.\n\n"
+            "this literal question.\n"
+            "- Tenancy rule: this product serves several companies with one "
+            "shared analyst. If the defect is specific to ONE company's "
+            "vocabulary or data (not a flaw in shared logic), the code "
+            "change belongs in that company's override pack "
+            "(nexus_platform/company_overrides/<company>.py — see its "
+            "hooks), never in a shared module. A genuine shared-logic flaw "
+            "still belongs in the shared module.\n\n"
             "Answer with ONLY this format — no preamble, no narrated "
             "reasoning, under 300 words total:\n"
             "PLAN:\n"
@@ -464,6 +568,57 @@ class Proposer:
         plan_obj, _ = _parse_plan(resp)
         return plan_obj
 
+    # ── P3.5: self-confirm the plan before any code changes ─────────────
+
+    def confirm_plan(self, plan: Plan, hypothesis: str) -> tuple[bool, str]:
+        """The pipeline's own gate on its own plan — a self-check, not a
+        human pause. Returns (confirmed, notes): notes are either the
+        reviewer's EVAL_NOTES (what new evals the change needs) when
+        confirmed, or the concrete reason to re-plan when not."""
+        prompt = (
+            "You are reviewing a colleague's implementation plan for a "
+            "product-defect fix BEFORE any code is written. Be skeptical "
+            "and concrete.\n\n"
+            f"{self.pack.evidence_text()}\n"
+            f"The root-cause analysis:\n{hypothesis}\n\n"
+            f"The plan:\n{plan.raw}\n\n"
+            "Check four things: (1) the plan's regression test exercises "
+            "the real DEFECTIVE FUNCTION with realistic inputs and would "
+            "fail on today's code — a test that calls the actual buggy "
+            "function (e.g. refusal_message/_is_access_denied) with a "
+            "constructed input IS adequate and preferred; do NOT demand it "
+            "drive the whole request pipeline / monkeypatch deep internals "
+            "(that makes the test unwritable), only reject a test that "
+            "checks a NEW helper in isolation or never encodes the failure; "
+            "(2) the code change is the narrowest one that fixes the whole "
+            "CLASS of failure, not just these literal questions; (3) nothing "
+            "in the plan touches code unrelated to the failure; (4) decide "
+            "what NEW evaluation coverage this change needs beyond the "
+            "regression test (edge phrasings, adjacent behaviors that must "
+            "NOT change) — the plan's test should encode those too.\n\n"
+            "Reply in EXACTLY one of these two formats, nothing else:\n"
+            "VERDICT: CONFIRMED\nEVAL_NOTES: <one short paragraph: the new "
+            "eval coverage this change needs>\n"
+            "or\n"
+            "VERDICT: REVISE\nREASON: <the one concrete problem the new "
+            "plan must fix>\n")
+
+        def _validate(resp: str) -> tuple[bool, str]:
+            if "VERDICT:" not in resp:
+                return False, "missing 'VERDICT:' line"
+            tail = resp.split("VERDICT:", 1)[1]
+            if "CONFIRMED" in tail[:20] and "EVAL_NOTES:" not in resp:
+                return False, "a CONFIRMED verdict must include EVAL_NOTES:"
+            if "REVISE" in tail[:20] and "REASON:" not in resp:
+                return False, "a REVISE verdict must include REASON:"
+            return True, ""
+
+        resp = self._invoke("confirm_plan", prompt, _validate)
+        tail = resp.split("VERDICT:", 1)[1]
+        if "CONFIRMED" in tail[:20]:
+            return True, resp.split("EVAL_NOTES:", 1)[1].strip()
+        return False, resp.split("REASON:", 1)[1].strip()
+
     # ── P4: implement, one step at a time ────────────────────────────────
 
     def implement_step(self, plan: Plan, step: dict,
@@ -472,9 +627,12 @@ class Proposer:
         slice_note = ""
         new_file = not path.exists()
         if new_file:
-            current = ("THIS FILE DOES NOT EXIST YET. To create it, your "
-                       "SEARCH section must be completely EMPTY — do not "
-                       "put this sentence or anything else inside SEARCH.")
+            current = ("THIS FILE DOES NOT EXIST YET. Create it the EASY way: "
+                       "emit exactly one line 'FILE: " + step["file"] + "' "
+                       "followed immediately by a single fenced code block "
+                       "(```python … ```) containing the COMPLETE file "
+                       "content. Do NOT use SEARCH/REPLACE for a new file. "
+                       "Output nothing else — no prose before or after.")
         else:
             lines = path.read_text().splitlines()
             if (len(lines) > IMPLEMENT_SLICE_THRESHOLD_LINES
@@ -501,21 +659,27 @@ class Proposer:
             # (not only the originally-localized ones) — the natural
             # deterministic test seam often lives in a plan target the
             # localization pass skipped.
-            plan_files = [s["file"] for s in plan.code_steps]
-            test_context = self._code_context
-            for extra in plan_files:
-                if extra not in test_context and \
-                        (self.pack.repo_root / extra).exists():
-                    test_context += "\n\n" + context_pack.file_slice(
-                        self.pack.repo_root, extra,
-                        self._located_functions)
+            # Show the test writer the FULL source of every product file the
+            # plan touches (and the localized ones) — not slices. The test
+            # writer kept REPLANning because a needed entry point / call site
+            # wasn't in a narrow slice; the CLI brain handles large prompts
+            # fine, so give it whole files (capped) and end the REPLAN loop.
+            want_files = list(dict.fromkeys(
+                [s["file"] for s in plan.code_steps]
+                + [f for f in getattr(self.pack, "candidate_files", [])]))
+            parts = []
+            for extra in want_files:
+                fp = self.pack.repo_root / extra
+                if fp.exists():
+                    parts.append(f"### {extra} (full source)\n{fp.read_text()}")
+            test_context = "\n\n".join(parts) or self._code_context
             style_example = (
                 "\nTHE OBSERVED FAILURE THIS TEST MUST ENCODE — the test "
                 "must exercise the exact failing input below (the question "
                 "verbatim) through the product's behavior and assert the "
                 "honest expected outcome, not merely check that a helper "
                 "function exists:\n"
-                + self.pack.evidence_text()[:6000] + "\n"
+                + self.pack.evidence_text()[:3500] + "\n"
                 "\nHard requirements for the test: it must be fully "
                 "deterministic — no live LLM call, no network. Prefer "
                 "exercising a deterministic entry point (e.g. the "
@@ -529,7 +693,30 @@ class Proposer:
                 "\nThe product code under test (read it before "
                 "writing the test — use only APIs that "
                 "actually exist in it):\n"
-                + test_context[:24000] + "\n")
+                + test_context[:22000] + "\n")
+        # For a CODE step, show the regression test that was already written
+        # and now FAILS — the code edit must make exactly that test pass, so
+        # the model needs to see what behavior the test asserts (keeps the
+        # code and test coherent; a mismatched pair fails repro_after).
+        test_under_fix = ""
+        if not step["file"].startswith("tests/"):
+            test_path = self.pack.repo_root / plan.test_file
+            if test_path.exists():
+                test_under_fix = (
+                    "\nThe regression test your change must make PASS (it "
+                    f"fails today — read what it asserts):\n```python\n"
+                    + test_path.read_text()[:6000] + "\n```\n")
+        surgical_note = ""
+        if not step["file"].startswith("tests/"):
+            surgical_note = (
+                "\nSURGICAL EDIT RULE (avoids breaking other tests): make the "
+                "SMALLEST possible change — add a new branch/guard for the "
+                "defect's specific case only. Do NOT alter the wording, "
+                "return value, or logic of any EXISTING code path (e.g. the "
+                "current denial/refusal message for legitimate cases must "
+                "stay byte-for-byte identical). Other tests depend on today's "
+                "behavior for the non-defect cases; change only the defect "
+                "case.\n")
         prompt = (
             f"{_PREAMBLE}\n"
             "You are implementing ONE step of an approved plan. Change "
@@ -538,6 +725,7 @@ class Proposer:
             "REPLAN: <why> instead of any edit.\n\n"
             f"The approved plan:\n{plan.raw}\n\n"
             f"THIS step: FILE: {step['file']} — {step['text']}\n\n"
+            f"{test_under_fix}{surgical_note}"
             f"Current content of {step['file']}:\n```\n{current}\n```\n"
             f"{slice_note}{style_example}\n"
             f"{_EDIT_FORMAT}"
@@ -559,7 +747,11 @@ class Proposer:
                                f"but blocks target {stray}")
             return True, ""
 
-        return self._invoke("implement", prompt, _validate)
+        # The new-test-file write is the highest-variance step (a fresh file
+        # from scratch); give it more format-retry chances so a couple of
+        # malformed CLI rolls don't sink the whole attempt.
+        retries = 3 if new_file else 2
+        return self._invoke("implement", prompt, _validate, retries=retries)
 
     # ── P5: self-review of the final diff ────────────────────────────────
 
