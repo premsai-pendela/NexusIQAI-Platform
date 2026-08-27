@@ -75,7 +75,7 @@ def test_ask_tags_simulated_updates_memory_and_flags_weak(tmp_memory, monkeypatc
     results = runner.ask(company, email,
                          [{"question": "why did revenue move?",
                            "family": "seam", "difficulty": "hard"}],
-                         delay=0, llm_extra_delay=0, quiet=True)
+                         delay=0, llm_extra_delay=0, quiet=True, target="local")
 
     assert captured["source"] == "simulated"          # analyst saw simulated tag
     assert len(results) == 1 and results[0]["weak"] is True
@@ -114,9 +114,23 @@ def test_live_target_drives_http_client_and_tags_simulated(tmp_memory, monkeypat
     import sim_employees.client as clientmod
     monkeypatch.setattr(clientmod, "LiveClient", FakeClient)
 
+    # The live-mode evidence mirror must not write the REAL local store from
+    # a unit test (fixture answers polluted a real health review once —
+    # fabricated "wrong answer" findings). Capture the writes instead.
+    mirrored = {}
+    monkeypatch.setattr(runner.store, "save_trace",
+                        lambda *a, **k: mirrored.setdefault("trace", (a, k)) and "tr_local1" or "tr_local1")
+    monkeypatch.setattr(runner.store, "save_turn",
+                        lambda *a, **k: mirrored.setdefault("turn", (a, k)))
+    monkeypatch.setattr(runner.store, "save_sim_query", lambda *a, **k: None)
+
     results = runner.ask("acmecloud", "admin@acmecloud.test",
                          ["What is our headcount?"], delay=0, quiet=True,
                          target="live", base_url="http://x/api/v1")
+
+    # The mirror wrote a local trace carrying the live twin's id.
+    assert mirrored["trace"][0][0] == "acmecloud"
+    assert mirrored["trace"][0][5]["live_trace_id"] == "tr_live1"
 
     assert calls["login"][0] == "admin@acmecloud.test"   # logged in as the employee
     assert calls["source"] == "simulated"                # tagged simulated over HTTP

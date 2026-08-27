@@ -74,17 +74,34 @@ def set_notes(mem: dict, notes: str) -> None:
     mem["notes"] = notes
 
 
+def asked_questions(mem: dict) -> list:
+    """Every question this employee has EVER asked (normalized order kept).
+    The brain must never repeat one that was already answered well."""
+    seen, out = set(), []
+    for i in mem.get("interactions", []):
+        q = (i.get("question") or "").strip()
+        key = q.lower()
+        if q and key not in seen:
+            seen.add(key)
+            out.append(q)
+    return out
+
+
 def brief_summary(mem: dict, recent: int = 10) -> dict:
-    """What the CLI brain needs to ask an adaptive next batch: what was asked
-    recently (avoid repeats), and where the analyst looked weak (re-probe)."""
+    """What the CLI brain needs to ask an adaptive next batch: everything
+    already asked (never repeat a solved question), the analyst's answers to
+    the recent ones (decide the next attack from what it actually said), and
+    where it looked weak (re-probe)."""
     inter = mem.get("interactions", [])
     return {
         "total_interactions": len(inter),
+        "all_asked_questions": asked_questions(mem),
         "recent_questions": [i.get("question") for i in inter[-recent:]],
         "recent_outcomes": [
             {"question": i.get("question"), "route": i.get("route"),
              "access_decision": i.get("access_decision"),
-             "confidence": i.get("confidence"), "verdict": i.get("verdict")}
+             "confidence": i.get("confidence"), "verdict": i.get("verdict"),
+             "answer": i.get("answer_summary")}
             for i in inter[-recent:]
         ],
         "weak_spots": mem.get("weak_spots", [])[-12:],

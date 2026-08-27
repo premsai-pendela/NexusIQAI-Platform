@@ -1226,3 +1226,242 @@ resumes the same plan on this branch: the containment rule now forces a
 behavioral repro (which will genuinely fail on this tree — verified),
 and the fix rounds must produce the real routing change on top of the
 partial work rather than starting over.
+
+## 2026-07-16 — Entry 13: Agentic-harness upgrade wave (FABLE_MISSION 2026-07-15) — verdicts, upgrades, and the tenancy seam
+
+New mission (`FABLE_MISSION_2026-07-15_agentic-harnesses-and-full-run.md`)
+supersedes the older CONTEXT/HEALTH_CHECK_AGENT_MISSION where they conflict:
+no human gates this run; the agents self-confirm their own work; the final PR
+opens under the separate `Nexus-Healthcheck-Bot` GitHub identity (verified in
+this session via `gh auth status` — GH_TOKEN is the bot's PAT).
+
+**Harness evaluation** (full verdicts with evidence in
+`fable notes 2026-07-15.md`): the AI Data Analyst already meets the
+routing/memory/loop bar (explicit zero-LLM RouteDecision, complexity-tiered
+model selection in sql/rag agents, SQL error-feedback repair round, session
+memory); sim_employees had a strong loop but under-guaranteed memory;
+health_review (Wave 1) was deterministic-first with an honest abstention tier
+but capped its evidence lists and sat on the retired Bedrock 3.5 Haiku;
+repair (Wave 2) had excellent loop engineering but wrote lessons without ever
+reading them, had no hidden-bug prediction, and never self-confirmed its plan
+before editing code.
+
+**Upgrades implemented this session:**
+
+1. *Bedrock → Claude Haiku 4.5.* `config/settings.py` now defaults both
+   Bedrock tiers to `us.anthropic.claude-haiku-4-5-20251001-v1:0` (the
+   cross-region inference profile — the invocation form newer Anthropic
+   models require on Bedrock; 3.5 Haiku is retired upstream). The CFN
+   template's `BedrockModelId` and the task-role IAM policy were updated to
+   cover BOTH the inference-profile ARN and the underlying foundation-model
+   ARNs (`arn:aws:bedrock:*::foundation-model/...`). **Honest limitation:**
+   this machine's IAM user (`Nexusiq_AI-Deploy`) has no bedrock:* permissions
+   — verified by direct test (ListFoundationModels, ListInferenceProfiles,
+   and a 5-token Converse all AccessDenied). Live verification of Haiku 4.5
+   in the account is therefore deploy-gated: it can only be confirmed from
+   the ECS task role after Prem deploys the updated stack/policy.
+
+2. *Wave 1 report.* `fixes_needed` entries now carry EVERY trace id
+   (uncapped, `trace_ids` + legacy `example_trace_ids`); the report gains a
+   `resolved_findings` section (run-over-run: which previously-open bugs
+   actually got resolved since the last run, via the new
+   `store.finding_resolutions_since()` which reads the finding-event
+   ledger); the LLM judge prefers the Bedrock Haiku 4.5 reasoning tier first
+   when Bedrock is enabled, falling back to the rest of the product chain.
+
+3. *sim_employees memory.* Interactions now keep the analyst's answer up to
+   1500 chars; the brief exposes `all_asked_questions` (complete history —
+   the never-repeat guarantee no longer silently expires after 10
+   questions) and the answers inside `recent_outcomes` (decide the next
+   attack from what the analyst actually said). QUESTION_SPEC/INSTRUCTIONS
+   now encode the brain tier split: strong model plans the attack, cheap
+   model phrases questions.
+
+4. *Live→local evidence bridge (Part 2A plumbing).* In live mode the sim
+   runner now mirrors every turn into the LOCAL store (trace tagged
+   simulated + answer turn, carrying the live trace id as
+   `payload.live_trace_id`). Options considered: RDS→local sync (needs prod
+   DB reachability this Mac doesn't have), server-side review + export
+   (needs a deploy Prem hasn't run). The mirror wins: zero extra LLM/API
+   spend, identical evidence, works today.
+
+5. *Repair pipeline.* (a) Lesson memory is now READ before starting —
+   `context_pack.load_evidence` injects up to 8 active `repair`-scope
+   lessons into the evidence text (pipeline-authored, generic). (b) Fixed a
+   real Wave-1→Wave-2 seam gap: review findings store `payload.trace_id`
+   (singular) which `load_evidence` ignored — a repair on a review finding
+   would have loaded zero traces. Both shapes now accepted, and the trace's
+   answer text is joined in from memory_turns. (c) Per-stage model tiering:
+   `build_models(reasoning=)` + `STAGE_REASONING` map — localization runs
+   the fast tier, diagnosis/planning/code the reasoning tier (mirrors the
+   product's own complexity tiering). (d) New `repair/predictor.py`:
+   predict-related-hidden-bugs stage — one reasoning-tier call proposes
+   same-class failing inputs; each is VERIFIED by actually running it
+   through the product locally (tagged simulated) and grading with the
+   review's deterministic tier; three tiers reported separately
+   (surfaced / predicted-verified / predicted-unverified), predictions that
+   don't reproduce are never counted. Verified predictions join the
+   evidence pack so the plan + regression test must cover the class.
+   (e) New `confirm_plan` stage: the pipeline self-confirms its plan
+   (test-covers-evidence, narrowest-class-fix, scope, and what NEW eval
+   coverage the change needs) before any code changes; REVISE feeds a
+   concrete reason back into a fresh plan (2 rounds, then honest failure).
+   PR body now carries the prediction tiers + the pipeline's own eval notes.
+
+**The one-analyst/three-companies design (the mission's hard problem).**
+Research: the standard production answer is a shared kernel with
+tenant-scoped extension points — shared logic stays generic; per-tenant
+behavior lives in the tenant's own module/config consulted at explicit
+seams; isolation is enforced with tests (Microsoft Learn, "Multitenant SaaS
+patterns" — application-level tenant isolation over shared compute:
+https://learn.microsoft.com/en-us/azure/azure-sql/database/saas-tenancy-app-design-patterns;
+academic treatment of per-tenant customization layers: arXiv 1402.6045.
+Most other search hits were SEO filler and were discarded unverified.)
+Implementation: `nexus_platform/company_overrides/` — one module per company
+(acmecloud/medcore/finpilot), two hooks each (`EXTRA_METRIC_VOCABULARY`,
+`find_clarification(question, features, policy)`), consulted by the
+orchestrator BEFORE shared rules (`decide_route`/`find_clarification` now
+take `company`, threaded from `ctx.company.slug` in query_service; the
+unknown-metric vocabulary is extended per-company). A broken override
+degrades to shared behavior (never crashes another tenant's path). The
+repair pipeline's plan prompt now carries the generic tenancy rule
+(company-specific fix → that company's pack; shared-logic flaw → shared
+module) and the manifest includes the packs. Isolation proven by
+`tests/platform_mode/test_company_overrides.py`: an AcmeCloud-only rule
+fires for AcmeCloud and NOT MedCore; empty packs change nothing; a crashing
+pack degrades cleanly. Suite: 233 passed.
+
+## 2026-07-16 — Entry 14: The full loop run — campaigns, reviews, and honest repair supervision
+
+**Campaigns (Part 2A).** I acted as the strong-tier brain (attack planning
+from each company briefing); a Haiku subagent was the cheap phrasing tier —
+the mission's brain tier split, exercised for real. 54 adversarial questions
+across AcmeCloud (3 employees, adapting to 34 prior interactions + 1 recorded
+weak spot), MedCore, and FinPilot (first-ever campaigns). Every question
+fresh (none repeated a solved one); balanced across simple → very-hard
+5-table joins, with hallucination-bait, role-boundary, malformed/typo, seam,
+and chart-mismatch families. Traces landed in RDS (live) AND the local store
+via the evidence bridge (verified: 14+ local traces each carrying their RDS
+`live_trace_id` and answer). Latency captured per turn.
+
+**Reviews (Part 2B).** Wave 1 graded all three companies deterministic-first
+(reports hc_50fcb12888 / hc_d29a351231 / hc_e75e8d889b), watermarks advanced,
+uncapped trace ids. It caught 14 findings — and caught its OWN false positive:
+3 "wrong headcount" findings turned out to be fabricated evidence from a unit
+test leaking fixture answers into the real store. Dismissed loudly with a
+note, traces deleted, leak fixed at source (test now captures store writes
+instead of hitting the real DB). An honest health check dismisses its own
+false positives as visibly as it flags real ones.
+
+**Repair supervision (Part 2C/D) — the honest core of the run.** The
+pipeline ran on the product's free-tier chain; I supervised every attempt.
+
+Attempt sequence on the first target (hf_e4796a5431, a FinPilot false
+refusal): four attempts, each surfacing a real scaffolding weakness that I
+fixed as generic plumbing (never the bug's fix):
+  1. plan stage failed blind — the gateway was discarding rejected LLM
+     responses, so the feedback loop had nothing concrete. Fixed: preserve
+     `invalid_content`, re-run the stage validator on it, feed the concrete
+     reason back. Plus partial resume seeding.
+  2. the new `confirm_plan` self-check WORKED — it rejected two plans that
+     fixed only one of two named root-cause components. Fixed: seeded plans
+     are never exempt from re-confirmation; rounds 2→3.
+  3–4. quota exhaustion / external kill.
+
+Then the intervention that mattered most: I stopped the loop and
+independently verified the finding. The pipeline had localized to the
+access-policy classifier — but that function does NOT refuse the question
+(the role's `support_tickets` topics already cover it), and a live re-run
+returned a correct `sql_plus_rag` answer. The stored trace's real signal was
+`engine_route: "rag_only (sql_failed)"`: the SQL half of the hard join
+failed on the free tier and the degraded fallback emitted a false
+access-denial. That is a **stochastic sql-failure seam bug** needing a
+stubbed-LLM repro the pipeline cannot yet write (the same capability gap
+recorded for hf_aa3f564b71 last initiative). Logged honestly **OPEN** — an
+honestly-open hard bug does not block the goal, and faking a fix for it
+would have been the dishonest path.
+
+**Pivot to a bug the pipeline CAN honestly fix.** I re-routed every open
+finding through the deterministic layer (no LLM) and found that nearly all
+the campaign refusals were the same stochastic seam (they route to
+agent/sql_plus_rag today). But the sweep surfaced a genuinely deterministic,
+reproducible-today bug: malformed/typo'd questions (`expnses for quater 5?`,
+`tikets by priorty for p9?`, `teh margns for q0?`) route to `agent` — and a
+confident LLM answer — instead of a clarification, because the
+malformed-period gate only fires with a recognized metric and the typo'd
+metric leaves `f.metric=None`. This is the documented typo-bypass class,
+squarely in the pipeline's proven capability, and its repro needs no LLM.
+Repair re-pointed at hf_fbccccb7e2 (medcore). Separately, the old
+hf_500c08e695 routing finding was checked and found already RESOLVED on
+current code (now clarifies) — dismissed with a note.
+
+**On the budget floor.** By this point a full night of campaigns + reviews +
+repair attempts had genuinely exhausted the shared free tier (all providers
+in multi-minute-to-hour cooldown; NVIDIA at its hard 48/48 daily cap). I did
+not push past it — the pipeline's own cooldown-aware backoff rides out
+recovery, and I launched nothing else competing for the recovering quota.
+This is the §2c floor behaving exactly as intended.
+
+## 2026-07-16 — Entry 15: TASK 1 (automatic model selection) + making the CLI-brain repair loop reliably COMPLETE
+
+**TASK 1 — automatic per-sub-task model selection (done).** The CLI brain's
+model tier was a static map (`_HEAVY_STAGES`→sonnet, else→haiku), which put
+the REVIEW stages (critique/confirm_plan/self_review) on haiku — a
+rubber-stamp risk (a weak reviewer that "AGREE"s a bad fix is worse than no
+review; nothing downstream catches it). Replaced with automatic selection
+over an ordered ladder (`haiku,sonnet`, env `NEXUSIQ_REPAIR_CLI_TIERS`):
+(1) review stages always run on the TOP tier — a reviewer is never weaker
+than the author; (2) generation stages start at a complexity-appropriate
+tier (plan + large prompts start strong; understand/hypothesize/predict start
+cheap) and escalate one tier per validator-rejected retry (the proposer
+threads the `attempt` in, counting substantive failures so cooldown waits
+don't spuriously escalate). Live-verified: the strong confirm_plan reviewer
+**rejected an inadequate plan 3× that a haiku reviewer would have passed** —
+exactly the failure TASK 1 removes.
+
+**TASK 2 — the loop gate-passed a real fix (17:33), then a long reliability
+grind to make it reliably commit + PR.** The pipeline diagnosed, unprompted,
+the generalized ghost-table false-denial (`refusal_message` fabricating "the
+'traces' data area is outside your role" for an internal table in no policy —
+the generalized form of FUTURE_IMPROVEMENTS #1), and passed the eval gate
+(repro flip + 222 suite, no regressions). Getting from "gate-passes once" to
+"reliably produces a committed PR" surfaced a chain of real
+harness-reliability bugs, each fixed generically (never the bug's fix), all
+tests green:
+
+- **commit before the advisory self-review** — a verified fix must never be
+  lost to a slow/killed review; self-review only amends if its revision still
+  passes the gate.
+- **CLI timeout ≠ free-tier starvation** — a CLI error was misclassified as
+  quota exhaustion, spiralling a single flaky call into a whole window of
+  timeout+cooldown-wait cycles. Now a fast bounded retry (`brain="cli"` flag).
+- **checkpoint after plan-confirm + reuse the confirmed plan on resume**
+  without re-confirming (confirm is non-deterministic and can discard a good
+  plan); `NEXUSIQ_REPAIR_FRESH_PLAN` for the opposite case.
+- **dropped the literal-question test guard** (superseded by the strong
+  confirm_plan review + repro-must-fail-before) — it rejected legitimate
+  mechanism-level repros and forced endless regen.
+- **"end-to-end" clarified** to mean the real defective FUNCTION with
+  constructed inputs, NOT the whole request pipeline — resolves the
+  review-demands-e2e vs test-writer-can't-monkeypatch-internals deadlock.
+- **test-writer sees full source of plan+candidate files** (not narrow
+  slices) — ends the REPLAN-for-missing-source loop; cap tuned for CLI speed.
+- **fenced-code-block format for NEW files** (models emit these far more
+  reliably than an empty-SEARCH block — the top test-write format failure).
+- **code-step implement sees the failing regression test** (keeps code+test
+  coherent) + a **surgical-edit rule** (change only the defect case; keep
+  existing paths byte-identical) so edits don't regress other tests.
+- **commit the regression test once repro is established + reuse it on
+  resume** — the test-write is the slowest CLI call; making it a one-time
+  cost lets short code+gate resumes retry cheaply until a clean gate-pass.
+- **MAX_TEST_REGENERATIONS→0** (one fast test-write shot per attempt) + a
+  fresh-fail retry loop.
+
+The irreducible remainder is raw CLI output non-determinism — any given run
+may emit a weak test or a non-surgical edit, which the eval gate correctly
+rejects. The architecture above turns that from "a full 15-min run must get
+lucky at every stage" into "write the test once, then cheap code+gate resumes
+until a clean gate-pass commits" — the honest way to make a non-deterministic
+generator converge under an eval gate. (An unrelated mid-run environmental
+failure — the machine disk filled to 100% from ~19 worktree copies + model
+caches — halted work until Prem freed space; documented in ACTIVE_HANDOFF.)

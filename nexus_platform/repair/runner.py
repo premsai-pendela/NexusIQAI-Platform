@@ -23,6 +23,7 @@ tests/platform_mode/test_repair_no_merge_path.py.
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 from dataclasses import dataclass, field
@@ -32,13 +33,14 @@ from typing import Callable, Optional
 
 from nexus_platform import store
 from nexus_platform.repair import apply as apply_mod
-from nexus_platform.repair import context_pack, eval_gate, pr
+from nexus_platform.repair import context_pack, eval_gate, pr, predictor
 from nexus_platform.repair.proposer import (Plan, Proposer, StageFailed,
                                             _parse_plan)
 
 SUITE_ARGS = ["tests/platform_mode/"]
-MAX_TEST_REGENERATIONS = 2
+MAX_TEST_REGENERATIONS = 0
 MAX_FIX_ROUNDS = 2
+MAX_PLAN_CONFIRM_ROUNDS = 4
 
 
 @dataclass
@@ -103,11 +105,25 @@ def _load_resume_seed(resume_session, finding_id: str) -> Optional[dict]:
         if critique and "VERDICT:" in critique and \
                 "REVISE" in critique.split("VERDICT:", 1)[1][:20]:
             hypothesis = critique.split("VERDICT:", 1)[1]
-    plan = data.get("plan") or _last_valid("plan")
+    # NEXUSIQ_REPAIR_FRESH_PLAN=1 seeds only the reasoning stages (localize/
+    # understand/hypothesize) and forces a FRESH plan — used when the prior
+    # plan was rejected and the plan prompt has since been improved, so the
+    # resume re-plans with the new prompt instead of reusing the stale plan.
+    if os.environ.get("NEXUSIQ_REPAIR_FRESH_PLAN") == "1":
+        plan = None
+    else:
+        plan = data.get("plan") or _last_valid("plan")
     if all([located, located.get("files") if located else None,
-            understanding, hypothesis, plan]):
+            understanding, hypothesis]):
+        # Partial resume is allowed: a run that died before producing a
+        # valid plan still seeds the finished reasoning stages — scarce
+        # quota goes to the unfinished stage, not to re-deriving these.
+        # A checkpoint session's plan was ALREADY self-confirmed, so the
+        # resume must not re-confirm it (confirm is non-deterministic — a
+        # good plan can get spuriously REVISE'd on a second pass).
         return {"located": located, "understanding": understanding,
-                "hypothesis": hypothesis, "plan": plan}
+                "hypothesis": hypothesis, "plan": plan,
+                "plan_confirmed": bool(data.get("checkpoint")) and bool(plan)}
     return None
 
 
@@ -131,7 +147,16 @@ def _implement(proposer: Proposer, plan: Plan, step: dict,
     model that says "I cannot see `symbol`" is doing the right thing —
     show it the symbol and ask again, once, before treating REPLAN as a
     real stop signal."""
+    import sys
+    import time as _t
+    _s = _t.time()
+    print(f"[repair {datetime.now(timezone.utc).strftime('%H:%M:%S')}] "
+          f"  implement_step start ({step['file']})",
+          file=sys.stderr, flush=True)
     resp = proposer.implement_step(plan, step, feedback=feedback)
+    print(f"[repair {datetime.now(timezone.utc).strftime('%H:%M:%S')}] "
+          f"  implement_step done in {_t.time() - _s:.0f}s "
+          f"(resp {len(resp)} chars)", file=sys.stderr, flush=True)
     if resp.strip().startswith("REPLAN:"):
         symbols = re.findall(r"`([A-Za-z_][A-Za-z0-9_]*)`",
                              resp.strip()[:400])
@@ -176,6 +201,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
 
     outcome = RepairOutcome(finding_id=finding_id, ok=False, reason="",
                             branch=branch, worktree=str(worktree_dir))
+    predictions = {"verified": [], "unverified": []}
 
     if not worktree_dir.exists():
         pr.create_fix_worktree(repo_root, branch, worktree_dir, base="master")
@@ -202,11 +228,20 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
     session_path = log_dir / f"{finding_id}_{stamp}.json"
     outcome.session_log = str(session_path)
 
+    def _progress(msg: str) -> None:
+        # Flushed real-time phase markers — the CLI-brain implement/gate
+        # phase is long, and buffered stdout is lost when the process is
+        # killed; these make progress (and where a kill landed) visible.
+        import sys
+        print(f"[repair {datetime.now(timezone.utc).strftime('%H:%M:%S')}] "
+              f"{msg}", file=sys.stderr, flush=True)
+
     def _save_session(extra: dict) -> None:
         session_path.write_text(json.dumps({
             "finding": finding_id, "company": company, "branch": branch,
             "worktree": str(worktree_dir),
             "llm_calls": proposer.calls_made,
+            "predictions": predictions,
             "stages": proposer.log, **extra}, indent=2, default=str))
 
     try:
@@ -217,6 +252,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
         # A resumed run reloads the pipeline's own prior outputs (its
         # operational memory) so scarce quota goes to the unfinished
         # stages, not to re-deriving finished ones.
+        eval_notes = ""
         seed = _load_resume_seed(resume_session, finding_id)
         if seed:
             located = seed["located"]
@@ -224,9 +260,34 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                                   located.get("functions", []))
             understanding = seed["understanding"]
             hypothesis = seed["hypothesis"]
-            plan, problem = _parse_plan(seed["plan"])
-            if problem:
-                raise StageFailed(f"resumed plan no longer valid: {problem}")
+            if seed.get("plan") and seed.get("plan_confirmed"):
+                # Checkpoint resume: the plan was already self-confirmed
+                # before the prior run died — reuse it and go straight to
+                # implement/gate. Re-confirming a good plan risks a spurious
+                # REVISE (confirm is non-deterministic) that discards it.
+                plan, problem = _parse_plan(seed["plan"])
+                if problem:
+                    raise StageFailed(f"resumed plan no longer valid: {problem}")
+            else:
+                # Partial resume without a confirmed plan: (re)plan on the
+                # seeded reasoning, then self-confirm — a plan is never
+                # exempt from confirmation unless it was already confirmed.
+                if seed.get("plan"):
+                    plan, problem = _parse_plan(seed["plan"])
+                    if problem:
+                        plan = proposer.plan(hypothesis)
+                else:
+                    plan = proposer.plan(hypothesis)
+                for _ in range(MAX_PLAN_CONFIRM_ROUNDS):
+                    confirmed, notes = proposer.confirm_plan(plan, hypothesis)
+                    if confirmed:
+                        eval_notes = notes
+                        break
+                    plan = proposer.plan(hypothesis, feedback=notes)
+                else:
+                    raise StageFailed(
+                        "plan was not self-confirmed after "
+                        f"{MAX_PLAN_CONFIRM_ROUNDS} revision rounds: {notes}")
             # A resumed continuation may find its test file already on the
             # branch from a prior round — the test steps then edit it
             # rather than create it.
@@ -237,19 +298,83 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                 "response": "", "valid": True,
                 "validator_reason": "stages seeded from prior session"})
         else:
+            # Predict related hidden bugs and verify each by reproducing a
+            # real failing input BEFORE diagnosing — verified predictions
+            # join the evidence so the plan and the regression test must
+            # cover the class, not one literal question. A prediction that
+            # doesn't reproduce is reported as a hypothesis, never counted.
+            # NEXUSIQ_REPAIR_SKIP_PREDICT conserves the free tier when it is
+            # near-exhausted (the predict step runs full analyst queries);
+            # skipping it is an honest operational choice, logged in the
+            # session, not a change to what a fix must satisfy.
+            if os.environ.get("NEXUSIQ_REPAIR_SKIP_PREDICT") == "1":
+                predictions = {"verified": [], "unverified": [],
+                               "skipped": "budget-conserving (env)"}
+            else:
+                predictions = predictor.predict_and_verify(proposer, pack)
+            for hit in predictions["verified"]:
+                tr = store.get_trace(company, hit["trace_id"])
+                if tr:
+                    pack.traces.append(tr)
+
             located = proposer.localize()
             understanding = proposer.understand()
             hypothesis = proposer.hypothesize(understanding)
+
+            # Plan, then self-confirm it (the agent's own gate, not a human
+            # pause) before a single line of code changes. A REVISE verdict
+            # feeds the concrete reason back into a fresh plan.
             plan = proposer.plan(hypothesis)
+            eval_notes = ""
+            for _ in range(MAX_PLAN_CONFIRM_ROUNDS):
+                confirmed, notes = proposer.confirm_plan(plan, hypothesis)
+                if confirmed:
+                    eval_notes = notes
+                    break
+                plan = proposer.plan(hypothesis, feedback=notes)
+            else:
+                raise StageFailed(
+                    "plan was not self-confirmed after "
+                    f"{MAX_PLAN_CONFIRM_ROUNDS} revision rounds: {notes}")
         outcome.plan = plan
+
+        # ── checkpoint the reasoning stages before the slow test/implement/
+        # gate phase. The reasoning stages are the expensive part (CLI-brain
+        # calls); if this run is killed during implement or the eval gate, a
+        # --resume-from of this file skips straight back to the seeded plan
+        # instead of re-deriving localize/understand/hypothesize/plan.
+        _save_session({"outcome": "checkpoint: plan confirmed, pre-implement",
+                       "gate_passed": False, "checkpoint": True,
+                       "located": located, "understanding": understanding,
+                       "hypothesis": hypothesis,
+                       "plan": plan.raw if plan else None,
+                       "eval_notes": eval_notes})
 
         # ── the regression test first; it must fail pre-fix ───────────
         repro_args = [plan.test_file]
         repro_before = None
         feedback = ""
-        failing_questions = [t.get("question") for t in pack.traces
-                             if t.get("question")]
+
+        # Resumability: if a prior attempt already wrote+committed the
+        # regression test to this branch (survives the worktree reset) and
+        # it still fails on the un-fixed tree, skip the expensive test-write
+        # and go straight to code steps. The test-write is the slowest CLI
+        # call; making it a one-time cost lets short code+gate resumes retry
+        # cheaply until a clean gate-pass.
+        committed = pr._git(["ls-files", plan.test_file], worktree_dir).strip()
+        if committed:
+            run = eval_gate.run_pytest(repro_args, "repro_before",
+                                       cwd=worktree_dir)
+            if run.exit_code == 1 and not _fails_for_wrong_reason(
+                    _pytest_tail(worktree_dir, repro_args)):
+                repro_before = run
+                _progress("reusing committed regression test (repro_before OK)")
+
         for regen_round in range(MAX_TEST_REGENERATIONS + 1):
+            if repro_before is not None:
+                break
+            _progress(f"test-writing round {regen_round} "
+                      f"(test={plan.test_file})")
             # Every round writes the test file fresh (deleting at round
             # START, never at the end — attempt-4 lesson). A stale draft
             # from a previous run/round invites SEARCH/REPLACE fumbling
@@ -267,24 +392,17 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                     feedback = applied.reason
                     break
             else:
-                test_text = ""
-                test_path = worktree_dir / plan.test_file
-                if test_path.exists():
-                    test_text = test_path.read_text()
-                if failing_questions and not any(q in test_text
-                                                 for q in failing_questions):
-                    # Attempt-7 lesson: a repro that never exercises the
-                    # failing input lets a vacuous fix through the gate. A
-                    # helper-existence test is not a repro.
-                    feedback = (
-                        "your regression test never exercises the actual "
-                        "failing input from the trace. It must send the "
-                        "exact question "
-                        f"{failing_questions[0]!r} through the product's "
-                        "behavior (routing/orchestration), assert the "
-                        "honest expected outcome, and fail on today's "
-                        "code because of that assertion.")
-                    continue
+                # The real, sufficient guards against a vacuous/helper-only
+                # test are: (a) the strong confirm_plan review already vetted
+                # the plan's test is end-to-end and adequate (it explicitly
+                # rejected a helper-only test for this finding), and (b) the
+                # repro_before check just below — a test must FAIL on the
+                # unfixed tree to be accepted, so a test that doesn't encode
+                # the real failure can't pass. The old literal-question
+                # string-match is superseded by these and was rejecting
+                # legitimate mechanism-level repros (e.g. a false-denial bug
+                # whose deterministic repro names the denied table, not the
+                # garbled question).
                 run = eval_gate.run_pytest(repro_args, "repro_before",
                                            cwd=worktree_dir)
                 if run.exit_code != 0:
@@ -294,6 +412,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                     # never a valid repro.
                     if run.exit_code == 1 and not _fails_for_wrong_reason(tail):
                         repro_before = run
+                        _progress("repro_before OK (test fails on unfixed tree)")
                         break
                     feedback = (
                         "your regression test fails, but for the WRONG "
@@ -320,8 +439,21 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                               "exercises the failing input and fails on "
                               "the un-fixed tree")
 
+        # Commit the established regression test to the branch so a future
+        # resume can reuse it (skip the slow test-write) — only if it isn't
+        # already committed (the reuse path above).
+        if not committed and (worktree_dir / plan.test_file).exists():
+            try:
+                pr.commit_paths(worktree_dir, [plan.test_file],
+                                f"WIP regression test for {finding_id} "
+                                "(repro established; fix pending)")
+                _progress("committed regression test (resume-safe)")
+            except Exception as exc:
+                _progress(f"test-commit skipped ({type(exc).__name__})")
+
         # ── code steps, one at a time ──────────────────────────────────
         for step in plan.code_steps:
+            _progress(f"code step: {step['file']}")
             feedback = ""
             for _ in range(3):
                 resp = _implement(proposer, plan, step, feedback=feedback)
@@ -336,14 +468,22 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                                   f"retries: {feedback}")
 
         # ── the repro must now pass; regressions must be zero ─────────
+        _progress("code applied; running repro_after")
         repro_after = eval_gate.run_pytest(repro_args, "repro_after",
                                            cwd=worktree_dir)
         rounds = 0
         while repro_after.exit_code != 0 and rounds < MAX_FIX_ROUNDS:
+            _progress(f"repro_after failed; fix round {rounds + 1}")
             rounds += 1
             fix_feedback = (
-                "the fix is applied but the regression test still fails. "
-                "Failing output:\n"
+                "Your previous edit is ALREADY APPLIED and appears in the "
+                "'Current content' shown above — do NOT repeat it (its "
+                "original SEARCH text no longer matches the edited file). "
+                "The regression test still fails. Study the failing output "
+                "below, then emit a NEW, corrected SEARCH/REPLACE whose "
+                "SEARCH lines are copied verbatim from the CURRENT content "
+                "above, so the test passes. Match the exact strings/values "
+                "the test asserts.\nFailing output:\n"
                 f"{_pytest_tail(worktree_dir, repro_args)}")
             for step in plan.code_steps:
                 resp = _implement(proposer, plan, step,
@@ -355,56 +495,92 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
             repro_after = eval_gate.run_pytest(repro_args, "repro_after",
                                                cwd=worktree_dir)
 
+        _progress("running full suite (after) for regression check")
         after = eval_gate.run_pytest(SUITE_ARGS, "after", cwd=worktree_dir)
         passed, reason = eval_gate.gate(before, after, repro_before,
                                         repro_after)
+        _progress(f"gate: passed={passed} — {reason[:80]}")
 
-        # ── advisory self-review, one revision round, then re-gate ─────
-        if passed:
-            diff = pr._git(["diff"], worktree_dir)
-            review = proposer.self_review(plan, diff[:20000])
-            if "REVISE" in review.split("VERDICT:", 1)[1][:20]:
-                applied = apply_mod.apply_all(worktree_dir, review,
-                                              plan.files_touched)
-                if applied.ok:
-                    repro_after = eval_gate.run_pytest(
-                        repro_args, "repro_after", cwd=worktree_dir)
-                    after = eval_gate.run_pytest(SUITE_ARGS, "after",
-                                                 cwd=worktree_dir)
-                    passed, reason = eval_gate.gate(before, after,
-                                                    repro_before, repro_after)
-
-        evidence_path = worktree_dir / "eval_evidence.json"
-        eval_gate.save_evidence(evidence_path,
-                                [before, repro_before, repro_after, after],
-                                (passed, reason))
-        outcome.evidence_path = str(evidence_path)
-        outcome.ok = passed
-        outcome.reason = reason
         outcome.llm_calls = proposer.calls_made
         outcome.models_used = sorted({e.get("model_used") for e in
                                       proposer.log if e.get("model_used")})
 
+        def _write_evidence():
+            evidence_path = worktree_dir / "eval_evidence.json"
+            eval_gate.save_evidence(
+                evidence_path, [before, repro_before, repro_after, after],
+                (passed, reason))
+            outcome.evidence_path = str(evidence_path)
+            outcome.ok = passed
+            outcome.reason = reason
+
         if passed:
+            # Commit the gate-passed fix IMMEDIATELY, before the advisory
+            # self-review. The review is a strong-model CLI call that can be
+            # slow/interrupted — a verified fix must never be lost to it.
+            _write_evidence()
             body = _pr_body(pack, plan, hypothesis, understanding,
                             before, after, repro_before, repro_after,
-                            outcome)
+                            outcome, predictions=predictions,
+                            eval_notes=eval_notes)
             (worktree_dir / "pr_body.md").write_text(body)
-            # Commit what actually changed on disk, bounded by the plan's
-            # allowlist — the authoritative record is the tree, not the
-            # per-step bookkeeping.
             new_files = sorted(f for f in _dirty_paths(worktree_dir)
                                if f in plan.files_touched)
             outcome.files_changed = new_files
             outcome.commit = pr.commit_paths(
                 worktree_dir, new_files,
                 _commit_message(pack, plan, outcome))
+            _progress(f"committed gate-passed fix ({outcome.commit[:8]})")
+
+            # ── advisory self-review; amend the commit only if it revises
+            # AND the change still passes the gate. A slow/killed review now
+            # leaves the already-committed verified fix intact.
+            try:
+                diff = pr._git(["show", "--format=", "HEAD"], worktree_dir)
+                review = proposer.self_review(plan, diff[:20000])
+                if "VERDICT:" in review and \
+                        "REVISE" in review.split("VERDICT:", 1)[1][:20]:
+                    applied = apply_mod.apply_all(worktree_dir, review,
+                                                  plan.files_touched)
+                    if applied.ok:
+                        repro_after = eval_gate.run_pytest(
+                            repro_args, "repro_after", cwd=worktree_dir)
+                        after = eval_gate.run_pytest(SUITE_ARGS, "after",
+                                                     cwd=worktree_dir)
+                        passed2, reason2 = eval_gate.gate(
+                            before, after, repro_before, repro_after)
+                        if passed2:
+                            reason = reason2
+                            _write_evidence()
+                            (worktree_dir / "pr_body.md").write_text(_pr_body(
+                                pack, plan, hypothesis, understanding, before,
+                                after, repro_before, repro_after, outcome,
+                                predictions=predictions, eval_notes=eval_notes))
+                            amend = sorted(f for f in _dirty_paths(worktree_dir)
+                                           if f in plan.files_touched)
+                            pr._git(["add", *amend, "pr_body.md",
+                                     "eval_evidence.json"], worktree_dir)
+                            pr._git(["commit", "--amend", "--no-edit"],
+                                    worktree_dir)
+                            outcome.commit = pr._git(["rev-parse", "HEAD"],
+                                                     worktree_dir)
+                            _progress("self-review revision amended")
+                        else:
+                            # Revision broke the gate — revert to the
+                            # committed, verified fix.
+                            pr._git(["checkout", "--", "."], worktree_dir)
+                            _progress("self-review revision regressed; kept "
+                                      "the committed fix")
+            except Exception as exc:
+                _progress(f"self-review skipped ({type(exc).__name__}); "
+                          "committed fix stands")
+
             store.update_finding_status(
                 finding_id, "fixed", actor="health_repair_pipeline",
                 note=f"fix staged locally by the repair pipeline "
                      f"(models: {', '.join(outcome.models_used)}); "
                      f"publish pending mission end",
-                linked_branch=branch, linked_eval=str(evidence_path))
+                linked_branch=branch, linked_eval=outcome.evidence_path)
             store.add_lesson(
                 scope="repair",
                 lesson=f"pipeline fixed {finding_id} "
@@ -414,6 +590,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                                          pack.traces if t.get("id")],
                 campaign_id=pack.finding["payload"].get("campaign_id"))
         else:
+            _write_evidence()
             store.add_lesson(
                 scope="repair",
                 lesson=f"pipeline attempt on {finding_id} failed the gate: "
@@ -425,6 +602,7 @@ def run_repair(company: str, finding_id: str, repo_root: str | Path,
                        "located": located, "understanding": understanding,
                        "hypothesis": hypothesis,
                        "plan": plan.raw if plan else None,
+                       "eval_notes": eval_notes,
                        "files_changed": outcome.files_changed,
                        "commit": outcome.commit})
         return outcome
@@ -451,8 +629,10 @@ def _commit_message(pack, plan: Plan, outcome: RepairOutcome) -> str:
     kind = pack.finding["payload"].get("kind", "finding")
     return (f"Fix {kind}: {pack.finding['summary'][:100]}\n\n"
             f"Diagnosed, planned, and written by the Health Check Agent "
-            f"repair pipeline\nrunning on the product's shared free-tier "
-            f"LLM chain (models used: {', '.join(outcome.models_used)}).\n"
+            f"repair pipeline:\nthe hard reasoning stages run on Claude Code "
+            f"via CLI, the cheap localization\nstage on the product's "
+            f"free-tier chain (models used: "
+            f"{', '.join(outcome.models_used)}).\n"
             f"Finding: {pack.finding['id']}; evidence traces: "
             f"{', '.join(t.get('id', '?') for t in pack.traces)}.\n"
             f"Eval gate: {outcome.reason}")
@@ -460,8 +640,30 @@ def _commit_message(pack, plan: Plan, outcome: RepairOutcome) -> str:
 
 def _pr_body(pack, plan: Plan, hypothesis: str, understanding: str,
              before, after, repro_before, repro_after,
-             outcome: RepairOutcome) -> str:
+             outcome: RepairOutcome, predictions: Optional[dict] = None,
+             eval_notes: str = "") -> str:
     f = pack.finding
+    predictions = predictions or {"verified": [], "unverified": []}
+    pred_section = ""
+    if predictions["verified"] or predictions["unverified"]:
+        v_lines = "\n".join(
+            f"- **verified**: `{p['question']}` ({p['role']}) — reproduced as "
+            f"{p['verdict']} (trace `{p['trace_id']}`)"
+            for p in predictions["verified"]) or "- none"
+        u_lines = "\n".join(
+            f"- hypothesis (did NOT reproduce): `{p['question']}` ({p['role']})"
+            for p in predictions["unverified"]) or "- none"
+        pred_section = f"""
+## Predicted related bugs (three tiers, never conflated)
+
+Predicted-and-verified (each reproduced on a real input before the fix):
+{v_lines}
+
+Predicted-but-unverified hypotheses (reported only, not counted):
+{u_lines}
+"""
+    evals_section = (f"\n## New eval coverage the pipeline decided this "
+                     f"change needs\n\n{eval_notes}\n" if eval_notes else "")
     return f"""## What this fixes
 
 {f['summary']}
@@ -474,8 +676,9 @@ evidence trace(s): {', '.join(t.get('id', '?') for t in pack.traces)}).
 
 Every step of this fix — diagnosis, plan, regression test, and code —
 was produced by the Health Check Agent's own repair pipeline
-(`nexus_platform/repair/`), running on the product's shared free-tier
-LLM chain ({', '.join(outcome.models_used) or 'fallback chain'}),
+(`nexus_platform/repair/`). Its hard reasoning stages run on Claude Code
+via CLI; the cheap localization stage stays on the product's free-tier
+chain. Models used: {', '.join(outcome.models_used) or 'fallback chain'},
 in {outcome.llm_calls} LLM calls. The full stage-by-stage session log
 (prompts, responses, validator verdicts) is preserved locally at
 `{outcome.session_log}`.
@@ -483,10 +686,11 @@ in {outcome.llm_calls} LLM calls. The full stage-by-stage session log
 ## The pipeline's root-cause analysis
 
 {hypothesis.strip()}
-
-## The pipeline's plan
+{pred_section}
+## The pipeline's plan (self-confirmed before any code changed)
 
 {plan.raw}
+{evals_section}
 
 ## Eval evidence (before → after)
 

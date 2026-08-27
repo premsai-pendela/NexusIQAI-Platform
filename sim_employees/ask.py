@@ -37,9 +37,10 @@ def main() -> int:
                     help="seconds between questions (default 15)")
     ap.add_argument("--llm-extra-delay", type=float, default=20.0,
                     help="extra seconds after a question that spent an LLM call")
-    ap.add_argument("--target", choices=["local", "live"], default="local",
-                    help="local = in-process (dev/eval); live = HTTP to the "
-                         "deployed API so traces land in RDS (default local)")
+    ap.add_argument("--target", choices=["local", "live"], default="live",
+                    help="live (default) = HTTP to the deployed API so traces "
+                         "land in RDS and show on the live site; local = "
+                         "in-process, writes to this machine's DB (dev/eval)")
     ap.add_argument("--base-url", default=None,
                     help="API base for --target live "
                          "(default https://api.nexusiq-ai.com/api/v1)")
