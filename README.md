@@ -25,7 +25,7 @@
 
 ## What It Is
 
-Most "chat with your data" demos are a single tenant, a single corpus, and an LLM that answers everything — including things it shouldn't. NexusIQAI is built the other way around:
+Most "chat with your data" demos are a single tenant, a single corpus, and an LLM that answers everything — including things it shouldn't. NexusIQ is built the other way around:
 
 > Each company gets its own SQL schema and document "brain." Each employee's role determines exactly what tables and document departments they can touch — enforced structurally, not by a prompt instruction. Common business questions never touch an LLM at all. Every answer, allowed or refused, leaves a trace an Admin/CEO can audit.
 
@@ -82,6 +82,8 @@ flowchart TB
     Traces --> Context
 ```
 
+*This is the request path — one question, answered. The audit-and-repair loop that runs on top of it is a [separate diagram below](#the-second-agent-health-check--repair--pull-request).*
+
 ## Role-Based Access, Four Layers Deep
 
 A request can never widen what it's allowed to see — because the boundary lives in the agent instance, not a per-request filter:
@@ -121,6 +123,21 @@ A trace-leakage auditor (`scripts/inspect_platform_traces.py`) runs across every
 
 The analyst answers questions. A **second agent audits the analyst** — and, when it finds a real defect, fixes it and opens a pull request a human reviews.
 
+```mermaid
+flowchart LR
+    Emp["Employees<br/>(simulated in this demo)"] -->|questions| Analyst[AI Data Analyst]
+    Analyst -->|logs every answer| Traces[(Traces)]
+    Traces --> HC["Health Check Agent<br/>grades each trace"]
+    HC -->|findings| Repair["Repair Pipeline<br/>diagnose → test → fix"]
+    Repair --> Gate{"Eval gate<br/>repro fails before,<br/>passes after?"}
+    Gate -->|no| Repair
+    Gate -->|yes| PR[Pull Request]
+    PR --> Human([Human review + merge])
+    Human -->|merged fix| Analyst
+```
+
+Read it as a loop: traffic makes traces, traces expose defects, defects become tested fixes, and a human decides what actually ships.
+
 ### 1. Traffic — simulated employees (`sim_employees/`)
 
 A demo has no real employees, so this repo ships a **traffic generator that lives outside the product**: role-scoped personas that read the company brain and deliberately attack the analyst — malformed questions, typo'd metrics, multi-table joins, boundary probes, and follow-ups designed to break session memory. Each persona keeps its own file memory so it doesn't repeat a solved question, and a paced runner keeps it from draining the free-tier quota. Every resulting trace is tagged `source="simulated"` and is never conflated with real usage in any report or admin view.
@@ -141,9 +158,15 @@ Output is a report of findings — wrong, vague, misrouted, or falsely refused a
 
 ### 3. Repair — the pipeline that writes the code (`nexus_platform/repair/`)
 
-Pointed at a finding, the pipeline runs a staged loop: **localize → understand → hypothesize → critique → plan → confirm_plan → implement → test → eval gate**. It creates a git worktree, writes a regression test that reproduces the bug, writes the fix, and runs the gate:
+Pointed at a finding, the pipeline works in an isolated git worktree and runs these stages in order:
 
-> the repro must fail before the change and pass after, with **zero new failures** against the baseline suite.
+| Stage | What happens |
+|---|---|
+| `localize` | Find the code responsible for the finding |
+| `understand` → `hypothesize` | Read that code and propose a root cause |
+| `critique` → `plan` → `confirm_plan` | Attack its own hypothesis, plan the fix, then review that plan before writing anything |
+| `implement` | Write the regression test that reproduces the bug, then write the fix |
+| **eval gate** | **The repro must fail before the change and pass after, with zero new failures against the baseline suite** |
 
 Only a gate-passing fix is committed. Then `repair/pr.py` opens a pull request under a separate bot identity (`Nexus-Healthcheck-Bot`) with the before/after evidence in the body.
 
