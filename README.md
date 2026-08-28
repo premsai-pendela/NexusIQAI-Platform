@@ -124,15 +124,15 @@ A trace-leakage auditor (`scripts/inspect_platform_traces.py`) runs across every
 The analyst answers questions. A **second agent audits the analyst** — and, when it finds a real defect, fixes it and opens a pull request a human reviews.
 
 ```mermaid
-flowchart LR
-    Emp["Employees<br/>(simulated in this demo)"] -->|questions| Analyst[AI Data Analyst]
-    Analyst -->|logs every answer| Traces[(Traces)]
-    Traces --> HC["Health Check Agent<br/>grades each trace"]
-    HC -->|findings| Repair["Repair Pipeline<br/>diagnose → test → fix"]
-    Repair --> Gate{"Eval gate<br/>repro fails before,<br/>passes after?"}
+flowchart TB
+    Emp["Employees<br/>(simulated in this demo)"] -->|questions| Analyst["AI Data Analyst"]
+    Analyst -->|logs every answer| Traces[("Traces")]
+    Traces --> HC["Health Check Agent<br/>grades every trace"]
+    HC -->|findings| Repair["Repair Pipeline<br/>diagnose → write test → write fix"]
+    Repair --> Gate{"Eval gate<br/>repro fails before,<br/>passes after,<br/>no new failures?"}
     Gate -->|no| Repair
-    Gate -->|yes| PR[Pull Request]
-    PR --> Human([Human review + merge])
+    Gate -->|yes| PR["Pull Request<br/>opened by the bot"]
+    PR --> Human(["Human reviews and merges"])
     Human -->|merged fix| Analyst
 ```
 
